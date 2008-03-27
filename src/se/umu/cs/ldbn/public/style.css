@@ -1,0 +1,111 @@
+body {
+  background-color: white;
+  color: black;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 10pt;
+  margin: 0px 20px 20px 20px;
+}
+
+.att-but {
+	width: 90px;
+	height: 20px;
+	padding: 0px;
+	font-size: 8pt;
+}
+
+/* DisclosureWidget */
+.dw {
+	width: 100%;
+	border: 1px solid #DADADA;
+	color: #333;
+}
+
+.dw-header {
+	width: 100%;
+    background-image: url(img/dw-header-bg.png);
+}
+
+.dw-heder-controls {
+	margin-left: 2px;
+	margin-right: 2px;
+}
+
+.dw-content {
+	background: #F6F6F6;
+}
+
+.dw-resizer {
+	cursor: n-resize;
+}
+
+.dw-but {
+	cursor: pointer;
+}
+/* END DisclosureWidget */
+
+/* RelationAttributeWidget */
+.raw {
+	padding: 2px;
+	margin: 4px;
+	background-image: url(img/raw-bg.png);
+	background-repeat: repeat-x;
+	background-color: #B8C8D8;
+	border: 1px solid #7F9DB9;
+	color: #333;
+}
+/* END RelationAttributeWidget */
+
+/* FDWidget */
+.fdw {
+	margin: 4px;
+	background-image: url(img/raw-bg.png);
+	background-repeat: repeat-x;
+	background-color: #B8C8D8;
+	border: 1px solid #7F9DB9;
+	color: #333;
+}
+/* END FDWidget */
+
+/* FDEditorWidget */
+.fdew-dc-on-enter { /* Drop Controller*/
+	background-color: #AEDAA5;
+}
+
+.fdew-btn { 
+	width: 80px;
+	margin-top: 6px;
+	font-size: 8pt;
+	
+}
+
+.fdew-label {
+	font-size: 8pt;
+}
+
+/* END FDEditorWidget */
+
+/* DecompositionEditorWidget */
+.dew-btn {
+	width: 80px;
+	margin-top: 6px;
+	font-size: 8pt;
+}
+
+.dew-label {
+	font-size: 8pt;
+}
+
+/* END DecompositionEditorWidget */
+
+/* HelpDialog */
+.gwt-DialogBox {
+	background: #F6F6F6;
+	border: 2px solid #DADADA;
+}
+
+.Caption {
+	background-image: url(img/dw-header-bg.png);
+	cursor: move;
+}
+
+/* END HelpDialog */
