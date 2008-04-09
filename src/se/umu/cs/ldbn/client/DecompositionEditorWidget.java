@@ -10,6 +10,10 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * 
+ * @author Nikolay Georgiev (ens07ngv@cs.umu.se)
+ */
 public class DecompositionEditorWidget extends CheckBoxWidget 
 	implements HasUpControlls {
 	
@@ -156,6 +160,4 @@ public class DecompositionEditorWidget extends CheckBoxWidget
 	public Widget[] getUpControlls() {
 		return checkControlls;
 	}
-	
-	
 }

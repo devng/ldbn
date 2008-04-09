@@ -33,6 +33,7 @@ public class FDWidget extends HTML {
 		sb.append("</table>");
 		setHTML(sb.toString());
 		setStyleName("fdw");
+		Main.get().getDragController().makeDraggable(this);
 	}
 
 	public boolean isEditable() {
