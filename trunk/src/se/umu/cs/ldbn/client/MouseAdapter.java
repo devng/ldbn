@@ -6,6 +6,13 @@ import com.google.gwt.user.client.ui.MouseWheelListener;
 import com.google.gwt.user.client.ui.MouseWheelVelocity;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * An abstract class for mouse events, so subclasses don't have to implement all
+ * the methods from the interfaces but just the ones they need.
+ *  
+ * @author Nikolay Georgiev (ens07ngv@cs.umu.se)
+ *
+ */
 public abstract class MouseAdapter implements MouseListener, MouseWheelListener, 
 	ClickListener{
 

@@ -1,25 +1,16 @@
 package se.umu.cs.ldbn.client;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.HashSet;
+
+import se.umu.cs.ldbn.client.core.FD;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
-import com.allen_sauer.gwt.dnd.client.DragController;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
-import com.allen_sauer.gwt.dnd.client.drop.SimpleDropController;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.MouseListener;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -36,6 +27,7 @@ public final class FDEditorWidget extends  CheckBoxWidget
 	private Button clearBtn;
 	private Button addBtn;
 	private Label expandLabel;
+	//private HashSet<FD> fds;
 	
 	private class FDEditorTextArea extends AttributeTextArea  {
 		
@@ -200,6 +192,10 @@ public final class FDEditorWidget extends  CheckBoxWidget
 			expandLabel.setVisible(false);
 		}
 		isOpen = !isOpen;
+	}
+	
+	public void clearAll() {
+		
 	}
 	
 	private FDWidget createFD() {

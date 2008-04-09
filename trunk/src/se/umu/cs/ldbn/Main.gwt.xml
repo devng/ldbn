@@ -4,7 +4,7 @@
 	<inherits name='com.google.gwt.user.User'/>
 	<inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
 
-	<stylesheet src='style.css'/>
+	<stylesheet src='ldbn.css'/>
 
 	<!-- Specify the app entry point class.                   -->
 	<entry-point class='se.umu.cs.ldbn.client.Main'/>

@@ -1,1 +1,1 @@
-@java -cp "%~dp0\src;%~dp0\bin;C:/Developer/gwt-windows-1.4.61/gwt-user.jar;C:/Developer/gwt-windows-1.4.61/gwt-dev-windows.jar" com.google.gwt.dev.GWTShell -out "%~dp0\www" %* se.umu.cs.ldbn.Main/Main.html
+@java -cp "%~dp0\src;%~dp0\bin;C:/Developer/gwt-svn/gwt-windows-0.0.0/gwt-user.jar;C:/Developer/gwt-svn/gwt-windows-0.0.0/gwt-dev-windows.jar" com.google.gwt.dev.GWTShell -out "%~dp0\www" %* se.umu.cs.ldbn.Main/Main.html

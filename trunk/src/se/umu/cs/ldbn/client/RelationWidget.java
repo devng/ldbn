@@ -20,6 +20,7 @@ public class RelationWidget extends HTML {
 		sb.append("</table>");
 		setHTML(sb.toString());
 		setStyleName("fdw");
+		Main.get().getDragController().makeDraggable(this);
 	}
 
 	public String[] getAttributes() {
