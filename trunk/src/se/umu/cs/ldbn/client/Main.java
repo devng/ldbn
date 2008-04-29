@@ -1,24 +1,59 @@
 package se.umu.cs.ldbn.client;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import se.umu.cs.ldbn.client.core.Algorithms;
+import se.umu.cs.ldbn.client.core.AttributeNameTable;
+import se.umu.cs.ldbn.client.core.FD;
+import se.umu.cs.ldbn.client.core.Relation;
+import se.umu.cs.ldbn.client.ui.CommonStyle;
+import se.umu.cs.ldbn.client.ui.DecompositionEditorWidget;
+import se.umu.cs.ldbn.client.ui.DisclosureWidget;
+import se.umu.cs.ldbn.client.ui.FDEditorDialog;
+import se.umu.cs.ldbn.client.ui.FDEditorWidget;
+import se.umu.cs.ldbn.client.ui.GivenAttributesWidget;
+import se.umu.cs.ldbn.client.ui.GivenFDsWidget;
+
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.Frame;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public class Main implements EntryPoint {
+public class Main implements EntryPoint, ClickListener {
 
-	
 	private static Main instance = null;
-	private PickupDragController dragController;
-	private FDEditorWidget fdEditor;
 	
+	private AbsolutePanel mainPanel;
+	private PickupDragController dragController;
+	
+	private AttributeNameTable domain;
+	private List<FD> fds;
+	
+	private Button checkSolution;
+	private Button newAssignment;
+	
+	private GivenAttributesWidget givenAttributesWidget;
+	private GivenFDsWidget givenFDsWidget;
+	private FDEditorWidget minimalCoverEditorWidget;
+	private DecompositionEditorWidget NF2DecompositionEditorWidget;
+	private DecompositionEditorWidget NF3DecompositionEditorWidget;
+
+	private FDEditorDialog fdEitorDialog;
+
 	public static Main get() {
 		if (instance == null) {
 			throw new IllegalArgumentException("onModuleLoad method must bu " +
@@ -27,83 +62,172 @@ public class Main implements EntryPoint {
 		return instance;
 	}
 	
-	private Main() {
-		
-	}
+	private Main() {}
 	
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
+		Log.setUncaughtExceptionHandler();
+		//used by the logger!
+		DeferredCommand.addCommand(new Command() {
+			public void execute() {
+				onModuleLoad2();
+			}
+		});
+	}
+	
+	
+	private void onModuleLoad2() {
+	    if (Log.isDebugEnabled()) {
+	    	Log.debug("Debug log started.");
+	    }
 		if (instance == null) {
 			instance = this;
 		}
 		if(instance != this) { // should not occur
 			Window.alert("Main.java : instance != this");
 		}
-		
-		AbsolutePanel all = new AbsolutePanel();
-		dragController = new PickupDragController(all, false);
+		mainPanel = RootPanel.get();
+		dragController = new PickupDragController(mainPanel, false);
 		dragController.setBehaviorDragProxy(true);
-		//Attributes
-		RelationAttributeWidget raw1 = new RelationAttributeWidget("A1");
-		dragController.makeDraggable(raw1);
-		RelationAttributeWidget raw2 = new RelationAttributeWidget("A2");
-		dragController.makeDraggable(raw2);
-		HorizontalPanel hp = new HorizontalPanel();
-		hp.add(raw1);
-		hp.add(raw2);
-		Button[] attUpBut = new Button[2];
-		attUpBut[0] = new Button("New Assigment");
-		attUpBut[0].setStyleName("att-but");
-		CommonStyle.setCursorPointer(attUpBut[0]);
-		attUpBut[1] = new Button("Check Solution");
-		attUpBut[1].setStyleName("att-but");
-		CommonStyle.setCursorPointer(attUpBut[1]);
-		DisclosureWidget dw1 = new DisclosureWidget("Given attributes", hp, attUpBut);
-		//FDs
-		String[] left1 = {"A1", "A2", "A3"};
-		String[] right1 = {"B1", "B2", "B3"};
-		FDWidget fdw1 = new FDWidget(false, left1, right1);
-		dragController.makeDraggable(fdw1);
-		String[] left2 = {"C1", "C2", "C3"};
-		String[] right2 = {"D1", "D2", "D3"};
-		FDWidget fdw2 = new FDWidget(false, left2, right2);
-		dragController.makeDraggable(fdw2);
-		VerticalPanel vp = new VerticalPanel();
-		vp.add(fdw1);
-		vp.add(fdw2);
-		DisclosureWidget dw2 = new DisclosureWidget("Given FDs", vp);
 		
-		fdEditor = new FDEditorWidget();
+		//Given Attributes
+		givenAttributesWidget = new GivenAttributesWidget();
+		newAssignment = new Button("New Assignment");
+		newAssignment.setStyleName("att-but");
+		CommonStyle.setCursorPointer(newAssignment);
+		newAssignment.addClickListener(this);
+		checkSolution = new Button("Check Solution");
+		checkSolution.setStyleName("att-but");
+		CommonStyle.setCursorPointer(checkSolution);
+		checkSolution.addClickListener(this);
+		Button[] attUpBut = {newAssignment, checkSolution};
+		DisclosureWidget dw = new DisclosureWidget("Given attributes", 
+				givenAttributesWidget, attUpBut);
+		mainPanel.add(dw);
+		//Given FDs
+		givenFDsWidget = new GivenFDsWidget();
+		dw = new DisclosureWidget("Given FDs", 
+				givenFDsWidget);
+		mainPanel.add(dw);
+		//Minimal Cover
+		minimalCoverEditorWidget = new FDEditorWidget();
+		dw = new DisclosureWidget("Find the minimal cover of FDs", minimalCoverEditorWidget);
+		mainPanel.add(dw); 
+		//Decomposition 2NF
+		NF2DecompositionEditorWidget = new DecompositionEditorWidget();
+		dw = new DisclosureWidget("Decompose in 2 NF", 
+				NF2DecompositionEditorWidget); 
+		mainPanel.add(dw);
+		//Decomposition 2NF
+		NF3DecompositionEditorWidget = new DecompositionEditorWidget();
+		dw = new DisclosureWidget("Decompose in 3 NF", 
+				NF3DecompositionEditorWidget); 
+		mainPanel.add(dw);
 		
-		String[] left3 = {"C1", "C2", "C3"};
-		String[] right3 = {"D1", "D2", "D3"};
-		FDWidget fdw3 = new FDWidget(true, left3, right3);
-		fdEditor.addFDWidget(fdw3);
-		DisclosureWidget dw3 = new DisclosureWidget("Find the minimal cover of FDs", fdEditor);
+		fdEitorDialog = new FDEditorDialog();
 		
-		//Decomposition
-		DecompositionEditorWidget dew2nf = new DecompositionEditorWidget();
-		DisclosureWidget dw4 = new DisclosureWidget("Decompose in 2 NF", dew2nf); 
-		
-		DecompositionEditorWidget dew3nf = new DecompositionEditorWidget();
-		DisclosureWidget dw5 = new DisclosureWidget("Decompose in 3 NF", dew3nf); 
-		
-		//add to all
-		all.add(dw1);
-		all.add(dw2);
-		all.add(dw3);
-		all.add(dw4);
-		all.add(dw5);
-		RootPanel.get().add(all);
+		//generate new assignment
+		newAssignment();
+	}
+	
+	private void newAssignment() {
+		minimalCoverEditorWidget.clearAll();
+		NF2DecompositionEditorWidget.clearAll();
+		NF3DecompositionEditorWidget.clearAll();
+		Assignment a = RandomAssignmentGenerator.generate();
+		this.domain = a.getDomain();
+		this.fds = a.getFDs();
+		givenAttributesWidget.setAttributeNames(domain);
+		givenFDsWidget.setFDs(fds);
 	}
 
 	public PickupDragController getDragController() {
 		return dragController;
 	}
 
-	public FDEditorWidget getFdEditor() {
-		return fdEditor;
+	public FDEditorWidget getMinimalCoverEditorWidget() {
+		return minimalCoverEditorWidget;
+	}
+	
+	public AttributeNameTable getAttributeNameTable() {
+		return domain;
+	}
+
+	public GivenAttributesWidget getGivenAttributesWidget() {
+		return givenAttributesWidget;
+	}
+
+	public GivenFDsWidget getGivenFDsWidget() {
+		return givenFDsWidget;
+	}
+
+	public DecompositionEditorWidget getNF2DecompositionEditorWidget() {
+		return NF2DecompositionEditorWidget;
+	}
+
+	public DecompositionEditorWidget getNF3DecompositionEditorWidget() {
+		return NF3DecompositionEditorWidget;
+	}
+
+	public List<FD> getFds() {
+		return fds;
+	}
+
+	public void onClick(Widget sender) {
+		if(sender == checkSolution) {
+			checkSolution();
+		} else if (sender == newAssignment) {
+			//newAssignment();
+			
+			fdEitorDialog.center();
+		}
+	}
+	
+	private void checkSolution() {
+		//check minimal cover
+		List<FD> minCovFDs = minimalCoverEditorWidget.getFDs();
+		List<FD> deepCopy = new ArrayList<FD>(minCovFDs.size());
+		for (FD fd : minCovFDs) {
+			deepCopy.add(fd.clone());
+		}
+		boolean isMinCoverRight = false;
+		Algorithms.minimalCover(deepCopy);
+		if (!Algorithms.equivalence(fds, minCovFDs)) {
+			Log.info("minimal cover - wrong - fds are not equivalent to the given fds.");
+		} else if(deepCopy.size() != minCovFDs.size()) {
+			Log.info("minimal cover - wrong - too much fds.");
+		} else if (!deepCopy.containsAll(minCovFDs)) {
+			Log.info("minimal cover - wrong - some fds are not redused.");
+		} else {
+			Log.info("minimal cover - right.");
+			isMinCoverRight = true;
+		}
+		//check 2nf
+		if(!isMinCoverRight) {
+			Log.info("Minimal cover was wrong, program will compute it, but not show the solution, in order to check the decomposition solutions. Note that different minimal covers may give different solutions.");
+			deepCopy = new ArrayList<FD>();
+			for (FD fd2 : fds) {
+				deepCopy.add(fd2);
+			}
+			Algorithms.minimalCover(deepCopy);
+		}
+		Log.info("Checking 2nf...");
+		List<Relation> relations = NF2DecompositionEditorWidget.getRelations();
+		boolean is2NF = Algorithms.isIn2NF(relations, deepCopy); 
+		if(is2NF) {
+			Log.info("2 NF Decomposition - right");
+		} else {
+			Log.info("2 NF Decomposition - wrong");
+		}
+		Log.info("Checking 3nf...");
+		relations = NF3DecompositionEditorWidget.getRelations();
+		boolean is3NF = Algorithms.isIn3NF(relations, deepCopy); 
+		if(is3NF) {
+			Log.info("3 NF Decomposition - right");
+		} else {
+			Log.info("3 NF Decomposition - wrong");
+		}
 	}
 }

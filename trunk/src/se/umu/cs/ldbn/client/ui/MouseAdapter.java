@@ -1,4 +1,4 @@
-package se.umu.cs.ldbn.client;
+package se.umu.cs.ldbn.client.ui;
 
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.MouseListener;

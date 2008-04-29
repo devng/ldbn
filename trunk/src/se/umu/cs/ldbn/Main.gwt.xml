@@ -3,6 +3,16 @@
 	<!-- Inherit the core Web Toolkit stuff.                  -->
 	<inherits name='com.google.gwt.user.User'/>
 	<inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
+	
+	<!-- Add gwt-log support                                  -->
+    <inherits name="com.allen_sauer.gwt.log.gwt-log" />
+    <!--
+          The default log level is `OFF`. In development you'll usually want
+          to switch to `DEBUG` level logging.
+    -->
+   <extend-property name="log_level" values="DEBUG" />
+   <set-property    name="log_level" value="DEBUG" />
+    
 
 	<stylesheet src='ldbn.css'/>
 

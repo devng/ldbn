@@ -1,4 +1,4 @@
-package se.umu.cs.ldbn.client;
+package se.umu.cs.ldbn.client.ui;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -48,29 +48,29 @@ public class DisclosureWidget extends Composite implements ClickListener,
 	/** A panel which holds the button for resizing the widget. */
 	private ResizePanel resizer;
 	/** Indicates if the widget is being resized manually at the moment. */
-	private boolean isResizing = false;
+	private boolean isResizing;
 	/** last position of the mouse during resizing.  */
-	private int lastY = 0;
+	private int lastY;
 
 	/* Variables used for the blinding effect **/
 	/** 
 	 * Indicates if the effect is still in progress. If false than no other 
 	 * effects can be engaged 
 	 **/
-	private boolean isFxFinished = true;
+	private boolean isFxFinished;
 	/**
 	 * Is the widget open. It can only be true after a blind up effect.  
 	 */
-	private boolean isOpen = true;
+	private boolean isOpen;
 	/**
 	 * Last height after a blind up effect. 
 	 */
-	private int lastHeight = 1;
+	private int lastHeight;
 	/**
 	 * How many pixels per step should be added/subtract to/from the widget 
 	 * content panel, when a blind up/down effect has been engeged. 
 	 */
-	private int pxStep = 1;
+	private int pxStep;
 	/** Timer for the blind effect. */
 	private FXTimer fxT;
 
@@ -117,8 +117,10 @@ public class DisclosureWidget extends Composite implements ClickListener,
 	 */
 	private class ResizePanel extends HTML {
 
-		ResizePanel() {
+		public ResizePanel() {
 			super("<center><img src='img/dw-resize.png'></center>");
+			DOM.sinkEvents(this.getElement(), 
+					Event.ONMOUSEDOWN | Event.ONMOUSEUP | Event.ONMOUSEMOVE) ;
 		}
 
 		public void onBrowserEvent(Event event) {
@@ -177,6 +179,12 @@ public class DisclosureWidget extends Composite implements ClickListener,
 	 * appear in the upper right corner.
 	 */
 	public DisclosureWidget(String name, Widget content, Widget[] headerControls) {
+		isResizing = false;
+		lastY = 0;
+		isFxFinished = true;
+		isOpen = true;
+		lastHeight = 1;
+		pxStep = 1;
 		this.content = content;
 		this.content.addStyleName("dw-content");
 		this.headerContorls = headerControls;

@@ -1,4 +1,4 @@
-package se.umu.cs.ldbn.client;
+package se.umu.cs.ldbn.client.ui;
 
 /**
  * This interface is used by the DisclosureWidget. If a widget implements this

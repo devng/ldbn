@@ -1,5 +1,9 @@
-package se.umu.cs.ldbn.client;
+package se.umu.cs.ldbn.client.ui;
 
+import se.umu.cs.ldbn.client.Main;
+
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -8,8 +12,10 @@ import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
-public class HelpDialog extends DialogBox implements ClickListener {
+public final class HelpDialog extends DialogBox implements ClickListener {
+
 	public HelpDialog() {
+		super(false, false);
 		setText("Help DialogBox");
 
 		Button closeButton = new Button("Close", this);

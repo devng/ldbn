@@ -1,16 +1,30 @@
 package se.umu.cs.ldbn.client.core;
 
-public class AttributeSet {
+import java.util.ArrayList;
+import java.util.List;
+
+import com.allen_sauer.gwt.log.client.Log;
+
+public final class AttributeSet {
 	
 	private AttributeNameTable domain;
 	private long attMask;
 	
+	//cache
+	private boolean hasCahnge;
+	private List<String> attNames;
 	
 	private class Iterator implements AttributeSetIterator {
 
-		private long index = 0;
-		private long next = 0;
-		private boolean hasNext = false;
+		private long index;
+		private long next;
+		private boolean hasNext;
+		
+		public Iterator() {
+			index = 0;
+			next = 0;
+			hasNext = false;
+		}
 		
 		public long nextAttIndex() {
 			if(hasNext) {
@@ -55,6 +69,17 @@ public class AttributeSet {
 	
 	public AttributeSet (AttributeNameTable domain) {
 		this.domain = domain;
+		attNames = new ArrayList<String>();
+		hasCahnge = true;
+	}
+	
+	public AttributeSet (AttributeNameTable domain, String[] att) {
+		this.domain = domain;
+		for (String str : att) {
+			addAtt(str);
+		}
+		attNames = new ArrayList<String>();
+		hasCahnge = true;
 	}
 	
 	public boolean containsAtt(String attName) {
@@ -78,6 +103,7 @@ public class AttributeSet {
 		long i = domain.getAttIndex(attName);
 		if  (i != 0) {
 			attMask = attMask | i;
+			hasCahnge = true;
 			return true;
 		}
 		return false;
@@ -86,6 +112,7 @@ public class AttributeSet {
 	public boolean addAtt(long attIndex) {
 		if  (domain.containsAttIndex(attIndex)) {
 			attMask = attMask | attIndex;
+			hasCahnge = true;
 			return true;
 		}
 		return false;
@@ -95,6 +122,7 @@ public class AttributeSet {
 		long attIndex = domain.getAttIndex(attName);
 		if (attIndex != 0) {
 			attMask = attMask & (~attIndex);
+			hasCahnge = true;
 			return true;
 		}
 		return false;
@@ -103,6 +131,7 @@ public class AttributeSet {
 	public boolean removeAtt(long attIndex) {
 		if  (domain.containsAttIndex(attIndex)) {
 			attMask = attMask & (~attIndex);
+			hasCahnge = true;
 			return true;
 		}
 		return false;
@@ -111,7 +140,15 @@ public class AttributeSet {
 	public void union (AttributeSet a) {
 		if (a.domain == this.domain) {
 			this.attMask = this.attMask | a.attMask;
+			hasCahnge = true;
 		}
+	}
+	
+	public void removeAttSet(AttributeSet a) {
+		if (a.domain == this.domain) {
+			this.attMask = this.attMask & (~a.attMask);
+			hasCahnge = true;
+		}	
 	}
 	
 	public boolean isSubSetOf(AttributeSet a) {
@@ -169,15 +206,31 @@ public class AttributeSet {
 		return new Iterator();
 	}
 	
-	protected long attMask() {
+	public List<String> getAttributeNames() {
+		if(hasCahnge) {
+			attNames.clear();
+			for (AttributeSetIterator iter = iterator(); iter.hasNext();) {
+				String str = iter.next();
+				attNames.add(str);
+			}
+			hasCahnge = false;
+		}
+		return attNames;
+	}
+	
+	long attMask() {
 		return attMask;
 	}
 	
-	protected AttributeNameTable domain() {
+	void setMask(long mask) {
+		this.attMask = mask;
+	}
+	
+	AttributeNameTable domain() {
 		return domain;
 	}
 	
-	protected int size() {
+	int size() {
 		int size = 0;
 		long one = 1;
 		for (int j = 0; j < 64; j++) {

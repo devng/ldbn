@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //max 64 atts
-public class AttributeNameTable {
+public final class AttributeNameTable {
 	private List<String> attNames;
 	private List<Long> attIndeces;
 	
@@ -76,5 +76,10 @@ public class AttributeNameTable {
 			sb.append('\n');
 		}
 		return sb.toString();
+	}
+	
+	public String[] getAttNames() {
+		String[] result = new String[attNames.size()];
+		return attNames.toArray(result);
 	}
 }
