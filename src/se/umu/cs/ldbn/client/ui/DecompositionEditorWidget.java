@@ -1,8 +1,14 @@
-package se.umu.cs.ldbn.client;
+package se.umu.cs.ldbn.client.ui;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 
-import se.umu.cs.ldbn.client.core.FD;
+import se.umu.cs.ldbn.client.Main;
+import se.umu.cs.ldbn.client.core.AttributeSet;
+import se.umu.cs.ldbn.client.core.Relation;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
@@ -14,61 +20,62 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public final class FDEditorWidget extends  CheckBoxWidget 
+/**
+ * 
+ * @author Nikolay Georgiev (ens07ngv@cs.umu.se)
+ */
+public final class DecompositionEditorWidget extends CheckBoxWidget 
 	implements HasUpControlls {
 	
-	protected FDEditorTextArea leftTA;
-	protected FDEditorTextArea rightTA;
-	private Image arrowImg;
+	private VerticalPanel mainPanel;
+	private DecompositionTextArea textArea;
 	private Image collapseButton;
 	private Image infoButton;
-	private boolean isOpen = true;
-	private VerticalPanel mainPanel;
 	private Button clearBtn;
 	private Button addBtn;
+	private boolean isOpen;
 	private Label expandLabel;
-	//private HashSet<FD> fds;
+	private HashSet<RelationWidget> relations;
 	
-	private class FDEditorTextArea extends AttributeTextArea  {
-		
-		public void onDrop (DragContext context) {
+	private final class DecompositionTextArea extends AttributeTextArea {
+
+		public void onDrop(DragContext context) {
 			Widget w = context.draggable;
 			if(w == null) return;
 			
 			if(w instanceof RelationAttributeWidget) {
 				this.appendAttributes(((RelationAttributeWidget)w).getText());
 			} else if (w instanceof FDWidget) {
-				FDEditorWidget fdEdit = Main.get().getFdEditor();
 				FDWidget fdw = (FDWidget) w;
-				AttributeTextArea ata = fdEdit.getLeftTextArea();
-				String[] fdAtt = fdw.getLeftSide();
-				for (int i = 0; i < fdAtt.length; i++) {
-					ata.appendAttributes(fdAtt[i]);
+				List<String> att = fdw.getFD().getLHS().getAttributeNames();
+				for (String str : att) {
+					this.appendAttributes(str);
 				}
-				
-				ata = fdEdit.getRightTextArea();
-				fdAtt = fdw.getRightSide();
-				for (int i = 0; i < fdAtt.length; i++) {
-					ata.appendAttributes(fdAtt[i]);
-				}
-				
-				if(fdw.isEditable()) {
-					fdw.getParent().removeFromParent();
+				att = fdw.getFD().getRHS().getAttributeNames();
+				for (String str : att) {
+					this.appendAttributes(str);
 				}
 			} else if (w instanceof RelationWidget) {
 				RelationWidget rw = (RelationWidget) w;
-				String[] att =  rw.getAttributes();
-				for (int i = 0; i < att.length; i++) {
-					this.appendAttributes(att[i]);
+				List<String> names =  rw.getRelation().getAttrbutes().getAttributeNames();
+				for (String str : names) {
+					this.appendAttributes(str);
+				}
+				if(checkBoxes.containsValue(rw)) {
+					rw.getParent().removeFromParent();
+					relations.remove(rw);
 				}
 			}
 		}
 	}
 	
-	public FDEditorWidget() {
+	public DecompositionEditorWidget() {
 		super();
+		isOpen = true;
+		relations = new HashSet<RelationWidget>();
 		mainPanel = new VerticalPanel();
 		initWidget(mainPanel);
+		
 		HorizontalPanel hp = new HorizontalPanel();
 		hp.setSpacing(4);
 		
@@ -94,20 +101,11 @@ public final class FDEditorWidget extends  CheckBoxWidget
 		});
 		hp.add(collapseButton);
 		
-		hp.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
-
-		leftTA = new FDEditorTextArea();
-		leftTA.setSize("160px", "70px");
-		hp.add(leftTA);
-
-		arrowImg = new Image("img/arrow-right-large.png");
-		hp.add(arrowImg);
-		
-		rightTA = new FDEditorTextArea();
-		rightTA.setSize("160px", "70px");
-		hp.add(rightTA);
-		
-		hp.setVerticalAlignment(VerticalPanel.ALIGN_TOP);
+		textArea = new DecompositionTextArea();
+		textArea.setSize("300px", "70px");
+		PickupDragController dc = Main.get().getDragController();
+		dc.registerDropController(textArea);
+		hp.add(textArea);
 		
 		VerticalPanel vp = new VerticalPanel();
 		infoButton = new Image("img/info.png");
@@ -115,77 +113,49 @@ public final class FDEditorWidget extends  CheckBoxWidget
 		infoButton.addClickListener(this);
 		vp.add(infoButton);
 		addBtn = new Button("Add");
+		addBtn.setStyleName("dew-btn");
 		addBtn.addClickListener(this);
-		CommonStyle.setCursorPointer(addBtn);
-		addBtn.setStyleName("fdew-btn");
 		vp.add(addBtn);
 		clearBtn = new Button("Clear");
+		clearBtn.setStyleName("dew-btn");
 		clearBtn.addClickListener(this);
-		CommonStyle.setCursorPointer(clearBtn);
-		clearBtn.setStyleName("fdew-btn");
 		vp.add(clearBtn);
-		
 		hp.add(vp);
 		
-		expandLabel = new Label("Expand the FD editor");
-		expandLabel.setStyleName("fdew-label");
+		expandLabel = new Label("Expand the decomposition editor");
+		expandLabel.setStyleName("dew-label");
 		expandLabel.setVisible(false);
 		hp.add(expandLabel);
 		
 		mainPanel.add(hp);
-		
-		PickupDragController dc = Main.get().getDragController();
-		dc.registerDropController(leftTA);
-		dc.registerDropController(rightTA);
-	}
-	
-	public AttributeTextArea getLeftTextArea() {
-		return leftTA;
-	}
-	
-	public AttributeTextArea getRightTextArea() {
-		return rightTA;
 	}
 
 	public void onClick(Widget sender) {
 		super.onClick(sender);
 		if (sender.equals(collapseButton)) {
 			openClose();
-		} else if (sender.equals(clearBtn)) {
-			clearTextAreas();
-		} else if (sender.equals(addBtn)) {
-			FDWidget fd = createFD();
-			addFDWidget(fd);
 		} else if (sender.equals(infoButton)) {
 			DialogBox dlg = new HelpDialog();
 		    dlg.center();
+		} else if (sender.equals(addBtn)) {
+			addRelation();
+			textArea.setText("");
+		} else if (sender.equals(clearBtn)) {
+			textArea.setText("");
 		}
-	}
-	
-	public Widget[] getUpControlls() {
-		return checkControlls;
-	}
-	
-	//TODO make to private after the demo
-	void addFDWidget(FDWidget fd) {
-		mainPanel.add(getCheckBoxPanel(fd));
 	}
 	
 	private void openClose() {
 		if (isOpen) {
-			arrowImg.setVisible(false);
-			leftTA.setVisible(false);
-			rightTA.setVisible(false);
 			collapseButton.setVisibleRect(15, 0, 15, 15);
+			textArea.setVisible(false);
 			infoButton.setVisible(false);
 			clearBtn.setVisible(false);
 			addBtn.setVisible(false);
 			expandLabel.setVisible(true);
 		} else {
-			arrowImg.setVisible(true);
-			leftTA.setVisible(true);
-			rightTA.setVisible(true);
 			collapseButton.setVisibleRect(15, 15, 15, 15);
+			textArea.setVisible(true);
 			infoButton.setVisible(true);
 			clearBtn.setVisible(true);
 			addBtn.setVisible(true);
@@ -194,20 +164,33 @@ public final class FDEditorWidget extends  CheckBoxWidget
 		isOpen = !isOpen;
 	}
 	
+	private void addRelation() {
+		AttributeSet atts = new AttributeSet(Main.get().getAttributeNameTable(),
+				textArea.parseAttributes());
+		Relation r = new Relation(atts);
+		RelationWidget rw = new RelationWidget(r);
+		relations.add(rw);
+		mainPanel.add(getCheckBoxPanel(rw));
+	}
+
+	public Widget[] getUpControlls() {
+		return checkControlls;
+	}
+	
 	public void clearAll() {
-		
+		for (Iterator<RelationWidget> iter = relations.iterator(); iter.hasNext();) {
+			RelationWidget rw = iter.next();
+			rw.getParent().removeFromParent();
+			iter.remove();
+		}
+		textArea.setText("");
 	}
 	
-	private FDWidget createFD() {
-		String[] l = leftTA.parseAttributes();
-		String[] r = rightTA.parseAttributes();
-		FDWidget fd = new FDWidget(true, l, r);
-		clearTextAreas();
-		return fd;
-	}
-	
-	private void clearTextAreas() {
-		leftTA.setText("");
-		rightTA.setText("");
+	public List<Relation> getRelations() {
+		ArrayList<Relation> r = new ArrayList<Relation>(relations.size());
+		for (RelationWidget rw : relations) {
+			r.add(rw.getRelation());
+		}
+		return r;
 	}
 }

@@ -1,4 +1,6 @@
-package se.umu.cs.ldbn.client;
+package se.umu.cs.ldbn.client.ui;
+
+import se.umu.cs.ldbn.client.Main;
 
 import com.google.gwt.user.client.ui.Label;
 
@@ -6,7 +8,7 @@ import com.google.gwt.user.client.ui.Label;
  * Class representing a relation attribute.
  * @author NGG
  */
-public class RelationAttributeWidget extends Label  {
+public final class RelationAttributeWidget extends Label  {
 	
 	/**
 	 * name of the attribute.

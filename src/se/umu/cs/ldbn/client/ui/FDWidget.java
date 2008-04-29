@@ -1,32 +1,37 @@
-package se.umu.cs.ldbn.client;
+package se.umu.cs.ldbn.client.ui;
+
+import java.util.List;
+
+import se.umu.cs.ldbn.client.Main;
+import se.umu.cs.ldbn.client.core.FD;
 
 import com.google.gwt.user.client.ui.HTML;
 
-public class FDWidget extends HTML {
+public final class FDWidget extends HTML {
 	
 	private boolean isEditable;
-	private String[] leftSide;
-	private String[] rightSide;
+	private FD fd;
 	
-	public FDWidget(boolean isEditable, String[] left, String[] right) {
+	public FDWidget(boolean isEditable, FD fd) {
 		this.isEditable = isEditable;
-		leftSide = left;
-		rightSide = right;
+		this.fd = fd;
 		
 		StringBuffer sb = new StringBuffer(); 
 		sb.append("<table border='0' cellpadding='2' cellspacing='2'>");
 		sb.append("<tr>");
-		for (int i = 0; i < left.length; i++) {
+		List<String> atts = fd.getLHS().getAttributeNames();
+		for (String str : atts) {
 			sb.append("<td>");
-			sb.append(left[i]);
+			sb.append(str);
 			sb.append("</td>");
 		}
 		sb.append("<td>");
 		sb.append("<img src='img/arrow-right.png'/>");
 		sb.append("</td>");
-		for (int i = 0; i < right.length; i++) {
+		atts = fd.getRHS().getAttributeNames();
+		for (String str : atts) {
 			sb.append("<td>");
-			sb.append(right[i]);
+			sb.append(str);
 			sb.append("</td>");
 		}
 		sb.append("</tr>");
@@ -44,11 +49,7 @@ public class FDWidget extends HTML {
 		this.isEditable = isEditable;
 	}
 
-	public String[] getLeftSide() {
-		return leftSide;
-	}
-
-	public String[] getRightSide() {
-		return rightSide;
+	public FD getFD() {
+		return fd;
 	}
 }

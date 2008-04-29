@@ -1,4 +1,4 @@
-package se.umu.cs.ldbn.client;
+package se.umu.cs.ldbn.client.ui;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Widget;
@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Nikolay Georgiev (ens07ngv@cs.umu.se)
  */
-public class CommonStyle {
+public final class CommonStyle {
 	
 	/**
 	 * Set the transparent background colour of a widget

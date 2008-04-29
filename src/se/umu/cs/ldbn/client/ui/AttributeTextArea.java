@@ -1,4 +1,4 @@
-package se.umu.cs.ldbn.client;
+package se.umu.cs.ldbn.client.ui;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.DragController;
@@ -60,7 +60,7 @@ public abstract class AttributeTextArea extends TextArea
 		String s = this.getText();
 		String[] r = s.split(",");
 		for (int i = 0; i < r.length; i++) {
-			r[i].trim();
+			r[i] = r[i].trim();
 		}
 		return r;
 	}
