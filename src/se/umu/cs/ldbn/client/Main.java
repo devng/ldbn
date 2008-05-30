@@ -13,8 +13,10 @@ import se.umu.cs.ldbn.client.ui.DecompositionEditorWidget;
 import se.umu.cs.ldbn.client.ui.DisclosureWidget;
 import se.umu.cs.ldbn.client.ui.FDEditorDialog;
 import se.umu.cs.ldbn.client.ui.FDEditorWidget;
+import se.umu.cs.ldbn.client.ui.FDHolderPanel;
 import se.umu.cs.ldbn.client.ui.GivenAttributesWidget;
 import se.umu.cs.ldbn.client.ui.GivenFDsWidget;
+import se.umu.cs.ldbn.client.ui.RelationHolderPanel;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.log.client.Log;
@@ -27,7 +29,9 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -48,11 +52,19 @@ public class Main implements EntryPoint, ClickListener {
 	
 	private GivenAttributesWidget givenAttributesWidget;
 	private GivenFDsWidget givenFDsWidget;
-	private FDEditorWidget minimalCoverEditorWidget;
-	private DecompositionEditorWidget NF2DecompositionEditorWidget;
+	private FDEditorWidget fdEditorWidget;
+	private FDHolderPanel minimalCoverFDs;
+	private List<RelationHolderPanel> NF2Relations;
+	//private DecompositionEditorWidget NF2DecompositionEditorWidget;
 	private DecompositionEditorWidget NF3DecompositionEditorWidget;
 
-	private FDEditorDialog fdEitorDialog;
+	private FDEditorDialog fdEditorDialog;
+
+	private Button minCovAddFD;
+
+	private HorizontalPanel relationsPanel;
+
+	private Button addRelation2NF;
 
 	public static Main get() {
 		if (instance == null) {
@@ -112,29 +124,49 @@ public class Main implements EntryPoint, ClickListener {
 				givenFDsWidget);
 		mainPanel.add(dw);
 		//Minimal Cover
-		minimalCoverEditorWidget = new FDEditorWidget();
-		dw = new DisclosureWidget("Find the minimal cover of FDs", minimalCoverEditorWidget);
+		minimalCoverFDs = new FDHolderPanel();
+		HorizontalPanel minCoverBut = new HorizontalPanel();
+		minCovAddFD = new Button("Add new FD");
+		minCovAddFD.addStyleName("min-cov-but");
+		minCovAddFD.addClickListener(this);
+		minCoverBut.add(minCovAddFD);
+		minimalCoverFDs.add(minCovAddFD);
+		dw = new DisclosureWidget("Find the minimal cover of FDs", 
+				minimalCoverFDs, minimalCoverFDs.getCheckBoxControlls());
 		mainPanel.add(dw); 
 		//Decomposition 2NF
-		NF2DecompositionEditorWidget = new DecompositionEditorWidget();
+		
+		VerticalPanel vp2NF = new VerticalPanel();
+		NF2Relations = new ArrayList<RelationHolderPanel>();
+		addRelation2NF = new Button("Add new Relation");
+		addRelation2NF.setStyleName("min-cov-but");
+		addRelation2NF.addClickListener(this);
+		HorizontalPanel addRelation2NFPanel = new HorizontalPanel();
+		addRelation2NFPanel.add(addRelation2NF);
+		vp2NF.add(addRelation2NFPanel);
+		relationsPanel = new HorizontalPanel();
+		vp2NF.add(relationsPanel);
+		//NF2DecompositionEditorWidget = new DecompositionEditorWidget();
 		dw = new DisclosureWidget("Decompose in 2 NF", 
-				NF2DecompositionEditorWidget); 
+				vp2NF); 
 		mainPanel.add(dw);
-		//Decomposition 2NF
+		
+		//Decomposition 3NF
 		NF3DecompositionEditorWidget = new DecompositionEditorWidget();
 		dw = new DisclosureWidget("Decompose in 3 NF", 
 				NF3DecompositionEditorWidget); 
 		mainPanel.add(dw);
 		
-		fdEitorDialog = new FDEditorDialog();
+		fdEditorDialog = new FDEditorDialog();
+		fdEditorWidget = fdEditorDialog.getFDEditorWidget();
 		
 		//generate new assignment
 		newAssignment();
 	}
 	
 	private void newAssignment() {
-		minimalCoverEditorWidget.clearAll();
-		NF2DecompositionEditorWidget.clearAll();
+		minimalCoverFDs.clearAll();
+		//NF2DecompositionEditorWidget.clearAll();
 		NF3DecompositionEditorWidget.clearAll();
 		Assignment a = RandomAssignmentGenerator.generate();
 		this.domain = a.getDomain();
@@ -147,8 +179,8 @@ public class Main implements EntryPoint, ClickListener {
 		return dragController;
 	}
 
-	public FDEditorWidget getMinimalCoverEditorWidget() {
-		return minimalCoverEditorWidget;
+	public FDEditorWidget getFDEditorWidget() {
+		return fdEditorWidget;
 	}
 	
 	public AttributeNameTable getAttributeNameTable() {
@@ -163,10 +195,11 @@ public class Main implements EntryPoint, ClickListener {
 		return givenFDsWidget;
 	}
 
+	/*
 	public DecompositionEditorWidget getNF2DecompositionEditorWidget() {
 		return NF2DecompositionEditorWidget;
 	}
-
+	*/
 	public DecompositionEditorWidget getNF3DecompositionEditorWidget() {
 		return NF3DecompositionEditorWidget;
 	}
@@ -176,18 +209,30 @@ public class Main implements EntryPoint, ClickListener {
 	}
 
 	public void onClick(Widget sender) {
+		
 		if(sender == checkSolution) {
 			checkSolution();
 		} else if (sender == newAssignment) {
-			//newAssignment();
-			
-			fdEitorDialog.center();
+			newAssignment();
+		} else  if (sender == minCovAddFD) {
+			fdEditorDialog.center();
+			fdEditorDialog.setCurrentFDHolderPanel(minimalCoverFDs);
+		} else if (sender == addRelation2NF) {
+			RelationHolderPanel rhp = new RelationHolderPanel();
+			NF2Relations.add(rhp);
+			relationsPanel.add(rhp);
+			fdEditorDialog.center();
+			fdEditorDialog.setCurrentFDHolderPanel(rhp.fetFDHolderPanel());
 		}
+	}
+	
+	public FDHolderPanel getMinCoverHolderPanel() {
+		return minimalCoverFDs;
 	}
 	
 	private void checkSolution() {
 		//check minimal cover
-		List<FD> minCovFDs = minimalCoverEditorWidget.getFDs();
+		List<FD> minCovFDs = minimalCoverFDs.getFDs();
 		List<FD> deepCopy = new ArrayList<FD>(minCovFDs.size());
 		for (FD fd : minCovFDs) {
 			deepCopy.add(fd.clone());
@@ -214,6 +259,7 @@ public class Main implements EntryPoint, ClickListener {
 			Algorithms.minimalCover(deepCopy);
 		}
 		Log.info("Checking 2nf...");
+		/*
 		List<Relation> relations = NF2DecompositionEditorWidget.getRelations();
 		boolean is2NF = Algorithms.isIn2NF(relations, deepCopy); 
 		if(is2NF) {
@@ -221,6 +267,7 @@ public class Main implements EntryPoint, ClickListener {
 		} else {
 			Log.info("2 NF Decomposition - wrong");
 		}
+		
 		Log.info("Checking 3nf...");
 		relations = NF3DecompositionEditorWidget.getRelations();
 		boolean is3NF = Algorithms.isIn3NF(relations, deepCopy); 
@@ -229,5 +276,10 @@ public class Main implements EntryPoint, ClickListener {
 		} else {
 			Log.info("3 NF Decomposition - wrong");
 		}
+		*/
+	}
+
+	public FDEditorDialog getFdEditorDialog() {
+		return fdEditorDialog;
 	}
 }
