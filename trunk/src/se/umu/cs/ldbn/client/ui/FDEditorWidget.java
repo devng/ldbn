@@ -1,8 +1,5 @@
 package se.umu.cs.ldbn.client.ui;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 import se.umu.cs.ldbn.client.Main;
@@ -11,15 +8,16 @@ import se.umu.cs.ldbn.client.core.FD;
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public final class FDEditorWidget extends  CheckBoxWidget 
-	implements HasUpControlls {
+public final class FDEditorWidget extends Composite
+	implements ClickListener {
 	
 	//TODO debug
 	private HelpDialog dlg;
@@ -34,7 +32,7 @@ public final class FDEditorWidget extends  CheckBoxWidget
 	private Button clearBtn;
 	private Button addBtn;
 	private Label expandLabel;
-	private HashSet<FDWidget> fds;
+	private FDHolderPanel currnetFDHP = null;
 	
 	private final class FDEditorTextArea extends AttributeTextArea  {
 		
@@ -45,29 +43,34 @@ public final class FDEditorWidget extends  CheckBoxWidget
 			if(w instanceof RelationAttributeWidget) {
 				this.appendAttributes(((RelationAttributeWidget)w).getText());
 			} else if (w instanceof FDWidget) {
-				FDEditorWidget fdEdit = Main.get()
-						.getMinimalCoverEditorWidget();
 				FDWidget fdw = (FDWidget) w;
-				AttributeTextArea ata = fdEdit.getLeftTextArea();
-				List<String> atts = fdw.getFD().getLHS()
-						.getAttributeNames();
-				for (String str : atts) {
-					ata.appendAttributes(str);
-				}
-				ata = fdEdit.getRightTextArea();
-				atts = fdw.getFD().getRHS().getAttributeNames();
-				for (String str : atts) {
-					ata.appendAttributes(str);
-				}
-
-				if (fdw.isEditable()) {
-					removeFDWidget(fdw);
-				}
+				setFDWidget(fdw);
 			} else if (w instanceof RelationWidget) {
 				RelationWidget rw = (RelationWidget) w;
 				List<String> names =  rw.getRelation().getAttrbutes().getAttributeNames();
 				for (String str : names) {
 					this.appendAttributes(str);
+				}
+			}
+		}
+		
+		public void setFDWidget(FDWidget fdw) {
+			FDEditorWidget fdEdit = Main.get()
+				.getFDEditorWidget();
+			AttributeTextArea ata = fdEdit.getLeftTextArea();
+			List<String> atts = fdw.getFD().getLHS()
+					.getAttributeNames();
+			for (String str : atts) {
+				ata.appendAttributes(str);
+			}
+			ata = fdEdit.getRightTextArea();
+			atts = fdw.getFD().getRHS().getAttributeNames();
+			for (String str : atts) {
+				ata.appendAttributes(str);
+			}
+			if (fdw.isEditable()) {
+				if(currnetFDHP != null) {
+					currnetFDHP.removeFDWidget(fdw);
 				}
 			}
 		}
@@ -77,7 +80,6 @@ public final class FDEditorWidget extends  CheckBoxWidget
 		super();
 		isOpen = true;
 		mainPanel = new VerticalPanel();
-		fds = new HashSet<FDWidget>();
 		dlg = new HelpDialog();
 		initWidget(mainPanel);
 		HorizontalPanel hp = new HorizontalPanel();
@@ -159,7 +161,7 @@ public final class FDEditorWidget extends  CheckBoxWidget
 	}
 
 	public void onClick(Widget sender) {
-		super.onClick(sender);
+		//super.onClick(sender);
 		if (sender.equals(collapseButton)) {
 			openClose();
 		} else if (sender.equals(clearBtn)) {
@@ -168,42 +170,31 @@ public final class FDEditorWidget extends  CheckBoxWidget
 			FDWidget fd = createFD();
 			addFDWidget(fd);
 		} else if (sender.equals(infoButton)) {
-			
 		    dlg.center();
 		}
 	}
-	
-	public Widget[] getUpControlls() {
-		return checkControlls;
-	}
 
-	public void clearAll() {
-		for (Iterator<FDWidget> iter = fds.iterator(); iter.hasNext();) {
-			FDWidget fdw = iter.next();
-			fdw.getParent().removeFromParent();
-			iter.remove();
-		}
-		clearTextAreas();
+	void setCurrentFDHolderPanel(FDHolderPanel fdHP) {
+		currnetFDHP = fdHP;
 	}
 	
-	public List<FD> getFDs() {
-		ArrayList<FD> r = new ArrayList<FD>();
-		for (FDWidget fdw : fds) {
-			r.add(fdw.getFD());
-		}
-		return r;
+	public void setFDWidtet(FDWidget fdw) {
+		leftTA.setFDWidget(fdw);
 	}
 	
-	
-	private void removeFDWidget(FDWidget fdw) {
-		fds.remove(fdw);
-		fdw.getParent().removeFromParent();
-		
+	public void clearText() {
+		leftTA.setText("");
+		rightTA.setText("");
 	}
-
+	
+	/**
+	 * use setCurrentFDHolderPanel before you use this method
+	 * @param fd
+	 */
 	private void addFDWidget(FDWidget fd) {
-		mainPanel.add(getCheckBoxPanel(fd));
-		fds.add(fd);
+		if (currnetFDHP != null) {
+			currnetFDHP.addFDWidget(fd);
+		}
 	}
 	
 	private void openClose() {

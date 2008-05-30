@@ -1,52 +1,48 @@
 package se.umu.cs.ldbn.client.ui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import se.umu.cs.ldbn.client.Main;
+import se.umu.cs.ldbn.client.core.FD;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-/**
- * A widget which consists of many check boxes, which on the other hand are 
- * linked to other widgets. It provides means to select all the check boxes and 
- * to remove them from their parent widget. This class is used by the 
- * FDEditorWidget and by the DecompositionEditorWidget class. 
- * to access the 
- * 
- * @author @author Nikolay Georgiev (ens07ngv@cs.umu.se)
- */
-public class CheckBoxWidget extends Composite implements ClickListener{
-	
+public final class FDHolderPanel extends VerticalPanel 
+	implements ClickListener {
+
+	private HashSet<FDWidget> fds;
 	/**
 	 * Maps all the check boxes to their corresponding widgets. The keys are
 	 * instances of the CheckBox class and values are instances of the widget 
 	 * class.
 	 */
-	protected Map<CheckBox, Widget> checkBoxes;
-	protected Map<Button, CheckBox> buttons;
+	private Map<CheckBox, FDWidget> checkBoxes;
+	private Map<Button, CheckBox> buttons;
 	/**
 	 * Array of images used as buttons, which are used as controls for 
 	 * selection and deletion of all the check boxes.
 	 */
-	protected Image[] checkControlls;
-
-	/**
-	 * Constructor which instantiates the map, and the control buttons.
-	 */
-	public CheckBoxWidget() {
+	private Image[] checkControlls;
+	
+	public FDHolderPanel() {
 		super();
-		checkBoxes = new HashMap<CheckBox, Widget>();
+		fds = new HashSet<FDWidget>();
+		checkBoxes = new HashMap<CheckBox, FDWidget>();
 		buttons = new HashMap<Button, CheckBox>();
 		checkControlls = new Image[3];
 		checkControlls = new Image[3];
@@ -73,14 +69,56 @@ public class CheckBoxWidget extends Composite implements ClickListener{
 		checkControlls[2].addClickListener(this);
 	}
 	
+	public void clearAll() {
+		for (Iterator<FDWidget> iter = fds.iterator(); iter.hasNext();) {
+			FDWidget fdw = iter.next();
+			fdw.getParent().removeFromParent();
+			iter.remove();
+		}
+	}
+	
+	public List<FD> getFDs() {
+		ArrayList<FD> r = new ArrayList<FD>();
+		for (FDWidget fdw : fds) {
+			r.add(fdw.getFD());
+		}
+		return r;
+	} 
+	
+	
+	
+	public void removeFDWidget(FDWidget fdw) {
+		fds.remove(fdw);
+		fdw.getParent().removeFromParent();
+		
+	}
+	
+	public void addFDWidget(FDWidget fd) {
+		add(getCheckBoxPanel(fd));
+		fds.add(fd);
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see com.google.gwt.user.client.ui.ClickListener#onClick(com.google.gwt.user.client.ui.Widget)
 	 */
 	public void onClick(Widget sender) {
-		if(sender instanceof Button) {
+		if (sender instanceof Button) {
 			Button but = (Button) sender;
-			Main.get().getFDEditorWidget();
+			CheckBox chBox = buttons.get(but);
+			if (chBox != null) {
+				FDWidget fdw = checkBoxes.get(chBox);
+				if (fdw != null) {
+					Main.get().getFdEditorDialog().center();
+					Main.get().getFDEditorWidget().clearText();
+					Main.get().getFDEditorWidget().setCurrentFDHolderPanel(this);
+					Main.get().getFDEditorWidget().setFDWidtet(fdw);
+				} else {
+					Log.debug("FDHolderPanel : FDwidget is null");
+				}
+			} else {
+				Log.debug("FDHolderPanel : check box is null");
+			}
 		} else {
 			if (sender.equals(checkControlls[0])) {
 				selectAll();
@@ -99,7 +137,7 @@ public class CheckBoxWidget extends Composite implements ClickListener{
 	 * @param w a widget which will be mapped to a check box 
 	 * @return a panel containing the widget and a check box.
 	 */
-	protected Panel getCheckBoxPanel(Widget w) {
+	private Panel getCheckBoxPanel(FDWidget w) {
 		PickupDragController dc = Main.get().getDragController();
 		dc.makeDraggable(w);
 		CheckBox chBox = new CheckBox();
@@ -120,7 +158,7 @@ public class CheckBoxWidget extends Composite implements ClickListener{
 	/**
 	 * Select all the check boxes.
 	 */
-	protected void selectAll() {
+	public void selectAll() {
 		Set<CheckBox> keys = checkBoxes.keySet();
 		for (Iterator<CheckBox> iter = keys.iterator(); iter.hasNext();) {
 			CheckBox chBox = iter.next();
@@ -131,7 +169,7 @@ public class CheckBoxWidget extends Composite implements ClickListener{
 	/**
 	 * Removes any selection from the check boxes.
 	 */
-	protected void selectNone() {
+	public void selectNone() {
 		Set<CheckBox> keys = checkBoxes.keySet();
 		for (Iterator<CheckBox> iter = keys.iterator(); iter.hasNext();) {
 			CheckBox chBox = iter.next();
@@ -142,7 +180,7 @@ public class CheckBoxWidget extends Composite implements ClickListener{
 	/**
 	 * Removes the check boxes and the widgets associated with them.
 	 */
-	protected void deleteSelected() {
+	public void deleteSelected() {
 		Set<CheckBox> keys = checkBoxes.keySet();
 		for (Iterator<CheckBox> iter = keys.iterator(); iter.hasNext();) {
 			CheckBox chBox = iter.next();
@@ -160,8 +198,7 @@ public class CheckBoxWidget extends Composite implements ClickListener{
 	 *  
 	 * @return widgets for manipulating the check boxes.
 	 */
-	protected Widget[] getCheckBoxControlls() {
+	public Widget[] getCheckBoxControlls() {
 		return checkControlls;
 	}
-
 }

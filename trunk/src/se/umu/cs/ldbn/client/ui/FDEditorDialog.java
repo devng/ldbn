@@ -36,6 +36,10 @@ public final class FDEditorDialog extends DialogBox implements ClickListener {
 		setWidget(dock);
 		
 	}
+	
+	public void setCurrentFDHolderPanel(FDHolderPanel fdHP) {
+		fdew.setCurrentFDHolderPanel(fdHP);
+	}
 
 	public void onClick(Widget sender) {
 		hide();
@@ -51,8 +55,14 @@ public final class FDEditorDialog extends DialogBox implements ClickListener {
 	@Override
 	public void hide() {
 		super.hide();
+		fdew.clearText();
 		Main.get().getDragController().unregisterDropController(fdew.getRightTextArea());
 		Main.get().getDragController().unregisterDropController(fdew.getLeftTextArea());
+		Main.get().getFDEditorWidget().setCurrentFDHolderPanel(null); //TODO Is this needed?
+	}
+	
+	public FDEditorWidget getFDEditorWidget() {
+		return fdew;
 	}
 	
 	

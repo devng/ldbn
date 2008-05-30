@@ -109,3 +109,8 @@ body {
 }
 
 /* END HelpDialog */
+
+/* Minimal Cover Button */
+.min-cov-but {
+	margin: 6px;
+}
