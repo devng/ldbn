@@ -114,3 +114,26 @@ body {
 .min-cov-but {
 	margin: 6px;
 }
+
+/* RelationHolderPanel */
+
+.relHP {
+	background-color: #FFFFFF;
+	border: 1px solid #CED4DA;
+	width: 100%;
+}
+
+.relHP-header {
+	background-image: url(img/relation-bg.png);
+	background-repeat: repeat-x;
+	width: 100%;
+} 
+
+.relHP-collapseBut {
+	margin-top: 0px;
+}
+
+.relHP-collapsedName {
+	font-size: 10pt;
+}
+

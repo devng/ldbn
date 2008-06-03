@@ -56,7 +56,7 @@ public class Main implements EntryPoint, ClickListener {
 	private FDHolderPanel minimalCoverFDs;
 	private List<RelationHolderPanel> NF2Relations;
 	//private DecompositionEditorWidget NF2DecompositionEditorWidget;
-	private DecompositionEditorWidget NF3DecompositionEditorWidget;
+	//private DecompositionEditorWidget NF3DecompositionEditorWidget;
 
 	private FDEditorDialog fdEditorDialog;
 
@@ -152,13 +152,14 @@ public class Main implements EntryPoint, ClickListener {
 		mainPanel.add(dw);
 		
 		//Decomposition 3NF
-		NF3DecompositionEditorWidget = new DecompositionEditorWidget();
-		dw = new DisclosureWidget("Decompose in 3 NF", 
-				NF3DecompositionEditorWidget); 
-		mainPanel.add(dw);
+//		NF3DecompositionEditorWidget = new DecompositionEditorWidget();
+//		dw = new DisclosureWidget("Decompose in 3 NF", 
+//				NF3DecompositionEditorWidget); 
+//		mainPanel.add(dw);
 		
 		fdEditorDialog = new FDEditorDialog();
 		fdEditorWidget = fdEditorDialog.getFDEditorWidget();
+		fdEditorDialog.hide();
 		
 		//generate new assignment
 		newAssignment();
@@ -167,7 +168,7 @@ public class Main implements EntryPoint, ClickListener {
 	private void newAssignment() {
 		minimalCoverFDs.clearAll();
 		//NF2DecompositionEditorWidget.clearAll();
-		NF3DecompositionEditorWidget.clearAll();
+		//NF3DecompositionEditorWidget.clearAll();
 		Assignment a = RandomAssignmentGenerator.generate();
 		this.domain = a.getDomain();
 		this.fds = a.getFDs();
@@ -200,9 +201,9 @@ public class Main implements EntryPoint, ClickListener {
 		return NF2DecompositionEditorWidget;
 	}
 	*/
-	public DecompositionEditorWidget getNF3DecompositionEditorWidget() {
-		return NF3DecompositionEditorWidget;
-	}
+//	public DecompositionEditorWidget getNF3DecompositionEditorWidget() {
+//		//return NF3DecompositionEditorWidget;
+//	}
 
 	public List<FD> getFds() {
 		return fds;
