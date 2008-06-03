@@ -18,12 +18,20 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.MouseListener;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public final class FDHolderPanel extends VerticalPanel 
-	implements ClickListener {
+	implements ClickListener, MouseListener {
+	
+	private class EditButton extends Image {
+		public EditButton() {
+			super("img/edit-big.png", 0, 0, 20, 20);
+			CommonStyle.setCursorPointer(this);
+		}
+	}
 
 	private HashSet<FDWidget> fds;
 	/**
@@ -32,7 +40,7 @@ public final class FDHolderPanel extends VerticalPanel
 	 * class.
 	 */
 	private Map<CheckBox, FDWidget> checkBoxes;
-	private Map<Button, CheckBox> buttons;
+	private Map<EditButton, CheckBox> buttons;
 	/**
 	 * Array of images used as buttons, which are used as controls for 
 	 * selection and deletion of all the check boxes.
@@ -43,7 +51,7 @@ public final class FDHolderPanel extends VerticalPanel
 		super();
 		fds = new HashSet<FDWidget>();
 		checkBoxes = new HashMap<CheckBox, FDWidget>();
-		buttons = new HashMap<Button, CheckBox>();
+		buttons = new HashMap<EditButton, CheckBox>();
 		checkControlls = new Image[3];
 		checkControlls = new Image[3];
 		checkControlls[0] = new Image("img/check-box.png", 0, 0, 15, 15);
@@ -103,8 +111,14 @@ public final class FDHolderPanel extends VerticalPanel
 	 * @see com.google.gwt.user.client.ui.ClickListener#onClick(com.google.gwt.user.client.ui.Widget)
 	 */
 	public void onClick(Widget sender) {
-		if (sender instanceof Button) {
-			Button but = (Button) sender;
+		if (sender.equals(checkControlls[0])) {
+			selectAll();
+		} else if (sender.equals(checkControlls[1])) {
+			selectNone();
+		} else if (sender.equals(checkControlls[2])) {
+			deleteSelected();
+		} else if (sender instanceof EditButton){
+			EditButton but = (EditButton) sender;
 			CheckBox chBox = buttons.get(but);
 			if (chBox != null) {
 				FDWidget fdw = checkBoxes.get(chBox);
@@ -118,14 +132,6 @@ public final class FDHolderPanel extends VerticalPanel
 				}
 			} else {
 				Log.debug("FDHolderPanel : check box is null");
-			}
-		} else {
-			if (sender.equals(checkControlls[0])) {
-				selectAll();
-			} else if (sender.equals(checkControlls[1])) {
-				selectNone();
-			} else if (sender.equals(checkControlls[2])) {
-				deleteSelected();
 			}
 		}
 	}
@@ -146,9 +152,9 @@ public final class FDHolderPanel extends VerticalPanel
 		hp.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
 		hp.add(chBox);
 		hp.add(w);
-		Button edit = new Button("Edit");
+		EditButton edit = new EditButton();
 		edit.addClickListener(this);
-		CommonStyle.setCursorPointer(edit);
+		edit.addMouseListener(this);
 		hp.add(edit);
 		checkBoxes.put(chBox, w);
 		buttons.put(edit, chBox);
@@ -201,4 +207,20 @@ public final class FDHolderPanel extends VerticalPanel
 	public Widget[] getCheckBoxControlls() {
 		return checkControlls;
 	}
+
+	public void onMouseEnter(Widget sender) {
+		EditButton edit = (EditButton) sender;
+		edit.setVisibleRect(20, 0, 20, 20);
+	}
+
+	public void onMouseLeave(Widget sender) {
+		EditButton edit = (EditButton) sender;
+		edit.setVisibleRect(0, 0, 20, 20);
+	}
+
+	public void onMouseDown(Widget sender, int x, int y) {}
+	
+	public void onMouseMove(Widget sender, int x, int y) {}
+
+	public void onMouseUp(Widget sender, int x, int y) {}
 }
