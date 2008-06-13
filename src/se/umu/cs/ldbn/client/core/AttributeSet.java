@@ -128,6 +128,11 @@ public final class AttributeSet {
 		return false;
 	}
 	
+	public void clearAllAttributes() {
+		attMask = 0L;
+		hasCahnge = true;
+	}
+	
 	public boolean removeAtt(long attIndex) {
 		if  (domain.containsAttIndex(attIndex)) {
 			attMask = attMask & (~attIndex);
@@ -149,6 +154,13 @@ public final class AttributeSet {
 			this.attMask = this.attMask & (~a.attMask);
 			hasCahnge = true;
 		}	
+	}
+	
+	public void andOperator(AttributeSet a) {
+		if (a.domain == this.domain) {
+			this.attMask = this.attMask & a.attMask;
+			hasCahnge = true;
+		}
 	}
 	
 	public boolean isSubSetOf(AttributeSet a) {

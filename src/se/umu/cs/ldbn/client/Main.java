@@ -8,15 +8,17 @@ import se.umu.cs.ldbn.client.core.Algorithms;
 import se.umu.cs.ldbn.client.core.AttributeNameTable;
 import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.core.Relation;
-import se.umu.cs.ldbn.client.ui.CommonStyle;
-import se.umu.cs.ldbn.client.ui.DecompositionEditorWidget;
+import se.umu.cs.ldbn.client.ui.CommonFunctions;
+import se.umu.cs.ldbn.client.ui.DecompositionWidget;
+import se.umu.cs.ldbn.client.ui.KeyEditorDialog;
+import se.umu.cs.ldbn.client.ui.KeyEditorWidget;
 import se.umu.cs.ldbn.client.ui.DisclosureWidget;
 import se.umu.cs.ldbn.client.ui.FDEditorDialog;
 import se.umu.cs.ldbn.client.ui.FDEditorWidget;
 import se.umu.cs.ldbn.client.ui.FDHolderPanel;
 import se.umu.cs.ldbn.client.ui.GivenAttributesWidget;
 import se.umu.cs.ldbn.client.ui.GivenFDsWidget;
-import se.umu.cs.ldbn.client.ui.RelationHolderPanel;
+import se.umu.cs.ldbn.client.ui.RelationWidget;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.log.client.Log;
@@ -54,9 +56,10 @@ public class Main implements EntryPoint, ClickListener {
 	private GivenFDsWidget givenFDsWidget;
 	private FDEditorWidget fdEditorWidget;
 	private FDHolderPanel minimalCoverFDs;
-	private List<RelationHolderPanel> NF2Relations;
+	private List<RelationWidget> NF2Relations;
 	//private DecompositionEditorWidget NF2DecompositionEditorWidget;
 	//private DecompositionEditorWidget NF3DecompositionEditorWidget;
+	private KeyEditorDialog keyEditorDialog;
 
 	private FDEditorDialog fdEditorDialog;
 
@@ -108,11 +111,11 @@ public class Main implements EntryPoint, ClickListener {
 		givenAttributesWidget = new GivenAttributesWidget();
 		newAssignment = new Button("New Assignment");
 		newAssignment.setStyleName("att-but");
-		CommonStyle.setCursorPointer(newAssignment);
+		CommonFunctions.setCursorPointer(newAssignment);
 		newAssignment.addClickListener(this);
 		checkSolution = new Button("Check Solution");
 		checkSolution.setStyleName("att-but");
-		CommonStyle.setCursorPointer(checkSolution);
+		CommonFunctions.setCursorPointer(checkSolution);
 		checkSolution.addClickListener(this);
 		Button[] attUpBut = {newAssignment, checkSolution};
 		DisclosureWidget dw = new DisclosureWidget("Given attributes", 
@@ -132,23 +135,13 @@ public class Main implements EntryPoint, ClickListener {
 		minCoverBut.add(minCovAddFD);
 		minimalCoverFDs.add(minCovAddFD);
 		dw = new DisclosureWidget("Find the minimal cover of FDs", 
-				minimalCoverFDs, minimalCoverFDs.getCheckBoxControlls());
+				minimalCoverFDs);
 		mainPanel.add(dw); 
-		//Decomposition 2NF
 		
-		VerticalPanel vp2NF = new VerticalPanel();
-		NF2Relations = new ArrayList<RelationHolderPanel>();
-		addRelation2NF = new Button("Add new Relation");
-		addRelation2NF.setStyleName("min-cov-but");
-		addRelation2NF.addClickListener(this);
-		HorizontalPanel addRelation2NFPanel = new HorizontalPanel();
-		addRelation2NFPanel.add(addRelation2NF);
-		vp2NF.add(addRelation2NFPanel);
-		relationsPanel = new HorizontalPanel();
-		vp2NF.add(relationsPanel);
-		//NF2DecompositionEditorWidget = new DecompositionEditorWidget();
-		dw = new DisclosureWidget("Decompose in 2 NF", 
-				vp2NF); 
+		//Decomposition 2NF
+		DecompositionWidget decW2NF = new DecompositionWidget();
+		NF2Relations = decW2NF.getRelations();
+		dw = new DisclosureWidget("Decompose in 2 NF", decW2NF); 
 		mainPanel.add(dw);
 		
 		//Decomposition 3NF
@@ -160,6 +153,9 @@ public class Main implements EntryPoint, ClickListener {
 		fdEditorDialog = new FDEditorDialog();
 		fdEditorWidget = fdEditorDialog.getFDEditorWidget();
 		fdEditorDialog.hide();
+		
+		keyEditorDialog = new KeyEditorDialog();
+		keyEditorDialog.hide();
 		
 		//generate new assignment
 		newAssignment();
@@ -219,11 +215,11 @@ public class Main implements EntryPoint, ClickListener {
 			fdEditorDialog.center();
 			fdEditorDialog.setCurrentFDHolderPanel(minimalCoverFDs);
 		} else if (sender == addRelation2NF) {
-			RelationHolderPanel rhp = new RelationHolderPanel();
-			NF2Relations.add(rhp);
-			relationsPanel.add(rhp);
+			RelationWidget r = new RelationWidget();
+			NF2Relations.add(r);
+			relationsPanel.add(r);
 			fdEditorDialog.center();
-			fdEditorDialog.setCurrentFDHolderPanel(rhp.fetFDHolderPanel());
+			fdEditorDialog.setCurrentFDHolderPanel(r.fetFDHolderPanel());
 		}
 	}
 	
@@ -282,5 +278,9 @@ public class Main implements EntryPoint, ClickListener {
 
 	public FDEditorDialog getFdEditorDialog() {
 		return fdEditorDialog;
+	}
+
+	public KeyEditorDialog getKeyEditorDialog() {
+		return keyEditorDialog;
 	}
 }

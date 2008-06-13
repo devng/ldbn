@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.Label;
  * Class representing a relation attribute.
  * @author NGG
  */
-public final class RelationAttributeWidget extends Label  {
+public final class SingleAttributeWidget extends Label  {
 	
 	/**
 	 * name of the attribute.
@@ -16,10 +16,10 @@ public final class RelationAttributeWidget extends Label  {
 	private String name;
 	
 	
-	public RelationAttributeWidget(String name) {
+	public SingleAttributeWidget(String name) {
 		super(name);
 		this.name = name;
-		setStyleName("raw");
+		setStyleName("saw");
 		Main.get().getDragController().makeDraggable(this);
 	}
 

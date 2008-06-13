@@ -13,7 +13,6 @@ import se.umu.cs.ldbn.client.core.FD;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.log.client.Log;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -24,12 +23,12 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public final class FDHolderPanel extends VerticalPanel 
-	implements ClickListener, MouseListener {
+	implements ClickListener, MouseListener, HasUpControlls {
 	
 	private class EditButton extends Image {
 		public EditButton() {
 			super("img/edit-big.png", 0, 0, 20, 20);
-			CommonStyle.setCursorPointer(this);
+			CommonFunctions.setCursorPointer(this);
 		}
 	}
 
@@ -47,19 +46,22 @@ public final class FDHolderPanel extends VerticalPanel
 	 */
 	private Image[] checkControlls;
 	
+	private List<FDHolderPanelListener> listeners;
+	
 	public FDHolderPanel() {
 		super();
+		listeners = new ArrayList<FDHolderPanelListener>();
 		fds = new HashSet<FDWidget>();
 		checkBoxes = new HashMap<CheckBox, FDWidget>();
 		buttons = new HashMap<EditButton, CheckBox>();
 		checkControlls = new Image[3];
 		checkControlls = new Image[3];
 		checkControlls[0] = new Image("img/check-box.png", 0, 0, 15, 15);
-		CommonStyle.setCursorPointer(checkControlls[0]);
+		CommonFunctions.setCursorPointer(checkControlls[0]);
 		checkControlls[0].setTitle("Select all");
 		checkControlls[0].addClickListener(this);
 		checkControlls[1] = new Image("img/check-box.png", 0, 15, 15, 15);
-		CommonStyle.setCursorPointer(checkControlls[1]);
+		CommonFunctions.setCursorPointer(checkControlls[1]);
 		checkControlls[1].setTitle("Select none");
 		checkControlls[1].addClickListener(this);
 		checkControlls[2] = new Image("img/bin.png", 0, 0, 15, 15);
@@ -73,8 +75,18 @@ public final class FDHolderPanel extends VerticalPanel
 				checkControlls[2].setVisibleRect(0, 0, 15, 15);
 			}
 		});
-		CommonStyle.setCursorPointer(checkControlls[2]);
+		CommonFunctions.setCursorPointer(checkControlls[2]);
 		checkControlls[2].addClickListener(this);
+	}
+	
+	public void registerListener(FDHolderPanelListener l) {
+		if(l == null) return;
+		listeners.add(l);
+	}
+	
+	public void removeListener(FDHolderPanelListener l) {
+		if(l == null) return;
+		listeners.remove(l);
 	}
 	
 	public void clearAll() {
@@ -82,6 +94,9 @@ public final class FDHolderPanel extends VerticalPanel
 			FDWidget fdw = iter.next();
 			fdw.getParent().removeFromParent();
 			iter.remove();
+		}
+		for (FDHolderPanelListener l : listeners) {
+			l.allFDsRemoved();
 		}
 	}
 	
@@ -98,12 +113,18 @@ public final class FDHolderPanel extends VerticalPanel
 	public void removeFDWidget(FDWidget fdw) {
 		fds.remove(fdw);
 		fdw.getParent().removeFromParent();
+		for (FDHolderPanelListener l : listeners) {
+			l.fdRemoved(fds); 
+		}
 		
 	}
 	
 	public void addFDWidget(FDWidget fd) {
 		add(getCheckBoxPanel(fd));
 		fds.add(fd);
+		for (FDHolderPanelListener l : listeners) {
+			l.fdAdded(fds);
+		}
 	}
 	
 	/*
@@ -147,7 +168,7 @@ public final class FDHolderPanel extends VerticalPanel
 		PickupDragController dc = Main.get().getDragController();
 		dc.makeDraggable(w);
 		CheckBox chBox = new CheckBox();
-		CommonStyle.setCursorPointer(chBox);
+		CommonFunctions.setCursorPointer(chBox);
 		HorizontalPanel hp = new HorizontalPanel();
 		hp.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
 		hp.add(chBox);
@@ -192,8 +213,12 @@ public final class FDHolderPanel extends VerticalPanel
 			CheckBox chBox = iter.next();
 			if(chBox.isChecked()) {
 				chBox.getParent().removeFromParent();
+				fds.remove(checkBoxes.get(chBox));
 				iter.remove();
 			}
+		}
+		for (FDHolderPanelListener l : listeners) {
+			l.fdRemoved(fds); 
 		}
 	}
 	
@@ -223,4 +248,15 @@ public final class FDHolderPanel extends VerticalPanel
 	public void onMouseMove(Widget sender, int x, int y) {}
 
 	public void onMouseUp(Widget sender, int x, int y) {}
+	
+	/**
+	 * Returns the buttons for manipulating the check boxes, such as 'select 
+	 * all', 'select none\ and 'delete all'. This controlls are added to the 
+	 * DisclosureWidget.
+	 *  
+	 * @return widgets for manipulating the check boxes.
+	 */
+	public Widget[] getUpControlls() {
+		return checkControlls;
+	}
 }
