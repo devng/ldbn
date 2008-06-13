@@ -17,7 +17,7 @@ public final class GivenAttributesWidget extends Composite {
 	public void setAttributeNames(AttributeNameTable att) {
 		mainPanel.clear();
 		for (String attName : att.getAttNames()) {
-			RelationAttributeWidget raw = new RelationAttributeWidget(attName);
+			SingleAttributeWidget raw = new SingleAttributeWidget(attName);
 			mainPanel.add(raw);
 		}
 	}

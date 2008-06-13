@@ -12,7 +12,6 @@ import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -25,13 +24,10 @@ public final class FDEditorWidget extends Composite
 	private FDEditorTextArea leftTA;
 	private FDEditorTextArea rightTA;
 	private Image arrowImg;
-	private Image collapseButton;
 	private Image infoButton;
-	private boolean isOpen;
-	private VerticalPanel mainPanel;
+	private HorizontalPanel mainPanel;
 	private Button clearBtn;
 	private Button addBtn;
-	private Label expandLabel;
 	private FDHolderPanel currnetFDHP = null;
 	
 	private final class FDEditorTextArea extends AttributeTextArea  {
@@ -40,14 +36,14 @@ public final class FDEditorWidget extends Composite
 			Widget w = context.draggable;
 			if(w == null) return;
 			
-			if(w instanceof RelationAttributeWidget) {
-				this.appendAttributes(((RelationAttributeWidget)w).getText());
+			if(w instanceof SingleAttributeWidget) {
+				this.appendAttributes(((SingleAttributeWidget)w).getText());
 			} else if (w instanceof FDWidget) {
 				FDWidget fdw = (FDWidget) w;
 				setFDWidget(fdw);
-			} else if (w instanceof RelationWidget) {
-				RelationWidget rw = (RelationWidget) w;
-				List<String> names =  rw.getRelation().getAttrbutes().getAttributeNames();
+			} else if (w instanceof RelationAttributesWidget) {
+				RelationAttributesWidget rw = (RelationAttributesWidget) w;
+				List<String> names =  rw.getAttributes().getAttributeNames();
 				for (String str : names) {
 					this.appendAttributes(str);
 				}
@@ -78,78 +74,48 @@ public final class FDEditorWidget extends Composite
 	
 	public FDEditorWidget() {
 		super();
-		isOpen = true;
-		mainPanel = new VerticalPanel();
+		mainPanel = new HorizontalPanel();
 		dlg = new HelpDialog();
-		initWidget(mainPanel);
-		HorizontalPanel hp = new HorizontalPanel();
-		hp.setSpacing(4);
 		
-		collapseButton = new Image("img/dw-collapse-but.png", 0, 15, 15, 15);
-		CommonStyle.setCursorPointer(collapseButton);
-		collapseButton.addClickListener(this);
-		collapseButton.addMouseListener(new MouseAdapter(){
-			public void onMouseEnter(Widget sender) {
-				if (isOpen) {
-					collapseButton.setVisibleRect(15, 15, 15, 15);
-				} else {
-					collapseButton.setVisibleRect(15, 0, 15, 15);
-				}
-			}
-
-			public void onMouseLeave(Widget sender) {
-				if (isOpen) {
-					collapseButton.setVisibleRect(0, 15, 15, 15);
-				} else {
-					collapseButton.setVisibleRect(0, 0, 15, 15);
-				}
-			}
-		});
-		hp.add(collapseButton);
+		mainPanel.setSpacing(4);
 		
-		hp.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
+		mainPanel.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
 
 		leftTA = new FDEditorTextArea();
 		leftTA.setSize("160px", "70px");
-		hp.add(leftTA);
+		mainPanel.add(leftTA);
 
 		arrowImg = new Image("img/arrow-right-large.png");
-		hp.add(arrowImg);
+		mainPanel.add(arrowImg);
 		
 		rightTA = new FDEditorTextArea();
 		rightTA.setSize("160px", "70px");
-		hp.add(rightTA);
+		mainPanel.add(rightTA);
 		
-		hp.setVerticalAlignment(VerticalPanel.ALIGN_TOP);
+		mainPanel.setVerticalAlignment(VerticalPanel.ALIGN_TOP);
 		
 		VerticalPanel vp = new VerticalPanel();
 		infoButton = new Image("img/info.png");
-		CommonStyle.setCursorPointer(infoButton);
+		CommonFunctions.setCursorPointer(infoButton);
 		infoButton.addClickListener(this);
 		vp.add(infoButton);
 		addBtn = new Button("Add");
 		addBtn.addClickListener(this);
-		CommonStyle.setCursorPointer(addBtn);
+		CommonFunctions.setCursorPointer(addBtn);
 		addBtn.setStyleName("fdew-btn");
 		vp.add(addBtn);
 		clearBtn = new Button("Clear");
 		clearBtn.addClickListener(this);
-		CommonStyle.setCursorPointer(clearBtn);
+		CommonFunctions.setCursorPointer(clearBtn);
 		clearBtn.setStyleName("fdew-btn");
 		vp.add(clearBtn);
-		
-		hp.add(vp);
-		
-		expandLabel = new Label("Expand the FD editor");
-		expandLabel.setStyleName("fdew-label");
-		expandLabel.setVisible(false);
-		hp.add(expandLabel);
-		
-		mainPanel.add(hp);
+		mainPanel.add(vp);
 		
 		PickupDragController dc = Main.get().getDragController();
 		dc.registerDropController(leftTA);
 		dc.registerDropController(rightTA);
+		
+		initWidget(mainPanel);
 	}
 	
 	public AttributeTextArea getLeftTextArea() {
@@ -161,10 +127,7 @@ public final class FDEditorWidget extends Composite
 	}
 
 	public void onClick(Widget sender) {
-		//super.onClick(sender);
-		if (sender.equals(collapseButton)) {
-			openClose();
-		} else if (sender.equals(clearBtn)) {
+		if (sender.equals(clearBtn)) {
 			clearTextAreas();
 		} else if (sender.equals(addBtn)) {
 			FDWidget fd = createFD();
@@ -195,29 +158,6 @@ public final class FDEditorWidget extends Composite
 		if (currnetFDHP != null) {
 			currnetFDHP.addFDWidget(fd);
 		}
-	}
-	
-	private void openClose() {
-		if (isOpen) {
-			arrowImg.setVisible(false);
-			leftTA.setVisible(false);
-			rightTA.setVisible(false);
-			collapseButton.setVisibleRect(15, 0, 15, 15);
-			infoButton.setVisible(false);
-			clearBtn.setVisible(false);
-			addBtn.setVisible(false);
-			expandLabel.setVisible(true);
-		} else {
-			arrowImg.setVisible(true);
-			leftTA.setVisible(true);
-			rightTA.setVisible(true);
-			collapseButton.setVisibleRect(15, 15, 15, 15);
-			infoButton.setVisible(true);
-			clearBtn.setVisible(true);
-			addBtn.setVisible(true);
-			expandLabel.setVisible(false);
-		}
-		isOpen = !isOpen;
 	}
 	
 	private FDWidget createFD() {

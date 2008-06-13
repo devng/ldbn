@@ -1,9 +1,5 @@
 package se.umu.cs.ldbn.client.ui;
 
-import se.umu.cs.ldbn.client.Main;
-
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DialogBox;

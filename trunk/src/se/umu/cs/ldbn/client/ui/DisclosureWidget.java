@@ -119,8 +119,7 @@ public class DisclosureWidget extends Composite implements ClickListener,
 
 		public ResizePanel() {
 			super("<center><img src='img/dw-resize.png'></center>");
-			DOM.sinkEvents(this.getElement(), 
-					Event.ONMOUSEDOWN | Event.ONMOUSEUP | Event.ONMOUSEMOVE) ;
+			sinkEvents(Event.MOUSEEVENTS);
 		}
 
 		public void onBrowserEvent(Event event) {
@@ -130,7 +129,7 @@ public class DisclosureWidget extends Composite implements ClickListener,
 				Element target = DOM.eventGetTarget(event);
 				if (DOM.isOrHasChild(this.getElement(), target)) {
 					isResizing = true;
-					lastY = DOM.eventGetClientY(event) - getAbsoluteTop();
+					lastY = DOM.eventGetClientY(event);
 					DOM.setCapture(getElement());
 					DOM.eventPreventDefault(event);
 				}
@@ -146,11 +145,12 @@ public class DisclosureWidget extends Composite implements ClickListener,
 			case Event.ONMOUSEMOVE: {
 				if (isResizing) {
 					assert DOM.getCaptureElement() != null;
-					int y = DOM.eventGetClientY(event) - getAbsoluteTop()
-							- lastY;
-					decrementHeight(-y - lastY);
-					lastY = y;
-					DOM.eventPreventDefault(event);
+                    int y = DOM.eventGetClientY(event);
+                    decrementHeight(-y+lastY);
+                    lastY = y;
+                    DOM.eventPreventDefault(event);
+
+					
 				}
 				break;
 			}
@@ -215,7 +215,7 @@ public class DisclosureWidget extends Composite implements ClickListener,
 		collapseButton = new Image("img/dw-collapse-but.png", 0, 15, 15, 15);
 		collapseButton.addClickListener(this);
 		collapseButton.addMouseListener(this);
-		CommonStyle.setCursorPointer(collapseButton);
+		CommonFunctions.setCursorPointer(collapseButton);
 		/*header*/
 		Grid header = new Grid(1, 3);
 		CellFormatter cf = header.getCellFormatter();
@@ -240,7 +240,6 @@ public class DisclosureWidget extends Composite implements ClickListener,
 		resizer.setStyleName("dw-resizer");
 		mainPanel.add(borderPanel);
 		mainPanel.add(resizer);
-
 		initWidget(mainPanel);
 	}
 

@@ -9,24 +9,24 @@ import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
-public final class FDEditorDialog extends DialogBox implements ClickListener {
-	private FDEditorWidget fdew;
+public class KeyEditorDialog  extends DialogBox implements ClickListener {
+	private KeyEditorWidget kew;
 
-	public FDEditorDialog() {
+	public KeyEditorDialog() {
 		super(false, false);
-		setText("FD Editor");
+		setText("Key Editor");
 		Button closeButton = new Button("Close", this);
 		CommonFunctions.setCursorPointer(closeButton);
 		HTML msg = new HTML(
-				"<center>Create an FD by giving the left and right hand side attributes.</center>", true);
+				"<center>Give a valid candidate key for the relation.</center>", true);
 
 		DockPanel dock = new DockPanel();
 		dock.setSpacing(4);
 
 		dock.add(closeButton, DockPanel.SOUTH);
 		dock.add(msg, DockPanel.NORTH);
-		fdew = new FDEditorWidget();
-		dock.add(fdew, DockPanel.CENTER);
+		kew = new KeyEditorWidget();
+		dock.add(kew, DockPanel.CENTER);
 
 		dock.setCellHorizontalAlignment(closeButton, DockPanel.ALIGN_RIGHT);
 		dock.setWidth("100%");
@@ -34,8 +34,8 @@ public final class FDEditorDialog extends DialogBox implements ClickListener {
 		
 	}
 	
-	public void setCurrentFDHolderPanel(FDHolderPanel fdHP) {
-		fdew.setCurrentFDHolderPanel(fdHP);
+	public void setCurrentRelationAttributesWidget(RelationAttributesWidget raw) {
+		kew.setCurrentRelationAttributesWidget(raw);
 	}
 
 	public void onClick(Widget sender) {
@@ -45,22 +45,18 @@ public final class FDEditorDialog extends DialogBox implements ClickListener {
 	@Override
 	public void show() {
 		super.show();
-		Main.get().getDragController().registerDropController(fdew.getRightTextArea());
-		Main.get().getDragController().registerDropController(fdew.getLeftTextArea());
+		kew.registerAsDropController();
 	}
 	
 	@Override
 	public void hide() {
 		super.hide();
-		fdew.clearText();
-		Main.get().getDragController().unregisterDropController(fdew.getRightTextArea());
-		Main.get().getDragController().unregisterDropController(fdew.getLeftTextArea());
-		fdew.setCurrentFDHolderPanel(null); //TODO Is this needed?
+		kew.clearText();
+		kew.unregisterAsDropController();
+		
 	}
 	
-	public FDEditorWidget getFDEditorWidget() {
-		return fdew;
+	public KeyEditorWidget getKeyEditorWidget() {
+		return kew;
 	}
-	
-	
 }

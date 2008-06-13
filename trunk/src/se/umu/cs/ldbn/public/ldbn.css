@@ -43,8 +43,8 @@ body {
 }
 /* END DisclosureWidget */
 
-/* RelationAttributeWidget */
-.raw {
+/* SingleAttributeWidget */
+.saw {
 	padding: 2px;
 	margin: 4px;
 	background-image: url(img/raw-bg.png);
@@ -53,9 +53,9 @@ body {
 	border: 1px solid #7F9DB9;
 	color: #333;
 }
-/* END RelationAttributeWidget */
+/* END SingleAttributeWidget */
 
-/* FDWidget */
+/* FDWidget and RelationAttributesWidget */
 .fdw {
 	margin: 4px;
 	background-image: url(img/raw-bg.png);
@@ -137,3 +137,10 @@ body {
 	font-size: 10pt;
 }
 
+.relHP-attLabel {
+	font-size: 10pt;
+	margin-left: 4px;
+	margin-right: 4px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+}
