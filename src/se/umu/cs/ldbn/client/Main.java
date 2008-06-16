@@ -8,7 +8,10 @@ import se.umu.cs.ldbn.client.core.Algorithms;
 import se.umu.cs.ldbn.client.core.AttributeNameTable;
 import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.core.Relation;
-import se.umu.cs.ldbn.client.ui.CommonFunctions;
+import se.umu.cs.ldbn.client.io.AssignmentLoader;
+import se.umu.cs.ldbn.client.io.AssignmentSaver;
+import se.umu.cs.ldbn.client.io.Config;
+import se.umu.cs.ldbn.client.ui.CheckSolutionDialog;
 import se.umu.cs.ldbn.client.ui.DecompositionWidget;
 import se.umu.cs.ldbn.client.ui.KeyEditorDialog;
 import se.umu.cs.ldbn.client.ui.KeyEditorWidget;
@@ -35,6 +38,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.xml.client.XMLParser;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -57,8 +61,9 @@ public class Main implements EntryPoint, ClickListener {
 	private FDEditorWidget fdEditorWidget;
 	private FDHolderPanel minimalCoverFDs;
 	private List<RelationWidget> NF2Relations;
-	//private DecompositionEditorWidget NF2DecompositionEditorWidget;
-	//private DecompositionEditorWidget NF3DecompositionEditorWidget;
+	
+	private CheckSolutionDialog csd;
+	
 	private KeyEditorDialog keyEditorDialog;
 
 	private FDEditorDialog fdEditorDialog;
@@ -103,6 +108,7 @@ public class Main implements EntryPoint, ClickListener {
 		if(instance != this) { // should not occur
 			Window.alert("Main.java : instance != this");
 		}
+		Config.get(); //Load the configurations asynchron
 		mainPanel = RootPanel.get();
 		dragController = new PickupDragController(mainPanel, false);
 		dragController.setBehaviorDragProxy(true);
@@ -157,6 +163,7 @@ public class Main implements EntryPoint, ClickListener {
 		keyEditorDialog = new KeyEditorDialog();
 		keyEditorDialog.hide();
 		
+		csd = new CheckSolutionDialog();
 		//generate new assignment
 		newAssignment();
 	}
@@ -206,11 +213,20 @@ public class Main implements EntryPoint, ClickListener {
 	}
 
 	public void onClick(Widget sender) {
-		
 		if(sender == checkSolution) {
-			checkSolution();
+			//checkSolution();
+			//AssignmentLoader.get().loadFromURL("");
+//			Assignment a = RandomAssignmentGenerator.generate();
+//			String xml = AssignmentSaver.buildXML(a);
+//			AssignmentSaver.sendToSaveScript(xml, "test2");
 		} else if (sender == newAssignment) {
-			newAssignment();
+			//newAssignment();
+			//Assignment a = RandomAssignmentGenerator.generate();
+			//String xml = AssignmentSaver.get().buildXML(a);
+			//Log.debug(xml);
+			//AssignmentSaver.get().sendToSaveScript(xml, "indiana jounes:;#?");
+			//AssignmentLoader.get().loadFromURL("1");
+			AssignmentLoader.loadAssignmentList();
 		} else  if (sender == minCovAddFD) {
 			fdEditorDialog.center();
 			fdEditorDialog.setCurrentFDHolderPanel(minimalCoverFDs);
@@ -274,6 +290,8 @@ public class Main implements EntryPoint, ClickListener {
 			Log.info("3 NF Decomposition - wrong");
 		}
 		*/
+		
+		//AssignmentXML axml  = new AssignmentXML();
 	}
 
 	public FDEditorDialog getFdEditorDialog() {
@@ -282,5 +300,9 @@ public class Main implements EntryPoint, ClickListener {
 
 	public KeyEditorDialog getKeyEditorDialog() {
 		return keyEditorDialog;
+	}
+	
+	public CheckSolutionDialog getCheckSolutionDialog() {
+		return csd;
 	}
 }

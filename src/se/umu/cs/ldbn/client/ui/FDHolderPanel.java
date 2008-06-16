@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import se.umu.cs.ldbn.client.CommonFunctions;
 import se.umu.cs.ldbn.client.Main;
 import se.umu.cs.ldbn.client.core.FD;
 
@@ -149,10 +150,10 @@ public final class FDHolderPanel extends VerticalPanel
 					Main.get().getFDEditorWidget().setCurrentFDHolderPanel(this);
 					Main.get().getFDEditorWidget().setFDWidtet(fdw);
 				} else {
-					Log.debug("FDHolderPanel : FDwidget is null");
+					Log.error("FDHolderPanel : FDwidget is null");
 				}
 			} else {
-				Log.debug("FDHolderPanel : check box is null");
+				Log.error("FDHolderPanel : check box is null");
 			}
 		}
 	}

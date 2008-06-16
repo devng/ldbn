@@ -1,5 +1,6 @@
 package se.umu.cs.ldbn.client.ui;
 
+import se.umu.cs.ldbn.client.CommonFunctions;
 import se.umu.cs.ldbn.client.Main;
 
 import com.google.gwt.user.client.ui.CheckBox;
@@ -40,15 +41,15 @@ public class RelationWidget extends Composite implements ClickListener,
 		isOpen = true;
 		raw = new RelationAttributesWidget();
 		mainPanel = new VerticalPanel();
-		mainPanel.setStyleName("relHP");
+		mainPanel.setStyleName("relW");
 		
 		header = new Grid(1, 5);
-		header.setStyleName("relHP-header");
+		header.setStyleName("relW-header");
 		collapseButton = new Image("img/dw-collapse-but.png", 0, 15, 15, 15);
 		collapseButton.addClickListener(this);
 		collapseButton.addMouseListener(this);
 		CommonFunctions.setCursorPointer(collapseButton);
-		collapseButton.setStyleName("relHP-collapseBut");
+		collapseButton.setStyleName("relW-collapseBut");
 		
 		keyButton = new Image("img/key-but-big.png", 0, 0, 20, 20);
 		keyButton.addClickListener(this);
@@ -88,8 +89,8 @@ public class RelationWidget extends Composite implements ClickListener,
 		
 		Label attsTitle = new Label("Atributes:");
 		Label fdTitle = new Label("FDs:");
-		fdTitle.addStyleName("relHP-attLabel");
-		attsTitle.addStyleName("relHP-attLabel");
+		fdTitle.addStyleName("relW-attLabel");
+		attsTitle.addStyleName("relW-attLabel");
 		
 		HorizontalPanel hp = new HorizontalPanel();
 		hp.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
@@ -125,13 +126,13 @@ public class RelationWidget extends Composite implements ClickListener,
 			if(isOpen) {
 				mainPanelWrapper.setWidget(0, 1, relName);
 				collapseButton.setVisibleRect(15, 0, 15, 15);
-				relName.addStyleName("relHP-collapsedName");
+				relName.addStyleName("relW-collapsedName");
 				isOpen = false;
 			} else {
 				mainPanelWrapper.setWidget(0, 1, mainPanel);
 				header.setWidget(0, 1, relName);
 				collapseButton.setVisibleRect(15, 15, 15, 15);
-				relName.removeStyleName("relHP-collapsedName");
+				relName.removeStyleName("relW-collapsedName");
 				isOpen = true;
 			}
 		} else if (sender == keyButton) {

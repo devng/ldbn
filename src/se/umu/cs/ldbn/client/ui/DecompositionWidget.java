@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import se.umu.cs.ldbn.client.CommonFunctions;
 import se.umu.cs.ldbn.client.Main;
 
 import com.google.gwt.user.client.ui.Button;

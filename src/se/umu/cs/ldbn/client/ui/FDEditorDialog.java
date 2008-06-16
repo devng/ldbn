@@ -1,5 +1,6 @@
 package se.umu.cs.ldbn.client.ui;
 
+import se.umu.cs.ldbn.client.CommonFunctions;
 import se.umu.cs.ldbn.client.Main;
 
 import com.google.gwt.user.client.ui.Button;
