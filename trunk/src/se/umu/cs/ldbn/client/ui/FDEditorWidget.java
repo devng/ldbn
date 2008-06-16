@@ -2,6 +2,7 @@ package se.umu.cs.ldbn.client.ui;
 
 import java.util.List;
 
+import se.umu.cs.ldbn.client.CommonFunctions;
 import se.umu.cs.ldbn.client.Main;
 import se.umu.cs.ldbn.client.core.FD;
 

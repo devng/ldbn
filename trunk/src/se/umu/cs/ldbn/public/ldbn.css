@@ -16,6 +16,7 @@ body {
 /* DisclosureWidget */
 .dw {
 	width: 100%;
+	max-width: 500px;
 	border: 1px solid #DADADA;
 	color: #333;
 }
@@ -115,32 +116,69 @@ body {
 	margin: 6px;
 }
 
-/* RelationHolderPanel */
+/* RelationWidget */
 
-.relHP {
+.relW {
 	background-color: #FFFFFF;
 	border: 1px solid #CED4DA;
 	width: 100%;
 }
 
-.relHP-header {
+.relW-header {
 	background-image: url(img/relation-bg.png);
 	background-repeat: repeat-x;
 	width: 100%;
 } 
 
-.relHP-collapseBut {
+.relW-collapseBut {
 	margin-top: 0px;
 }
 
-.relHP-collapsedName {
+.relW-collapsedName {
 	font-size: 10pt;
 }
 
-.relHP-attLabel {
+.relW-attLabel {
 	font-size: 10pt;
 	margin-left: 4px;
 	margin-right: 4px;
 	margin-bottom: 0px;
 	margin-top: 0px;
 }
+
+/* End RelationWidget */
+
+/* CheckSolutionDialog */
+
+.csd-innerPanel {
+	background-color: #FFFFFF;
+	border: 1px solid #CED4DA;
+	width: 100%;
+}
+
+/* END CheckSolutionDialog */
+
+/* NewAssignmentDialog */
+.nad-innerPanel {
+	background-color: #FFFFFF;
+	border: 1px solid #CED4DA;
+	width: 100%;
+}
+
+.nad-okBut {
+	margin-right: 5px;
+}
+
+.nad-myLabel {
+	margin: 2px;
+}
+
+.nad-myLabel-selected {
+	background-image: url(img/raw-bg.png);
+	background-repeat: repeat-x;
+	background-color: #B8C8D8;
+	border: 1px solid #7F9DB9;
+	color: #333;
+}
+
+/* END NewAssignmentDialog */
