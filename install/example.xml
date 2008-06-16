@@ -1,0 +1,39 @@
+<ldbn type="msg">
+	<msg type="error">Unknown database 'ldbn2'</msg>
+</ldbn>
+
+<ldbn type="msg">
+	<msg type="warn">DB did not returned any assignments.</msg>
+</ldbn>
+
+<ldbn type="msg">
+	<msg type="ok">Assignment is stored in the DB.</msg>
+</ldbn>
+
+<ldbn type="assignment_list">
+	<entry id="1" name="test" />
+</ldbn>
+
+<ldbn type="assignment">
+	<att>a</att>
+	<att>b</att>
+	<att>c</att>
+	<att>d</att>
+	<fd>
+		<lhs>
+			<fdatt>a</fdatt>
+			<fdatt>b</fdatt>
+		</lhs>
+		<rhs>
+			<fdatt>c</fdatt>
+		</rhs>
+	</fd>
+	<fd>
+		<lhs>
+			<fdatt>c</fdatt>
+		</lhs>
+		<rhs>
+			<fdatt>d</fdatt>
+		</rhs>
+	</fd>
+</ldbn>

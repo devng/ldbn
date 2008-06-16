@@ -1,0 +1,1 @@
+INSERT INTO assignment(name, xml) VALUES ('test', '<ldbn tye="assignment"><att>a</att></ldbn>')
