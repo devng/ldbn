@@ -1,7 +1,9 @@
-package se.umu.cs.ldbn.client.ui;
+package se.umu.cs.ldbn.client.ui.sa;
 
 import se.umu.cs.ldbn.client.CommonFunctions;
-import se.umu.cs.ldbn.client.Main;
+import se.umu.cs.ldbn.client.ui.FDHolderPanel;
+import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
+import se.umu.cs.ldbn.client.ui.dialog.KeyEditorDialog;
 
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -17,7 +19,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
 
-public class RelationWidget extends Composite implements ClickListener,
+public final class RelationWidget extends Composite implements ClickListener,
 	MouseListener {
 	
 	private VerticalPanel mainPanel;
@@ -119,9 +121,10 @@ public class RelationWidget extends Composite implements ClickListener,
 	
 	public void onClick(Widget sender) { 
 		if (sender == addBut) {
-			Main.get().getFdEditorDialog().center();
-			Main.get().getFDEditorWidget().clearText();
-			Main.get().getFDEditorWidget().setCurrentFDHolderPanel(fdHP);
+			FDEditorDialog fded = FDEditorDialog.get();
+			fded.center();
+			fded.getFDEditorWidget().clearText();
+			fded.getFDEditorWidget().setCurrentFDHolderPanel(fdHP);
 		} else if (sender == collapseButton) {
 			if(isOpen) {
 				mainPanelWrapper.setWidget(0, 1, relName);
@@ -136,9 +139,9 @@ public class RelationWidget extends Composite implements ClickListener,
 				isOpen = true;
 			}
 		} else if (sender == keyButton) {
-			KeyEditorDialog ked = Main.get().getKeyEditorDialog();
+			KeyEditorDialog ked = KeyEditorDialog.get();
 			ked.center();
-			ked.getKeyEditorWidget().setCurrentRelationAttributesWidget(raw);
+			ked.setCurrentRelationAttributesWidget(raw);
 		}
 	}
 

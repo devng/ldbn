@@ -1,5 +1,10 @@
 package se.umu.cs.ldbn.client.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import se.umu.cs.ldbn.client.ui.dialog.RenameDialog;
+
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.DragController;
 import com.allen_sauer.gwt.dnd.client.DragEndEvent;
@@ -22,11 +27,16 @@ import com.google.gwt.user.client.ui.Widget;
 public abstract class AttributeTextArea extends TextArea 
 	implements DropController {
 
+	public static String REGEX = RenameDialog.REGEX;
+	
+	private boolean omitted;
+	
 	/**
 	 * A Default constructor - it only calls the super constructor.
 	 */
 	public AttributeTextArea() {
 		super();
+		omitted = false;
 	}
 	
 	/**
@@ -56,13 +66,31 @@ public abstract class AttributeTextArea extends TextArea
 	 *  
 	 * @return  returns all the attributes contained in the text area.
 	 */
-	protected String[] parseAttributes() {
+	public List<String> parseAttributes() {
+		omitted = false;
 		String s = this.getText();
 		String[] r = s.split(",");
+		List<String> result = new ArrayList<String>();
 		for (int i = 0; i < r.length; i++) {
 			r[i] = r[i].trim();
+			if(r[i].matches(REGEX)) {
+				result.add(r[i]);
+			} else {
+				omitted = true;
+			}
 		}
-		return r;
+		return result;
+	}
+	
+	/**
+	 * Returns true, if during the last time attributes were parsed some 
+	 * attributes were omitted, because they did not match the regular 
+	 * expression.
+	 * 
+	 * @return true if attributes were omitted during the last parsing. 
+ 	 */
+	public boolean hasOmittedAttributes() {
+		return omitted;
 	}
 
 	/**

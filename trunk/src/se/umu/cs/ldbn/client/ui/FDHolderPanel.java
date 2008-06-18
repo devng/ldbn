@@ -9,8 +9,9 @@ import java.util.Map;
 import java.util.Set;
 
 import se.umu.cs.ldbn.client.CommonFunctions;
-import se.umu.cs.ldbn.client.Main;
+import se.umu.cs.ldbn.client.core.AttributeNameTableListener;
 import se.umu.cs.ldbn.client.core.FD;
+import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.log.client.Log;
@@ -24,7 +25,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public final class FDHolderPanel extends VerticalPanel 
-	implements ClickListener, MouseListener, HasUpControlls {
+	implements ClickListener, MouseListener, HasAdditionalControlls, 
+		AttributeNameTableListener {
 	
 	private class EditButton extends Image {
 		public EditButton() {
@@ -145,10 +147,11 @@ public final class FDHolderPanel extends VerticalPanel
 			if (chBox != null) {
 				FDWidget fdw = checkBoxes.get(chBox);
 				if (fdw != null) {
-					Main.get().getFdEditorDialog().center();
-					Main.get().getFDEditorWidget().clearText();
-					Main.get().getFDEditorWidget().setCurrentFDHolderPanel(this);
-					Main.get().getFDEditorWidget().setFDWidtet(fdw);
+					FDEditorDialog fded = FDEditorDialog.get();
+					fded.center();
+					fded.getFDEditorWidget().clearText();
+					fded.getFDEditorWidget().setCurrentFDHolderPanel(this);
+					fded.getFDEditorWidget().setFDWidtet(fdw);
 				} else {
 					Log.error("FDHolderPanel : FDwidget is null");
 				}
@@ -166,7 +169,7 @@ public final class FDHolderPanel extends VerticalPanel
 	 * @return a panel containing the widget and a check box.
 	 */
 	private Panel getCheckBoxPanel(FDWidget w) {
-		PickupDragController dc = Main.get().getDragController();
+		PickupDragController dc = LdbnDragCotroller.get();
 		dc.makeDraggable(w);
 		CheckBox chBox = new CheckBox();
 		CommonFunctions.setCursorPointer(chBox);
@@ -257,7 +260,13 @@ public final class FDHolderPanel extends VerticalPanel
 	 *  
 	 * @return widgets for manipulating the check boxes.
 	 */
-	public Widget[] getUpControlls() {
+	public Widget[] getAdditionalControlls() {
 		return checkControlls;
+	}
+	
+	public void onDomainChange() {
+		for (FDWidget fdw : fds) {
+			fdw.recalculateMask();
+		}
 	}
 }

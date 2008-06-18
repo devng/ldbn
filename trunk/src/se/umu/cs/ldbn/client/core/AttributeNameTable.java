@@ -6,27 +6,62 @@ import java.util.List;
 //max 64 atts
 public final class AttributeNameTable {
 	private List<String> attNames;
-	private List<Long> attIndeces;
-	
+	private List<Long> attIndices;
+	private List<AttributeNameTableListener> listeners;
 	private int index;
 	
 	public AttributeNameTable() {
 		attNames = new ArrayList<String>();
-		attIndeces = new ArrayList<Long>();
+		attIndices = new ArrayList<Long>();
+		listeners = new ArrayList<AttributeNameTableListener>();
 		index = 0;
 	}
 	
 	public AttributeNameTable(String[] initAtts) {
 		attNames = new ArrayList<String>(initAtts.length);
-		attIndeces = new ArrayList<Long>(initAtts.length);
+		attIndices = new ArrayList<Long>(initAtts.length);
+		listeners = new ArrayList<AttributeNameTableListener>();
 		int i = 0;
 		long val = 0;
 		for (; i < initAtts.length; i++) {
 			val = 1L << i;
 			attNames.add(initAtts[i]);
-			attIndeces.add(new Long(val));
+			attIndices.add(new Long(val));
 		}
 		index = i;
+	}
+	
+	public void setNewNames(List<String> names) {
+		if (names == null) {
+			return;
+		}
+		attNames.clear();
+		attIndices.clear();
+		int i = 0;
+		long val = 0;
+		for (; i < names.size(); i++) {
+			val = 1L << i;
+			attNames.add(names.get(i));
+			attIndices.add(new Long(val));
+		}
+		index = i;
+		notifyListeners();
+	}
+	
+	public void registerListener(AttributeNameTableListener l) {
+		if(l != null)
+			listeners.add(l);
+	}
+	
+	public void removeListener(AttributeNameTableListener l) {
+		if(l != null)
+			listeners.remove(l);
+	}
+	
+	private void notifyListeners() {
+		for (AttributeNameTableListener l : listeners) {
+			l.onDomainChange();
+		}
 	}
 	
 	public boolean addAtt(String attName) {
@@ -34,22 +69,48 @@ public final class AttributeNameTable {
 		long val = 1L << index;
 		if(attNames.contains(attName)) return false;
 		attNames.add(attName);
-		attIndeces.add(new Long(val));
+		attIndices.add(new Long(val));
 		index++;
+		notifyListeners();
 		return true;
+	}
+	
+	public boolean removeAtt(String attName) {
+		if(index < 1) return false;
+		int i = attNames.indexOf(attName);
+		if(i >= 0) {
+			attNames.remove(i);
+			attIndices.remove(i);
+			index--;
+			notifyListeners();
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean renameAtt(String oldAttName, String newAttName) {
+		if(index < 1) return false;
+		int i = attNames.indexOf(oldAttName);
+		if(i >= 0) {
+			attNames.remove(i);
+			attNames.add(i, newAttName);
+			notifyListeners();
+			return true;
+		}
+		return false;
 	}
 	
 	public long getAttIndex(String name) {
 		int i = attNames.indexOf(name);
 		if(i >= 0) {
-			return attIndeces.get(i).longValue();
+			return attIndices.get(i).longValue();
 		} else {
 			return 0;
 		}
 	}
 	
 	public String getAttName(long attIndex) {
-		int i = attIndeces.indexOf(new Long(attIndex));
+		int i = attIndices.indexOf(new Long(attIndex));
 		if(i >= 0) {
 			return attNames.get(i);
 		} else {
@@ -58,7 +119,7 @@ public final class AttributeNameTable {
 	}
 	
 	public boolean containsAttIndex(long attIndex) {
-		int i = attIndeces.indexOf(new Long(attIndex));
+		int i = attIndices.indexOf(new Long(attIndex));
 		return i >= 0;
 	}
 	
@@ -72,7 +133,7 @@ public final class AttributeNameTable {
 		for (int i = 0; i < attNames.size(); i++) {
 			sb.append(attNames.get(i));
 			sb.append('\t');
-			sb.append(attIndeces.get(i));
+			sb.append(attIndices.get(i));
 			sb.append('\n');
 		}
 		return sb.toString();
@@ -81,5 +142,18 @@ public final class AttributeNameTable {
 	public String[] getAttNames() {
 		String[] result = new String[attNames.size()];
 		return attNames.toArray(result);
+	}
+	
+	public Long[] getAttIndices() {
+		Long[] result = new Long[attIndices.size()];
+		return attIndices.toArray(result);
+	}
+	
+	public long getAttIndicesAsLong() {
+		long result = 0L;
+		for (Long l : attIndices) {
+			result |= l;
+		}
+		return result;
 	}
 }

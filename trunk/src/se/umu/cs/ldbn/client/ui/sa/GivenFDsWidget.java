@@ -1,8 +1,9 @@
-package se.umu.cs.ldbn.client.ui;
+package se.umu.cs.ldbn.client.ui.sa;
 
 import java.util.List;
 
 import se.umu.cs.ldbn.client.core.FD;
+import se.umu.cs.ldbn.client.ui.FDWidget;
 
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;

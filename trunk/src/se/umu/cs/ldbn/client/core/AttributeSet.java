@@ -3,8 +3,6 @@ package se.umu.cs.ldbn.client.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.allen_sauer.gwt.log.client.Log;
-
 public final class AttributeSet {
 	
 	private AttributeNameTable domain;
@@ -68,12 +66,22 @@ public final class AttributeSet {
 	}
 	
 	public AttributeSet (AttributeNameTable domain) {
+		if(domain == null) {
+			throw new IllegalArgumentException("AttributeNameTable cannot be null");
+		}
 		this.domain = domain;
 		attNames = new ArrayList<String>();
 		hasCahnge = true;
 	}
 	
 	public AttributeSet (AttributeNameTable domain, String[] att) {
+		if(domain == null) {
+			throw new IllegalArgumentException("AttributeNameTable cannot be null");
+		}
+		
+		if(domain == null) {
+			throw new IllegalArgumentException("String[] att - cannot be null");
+		}
 		this.domain = domain;
 		for (String str : att) {
 			addAtt(str);
@@ -81,6 +89,8 @@ public final class AttributeSet {
 		attNames = new ArrayList<String>();
 		hasCahnge = true;
 	}
+	
+	
 	
 	public boolean containsAtt(String attName) {
 		long attIndex = domain.getAttIndex(attName);
@@ -97,6 +107,12 @@ public final class AttributeSet {
 			return r != 0;
 		}
 		return false;
+	}
+	
+	public void recalculateMask() {
+		hasCahnge = true;
+		long l = domain.getAttIndicesAsLong();
+		attMask &= l; 
 	}
 	
 	public boolean addAtt(String attName) {

@@ -1,7 +1,6 @@
 package se.umu.cs.ldbn.client.core;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public final class Relation {

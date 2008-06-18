@@ -5,19 +5,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.allen_sauer.gwt.log.client.Log;
+import se.umu.cs.ldbn.client.Assignment;
+import se.umu.cs.ldbn.client.core.AttributeNameTable;
+import se.umu.cs.ldbn.client.core.AttributeSet;
+import se.umu.cs.ldbn.client.core.FD;
+
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 
-import se.umu.cs.ldbn.client.Assignment;
-import se.umu.cs.ldbn.client.core.AttributeNameTable;
-import se.umu.cs.ldbn.client.core.AttributeSet;
-import se.umu.cs.ldbn.client.core.FD;
-
-public class LdbnParser {
+public final class LdbnParser {
 	
 	public static enum LDBN_TYPE {assignment, msg, assignment_list, unknown};
 	

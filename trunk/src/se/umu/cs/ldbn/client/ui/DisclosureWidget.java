@@ -30,7 +30,7 @@ import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
  * 
  * @author Nikolay Georgiev (ens07ng@cs.umu.se)
  */
-public class DisclosureWidget extends Composite implements ClickListener,
+public final class DisclosureWidget extends Composite implements ClickListener,
 		MouseListener {
 
 	/** An image for the collapse button in the left top corner. */
@@ -192,8 +192,8 @@ public class DisclosureWidget extends Composite implements ClickListener,
 		this.headerContorls = headerControls;
 		headerControlsPanel = new HorizontalPanel();
 		if(headerControls == null) {
-			if (content instanceof HasUpControlls) {
-				this.headerContorls = ((HasUpControlls) content).getUpControlls();
+			if (content instanceof HasAdditionalControlls) {
+				this.headerContorls = ((HasAdditionalControlls) content).getAdditionalControlls();
 			}
 		}
 

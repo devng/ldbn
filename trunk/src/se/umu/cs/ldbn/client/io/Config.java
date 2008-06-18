@@ -11,10 +11,7 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.Window;
 
-public class Config {
-	
-	
-	
+public final class Config {
 	
 	public static final String CONFIG_FILE_URL = "ldbn.config";
 	/**
