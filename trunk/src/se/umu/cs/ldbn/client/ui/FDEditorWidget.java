@@ -3,13 +3,17 @@ package se.umu.cs.ldbn.client.ui;
 import java.util.List;
 
 import se.umu.cs.ldbn.client.CommonFunctions;
+import se.umu.cs.ldbn.client.core.AttributeNameTable;
 import se.umu.cs.ldbn.client.core.FD;
+import se.umu.cs.ldbn.client.ui.ca.CreateAssignmentWidget;
+import se.umu.cs.ldbn.client.ui.ca.EditableGivenAttributesWidget;
 import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
 import se.umu.cs.ldbn.client.ui.dialog.HelpDialog;
 import se.umu.cs.ldbn.client.ui.sa.RelationAttributesWidget;
-import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentPanel;
+import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
@@ -67,7 +71,9 @@ public final class FDEditorWidget extends Composite
 				ata.appendAttributes(str);
 			}
 			if (fdw.isEditable()) {
-				if(currnetFDHP != null) {
+				if(currnetFDHP != null) { 
+					//TODO Do it better
+					//so that the widget is not removed, but rather edited
 					currnetFDHP.removeFDWidget(fdw);
 				}
 			}
@@ -164,7 +170,8 @@ public final class FDEditorWidget extends Composite
 	
 	//returns null if the size of LHS or RHS is < 1
 	private FDWidget createFD() {
-		FD fd = new FD(SolveAssignmentPanel.get().getAttributeNameTable());
+		AttributeNameTable domain = SolveAssignmentWidget.get().getAttributeNameTable();
+		FD fd = new FD(domain);
 		List<String> l = leftTA.parseAttributes();
 		if(l.size() < 1) {
 			return null;

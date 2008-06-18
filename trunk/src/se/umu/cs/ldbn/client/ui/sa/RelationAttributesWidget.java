@@ -17,12 +17,12 @@ public final class RelationAttributesWidget extends HTML
 	private AttributeSet key;
 	
 	public RelationAttributesWidget() {
-		this(new AttributeSet(SolveAssignmentPanel.get().getAttributeNameTable())
-				, new AttributeSet(SolveAssignmentPanel.get().getAttributeNameTable()));
+		this(new AttributeSet(SolveAssignmentWidget.get().getAttributeNameTable())
+				, new AttributeSet(SolveAssignmentWidget.get().getAttributeNameTable()));
 	}
 	
 	public RelationAttributesWidget(AttributeSet attributes) {
-		this(attributes, new AttributeSet(SolveAssignmentPanel.get().getAttributeNameTable()));
+		this(attributes, new AttributeSet(SolveAssignmentWidget.get().getAttributeNameTable()));
 	}
 	
 	public RelationAttributesWidget(AttributeSet attributes, 

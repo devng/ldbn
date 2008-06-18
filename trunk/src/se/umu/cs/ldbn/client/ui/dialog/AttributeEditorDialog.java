@@ -4,6 +4,7 @@ import java.util.List;
 
 import se.umu.cs.ldbn.client.core.AttributeNameTable;
 import se.umu.cs.ldbn.client.ui.AttributeTextArea;
+import se.umu.cs.ldbn.client.ui.ca.CreateAssignmentWidget;
 import se.umu.cs.ldbn.client.ui.ca.EditableGivenAttributesWidget;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
@@ -48,7 +49,7 @@ public final class AttributeEditorDialog extends BaseAttributeEditorDialog {
 		if(eta.hasOmittedAttributes()) {
 			setErrorMsg("Some attributes had invalid names.");
 		}
-		AttributeNameTable atts = EditableGivenAttributesWidget.get().getAttributeNames();
+		AttributeNameTable atts = CreateAssignmentWidget.get().getDomain();
 		atts.setNewNames(names);
 	}
 	
@@ -62,7 +63,7 @@ public final class AttributeEditorDialog extends BaseAttributeEditorDialog {
 		AttributeTextArea a = getAttributeTextArea();
 		a.setText("");
 		AttributeNameTable domain = 
-			EditableGivenAttributesWidget.get().getAttributeNameTable();
+			CreateAssignmentWidget.get().getDomain();
 		String[] names = domain.getAttNames();
 		for (String s : names) {
 			a.appendAttributes(s);

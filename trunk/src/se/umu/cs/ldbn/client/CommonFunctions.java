@@ -9,7 +9,8 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Class with static methods for adding common style properties to Widgets.
+ * Class with static methods for adding common style properties to Widgets,
+ * and checking the response of a server.
  * 
  * @author Nikolay Georgiev (ens07ngv@cs.umu.se)
  */
