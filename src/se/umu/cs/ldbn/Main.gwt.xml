@@ -9,12 +9,27 @@
 	
 	<!-- Add gwt-log support                                  -->
     <inherits name="com.allen_sauer.gwt.log.gwt-log" />
+    
+    <!--
+	    Enable experimental WindowLogger, which logs messages to a separate
+	    popup window. There are currently a couple of restrictions:
+	
+	    1. When Firefox is configured to open new Windows as new tabs,
+	       WindowLogger does not work
+	    2. In hosted mode, the windows are not automatically closed,
+	       although you can easily close them manually in the usual way
+    -->
+    <set-property name="log_WindowLogger" value="DISABLED" />
+
+  	<!--
+    	You probably will want to disable the default `DivLogger` as well:
+  	-->
+  	<set-property name="log_DivLogger" value="ENABLED" />
+    
     <!--
           The default log level is `OFF`. In development you'll usually want
           to switch to `DEBUG` level logging.
     -->
-    
-   
    <extend-property name="log_level" values="DEBUG" />
    <set-property    name="log_level" value="DEBUG" />
    

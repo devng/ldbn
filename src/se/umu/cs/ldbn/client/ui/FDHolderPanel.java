@@ -9,7 +9,8 @@ import java.util.Map;
 import java.util.Set;
 
 import se.umu.cs.ldbn.client.CommonFunctions;
-import se.umu.cs.ldbn.client.core.AttributeNameTableListener;
+import se.umu.cs.ldbn.client.Main;
+import se.umu.cs.ldbn.client.core.DomainTableListener;
 import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
 
@@ -26,7 +27,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 public final class FDHolderPanel extends VerticalPanel 
 	implements ClickListener, MouseListener, HasAdditionalControlls, 
-		AttributeNameTableListener {
+		DomainTableListener {
 	
 	private class EditButton extends Image {
 		public EditButton() {
@@ -150,9 +151,10 @@ public final class FDHolderPanel extends VerticalPanel
 				FDWidget fdw = checkBoxes.get(chBox);
 				if (fdw != null) {
 					FDEditorDialog fded = FDEditorDialog.get();
-					fded.center();
+					fded.center(); //always center first
 					fded.getFDEditorWidget().clearText();
 					fded.getFDEditorWidget().setCurrentFDHolderPanel(this);
+					fded.setCurrentDomain(fdw.getFD().getLHS().domain());
 					fded.getFDEditorWidget().setFDWidtet(fdw);
 				} else {
 					Log.error("FDHolderPanel : FDwidget is null");
@@ -171,7 +173,7 @@ public final class FDHolderPanel extends VerticalPanel
 	 * @return a panel containing the widget and a check box.
 	 */
 	private Panel getCheckBoxPanel(FDWidget w) {
-		PickupDragController dc = LdbnDragCotroller.get();
+		PickupDragController dc = Main.get().getDragController();
 		dc.makeDraggable(w);
 		CheckBox chBox = new CheckBox();
 		CommonFunctions.setCursorPointer(chBox);

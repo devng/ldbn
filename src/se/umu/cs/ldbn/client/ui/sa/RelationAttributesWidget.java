@@ -3,10 +3,10 @@ package se.umu.cs.ldbn.client.ui.sa;
 import java.util.Collection;
 import java.util.List;
 
+import se.umu.cs.ldbn.client.Main;
 import se.umu.cs.ldbn.client.core.AttributeSet;
 import se.umu.cs.ldbn.client.ui.FDHolderPanelListener;
 import se.umu.cs.ldbn.client.ui.FDWidget;
-import se.umu.cs.ldbn.client.ui.LdbnDragCotroller;
 
 import com.google.gwt.user.client.ui.HTML;
 
@@ -17,12 +17,12 @@ public final class RelationAttributesWidget extends HTML
 	private AttributeSet key;
 	
 	public RelationAttributesWidget() {
-		this(new AttributeSet(SolveAssignmentWidget.get().getAttributeNameTable())
-				, new AttributeSet(SolveAssignmentWidget.get().getAttributeNameTable()));
+		this(new AttributeSet(SolveAssignmentWidget.get().getDomainTable())
+				, new AttributeSet(SolveAssignmentWidget.get().getDomainTable()));
 	}
 	
 	public RelationAttributesWidget(AttributeSet attributes) {
-		this(attributes, new AttributeSet(SolveAssignmentWidget.get().getAttributeNameTable()));
+		this(attributes, new AttributeSet(SolveAssignmentWidget.get().getDomainTable()));
 	}
 	
 	public RelationAttributesWidget(AttributeSet attributes, 
@@ -32,7 +32,7 @@ public final class RelationAttributesWidget extends HTML
 		
 		setHTML(generateAttributeHTML());
 		setStyleName("fdw");
-		LdbnDragCotroller.get().makeDraggable(this);
+		Main.get().getDragController().makeDraggable(this);
 	}
 	
 	private String generateAttributeHTML() {

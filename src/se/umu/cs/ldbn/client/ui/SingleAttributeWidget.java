@@ -1,5 +1,7 @@
 package se.umu.cs.ldbn.client.ui;
 
+import se.umu.cs.ldbn.client.Main;
+
 import com.google.gwt.user.client.ui.HasName;
 import com.google.gwt.user.client.ui.Label;
 
@@ -19,7 +21,7 @@ public final class SingleAttributeWidget extends Label  implements HasName {
 		super(name);
 		this.name = name;
 		setStyleName("saw");
-		LdbnDragCotroller.get().makeDraggable(this);
+		Main.get().getDragController().makeDraggable(this);
 	}
 
 	public String getName() {

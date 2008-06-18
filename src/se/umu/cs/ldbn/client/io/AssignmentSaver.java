@@ -4,7 +4,7 @@ import java.util.List;
 
 import se.umu.cs.ldbn.client.Assignment;
 import se.umu.cs.ldbn.client.CommonFunctions;
-import se.umu.cs.ldbn.client.core.AttributeNameTable;
+import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.AttributeSet;
 import se.umu.cs.ldbn.client.core.FD;
 
@@ -58,7 +58,7 @@ public final class AssignmentSaver {
 		Element ldbn = doc.createElement("ldbn");
 		ldbn.setAttribute("type", "assignment");
 		doc.appendChild(ldbn);
-		AttributeNameTable domain = a.getDomain();
+		DomainTable domain = a.getDomain();
 		String[] atts = domain.getAttNames();
 		for (String name : atts) {
 			Element att = doc.createElement("att");

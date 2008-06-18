@@ -7,7 +7,7 @@ import se.umu.cs.ldbn.client.Assignment;
 import se.umu.cs.ldbn.client.AssignmentGenerator;
 import se.umu.cs.ldbn.client.CommonFunctions;
 import se.umu.cs.ldbn.client.core.Algorithms;
-import se.umu.cs.ldbn.client.core.AttributeNameTable;
+import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.io.AssignmentLoader;
 import se.umu.cs.ldbn.client.ui.DisclosureWidget;
@@ -26,7 +26,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 
 	private static SolveAssignmentWidget inst;
 	//assignment variables  
-	private AttributeNameTable domain;
+	private DomainTable domain;
 	private List<FD> fds;
 	//given attributes
 	private Button checkSolution;
@@ -48,7 +48,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		//this are not used, before an assigment has been loaded,  but
 		//if they are not set a NullPointer or IllegalArgument exception
 		//can be thrown
-		domain = new AttributeNameTable();
+		domain = new DomainTable();
 		fds = new ArrayList<FD>();
 		
 		//Given Attributes
@@ -124,8 +124,9 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 			//AssignmentLoader.get().loadFromURL("1");
 			AssignmentLoader.loadAssignmentList();
 		} else  if (sender == minCovAddFD) {
-			FDEditorDialog.get().center();
+			FDEditorDialog.get().center(); //always center first
 			FDEditorDialog.get().setCurrentFDHolderPanel(minimalCoverFDs);
+			FDEditorDialog.get().setCurrentDomain(domain);
 		} else if (sender == addRelation2NF) {
 			RelationWidget r = new RelationWidget();
 			NF2Relations.add(r);
@@ -144,7 +145,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		minimalCoverFDs.clearAll();
 	}
 	
-	public AttributeNameTable getAttributeNameTable() {
+	public DomainTable getDomainTable() {
 		return domain;
 	}
 	

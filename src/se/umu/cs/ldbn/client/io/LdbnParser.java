@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import se.umu.cs.ldbn.client.Assignment;
-import se.umu.cs.ldbn.client.core.AttributeNameTable;
+import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.AttributeSet;
 import se.umu.cs.ldbn.client.core.FD;
 
@@ -27,7 +27,7 @@ public final class LdbnParser {
 	private LDBN_TYPE lastLdbnType;
 	
 	//vars used for parsing a ldbn xml string with type=assignment
-	private AttributeNameTable currentDomain;
+	private DomainTable currentDomain;
 	private List<FD> currentFDs;
 	private boolean isLHS;
 	private Assignment assignment;
@@ -110,7 +110,7 @@ public final class LdbnParser {
 	
 	
 	private Assignment parseAssignmentXML(Node ldbn) {
-		currentDomain = new AttributeNameTable();
+		currentDomain = new DomainTable();
 		currentFDs = new ArrayList<FD>();
 		visitElementNodes(ldbn);
 		Assignment a = new Assignment(currentDomain, currentFDs);

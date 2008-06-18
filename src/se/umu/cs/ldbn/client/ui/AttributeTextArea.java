@@ -10,7 +10,6 @@ import com.allen_sauer.gwt.dnd.client.DragController;
 import com.allen_sauer.gwt.dnd.client.DragEndEvent;
 import com.allen_sauer.gwt.dnd.client.VetoDragException;
 import com.allen_sauer.gwt.dnd.client.drop.DropController;
-import com.allen_sauer.gwt.dnd.client.drop.VetoDropException;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -182,10 +181,5 @@ public abstract class AttributeTextArea extends TextArea
 			DragController dragController) {
 	}
 
-	/**
-	 * @deprecated Use {@link #onPreviewDrop(DragContext)} instead.
-	 */
-	public void onPreviewDrop(Widget reference, Widget draggable,
-			DragController dragController) throws VetoDropException {
-	}
+
 }

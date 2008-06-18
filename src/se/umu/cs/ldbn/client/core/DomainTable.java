@@ -4,23 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 //max 64 atts
-public final class AttributeNameTable {
+public final class DomainTable {
 	private List<String> attNames;
 	private List<Long> attIndices;
-	private List<AttributeNameTableListener> listeners;
+	private List<DomainTableListener> listeners;
 	private int index;
 	
-	public AttributeNameTable() {
+	public DomainTable() {
 		attNames = new ArrayList<String>();
 		attIndices = new ArrayList<Long>();
-		listeners = new ArrayList<AttributeNameTableListener>();
+		listeners = new ArrayList<DomainTableListener>();
 		index = 0;
 	}
 	
-	public AttributeNameTable(String[] initAtts) {
+	public DomainTable(String[] initAtts) {
 		attNames = new ArrayList<String>(initAtts.length);
 		attIndices = new ArrayList<Long>(initAtts.length);
-		listeners = new ArrayList<AttributeNameTableListener>();
+		listeners = new ArrayList<DomainTableListener>();
 		int i = 0;
 		long val = 0;
 		for (; i < initAtts.length; i++) {
@@ -48,18 +48,18 @@ public final class AttributeNameTable {
 		notifyListeners();
 	}
 	
-	public void registerListener(AttributeNameTableListener l) {
+	public void registerListener(DomainTableListener l) {
 		if(l != null)
 			listeners.add(l);
 	}
 	
-	public void removeListener(AttributeNameTableListener l) {
+	public void removeListener(DomainTableListener l) {
 		if(l != null)
 			listeners.remove(l);
 	}
 	
 	private void notifyListeners() {
-		for (AttributeNameTableListener l : listeners) {
+		for (DomainTableListener l : listeners) {
 			l.onDomainChange();
 		}
 	}

@@ -5,12 +5,12 @@ public final class FD {
 	private AttributeSet leftHandSide;
 	private AttributeSet rightHandSide;
 	
-	public FD(AttributeNameTable domain) {
+	public FD(DomainTable domain) {
 		leftHandSide = new AttributeSet(domain);
 		rightHandSide = new AttributeSet(domain);
 	}
 	
-	public FD(AttributeNameTable domain, String[] lhs, String[] rhs) {
+	public FD(DomainTable domain, String[] lhs, String[] rhs) {
 		leftHandSide = new AttributeSet(domain);
 		rightHandSide = new AttributeSet(domain);
 		for (int i = 0; i < lhs.length; i++) {
