@@ -113,13 +113,15 @@ public final class FDHolderPanel extends VerticalPanel
 	
 	
 	
-	public void removeFDWidget(FDWidget fdw) {
-		fds.remove(fdw);
-		fdw.getParent().removeFromParent();
-		for (FDHolderPanelListener l : listeners) {
-			l.fdRemoved(fds); 
+	public boolean removeFDWidget(FDWidget fdw) {
+		if(fds.remove(fdw)) {
+			fdw.getParent().removeFromParent();
+			for (FDHolderPanelListener l : listeners) {
+				l.fdRemoved(fds); 
+			}
+			return true;
 		}
-		
+		return false;
 	}
 	
 	public void addFDWidget(FDWidget fd) {

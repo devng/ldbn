@@ -25,28 +25,16 @@ public final class EditableGivenAttributesWidget extends GivenAttributesWidget
 	//used for renaming
 	private SingleAttributeWidget currentSaw;
 	
-	private static EditableGivenAttributesWidget inst;
 	
-	private EditableGivenAttributesWidget() {
+	public EditableGivenAttributesWidget() {
 		super();
 		att = new AttributeNameTable();
 		att.registerListener(this);
 		map = new HashMap<Image, SingleAttributeWidget>();
 	}
-	
-	public static EditableGivenAttributesWidget get() { 
-		if(inst == null) {
-			inst = new EditableGivenAttributesWidget();
-		}
-		return inst;
-	}
 
 	public void onDomainChange() {
 		recalculateMainPanel();
-	}
-	
-	public AttributeNameTable getAttributeNameTable() {
-		return att;
 	}
 	
 	protected void recalculateMainPanel() {

@@ -21,10 +21,10 @@ import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public final class SolveAssignmentPanel extends AbsolutePanel 
+public final class SolveAssignmentWidget extends AbsolutePanel 
 	implements ClickListener {
 
-	private static SolveAssignmentPanel inst;
+	private static SolveAssignmentWidget inst;
 	//assignment variables  
 	private AttributeNameTable domain;
 	private List<FD> fds;
@@ -42,7 +42,7 @@ public final class SolveAssignmentPanel extends AbsolutePanel
 	private HorizontalPanel relationsPanel;
 	private Button addRelation2NF;
 	
-	private SolveAssignmentPanel() {
+	private SolveAssignmentWidget() {
 		super();
 		setWidth("100%");
 		//this are not used, before an assigment has been loaded,  but
@@ -97,13 +97,13 @@ public final class SolveAssignmentPanel extends AbsolutePanel
 		Assignment a = AssignmentGenerator.generate();
 		this.domain = a.getDomain();
 		this.fds = a.getFDs();
-		givenAttributesWidget.setAttributeNames(domain);
+		givenAttributesWidget.setDomain(domain);
 		givenFDsWidget.setFDs(fds);
 	}
 	
-	public static SolveAssignmentPanel get() {
+	public static SolveAssignmentWidget get() {
 		if (inst == null) {
-			inst = new SolveAssignmentPanel();
+			inst = new SolveAssignmentWidget();
 		}
 		return inst;
 	}
@@ -133,7 +133,6 @@ public final class SolveAssignmentPanel extends AbsolutePanel
 			FDEditorDialog.get().center();
 			FDEditorDialog.get().setCurrentFDHolderPanel(r.fetFDHolderPanel());
 		}
-		
 	}
 	
 	

@@ -9,7 +9,7 @@ import se.umu.cs.ldbn.client.ui.FDWidget;
 import se.umu.cs.ldbn.client.ui.LdbnDragCotroller;
 import se.umu.cs.ldbn.client.ui.SingleAttributeWidget;
 import se.umu.cs.ldbn.client.ui.sa.RelationAttributesWidget;
-import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentPanel;
+import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -86,7 +86,7 @@ public final class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 			return;
 		}
 		List<String> atts = kta.parseAttributes();
-		AttributeSet as = new AttributeSet(SolveAssignmentPanel.get().getAttributeNameTable());
+		AttributeSet as = new AttributeSet(SolveAssignmentWidget.get().getAttributeNameTable());
 		for (String str : atts) {
 			as.addAtt(str);
 		}

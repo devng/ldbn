@@ -16,12 +16,13 @@ public class GivenAttributesWidget extends Composite {
 		initWidget(mainPanel);
 	}
 	
-	public void setAttributeNames(AttributeNameTable att) {
+	public void setDomain(AttributeNameTable att) {
 		this.att = att;
 		recalculateMainPanel();
 	}
 	
-	public AttributeNameTable getAttributeNames() {
+	public AttributeNameTable getDomain() {
+		AttributeNameTable tmp = att;
 		return att;
 	}
 	

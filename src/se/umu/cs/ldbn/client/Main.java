@@ -1,8 +1,8 @@
 package se.umu.cs.ldbn.client;
 
 import se.umu.cs.ldbn.client.io.Config;
-import se.umu.cs.ldbn.client.ui.ca.CreateAssignmentPanel;
-import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentPanel;
+import se.umu.cs.ldbn.client.ui.ca.CreateAssignmentWidget;
+import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.EntryPoint;
@@ -58,8 +58,8 @@ public final class Main implements EntryPoint {
 		}
 		
 		TabPanel tabs = new TabPanel();
-		tabs.add(SolveAssignmentPanel.get(), "Solve assignments");
-		tabs.add(CreateAssignmentPanel.get(), "Create assignments");
+		tabs.add(SolveAssignmentWidget.get(), "Solve assignments");
+		tabs.add(CreateAssignmentWidget.get(), "Create assignments");
 		tabs.setWidth("100%");
 		tabs.selectTab(0);
 		RootPanel.get().add(tabs);

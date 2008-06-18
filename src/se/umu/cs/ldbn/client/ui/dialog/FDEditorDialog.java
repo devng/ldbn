@@ -1,5 +1,6 @@
 package se.umu.cs.ldbn.client.ui.dialog;
 
+import se.umu.cs.ldbn.client.core.AttributeNameTable;
 import se.umu.cs.ldbn.client.ui.FDEditorWidget;
 import se.umu.cs.ldbn.client.ui.FDHolderPanel;
 import se.umu.cs.ldbn.client.ui.LdbnDragCotroller;
@@ -37,6 +38,7 @@ public final class FDEditorDialog extends CloseDialog {
 	public void hide() {
 		super.hide();
 		fdew.clearText();
+
 		LdbnDragCotroller.get().unregisterDropController(fdew.getRightTextArea());
 		LdbnDragCotroller.get().unregisterDropController(fdew.getLeftTextArea());
 		fdew.setCurrentFDHolderPanel(null); //TODO Is this needed?
