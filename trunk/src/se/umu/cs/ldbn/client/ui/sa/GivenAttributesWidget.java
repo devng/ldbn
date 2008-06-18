@@ -1,6 +1,6 @@
 package se.umu.cs.ldbn.client.ui.sa;
 
-import se.umu.cs.ldbn.client.core.AttributeNameTable;
+import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.ui.SingleAttributeWidget;
 
 import com.google.gwt.user.client.ui.Composite;
@@ -9,20 +9,19 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 public class GivenAttributesWidget extends Composite {
 	
 	protected HorizontalPanel mainPanel;
-	protected AttributeNameTable att;
+	protected DomainTable att;
 	
 	public GivenAttributesWidget () {
 		mainPanel = new HorizontalPanel();
 		initWidget(mainPanel);
 	}
 	
-	public void setDomain(AttributeNameTable att) {
+	public void setDomain(DomainTable att) {
 		this.att = att;
 		recalculateMainPanel();
 	}
 	
-	public AttributeNameTable getDomain() {
-		AttributeNameTable tmp = att;
+	public DomainTable getDomain() {
 		return att;
 	}
 	

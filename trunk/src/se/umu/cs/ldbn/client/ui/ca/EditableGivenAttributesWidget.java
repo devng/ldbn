@@ -6,37 +6,48 @@ import java.util.Map;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import se.umu.cs.ldbn.client.CommonFunctions;
-import se.umu.cs.ldbn.client.core.AttributeNameTable;
-import se.umu.cs.ldbn.client.core.AttributeNameTableListener;
+import se.umu.cs.ldbn.client.core.DomainTable;
+import se.umu.cs.ldbn.client.core.DomainTableListener;
 import se.umu.cs.ldbn.client.ui.SingleAttributeWidget;
 import se.umu.cs.ldbn.client.ui.dialog.RenameDialog;
 import se.umu.cs.ldbn.client.ui.dialog.RenameDialogCaller;
 import se.umu.cs.ldbn.client.ui.sa.GivenAttributesWidget;
 
-public final class EditableGivenAttributesWidget extends GivenAttributesWidget 
-	implements AttributeNameTableListener, ClickListener, RenameDialogCaller {
+
+//DO not inherit from GivenAttributesWidget it is a bug in GWT and 
+//this.att wont be set, and it will still be null after the constructor 
+//has been called.
+public final class EditableGivenAttributesWidget extends GivenAttributesWidget  
+	implements DomainTableListener, ClickListener, RenameDialogCaller {
 	
 	private Map<Image, SingleAttributeWidget> map;
 	//used for renaming
 	private SingleAttributeWidget currentSaw;
 	
-	
 	public EditableGivenAttributesWidget() {
 		super();
-		att = new AttributeNameTable();
+		att = new DomainTable();
 		att.registerListener(this);
 		map = new HashMap<Image, SingleAttributeWidget>();
 	}
+	
 
+	
 	public void onDomainChange() {
 		recalculateMainPanel();
 	}
 	
+	public void setDomain(DomainTable att) {
+		throw new UnsupportedOperationException("You cannot change the domains");
+	}
+
 	protected void recalculateMainPanel() {
 		mainPanel.clear();
 		map.clear();

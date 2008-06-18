@@ -1,10 +1,12 @@
 package se.umu.cs.ldbn.client.ui.dialog;
 
-import se.umu.cs.ldbn.client.core.AttributeNameTable;
+import se.umu.cs.ldbn.client.Main;
+import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.ui.FDEditorWidget;
 import se.umu.cs.ldbn.client.ui.FDHolderPanel;
-import se.umu.cs.ldbn.client.ui.LdbnDragCotroller;
 
+import com.google.gwt.user.client.ui.PopupListener;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public final class FDEditorDialog extends CloseDialog {
@@ -27,11 +29,15 @@ public final class FDEditorDialog extends CloseDialog {
 		fdew.setCurrentFDHolderPanel(fdHP);
 	}
 	
+	public void setCurrentDomain(DomainTable domain) {
+		fdew.setCurrentDomain(domain);
+	}
+	
 	@Override
 	public void show() {
 		super.show();
-		LdbnDragCotroller.get().registerDropController(fdew.getRightTextArea());
-		LdbnDragCotroller.get().registerDropController(fdew.getLeftTextArea());
+		Main.get().getDragController().registerDropController(fdew.getRightTextArea());
+		Main.get().getDragController().registerDropController(fdew.getLeftTextArea());
 	}
 	
 	@Override
@@ -39,9 +45,10 @@ public final class FDEditorDialog extends CloseDialog {
 		super.hide();
 		fdew.clearText();
 
-		LdbnDragCotroller.get().unregisterDropController(fdew.getRightTextArea());
-		LdbnDragCotroller.get().unregisterDropController(fdew.getLeftTextArea());
+		Main.get().getDragController().unregisterDropController(fdew.getRightTextArea());
+		Main.get().getDragController().unregisterDropController(fdew.getLeftTextArea());
 		fdew.setCurrentFDHolderPanel(null); //TODO Is this needed?
+		fdew.setCurrentDomain(null);
 	}
 	
 	public FDEditorWidget getFDEditorWidget() {

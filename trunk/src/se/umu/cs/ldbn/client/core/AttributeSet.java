@@ -5,7 +5,7 @@ import java.util.List;
 
 public final class AttributeSet {
 	
-	private AttributeNameTable domain;
+	private DomainTable domain;
 	private long attMask;
 	
 	//cache
@@ -65,18 +65,18 @@ public final class AttributeSet {
 		}
 	}
 	
-	public AttributeSet (AttributeNameTable domain) {
+	public AttributeSet (DomainTable domain) {
 		if(domain == null) {
-			throw new IllegalArgumentException("AttributeNameTable cannot be null");
+			throw new IllegalArgumentException("DomainTable cannot be null");
 		}
 		this.domain = domain;
 		attNames = new ArrayList<String>();
 		hasCahnge = true;
 	}
 	
-	public AttributeSet (AttributeNameTable domain, String[] att) {
+	public AttributeSet (DomainTable domain, String[] att) {
 		if(domain == null) {
-			throw new IllegalArgumentException("AttributeNameTable cannot be null");
+			throw new IllegalArgumentException("DomainTable cannot be null");
 		}
 		
 		if(domain == null) {
@@ -254,7 +254,7 @@ public final class AttributeSet {
 		this.attMask = mask;
 	}
 	
-	AttributeNameTable domain() {
+	public DomainTable domain() {
 		return domain;
 	}
 	

@@ -2,11 +2,11 @@ package se.umu.cs.ldbn.client.ui.dialog;
 
 import java.util.List;
 
+import se.umu.cs.ldbn.client.Main;
 import se.umu.cs.ldbn.client.core.AttributeSet;
 import se.umu.cs.ldbn.client.core.AttributeSetIterator;
 import se.umu.cs.ldbn.client.ui.AttributeTextArea;
 import se.umu.cs.ldbn.client.ui.FDWidget;
-import se.umu.cs.ldbn.client.ui.LdbnDragCotroller;
 import se.umu.cs.ldbn.client.ui.SingleAttributeWidget;
 import se.umu.cs.ldbn.client.ui.sa.RelationAttributesWidget;
 import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
@@ -86,7 +86,7 @@ public final class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 			return;
 		}
 		List<String> atts = kta.parseAttributes();
-		AttributeSet as = new AttributeSet(SolveAssignmentWidget.get().getAttributeNameTable());
+		AttributeSet as = new AttributeSet(SolveAssignmentWidget.get().getDomainTable());
 		for (String str : atts) {
 			as.addAtt(str);
 		}
@@ -103,13 +103,13 @@ public final class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 	@Override
 	public void show() {
 		super.show();
-		LdbnDragCotroller.get().registerDropController(getAttributeTextArea());
+		Main.get().getDragController().registerDropController(getAttributeTextArea());
 	}
 	
 	@Override
 	public void hide() {
 		super.hide();
-		LdbnDragCotroller.get().unregisterDropController(getAttributeTextArea());
+		Main.get().getDragController().unregisterDropController(getAttributeTextArea());
 	}
 
 }

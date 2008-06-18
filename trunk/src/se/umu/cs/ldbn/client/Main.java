@@ -4,11 +4,14 @@ import se.umu.cs.ldbn.client.io.Config;
 import se.umu.cs.ldbn.client.ui.ca.CreateAssignmentWidget;
 import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
 
+import com.allen_sauer.gwt.dnd.client.DragController;
+import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 
@@ -23,6 +26,8 @@ public final class Main implements EntryPoint {
 
 	private static Main instance;
 
+	private PickupDragController dragControll;
+	
 	public static Main get() {
 		if (instance == null) {
 			throw new IllegalArgumentException("onModuleLoad method must bu " +
@@ -57,11 +62,20 @@ public final class Main implements EntryPoint {
 			Window.alert("Main.java : instance != this");
 		}
 		
+		AbsolutePanel all = new AbsolutePanel();
+		dragControll = new PickupDragController(all, false);
+		dragControll.setBehaviorDragProxy(true);
+		
 		TabPanel tabs = new TabPanel();
 		tabs.add(SolveAssignmentWidget.get(), "Solve assignments");
 		tabs.add(CreateAssignmentWidget.get(), "Create assignments");
 		tabs.setWidth("100%");
 		tabs.selectTab(0);
-		RootPanel.get().add(tabs);
+		all.add(tabs);
+		RootPanel.get().add(all);
+	}
+	
+	public PickupDragController getDragController() {
+		return dragControll;
 	}
 }

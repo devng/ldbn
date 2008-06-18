@@ -3,7 +3,7 @@ package se.umu.cs.ldbn.client.ui.ca;
 
 import java.util.Collection;
 
-import se.umu.cs.ldbn.client.core.AttributeNameTable;
+import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.ui.DisclosureWidget;
 import se.umu.cs.ldbn.client.ui.FDHolderPanel;
 import se.umu.cs.ldbn.client.ui.FDHolderPanelListener;
@@ -11,6 +11,7 @@ import se.umu.cs.ldbn.client.ui.FDWidget;
 import se.umu.cs.ldbn.client.ui.dialog.AttributeEditorDialog;
 import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -65,7 +66,7 @@ public final class CreateAssignmentWidget extends Composite
 		return inst;
 	}
 	
-	public AttributeNameTable getDomain() {
+	public DomainTable getDomain() {
 		return egas.getDomain();
 	}
 
@@ -75,8 +76,10 @@ public final class CreateAssignmentWidget extends Composite
 			atd.center();
 		} else if (sender == addFDs) {
 			FDEditorDialog fded = FDEditorDialog.get();
+			fded.center(); //always center first
 			fded.setCurrentFDHolderPanel(givenFDs);
-			fded.center();
+			fded.setCurrentDomain(egas.getDomain());
+			
 		}
 		
 	}

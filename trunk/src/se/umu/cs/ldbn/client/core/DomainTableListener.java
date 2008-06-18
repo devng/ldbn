@@ -1,5 +1,5 @@
 package se.umu.cs.ldbn.client.core;
 
-public interface AttributeNameTableListener {
+public interface DomainTableListener {
 	void onDomainChange();
 }

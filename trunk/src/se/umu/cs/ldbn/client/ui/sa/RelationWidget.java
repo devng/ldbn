@@ -122,9 +122,10 @@ public final class RelationWidget extends Composite implements ClickListener,
 	public void onClick(Widget sender) { 
 		if (sender == addBut) {
 			FDEditorDialog fded = FDEditorDialog.get();
-			fded.center();
+			fded.center(); //always center first
 			fded.getFDEditorWidget().clearText();
 			fded.getFDEditorWidget().setCurrentFDHolderPanel(fdHP);
+			fded.setCurrentDomain(SolveAssignmentWidget.get().getDomainTable());
 		} else if (sender == collapseButton) {
 			if(isOpen) {
 				mainPanelWrapper.setWidget(0, 1, relName);

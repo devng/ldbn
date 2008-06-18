@@ -3,7 +3,7 @@ package se.umu.cs.ldbn.client.ui;
 import java.util.List;
 
 import se.umu.cs.ldbn.client.CommonFunctions;
-import se.umu.cs.ldbn.client.core.AttributeNameTable;
+import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.ui.ca.CreateAssignmentWidget;
 import se.umu.cs.ldbn.client.ui.ca.EditableGivenAttributesWidget;
@@ -36,6 +36,7 @@ public final class FDEditorWidget extends Composite
 	private Button clearButton;
 	private Button addButton;
 	private FDHolderPanel currnetFDHP;
+	private DomainTable currentDomain;
 	
 	private final class FDEditorTextArea extends AttributeTextArea  {
 		
@@ -170,8 +171,7 @@ public final class FDEditorWidget extends Composite
 	
 	//returns null if the size of LHS or RHS is < 1
 	private FDWidget createFD() {
-		AttributeNameTable domain = SolveAssignmentWidget.get().getAttributeNameTable();
-		FD fd = new FD(domain);
+		FD fd = new FD(currentDomain);
 		List<String> l = leftTA.parseAttributes();
 		if(l.size() < 1) {
 			return null;
@@ -206,5 +206,13 @@ public final class FDEditorWidget extends Composite
 	private void clearTextAreas() {
 		leftTA.setText("");
 		rightTA.setText("");
+	}
+	
+	public DomainTable getCurrentDomain() {
+		return currentDomain;
+	}
+
+	public void setCurrentDomain(DomainTable currentDomain) {
+		this.currentDomain = currentDomain;
 	}
 }

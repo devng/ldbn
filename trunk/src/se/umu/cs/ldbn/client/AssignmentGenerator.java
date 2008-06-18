@@ -2,7 +2,7 @@ package se.umu.cs.ldbn.client;
 
 import java.util.ArrayList;
 
-import se.umu.cs.ldbn.client.core.AttributeNameTable;
+import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.FD;
 
 public final class AssignmentGenerator {
@@ -10,7 +10,7 @@ public final class AssignmentGenerator {
 	public static Assignment generateMinCoverTest() {
 		ArrayList<FD> fds = new ArrayList<FD>();
 		String[] a = {"A", "B", "C", "D", "E", "G"};
- 		AttributeNameTable dom = new AttributeNameTable(a);
+ 		DomainTable dom = new DomainTable(a);
  		/*
  		F = { AB -> C, C -> A, BC -> D, ACD -> B, D -> E, D -> G, BE -> C, 
  			  CG -> B, CG -> D, CE -> A, CE -> G}
@@ -99,7 +99,7 @@ public final class AssignmentGenerator {
 		return generateMinCoverTest();
 		/*
 		String[] atts = {"A", "B", "C", "D", "E", "F", "G"};
-		AttributeNameTable dom = new AttributeNameTable(atts);
+		DomainTable dom = new DomainTable(atts);
 		ArrayList<FD> fds = new ArrayList<FD>(5);
 		{
 			String[] lhs = {"A", "B"}; 
