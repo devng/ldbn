@@ -4,7 +4,7 @@ import se.umu.cs.ldbn.client.core.AttributeNameTable;
 import se.umu.cs.ldbn.client.core.FD;
 import java.util.List;
 
-public class Assignment {
+public final class Assignment {
 	private AttributeNameTable domain;
 	private List<FD> fds;
 	

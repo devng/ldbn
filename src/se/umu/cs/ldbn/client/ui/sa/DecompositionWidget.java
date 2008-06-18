@@ -1,11 +1,13 @@
-package se.umu.cs.ldbn.client.ui;
+package se.umu.cs.ldbn.client.ui.sa;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import se.umu.cs.ldbn.client.CommonFunctions;
-import se.umu.cs.ldbn.client.Main;
+import se.umu.cs.ldbn.client.ui.HasAdditionalControlls;
+import se.umu.cs.ldbn.client.ui.MouseAdapter;
+import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -16,8 +18,8 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class DecompositionWidget extends Composite implements ClickListener,
-	HasUpControlls{
+public final class DecompositionWidget extends Composite 
+	implements ClickListener, HasAdditionalControlls{
 
 	private List<RelationWidget> relations;
 	private Button addRelation;
@@ -70,8 +72,8 @@ public class DecompositionWidget extends Composite implements ClickListener,
 			rCounter++;
 			relations.add(r);
 			relationsPanel.add(r);
-			Main.get().getFdEditorDialog().center();
-			Main.get().getFdEditorDialog().setCurrentFDHolderPanel(r.fetFDHolderPanel());
+			FDEditorDialog.get().center();
+			FDEditorDialog.get().setCurrentFDHolderPanel(r.fetFDHolderPanel());
 		} else if (sender == checkControlls[0]) {
 			//select all
 			for (RelationWidget rw : relations) {
@@ -99,7 +101,7 @@ public class DecompositionWidget extends Composite implements ClickListener,
 		return relations;
 	}
 	
-	public Widget[] getUpControlls() {
+	public Widget[] getAdditionalControlls() {
 		return checkControlls;
 	}
 }

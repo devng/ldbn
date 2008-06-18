@@ -6,7 +6,6 @@ import se.umu.cs.ldbn.client.io.LdbnParser.LDBN_TYPE;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
 /**

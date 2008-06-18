@@ -3,11 +3,13 @@ package se.umu.cs.ldbn.client.ui;
 import java.util.List;
 
 import se.umu.cs.ldbn.client.CommonFunctions;
-import se.umu.cs.ldbn.client.Main;
 import se.umu.cs.ldbn.client.core.FD;
+import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
+import se.umu.cs.ldbn.client.ui.dialog.HelpDialog;
+import se.umu.cs.ldbn.client.ui.sa.RelationAttributesWidget;
+import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentPanel;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
-import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
@@ -27,9 +29,9 @@ public final class FDEditorWidget extends Composite
 	private Image arrowImg;
 	private Image infoButton;
 	private HorizontalPanel mainPanel;
-	private Button clearBtn;
-	private Button addBtn;
-	private FDHolderPanel currnetFDHP = null;
+	private Button clearButton;
+	private Button addButton;
+	private FDHolderPanel currnetFDHP;
 	
 	private final class FDEditorTextArea extends AttributeTextArea  {
 		
@@ -52,8 +54,7 @@ public final class FDEditorWidget extends Composite
 		}
 		
 		public void setFDWidget(FDWidget fdw) {
-			FDEditorWidget fdEdit = Main.get()
-				.getFDEditorWidget();
+			FDEditorWidget fdEdit = FDEditorDialog.get().getFDEditorWidget();
 			AttributeTextArea ata = fdEdit.getLeftTextArea();
 			List<String> atts = fdw.getFD().getLHS()
 					.getAttributeNames();
@@ -100,21 +101,17 @@ public final class FDEditorWidget extends Composite
 		CommonFunctions.setCursorPointer(infoButton);
 		infoButton.addClickListener(this);
 		vp.add(infoButton);
-		addBtn = new Button("Add");
-		addBtn.addClickListener(this);
-		CommonFunctions.setCursorPointer(addBtn);
-		addBtn.setStyleName("fdew-btn");
-		vp.add(addBtn);
-		clearBtn = new Button("Clear");
-		clearBtn.addClickListener(this);
-		CommonFunctions.setCursorPointer(clearBtn);
-		clearBtn.setStyleName("fdew-btn");
-		vp.add(clearBtn);
+		addButton = new Button("Set/Add");
+		addButton.addClickListener(this);
+		CommonFunctions.setCursorPointer(addButton);
+		addButton.setStyleName("fdew-btn");
+		vp.add(addButton);
+		clearButton = new Button("Clear");
+		clearButton.addClickListener(this);
+		CommonFunctions.setCursorPointer(clearButton);
+		clearButton.setStyleName("fdew-btn");
+		vp.add(clearButton);
 		mainPanel.add(vp);
-		
-		PickupDragController dc = Main.get().getDragController();
-		dc.registerDropController(leftTA);
-		dc.registerDropController(rightTA);
 		
 		initWidget(mainPanel);
 	}
@@ -128,17 +125,21 @@ public final class FDEditorWidget extends Composite
 	}
 
 	public void onClick(Widget sender) {
-		if (sender.equals(clearBtn)) {
+		if (sender.equals(clearButton)) {
 			clearTextAreas();
-		} else if (sender.equals(addBtn)) {
+		} else if (sender.equals(addButton)) {
 			FDWidget fd = createFD();
+			if(fd == null) {
+				FDEditorDialog.get().setErrorMsg("LHS or RHS of the FD has no attributes.");
+				return;
+			}
 			addFDWidget(fd);
 		} else if (sender.equals(infoButton)) {
 		    dlg.center();
 		}
 	}
 
-	void setCurrentFDHolderPanel(FDHolderPanel fdHP) {
+	public void setCurrentFDHolderPanel(FDHolderPanel fdHP) {
 		currnetFDHP = fdHP;
 	}
 	
@@ -161,15 +162,34 @@ public final class FDEditorWidget extends Composite
 		}
 	}
 	
+	//returns null if the size of LHS or RHS is < 1
 	private FDWidget createFD() {
-		FD fd = new FD(Main.get().getAttributeNameTable());
-		String[] l = leftTA.parseAttributes();
-		for (int i = 0; i < l.length; i++) {
-			fd.getLHS().addAtt(l[i]);
+		FD fd = new FD(SolveAssignmentPanel.get().getAttributeNameTable());
+		List<String> l = leftTA.parseAttributes();
+		if(l.size() < 1) {
+			return null;
 		}
-		String[] r = rightTA.parseAttributes();
-		for (int i = 0; i < r.length; i++) {
-			fd.getRHS().addAtt(r[i]);
+		boolean isAnythinInserted = false;
+		for (int i = 0; i < l.size(); i++) {
+			if(fd.getLHS().addAtt(l.get(i))) {
+				isAnythinInserted = true;
+			}
+		}
+		if(!isAnythinInserted) {
+			return null;
+		}
+		List<String> r = rightTA.parseAttributes();
+		if(l.size() < 1) {
+			return null;
+		}
+		isAnythinInserted = false;
+		for (int i = 0; i < r.size(); i++) {
+			if(fd.getRHS().addAtt(r.get(i))) {
+				isAnythinInserted = true;
+			}
+		}
+		if(!isAnythinInserted) {
+			return null;
 		}
 		FDWidget fdw = new FDWidget(true, fd);
 		clearTextAreas();

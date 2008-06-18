@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import se.umu.cs.ldbn.client.core.AttributeNameTable;
 import se.umu.cs.ldbn.client.core.FD;
 
-public class RandomAssignmentGenerator {
-	
+public final class AssignmentGenerator {
 	
 	public static Assignment generateMinCoverTest() {
 		ArrayList<FD> fds = new ArrayList<FD>();

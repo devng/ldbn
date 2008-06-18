@@ -2,7 +2,6 @@ package se.umu.cs.ldbn.client.ui;
 
 import java.util.List;
 
-import se.umu.cs.ldbn.client.Main;
 import se.umu.cs.ldbn.client.core.FD;
 
 import com.google.gwt.user.client.ui.HTML;
@@ -15,7 +14,12 @@ public final class FDWidget extends HTML {
 	public FDWidget(boolean isEditable, FD fd) {
 		this.isEditable = isEditable;
 		this.fd = fd;
-		
+		rebuildHTML();
+		setStyleName("fdw");
+		LdbnDragCotroller.get().makeDraggable(this);
+	}
+	
+	private void rebuildHTML() {
 		StringBuffer sb = new StringBuffer(); 
 		sb.append("<table border='0' cellpadding='2' cellspacing='2'>");
 		sb.append("<tr>");
@@ -37,8 +41,11 @@ public final class FDWidget extends HTML {
 		sb.append("</tr>");
 		sb.append("</table>");
 		setHTML(sb.toString());
-		setStyleName("fdw");
-		Main.get().getDragController().makeDraggable(this);
+	}
+	
+	public void recalculateMask() {
+		fd.recalculateMask();
+		rebuildHTML();
 	}
 
 	public boolean isEditable() {

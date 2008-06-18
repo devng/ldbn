@@ -1,4 +1,4 @@
-package se.umu.cs.ldbn.client.ui;
+package se.umu.cs.ldbn.client.ui.dialog;
 
 import se.umu.cs.ldbn.client.CommonFunctions;
 
@@ -11,18 +11,28 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-
-public class CheckSolutionDialog extends DialogBox implements ClickListener {
+//TODO
+public final class CheckSolutionDialog extends DialogBox 
+	implements ClickListener {
 
 	private Panel mainPanel;
 	
-	public CheckSolutionDialog() {
+	private static CheckSolutionDialog inst;
+	
+	private CheckSolutionDialog() {
 		super(false, false);
 		setText("Check Solution Dialog");
 		Button closeButton = new Button("Close", this);
 		CommonFunctions.setCursorPointer(closeButton);
 		mainPanel = new VerticalPanel();
 		mainPanel.setStyleName("csd-innerPanel");
+	}
+	
+	public static CheckSolutionDialog get() {
+		if (inst == null) {
+			inst = new CheckSolutionDialog();
+		}
+		return inst;
 	}
 	
 	

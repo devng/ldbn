@@ -1,6 +1,5 @@
 package se.umu.cs.ldbn.client.core;
 
-import com.allen_sauer.gwt.log.client.Log;
 
 public final class FD {
 	private AttributeSet leftHandSide;
@@ -20,6 +19,11 @@ public final class FD {
 		for (int i = 0; i < rhs.length; i++) {
 			rightHandSide.addAtt(rhs[i]);
 		}
+	}
+	
+	public void recalculateMask() {
+		leftHandSide.recalculateMask();
+		rightHandSide.recalculateMask();
 	}
 	
 	public FD(AttributeSet l, AttributeSet r) {

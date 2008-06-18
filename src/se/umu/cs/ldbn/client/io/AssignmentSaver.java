@@ -2,25 +2,24 @@ package se.umu.cs.ldbn.client.io;
 
 import java.util.List;
 
-import com.allen_sauer.gwt.log.client.Log;
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.Response;
-import com.google.gwt.http.client.URL;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.xml.client.Document;
-import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.Text;
-import com.google.gwt.xml.client.XMLParser;
-
 import se.umu.cs.ldbn.client.Assignment;
 import se.umu.cs.ldbn.client.CommonFunctions;
 import se.umu.cs.ldbn.client.core.AttributeNameTable;
 import se.umu.cs.ldbn.client.core.AttributeSet;
 import se.umu.cs.ldbn.client.core.FD;
 
-public class AssignmentSaver {
+import com.allen_sauer.gwt.log.client.Log;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.Text;
+import com.google.gwt.xml.client.XMLParser;
+
+public final class AssignmentSaver {
 	
 	private AssignmentSaver() {}
 	
