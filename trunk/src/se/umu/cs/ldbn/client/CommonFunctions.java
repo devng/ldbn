@@ -57,7 +57,7 @@ public final class CommonFunctions {
 		LdbnParser p = LdbnParser.get();
 		LdbnParser.LDBN_TYPE type = p.parse(response.getText());
 		if (type == LDBN_TYPE.unknown) {
-			
+			Window.alert("The server returned an unknown XML responce.");
 			return false;
 		}
 		if (type == LDBN_TYPE.msg && p.getMsgType() != LdbnParser.MSG_TYPE.ok) {

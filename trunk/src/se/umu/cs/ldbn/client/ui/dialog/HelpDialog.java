@@ -5,13 +5,33 @@ import com.google.gwt.user.client.ui.Widget;
 
 public final class HelpDialog extends CloseDialog {
 
-	public HelpDialog() {
-		super("Help Dialog", "This is an example of help dialog.", false);
-		
+	private static HelpDialog inst;
+	private Frame viewer;
+	
+	private HelpDialog() {
+		super("Help Dialog", "", false);
+	}
+	
+	public static HelpDialog get() {
+		if (inst == null) {
+			inst = new HelpDialog();
+		}
+		return inst;
 	}
 	
 	protected Widget getContentWidget() {
-		//TODO
-		return new Frame("http://www.google.com");
+		viewer = new Frame();
+		viewer.setSize("400px", "250px");
+		return viewer;
+	}
+	
+	/**
+	 * Only a file name not the URL. Files are to be located in the info
+	 * folder.
+	 * @param fileName
+	 */
+	public void showInfo(String fileName) {
+		viewer.setUrl("info/"+fileName);
+		center();
 	}
 }

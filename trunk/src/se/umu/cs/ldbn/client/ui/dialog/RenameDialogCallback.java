@@ -2,7 +2,7 @@ package se.umu.cs.ldbn.client.ui.dialog;
 
 import java.util.Collection;
 
-public interface RenameDialogCaller {
+public interface RenameDialogCallback {
 	String getOldName();
 	void setNewName(String s);
 	
@@ -13,4 +13,6 @@ public interface RenameDialogCaller {
 	 * I have to look into that.  
 	 */
 	Collection getTakenNames(); 
+	
+	void onRenameCanceled();
 }

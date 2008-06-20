@@ -4,7 +4,6 @@ import se.umu.cs.ldbn.client.io.Config;
 import se.umu.cs.ldbn.client.ui.ca.CreateAssignmentWidget;
 import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
 
-import com.allen_sauer.gwt.dnd.client.DragController;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.EntryPoint;
@@ -63,6 +62,7 @@ public final class Main implements EntryPoint {
 		}
 		
 		AbsolutePanel all = new AbsolutePanel();
+		all.setWidth("800px");
 		dragControll = new PickupDragController(all, false);
 		dragControll.setBehaviorDragProxy(true);
 		

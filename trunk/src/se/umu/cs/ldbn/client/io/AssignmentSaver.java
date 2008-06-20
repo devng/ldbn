@@ -23,11 +23,11 @@ public final class AssignmentSaver {
 	
 	private AssignmentSaver() {}
 	
-	public static void sendToSaveScript(String xml, String name) {
+	public static void sendToSaveScript(String xml, String name, String id) {
 		RequestBuilder rb = new RequestBuilder(RequestBuilder.POST,
 			Config.get().getSaveScriptURL());
 		rb.setHeader("Content-type", "application/x-www-form-urlencoded");
-		String data = "name="+name+"&xml="+xml;
+		String data = "id="+id+"&name="+name+"&xml="+xml;
 		try {
 			rb.sendRequest(data, new RequestCallback() {
 				

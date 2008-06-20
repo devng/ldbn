@@ -8,14 +8,14 @@ import com.google.gwt.user.client.ui.Widget;
 
 public final class RenameDialog extends OkCancelDialog {
 
-	public static String REGEX = "([\\w]){1,20}";
+	public static String REGEX = "([\\w]|\\-){1,20}";
 	private static RenameDialog inst;
 	
-	private RenameDialogCaller caller;
+	private RenameDialogCallback caller;
 	private TextBox nameBox;
 	
 	private RenameDialog() {
-		super("Rename", "Use only <i>word</i> characters.", true);
+		super("Enter a name", "Use only <i>word</i> characters.", true);
 		caller = null;
 	}
 	
@@ -60,7 +60,14 @@ public final class RenameDialog extends OkCancelDialog {
 		}
 	}
 	
-	public void rename(RenameDialogCaller rdc) {
+	protected void onCancelClick() {
+		super.onCancelClick();
+		if(caller != null) {
+			caller.onRenameCanceled();
+		}
+	}
+	
+	public void rename(RenameDialogCallback rdc) {
 		if(rdc == null) return;
 		caller = rdc;
 		nameBox.setText(rdc.getOldName());

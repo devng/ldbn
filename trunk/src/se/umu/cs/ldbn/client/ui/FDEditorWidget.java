@@ -5,15 +5,10 @@ import java.util.List;
 import se.umu.cs.ldbn.client.CommonFunctions;
 import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.FD;
-import se.umu.cs.ldbn.client.ui.ca.CreateAssignmentWidget;
-import se.umu.cs.ldbn.client.ui.ca.EditableGivenAttributesWidget;
 import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
-import se.umu.cs.ldbn.client.ui.dialog.HelpDialog;
 import se.umu.cs.ldbn.client.ui.sa.RelationAttributesWidget;
-import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
-import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
@@ -25,13 +20,9 @@ import com.google.gwt.user.client.ui.Widget;
 public final class FDEditorWidget extends Composite
 	implements ClickListener {
 	
-	//TODO debug
-	private HelpDialog dlg;
-	
 	private FDEditorTextArea leftTA;
 	private FDEditorTextArea rightTA;
 	private Image arrowImg;
-	private Image infoButton;
 	private HorizontalPanel mainPanel;
 	private Button clearButton;
 	private Button addButton;
@@ -84,7 +75,6 @@ public final class FDEditorWidget extends Composite
 	public FDEditorWidget() {
 		super();
 		mainPanel = new HorizontalPanel();
-		dlg = new HelpDialog();
 		
 		mainPanel.setSpacing(4);
 		
@@ -104,10 +94,7 @@ public final class FDEditorWidget extends Composite
 		mainPanel.setVerticalAlignment(VerticalPanel.ALIGN_TOP);
 		
 		VerticalPanel vp = new VerticalPanel();
-		infoButton = new Image("img/info.png");
-		CommonFunctions.setCursorPointer(infoButton);
-		infoButton.addClickListener(this);
-		vp.add(infoButton);
+		vp.add(new InfoButton("example"));
 		addButton = new Button("Set/Add");
 		addButton.addClickListener(this);
 		CommonFunctions.setCursorPointer(addButton);
@@ -141,8 +128,6 @@ public final class FDEditorWidget extends Composite
 				return;
 			}
 			addFDWidget(fd);
-		} else if (sender.equals(infoButton)) {
-		    dlg.center();
 		}
 	}
 

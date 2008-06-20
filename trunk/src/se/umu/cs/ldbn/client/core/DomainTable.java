@@ -48,7 +48,7 @@ public final class DomainTable {
 		notifyListeners();
 	}
 	
-	public void registerListener(DomainTableListener l) {
+	public void addListener(DomainTableListener l) {
 		if(l != null)
 			listeners.add(l);
 	}
@@ -86,6 +86,23 @@ public final class DomainTable {
 			return true;
 		}
 		return false;
+	}
+	
+	public void loadDomainTable(DomainTable that) {
+		attNames.clear();
+		attIndices.clear();
+		index = 0;
+		this.attNames = that.attNames;
+		this.attIndices = that.attIndices;
+		this.index = that.index;
+		notifyListeners();
+	}
+	
+	public void clearData() {
+		attNames.clear();
+		attIndices.clear();
+		index = 0;
+		notifyListeners();
 	}
 	
 	public boolean renameAtt(String oldAttName, String newAttName) {

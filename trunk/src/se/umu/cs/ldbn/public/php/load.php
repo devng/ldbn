@@ -6,6 +6,7 @@ include("opendb.php");
 	}
 	
 	if(isset($assignment_id)) {
+		checkID($assignment_id);
 		$sql = "SELECT xml FROM assignment WHERE id=$assignment_id";
 		if (! $sth = @mysql_query($sql)) {
 			die(getDBErrorXML());

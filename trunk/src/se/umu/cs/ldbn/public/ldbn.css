@@ -7,16 +7,20 @@ body {
 }
 
 .att-but {
-	width: 90px;
-	height: 20px;
-	padding: 0px;
-	font-size: 8pt;
+	min-width: 120px;
+	margin: 4px;
+	font-size: 10pt;
+}
+
+.att-img {
+	vertical-align: middle;
+	margin-left: 4px;
+	margin-right: 4px;
 }
 
 /* DisclosureWidget */
 .dw {
 	width: 100%;
-	max-width: 500px;
 	border: 1px solid #DADADA;
 	color: #333;
 }
@@ -98,7 +102,7 @@ body {
 
 /* END DecompositionEditorWidget */
 
-/* HelpDialog */
+/* Dialog */
 .gwt-DialogBox {
 	background: #F6F6F6;
 	border: 2px solid #DADADA;
@@ -107,9 +111,11 @@ body {
 .Caption {
 	background-image: url(img/dw-header-bg.png);
 	cursor: move;
+	font-weight: bold;
+	
 }
 
-/* END HelpDialog */
+/* END Dialog */
 
 /* Minimal Cover Button */
 .min-cov-but {
@@ -162,7 +168,6 @@ body {
 .nad-innerPanel {
 	background-color: #FFFFFF;
 	border: 1px solid #CED4DA;
-	width: 100%;
 }
 
 .nad-myLabel {
@@ -178,3 +183,54 @@ body {
 }
 
 /* END NewAssignmentDialog */
+
+/* HeaderWidget */
+.hw {
+	width: 100%;
+	background-color: #BBCBD9;
+	margin-bottom: 6px;
+}
+/* END HeaderWidget */
+
+.gwt-TabPanel {
+  margin-top: 4px;
+}
+
+.gwt-TabPanelBottom {
+
+}
+
+.gwt-TabBar {
+  padding-top: 2px;
+  border-bottom: 4px solid #BBCBD9;
+  background-color: #fff;
+}
+
+.gwt-TabBar .gwt-TabBarFirst {
+}
+
+.gwt-TabBar .gwt-TabBarRest {
+}
+
+.gwt-TabBar .gwt-TabBarItem {
+  padding: 4px;
+  cursor: pointer;
+  cursor: hand;
+
+  background-color: #e8eef7;
+  border-bottom: 2px solid white;
+  margin-right: 2px;
+}
+
+.gwt-TabBar .gwt-TabBarItem-selected {
+  padding: 4px;
+  font-weight: bold;
+  cursor: default;
+
+  background-image: url(img/raw-bg.png);
+  background-repeat: repeat-x;
+  background-color: #BBCBD9;
+  border: 1px solid #7F9DB9;
+  border-bottom: 2px solid #BBCBD9;
+  margin-right: 2px;
+}
