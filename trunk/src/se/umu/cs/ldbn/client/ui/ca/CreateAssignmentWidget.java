@@ -123,7 +123,7 @@ public final class CreateAssignmentWidget extends Composite
 		return egas.getDomain();
 	}
 
-	public void clear() {
+	public void clearData() {
 		egas.getDomain().clearData();
 		givenFDs.clearData();
 		currentAssignment = null;
@@ -140,7 +140,7 @@ public final class CreateAssignmentWidget extends Composite
 			fded.setCurrentDomain(egas.getDomain());
 			
 		}  else if (sender == newButton) {
-			clear();
+			clearData();
 			loadedId = null;
 			loadedName = null;
 		} else if (sender == saveButton) {
@@ -205,6 +205,7 @@ public final class CreateAssignmentWidget extends Composite
 	public void onAssignmentLoadError() {}
 
 	public void onAssignmentLoaded(Assignment a) {
+		clearData();
 		egas.getDomain().loadDomainTable(a.getDomain());
 		for (FD fd : a.getFDs()) {
 			givenFDs.addFDWidget(new FDWidget(true, fd));
