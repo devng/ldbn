@@ -2,6 +2,7 @@ package se.umu.cs.ldbn.client.ui.sa;
 
 import se.umu.cs.ldbn.client.CommonFunctions;
 import se.umu.cs.ldbn.client.ui.FDHolderPanel;
+import se.umu.cs.ldbn.client.ui.HasAdditionalControlls;
 import se.umu.cs.ldbn.client.ui.InfoButton;
 import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
 
@@ -12,7 +13,8 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class MinimalCoverWidget extends Composite implements ClickListener {
+public class MinimalCoverWidget extends Composite implements ClickListener,
+	HasAdditionalControlls {
 
 	
 	private FDHolderPanel mainPanel;
@@ -22,9 +24,9 @@ public class MinimalCoverWidget extends Composite implements ClickListener {
 		mainPanel = new FDHolderPanel();
 		
 		minCovAddFD = new Button("Add new FD");
-		minCovAddFD.addStyleName("min-cov-but");
+		minCovAddFD.setStyleName("min-cov-but");
 		minCovAddFD.addClickListener(this);
-		CommonFunctions.setBGTransparent(minCovAddFD);
+		CommonFunctions.setCursorPointer(minCovAddFD);
 		HorizontalPanel buttons = new HorizontalPanel();
 		buttons.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		buttons.add(minCovAddFD);
@@ -46,6 +48,7 @@ public class MinimalCoverWidget extends Composite implements ClickListener {
 		return mainPanel;
 	}
 	
-	
-
+	public Widget[] getAdditionalControlls() {
+		return mainPanel.getAdditionalControlls();
+	}
 }
