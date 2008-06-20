@@ -103,7 +103,7 @@ public final class RelationWidget extends Composite implements ClickListener,
 		
 		fdHP.add(hp);
 		fdHP.add(fdTitle);
-		fdHP.registerListener(raw);
+		fdHP.addListener(raw);
 		mainPanel.add(header);
 		mainPanel.add(fdHP);
 		

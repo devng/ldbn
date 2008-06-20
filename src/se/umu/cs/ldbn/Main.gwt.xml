@@ -30,8 +30,8 @@
           The default log level is `OFF`. In development you'll usually want
           to switch to `DEBUG` level logging.
     -->
-   <extend-property name="log_level" values="DEBUG" />
-   <set-property    name="log_level" value="DEBUG" />
+   <extend-property name="log_level" values="INFO" />
+   <set-property    name="log_level" value="INFO" />
    
 
 	<stylesheet src='ldbn.css'/>

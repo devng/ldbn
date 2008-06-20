@@ -6,12 +6,14 @@ import java.util.List;
 
 import se.umu.cs.ldbn.client.CommonFunctions;
 import se.umu.cs.ldbn.client.ui.HasAdditionalControlls;
+import se.umu.cs.ldbn.client.ui.InfoButton;
 import se.umu.cs.ldbn.client.ui.MouseAdapter;
 import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Panel;
@@ -58,8 +60,11 @@ public final class DecompositionWidget extends Composite
 		addRelation = new Button("Add new Relation");
 		addRelation.setStyleName("min-cov-but");
 		addRelation.addClickListener(this);
+		CommonFunctions.setCursorPointer(addRelation);
 		HorizontalPanel hp = new HorizontalPanel();
+		hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		hp.add(addRelation);
+		hp.add(new InfoButton("example"));
 		vp.add(hp);
 		relationsPanel = new HorizontalPanel();
 		vp.add(relationsPanel);
@@ -100,6 +105,12 @@ public final class DecompositionWidget extends Composite
 	
 	public List<RelationWidget> getRelations() {
 		return relations;
+	}
+	
+	public void clearData() {
+		relations.clear();
+		relationsPanel.clear();
+		rCounter = 1;
 	}
 	
 	public Widget[] getAdditionalControlls() {

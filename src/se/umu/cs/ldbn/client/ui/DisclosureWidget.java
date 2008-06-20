@@ -237,6 +237,7 @@ public final class DisclosureWidget extends Composite implements ClickListener,
 
 		scroller = new ScrollPanel(content);
 		scroller.setStyleName("dw-content");
+		scroller.setWidth("798px");
 		borderPanel.add(scroller);
 		resizer = new ResizePanel();
 		resizer.setStyleName("dw-resizer");

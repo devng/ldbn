@@ -2,17 +2,16 @@ package se.umu.cs.ldbn.client.ui.dialog;
 
 import se.umu.cs.ldbn.client.CommonFunctions;
 import se.umu.cs.ldbn.client.ui.AttributeTextArea;
+import se.umu.cs.ldbn.client.ui.InfoButton;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 abstract class BaseAttributeEditorDialog extends CloseDialog {
 
 	protected HorizontalPanel mainPanel;
-	protected Image infoButton;
 	protected Button clearButton;
 	protected Button setButton;
 	
@@ -30,9 +29,7 @@ abstract class BaseAttributeEditorDialog extends CloseDialog {
 	
 	public void onClick(Widget sender) {
 		super.onClick(sender);
-		if(sender == infoButton) {
-			onInfoButClicked();
-		} else if (sender == clearButton) {
+		if (sender == clearButton) {
 			onClearButClicked();
 		} else if (sender == setButton) {
 			onAddButClicked();
@@ -51,17 +48,16 @@ abstract class BaseAttributeEditorDialog extends CloseDialog {
 		mainPanel.add(textArea);
 		
 		VerticalPanel vp = new VerticalPanel();
-		infoButton = new Image("img/info.png");
-		CommonFunctions.setCursorPointer(infoButton);
-		infoButton.addClickListener(this);
-		vp.add(infoButton);
+		vp.add(new InfoButton("example"));
 		setButton = new Button("Set");
 		setButton.setStyleName("dew-btn");
 		setButton.addClickListener(this);
+		CommonFunctions.setCursorPointer(setButton);
 		vp.add(setButton);
 		clearButton = new Button("Clear");
 		clearButton.setStyleName("dew-btn");
 		clearButton.addClickListener(this);
+		CommonFunctions.setCursorPointer(clearButton);
 		vp.add(clearButton);
 		mainPanel.add(vp);
 	

@@ -5,8 +5,6 @@ import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.ui.FDEditorWidget;
 import se.umu.cs.ldbn.client.ui.FDHolderPanel;
 
-import com.google.gwt.user.client.ui.PopupListener;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public final class FDEditorDialog extends CloseDialog {

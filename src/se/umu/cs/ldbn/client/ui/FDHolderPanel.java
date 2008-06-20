@@ -83,7 +83,7 @@ public final class FDHolderPanel extends VerticalPanel
 		checkControlls[2].addClickListener(this);
 	}
 	
-	public void registerListener(FDHolderPanelListener l) {
+	public void addListener(FDHolderPanelListener l) {
 		if(l == null) return;
 		listeners.add(l);
 	}
@@ -93,7 +93,7 @@ public final class FDHolderPanel extends VerticalPanel
 		listeners.remove(l);
 	}
 	
-	public void clearAll() {
+	public void clearData() {
 		for (Iterator<FDWidget> iter = fds.iterator(); iter.hasNext();) {
 			FDWidget fdw = iter.next();
 			fdw.getParent().removeFromParent();

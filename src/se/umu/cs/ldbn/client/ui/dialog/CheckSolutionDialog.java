@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-//TODO
+//TODO DO it properly
 public final class CheckSolutionDialog extends DialogBox 
 	implements ClickListener {
 

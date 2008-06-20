@@ -12,7 +12,6 @@ import se.umu.cs.ldbn.client.ui.sa.RelationAttributesWidget;
 import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public final class KeyEditorDialog  extends BaseAttributeEditorDialog  {
@@ -96,8 +95,7 @@ public final class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 	}
 	
 	protected void onInfoButClicked() {
-		DialogBox dlg = new HelpDialog();
-	    dlg.center();
+		HelpDialog.get().showInfo("example.html");
 	}
 	
 	@Override

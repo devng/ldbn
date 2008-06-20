@@ -15,6 +15,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
+import com.google.gwt.xml.client.impl.DOMParseException;
 
 public final class LdbnParser {
 	
@@ -58,7 +59,14 @@ public final class LdbnParser {
 	
 	public LDBN_TYPE parse(String xml) {
 		clear();
-		Document doc = XMLParser.parse(xml);
+		Document doc;
+		try {
+			doc = XMLParser.parse(xml);
+		} catch (DOMParseException e) {
+			
+			return LDBN_TYPE.unknown;
+		}
+		
 		Node ldbn = doc.getElementsByTagName("ldbn").item(0);
 		if(ldbn == null) return LDBN_TYPE.unknown;
 		String type = ((Element) ldbn).getAttribute("type");
