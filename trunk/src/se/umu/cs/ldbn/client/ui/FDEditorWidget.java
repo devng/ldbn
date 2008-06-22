@@ -119,15 +119,20 @@ public final class FDEditorWidget extends Composite
 	}
 
 	public void onClick(Widget sender) {
+		FDEditorDialog.get().setErrorMsg("");
 		if (sender.equals(clearButton)) {
 			clearTextAreas();
 		} else if (sender.equals(addButton)) {
 			FDWidget fd = createFD();
 			if(fd == null) {
-				FDEditorDialog.get().setErrorMsg("LHS or RHS of the FD has no attributes.");
+				FDEditorDialog.get().setErrorMsg("LHS or RHS of the FD has no valid attributes.");
 				return;
 			}
+			if (leftTA.hasOmittedAttributes() || rightTA.hasOmittedAttributes()) {
+				FDEditorDialog.get().setErrorMsg("Some attributes had invalid names.");
+			}
 			addFDWidget(fd);
+			
 		}
 	}
 

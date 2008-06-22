@@ -78,7 +78,7 @@ public final class DecompositionWidget extends Composite
 			relations.add(r);
 			relationsPanel.add(r);
 			FDEditorDialog.get().center(); //always center first
-			FDEditorDialog.get().setCurrentFDHolderPanel(r.fetFDHolderPanel());
+			FDEditorDialog.get().setCurrentFDHolderPanel(r.getFDHolderPanel());
 			FDEditorDialog.get().setCurrentDomain(SolveAssignmentWidget.get().getDomainTable());
 		} else if (sender == checkControlls[0]) {
 			//select all
@@ -95,8 +95,8 @@ public final class DecompositionWidget extends Composite
 			for (Iterator<RelationWidget> i = relations.iterator(); i.hasNext();) {
 				RelationWidget rw = i.next();
 				if(rw.isChecked()) {
-					rw.removeFromParent();
 					i.remove();
+					rw.removeFromParent();
 					rw = null;
 				}
 			}

@@ -115,7 +115,7 @@ public final class RelationWidget extends Composite implements ClickListener,
 		initWidget(mainPanelWrapper);
 	}
 	
-	public FDHolderPanel fetFDHolderPanel() {
+	public FDHolderPanel getFDHolderPanel() {
 		return fdHP;
 	}
 	

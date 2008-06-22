@@ -6,6 +6,7 @@ import java.util.List;
 import se.umu.cs.ldbn.client.Assignment;
 import se.umu.cs.ldbn.client.AssignmentGenerator;
 import se.umu.cs.ldbn.client.CommonFunctions;
+import se.umu.cs.ldbn.client.Main;
 import se.umu.cs.ldbn.client.core.Algorithms;
 import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.FD;
@@ -42,6 +43,10 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	private MinimalCoverWidget minimalCoverWidget;
 	//2nf decomposition
 	private DecompositionWidget decomposition2NF;
+	private DisclosureWidget dwGivenAttributes;
+	private DisclosureWidget dwFDs;
+	private DisclosureWidget dwMinimalCover;
+	private DisclosureWidget dwDecomposition2NF;
 	
 	private SolveAssignmentWidget() {
 		super();
@@ -52,7 +57,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		domain = new DomainTable();
 		fds = new ArrayList<FD>();
 		
-		//Given Attributes
+		//Controlls
 		givenAttributesWidget = new GivenAttributesWidget();
 		newAssignment = new Button("New Assignment");
 		newAssignment.setStyleName("att-but");
@@ -74,23 +79,22 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		hw.add(showSolution);
 		hw.add(info);
 		add(hw);
-		//Button[] attUpBut = {newAssignment, checkSolution};
-		DisclosureWidget dw = new DisclosureWidget("Given attributes", 
+		dwGivenAttributes = new DisclosureWidget("Given attributes", 
 				givenAttributesWidget);
-		add(dw);
+		add(dwGivenAttributes);
 		//Given FDs
 		givenFDsWidget = new GivenFDsWidget();
-		dw = new DisclosureWidget("Given FDs", 
+		dwFDs = new DisclosureWidget("Given FDs", 
 				givenFDsWidget);
-		add(dw);
+		add(dwFDs);
 		//Minimal Cover
 		minimalCoverWidget = new MinimalCoverWidget();
-		dw = new DisclosureWidget("Find the minimal cover of FDs", 
+		dwMinimalCover = new DisclosureWidget("Find the minimal cover of FDs", 
 				minimalCoverWidget);
-		add(dw); 
+		add(dwMinimalCover); 
 		decomposition2NF = new DecompositionWidget();
-		dw = new DisclosureWidget("Decompose in 2 NF", decomposition2NF); 
-		add(dw);
+		dwDecomposition2NF = new DisclosureWidget("Decompose in 2 NF", decomposition2NF);
+		add(dwDecomposition2NF);
 		
 		//start with  a loaded assignment
 		this.domain = new DomainTable(); //this is necessary 
@@ -112,15 +116,17 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	
 	public void onClick(Widget sender) {
 		if(sender == checkSolution) {
-			Window.alert("Not implemented yet");
+			//Window.alert("Not implemented yet");
+			Main.get().showGlassPanel();
 		} else if (sender == newAssignment) {
 			LoadAssignmentDialog.get().load(this);
 		} else if (sender == showSolution) {
-			Window.alert("Not implemented yet");
+			//Window.alert("Not implemented yet");
+			Main.get().hideGlassPanel();
 		}
 	}
 
-	public void loadedIdAndName(String id, String name) {
+	public void onLoaded(String id, String name) {
 		AssignmentLoader.loadFromURL(id, this);
 	}
 
@@ -134,6 +140,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 
 	private void loadAssignment(Assignment a) {
 		clearData();
+		restoreDefaultSize();
 		this.domain.loadDomainTable(a.getDomain()); //not new so the listeners stay
 		this.fds = a.getFDs();
 		givenFDsWidget.setFDs(fds);
@@ -145,6 +152,13 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		minimalCoverWidget.getFDHolderPanel().clearData();
 		fds.clear();
 		decomposition2NF.clearData();
+	}
+	
+	private void restoreDefaultSize() {
+		dwGivenAttributes.resetHeightToDefault();
+		dwFDs.resetHeightToDefault();
+		dwMinimalCover.resetHeightToDefault();
+		dwDecomposition2NF.resetHeightToDefault();
 	}
 	
 	private void checkSolution() {

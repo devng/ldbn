@@ -15,7 +15,7 @@ public final class RenameDialog extends OkCancelDialog {
 	private TextBox nameBox;
 	
 	private RenameDialog() {
-		super("Enter a name", "Use only <i>word</i> characters.", true);
+		super("Enter a name", "Use only <i>word</i> characters.<BR>Maximal 20 characters.", true);
 		caller = null;
 	}
 	

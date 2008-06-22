@@ -1,6 +1,7 @@
 package se.umu.cs.ldbn.client;
 
 import se.umu.cs.ldbn.client.io.Config;
+import se.umu.cs.ldbn.client.ui.GlassPanel;
 import se.umu.cs.ldbn.client.ui.ca.CreateAssignmentWidget;
 import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
 
@@ -8,6 +9,7 @@ import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -26,6 +28,10 @@ public final class Main implements EntryPoint {
 	private static Main instance;
 
 	private PickupDragController dragControll;
+
+	private AbsolutePanel mainPanel;
+
+	private GlassPanel glass;
 	
 	public static Main get() {
 		if (instance == null) {
@@ -61,9 +67,9 @@ public final class Main implements EntryPoint {
 			Window.alert("Main.java : instance != this");
 		}
 		
-		AbsolutePanel all = new AbsolutePanel();
-		all.setWidth("800px");
-		dragControll = new PickupDragController(all, false);
+		mainPanel = new AbsolutePanel();
+		mainPanel.setWidth("800px");
+		dragControll = new PickupDragController(mainPanel, false);
 		dragControll.setBehaviorDragProxy(true);
 		
 		TabPanel tabs = new TabPanel();
@@ -71,11 +77,23 @@ public final class Main implements EntryPoint {
 		tabs.add(CreateAssignmentWidget.get(), "Create assignments");
 		tabs.setWidth("100%");
 		tabs.selectTab(0);
-		all.add(tabs);
-		RootPanel.get().add(all);
+		mainPanel.add(tabs);
+		
+		RootPanel.get().add(mainPanel);
+		
+		glass = new GlassPanel(mainPanel);
+		
 	}
 	
 	public PickupDragController getDragController() {
 		return dragControll;
+	}
+	
+	public void showGlassPanel() {
+		glass.show();
+	}
+	
+	public void hideGlassPanel() {
+		glass.hide();
 	}
 }

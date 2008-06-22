@@ -1,0 +1,40 @@
+package se.umu.cs.ldbn.client.ui;
+
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.SimplePanel;
+
+/**
+* This panel is positioned absolutely and covers the main panel area.
+* 
+* @see se.umu.cs.ldbn.client.Main  
+*/
+public class GlassPanel extends Composite {
+
+   private SimplePanel panel;
+   private AbsolutePanel parent;
+
+   public GlassPanel(AbsolutePanel parent){
+	   super();
+	   panel = new SimplePanel();
+       initWidget(panel);
+       panel.setSize("800", "10000");
+       this.parent = parent;
+       panel.setStylePrimaryName("glassPanel");
+   }
+
+   public void show(){
+       // Override the styles explicitly, because it's needed every
+	   // time the widget is detached
+       DOM.setStyleAttribute(panel.getElement(), "left", "0");
+       DOM.setStyleAttribute(panel.getElement(), "top", "0");
+       DOM.setStyleAttribute(panel.getElement(), "position", "absolute");
+
+       parent.add(this);
+   }
+
+   public void hide(){
+       parent.remove(this);
+   }
+} 

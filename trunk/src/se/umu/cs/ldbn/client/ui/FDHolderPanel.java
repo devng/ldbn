@@ -16,8 +16,10 @@ import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.log.client.Log;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.MouseListener;
@@ -166,31 +168,6 @@ public final class FDHolderPanel extends VerticalPanel
 	}
 	
 	/**
-	 * Creates a panel, which consists of a check box and a widget and then adds
-	 * both to the map. 
-	 * 
-	 * @param w a widget which will be mapped to a check box 
-	 * @return a panel containing the widget and a check box.
-	 */
-	private Panel getCheckBoxPanel(FDWidget w) {
-		PickupDragController dc = Main.get().getDragController();
-		dc.makeDraggable(w);
-		CheckBox chBox = new CheckBox();
-		CommonFunctions.setCursorPointer(chBox);
-		HorizontalPanel hp = new HorizontalPanel();
-		hp.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
-		hp.add(chBox);
-		hp.add(w);
-		EditButton edit = new EditButton();
-		edit.addClickListener(this);
-		edit.addMouseListener(this);
-		hp.add(edit);
-		checkBoxes.put(chBox, w);
-		buttons.put(edit, chBox);
-		return hp;
-	}
-	
-	/**
 	 * Select all the check boxes.
 	 */
 	public void selectAll() {
@@ -272,5 +249,30 @@ public final class FDHolderPanel extends VerticalPanel
 		for (FDWidget fdw : fds) {
 			fdw.recalculateMask();
 		}
+	}
+	
+	/**
+	 * Creates a panel, which consists of a check box and a widget and then adds
+	 * both to the map. 
+	 * 
+	 * @param w a widget which will be mapped to a check box 
+	 * @return a panel containing the widget and a check box.
+	 */
+	private Panel getCheckBoxPanel(FDWidget w) {
+		PickupDragController dc = Main.get().getDragController();
+		dc.makeDraggable(w);
+		CheckBox chBox = new CheckBox();
+		CommonFunctions.setCursorPointer(chBox);
+		HorizontalPanel hp = new HorizontalPanel();
+		hp.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
+		hp.add(chBox);
+		hp.add(w);
+		EditButton edit = new EditButton();
+		edit.addClickListener(this);
+		edit.addMouseListener(this);
+		hp.add(edit);
+		checkBoxes.put(chBox, w);
+		buttons.put(edit, chBox);
+		return hp;
 	}
 }

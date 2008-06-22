@@ -53,7 +53,12 @@ public final class DisclosureWidget extends Composite implements ClickListener,
 	private boolean isResizing;
 	/** last position of the mouse during resizing.  */
 	private int lastY;
-
+	/** 
+	 * Has the widget been resized manually.If it hasn't been, then 
+	 * when the <code>scroller</code> is expanded next time, 
+	 * <code>setHeight</code> will be set to \"\" 
+	 */
+	private boolean hasBeenResized;
 	/* Variables used for the blinding effect **/
 	/** 
 	 * Indicates if the effect is still in progress. If false than no other 
@@ -134,6 +139,7 @@ public final class DisclosureWidget extends Composite implements ClickListener,
 					lastY = DOM.eventGetClientY(event);
 					DOM.setCapture(getElement());
 					DOM.eventPreventDefault(event);
+					hasBeenResized = true;
 				}
 				break;
 			}
@@ -205,7 +211,7 @@ public final class DisclosureWidget extends Composite implements ClickListener,
 
 			}
 		}
-
+		hasBeenResized = false;
 		fxT = new FXTimer();
 		/*main pane*l*/
 		VerticalPanel mainPanel = new VerticalPanel();
@@ -271,8 +277,10 @@ public final class DisclosureWidget extends Composite implements ClickListener,
 	 * A blind up and down effect. (40 FPS for 0.25 sec.)
 	 */
 	private void fxBlind() {
-		if (!isFxFinished)
+		if (!isFxFinished) {
 			return;
+		}
+			
 		isFxFinished = false;
 		if (isOpen) {
 			lastHeight = scroller.getOffsetHeight();
@@ -311,7 +319,7 @@ public final class DisclosureWidget extends Composite implements ClickListener,
 	 * 
 	 * @param dY how many pixels to increment.
 	 * @return return false if the scroller height cannot be incremented any 
-	 * more, thus lastHeifht value has been reached. 
+	 * more, thus <code>this.lastHeight</code> value has been reached. 
 	 */
 	private boolean incHeight(int dY) {
 		int y = scroller.getOffsetHeight();
@@ -320,7 +328,12 @@ public final class DisclosureWidget extends Composite implements ClickListener,
 			scroller.setHeight("" + y + "px"); //must not have size 0
 			return true;
 		}
-		scroller.setHeight("" + lastHeight + "px");
+		if(hasBeenResized) {
+			scroller.setHeight("" + lastHeight + "px");
+		} else {
+			scroller.setHeight("");
+		}
+		
 		return false;
 	}
 
@@ -358,5 +371,14 @@ public final class DisclosureWidget extends Composite implements ClickListener,
 
 	/**  Unused method from the MouseListener interface.*/
 	public void onMouseUp(Widget sender, int x, int y) {
+	}
+	
+	/** Expands the widget to the default height */
+	public void resetHeightToDefault() {
+		hasBeenResized = false;
+		scroller.setVisible(true);
+		isOpen = true;
+		scroller.setHeight("");
+		collapseButton.setVisibleRect(0, 15, 15, 15);
 	}
 }

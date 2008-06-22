@@ -84,7 +84,11 @@ public final class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 			kta.setText("");
 			return;
 		}
+		setErrorMsg("");
 		List<String> atts = kta.parseAttributes();
+		if(kta.hasOmittedAttributes()) {
+			setErrorMsg("Some attributes had invalid names.");
+		}
 		AttributeSet as = new AttributeSet(SolveAssignmentWidget.get().getDomainTable());
 		for (String str : atts) {
 			as.addAtt(str);
