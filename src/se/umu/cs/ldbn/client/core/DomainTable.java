@@ -3,30 +3,43 @@ package se.umu.cs.ldbn.client.core;
 import java.util.ArrayList;
 import java.util.List;
 
-//max 64 atts
+/**
+ * Max 32 attributes.
+ *  
+ * Ray Cromwell at Google IO 05.29.2008 - GWT - Extreme Performance and 
+ * Flexibility (watch at position 0:30:35):
+ * Javascript has only one numeric data type, which is the double. Double has 
+ * only 53 bits of precision. So if you want a "real" long integer 64 bit, it 
+ * has to be emulated. GWT introduced this emulation in 1.5 , and for the most 
+ * part it is not going to hurt the performance, but if you have methods that 
+ * relay upon long, like I do, those long slow the performance.
+ * 
+ * @author NGG
+ *
+ */
 public final class DomainTable {
 	private List<String> attNames;
-	private List<Long> attIndices;
+	private List<Integer> attIndices;
 	private List<DomainTableListener> listeners;
 	private int index;
 	
 	public DomainTable() {
 		attNames = new ArrayList<String>();
-		attIndices = new ArrayList<Long>();
+		attIndices = new ArrayList<Integer>();
 		listeners = new ArrayList<DomainTableListener>();
 		index = 0;
 	}
 	
 	public DomainTable(String[] initAtts) {
 		attNames = new ArrayList<String>(initAtts.length);
-		attIndices = new ArrayList<Long>(initAtts.length);
+		attIndices = new ArrayList<Integer>(initAtts.length);
 		listeners = new ArrayList<DomainTableListener>();
 		int i = 0;
-		long val = 0;
+		int val = 0;
 		for (; i < initAtts.length; i++) {
-			val = 1L << i;
+			val = 1 << i;
 			attNames.add(initAtts[i]);
-			attIndices.add(new Long(val));
+			attIndices.add(new Integer(val));
 		}
 		index = i;
 	}
@@ -38,11 +51,11 @@ public final class DomainTable {
 		attNames.clear();
 		attIndices.clear();
 		int i = 0;
-		long val = 0;
+		int val = 0;
 		for (; i < names.size(); i++) {
-			val = 1L << i;
+			val = 1 << i;
 			attNames.add(names.get(i));
-			attIndices.add(new Long(val));
+			attIndices.add(new Integer(val));
 		}
 		index = i;
 		notifyListeners();
@@ -59,11 +72,11 @@ public final class DomainTable {
 	}
 	
 	public boolean addAtt(String attName) {
-		if(index >= 64) return false;
-		long val = 1L << index;
+		if(index >= 32) return false;
+		int val = 1 << index;
 		if(containsNameCanseInsensitive(attName)) return false;
 		attNames.add(attName);
-		attIndices.add(new Long(val));
+		attIndices.add(new Integer(val));
 		index++;
 		notifyListeners();
 		return true;
@@ -111,17 +124,17 @@ public final class DomainTable {
 		return false;
 	}
 	
-	public long getAttIndex(String name) {
+	public int getAttIndex(String name) {
 		int i = indexNameCaseInsensitive(name);
 		if(i >= 0) {
-			return attIndices.get(i).longValue();
+			return attIndices.get(i).intValue();
 		} else {
 			return 0;
 		}
 	}
 	
-	public String getAttName(long attIndex) {
-		int i = attIndices.indexOf(new Long(attIndex));
+	public String getAttName(int attIndex) {
+		int i = attIndices.indexOf(new Integer(attIndex));
 		if(i >= 0) {
 			return attNames.get(i);
 		} else {
@@ -129,8 +142,8 @@ public final class DomainTable {
 		}
 	}
 	
-	public boolean containsAttIndex(long attIndex) {
-		int i = attIndices.indexOf(new Long(attIndex));
+	public boolean containsAttIndex(int attIndex) {
+		int i = attIndices.indexOf(new Integer(attIndex));
 		return i >= 0;
 	}
 	
@@ -155,14 +168,14 @@ public final class DomainTable {
 		return attNames.toArray(result);
 	}
 	
-	public Long[] getAttIndices() {
-		Long[] result = new Long[attIndices.size()];
+	public Integer[] getAttIndices() {
+		Integer[] result = new Integer[attIndices.size()];
 		return attIndices.toArray(result);
 	}
 	
-	public long getAttIndicesAsLong() {
-		long result = 0L;
-		for (Long l : attIndices) {
+	public int getAttIndicesAsInteger() {
+		int result = 0;
+		for (Integer l : attIndices) {
 			result |= l;
 		}
 		return result;

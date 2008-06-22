@@ -6,7 +6,7 @@ import java.util.List;
 public final class AttributeSet {
 	
 	private DomainTable domain;
-	private long attMask;
+	private int attMask;
 	
 	//cache
 	private boolean hasCahnge;
@@ -14,8 +14,8 @@ public final class AttributeSet {
 	
 	private class Iterator implements AttributeSetIterator {
 
-		private long index;
-		private long next;
+		private int index;
+		private int next;
 		private boolean hasNext;
 		
 		public Iterator() {
@@ -24,7 +24,7 @@ public final class AttributeSet {
 			hasNext = false;
 		}
 		
-		public long nextAttIndex() {
+		public int nextAttIndex() {
 			if(hasNext) {
 				hasNext = false;
 				index++;
@@ -43,8 +43,8 @@ public final class AttributeSet {
 		}
 
 		public boolean hasNext() {
-			for (long i = index; i < 64; i++) {
-				long mask = 1l << i;
+			for (int i = index; i < 32; i++) {
+				int mask = 1 << i;
 				if((attMask & mask) != 0) {
 					next = mask;
 					index = i;
@@ -93,17 +93,17 @@ public final class AttributeSet {
 	
 	
 	public boolean containsAtt(String attName) {
-		long attIndex = domain.getAttIndex(attName);
+		int attIndex = domain.getAttIndex(attName);
 		if (attIndex != 0) {
-			long r = attMask & attIndex;
+			int r = attMask & attIndex;
 			return r != 0;
 		} 
 		return false;
 	}
 	
-	public boolean containsAtt(long attIndex) {
+	public boolean containsAtt(int attIndex) {
 		if (domain.containsAttIndex(attIndex)) {
-			long r = attMask & attIndex;
+			int r = attMask & attIndex;
 			return r != 0;
 		}
 		return false;
@@ -111,12 +111,12 @@ public final class AttributeSet {
 	
 	public void recalculateMask() {
 		hasCahnge = true;
-		long l = domain.getAttIndicesAsLong();
-		attMask &= l; 
+		int i = domain.getAttIndicesAsInteger();
+		attMask &= i; 
 	}
 	
 	public boolean addAtt(String attName) {
-		long i = domain.getAttIndex(attName);
+		int i = domain.getAttIndex(attName);
 		if  (i != 0) {
 			attMask = attMask | i;
 			hasCahnge = true;
@@ -125,7 +125,7 @@ public final class AttributeSet {
 		return false;
 	}
 	
-	public boolean addAtt(long attIndex) {
+	public boolean addAtt(int attIndex) {
 		if  (domain.containsAttIndex(attIndex)) {
 			attMask = attMask | attIndex;
 			hasCahnge = true;
@@ -135,7 +135,7 @@ public final class AttributeSet {
 	}
 	
 	public boolean removeAtt(String attName) {
-		long attIndex = domain.getAttIndex(attName);
+		int attIndex = domain.getAttIndex(attName);
 		if (attIndex != 0) {
 			attMask = attMask & (~attIndex);
 			hasCahnge = true;
@@ -145,11 +145,11 @@ public final class AttributeSet {
 	}
 	
 	public void clearAllAttributes() {
-		attMask = 0L;
+		attMask = 0;
 		hasCahnge = true;
 	}
 	
-	public boolean removeAtt(long attIndex) {
+	public boolean removeAtt(int attIndex) {
 		if  (domain.containsAttIndex(attIndex)) {
 			attMask = attMask & (~attIndex);
 			hasCahnge = true;
@@ -181,7 +181,7 @@ public final class AttributeSet {
 	
 	public boolean isSubSetOf(AttributeSet a) {
 		if (a.domain == this.domain) {
-			long r = a.attMask & this.attMask;
+			int r = a.attMask & this.attMask;
 			return r == this.attMask;
 		}
 		return false;
@@ -189,7 +189,7 @@ public final class AttributeSet {
 	
 	public boolean containsAttSet(AttributeSet a) {
 		if (a.domain == this.domain) {
-			long r = a.attMask & this.attMask;
+			int r = a.attMask & this.attMask;
 			return r == a.attMask;
 		}
 		return false;
@@ -204,14 +204,14 @@ public final class AttributeSet {
 	}
 	
 	public int hashCode() {
-		return (int)(attMask ^ (attMask >>> 32));
+		return attMask;
 	}
 	
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		long one = 1;
-		for (int j = 0; j < 64; j++) {
-			long attIndex = attMask & (one << j);
+		int one = 1;
+		for (int j = 0; j < 32; j++) {
+			int attIndex = attMask & (one << j);
 			if(attIndex != 0) {
 				String name = domain.getAttName(attIndex);
 				if(name != null) {
@@ -246,11 +246,11 @@ public final class AttributeSet {
 		return attNames;
 	}
 	
-	long attMask() {
+	int attMask() {
 		return attMask;
 	}
 	
-	void setMask(long mask) {
+	void setMask(int mask) {
 		this.attMask = mask;
 	}
 	
@@ -260,9 +260,9 @@ public final class AttributeSet {
 	
 	int size() {
 		int size = 0;
-		long one = 1;
-		for (int j = 0; j < 64; j++) {
-			long attIndex = attMask & (one << j);
+		int one = 1;
+		for (int j = 0; j < 32; j++) {
+			int attIndex = attMask & (one << j);
 			if(attIndex != 0) {
 				size++;
 			}

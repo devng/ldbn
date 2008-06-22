@@ -20,6 +20,23 @@ public final class FDWidget extends HTML {
 		Main.get().getDragController().makeDraggable(this);
 	}
 	
+	public FD getFD() {
+		return fd;
+	}
+	
+	public boolean isEditable() {
+		return isEditable;
+	}
+
+	public void recalculateMask() {
+		fd.recalculateMask();
+		rebuildHTML();
+	}
+
+	public void setEditable(boolean isEditable) {
+		this.isEditable = isEditable;
+	}
+
 	private void rebuildHTML() {
 		StringBuffer sb = new StringBuffer(); 
 		sb.append("<table border='0' cellpadding='2' cellspacing='2'>");
@@ -42,22 +59,5 @@ public final class FDWidget extends HTML {
 		sb.append("</tr>");
 		sb.append("</table>");
 		setHTML(sb.toString());
-	}
-	
-	public void recalculateMask() {
-		fd.recalculateMask();
-		rebuildHTML();
-	}
-
-	public boolean isEditable() {
-		return isEditable;
-	}
-
-	public void setEditable(boolean isEditable) {
-		this.isEditable = isEditable;
-	}
-
-	public FD getFD() {
-		return fd;
 	}
 }

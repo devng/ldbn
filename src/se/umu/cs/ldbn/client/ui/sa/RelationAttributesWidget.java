@@ -35,45 +35,6 @@ public final class RelationAttributesWidget extends HTML
 		Main.get().getDragController().makeDraggable(this);
 	}
 	
-	private String generateAttributeHTML() {
-		StringBuffer sb = new StringBuffer(); 
-		sb.append("<table border='0' cellpadding='2' cellspacing='2'>");
-		sb.append("<tr>");
-		List<String> names = attributes.getAttributeNames();
-		for (String str : names) {	
-			sb.append("<td>");
-			if(key.containsAtt(str)) {
-				sb.append("<b>");
-				sb.append(str);
-				sb.append("</b>");
-			} else {
-				sb.append(str);
-			}
-			sb.append("</td>");
-		}
-		sb.append("</tr>");
-		sb.append("</table>");
-		return sb.toString();
-	}
-	
-	public void setAttributes(AttributeSet atts) {
-		this.attributes = atts;
-		setHTML(generateAttributeHTML());
-	}
-	
-	public void setKey(AttributeSet key) {
-		this.key = key;
-		setHTML(generateAttributeHTML());
-	}
-	
-	public AttributeSet getAttributes() {
-		return attributes;
-	}
-	
-	public AttributeSet getKey() {
-		return key;
-	}
-
 	public void allFDsRemoved() {
 		attributes.clearAllAttributes();
 		setHTML(generateAttributeHTML());
@@ -97,5 +58,44 @@ public final class RelationAttributesWidget extends HTML
 		}
 		key.andOperator(attributes);
 		setHTML(generateAttributeHTML());
+	}
+	
+	public AttributeSet getAttributes() {
+		return attributes;
+	}
+	
+	public AttributeSet getKey() {
+		return key;
+	}
+
+	public void setAttributes(AttributeSet atts) {
+		this.attributes = atts;
+		setHTML(generateAttributeHTML());
+	}
+	
+	public void setKey(AttributeSet key) {
+		this.key = key;
+		setHTML(generateAttributeHTML());
+	}
+	
+	private String generateAttributeHTML() {
+		StringBuffer sb = new StringBuffer(); 
+		sb.append("<table border='0' cellpadding='2' cellspacing='2'>");
+		sb.append("<tr>");
+		List<String> names = attributes.getAttributeNames();
+		for (String str : names) {	
+			sb.append("<td>");
+			if(key.containsAtt(str)) {
+				sb.append("<b>");
+				sb.append(str);
+				sb.append("</b>");
+			} else {
+				sb.append(str);
+			}
+			sb.append("</td>");
+		}
+		sb.append("</tr>");
+		sb.append("</table>");
+		return sb.toString();
 	}
 }

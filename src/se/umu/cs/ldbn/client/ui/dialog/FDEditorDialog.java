@@ -8,15 +8,8 @@ import se.umu.cs.ldbn.client.ui.FDHolderPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public final class FDEditorDialog extends CloseDialog {
-	private FDEditorWidget fdew;
-
 	private static FDEditorDialog inst;
-	
-	private FDEditorDialog() {
-		super("FD Editor","Create an FD by giving the left and right hand side " +
-				"attributes.<BR>You can use Drag'n'Drop.", false);
-	}
-	
+
 	public static FDEditorDialog get() {
 		if (inst == null) {
 			inst = new FDEditorDialog();
@@ -24,19 +17,15 @@ public final class FDEditorDialog extends CloseDialog {
 		return inst;
 	}
 	
-	public void setCurrentFDHolderPanel(FDHolderPanel fdHP) {
-		fdew.setCurrentFDHolderPanel(fdHP);
+	private FDEditorWidget fdew;
+	
+	private FDEditorDialog() {
+		super("FD Editor","Create an FD by giving the left and right hand side " +
+				"attributes.<BR>You can use Drag'n'Drop.", false);
 	}
 	
-	public void setCurrentDomain(DomainTable domain) {
-		fdew.setCurrentDomain(domain);
-	}
-	
-	@Override
-	public void show() {
-		super.show();
-		Main.get().getDragController().registerDropController(fdew.getRightTextArea());
-		Main.get().getDragController().registerDropController(fdew.getLeftTextArea());
+	public FDEditorWidget getFDEditorWidget() {
+		return fdew;
 	}
 	
 	@Override
@@ -50,8 +39,19 @@ public final class FDEditorDialog extends CloseDialog {
 		fdew.setCurrentDomain(null);
 	}
 	
-	public FDEditorWidget getFDEditorWidget() {
-		return fdew;
+	public void setCurrentDomain(DomainTable domain) {
+		fdew.setCurrentDomain(domain);
+	}
+	
+	public void setCurrentFDHolderPanel(FDHolderPanel fdHP) {
+		fdew.setCurrentFDHolderPanel(fdHP);
+	}
+	
+	@Override
+	public void show() {
+		super.show();
+		Main.get().getDragController().registerDropController(fdew.getRightTextArea());
+		Main.get().getDragController().registerDropController(fdew.getLeftTextArea());
 	}
 
 	protected Widget getContentWidget() {

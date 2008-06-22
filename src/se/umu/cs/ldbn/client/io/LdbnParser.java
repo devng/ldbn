@@ -25,8 +25,14 @@ public final class LdbnParser {
 	
 	private static LdbnParser inst = null;
 	
-	private LDBN_TYPE lastLdbnType;
+	public static LdbnParser get() {
+		if(inst == null) {
+			inst = new LdbnParser();
+		}
+		return inst;
+	}
 	
+	private LDBN_TYPE lastLdbnType;
 	//vars used for parsing a ldbn xml string with type=assignment
 	private DomainTable currentDomain;
 	private List<FD> currentFDs;
@@ -36,6 +42,7 @@ public final class LdbnParser {
 	//note such xml string can only contain one message
 	private MSG_TYPE lastMsgType;
 	private String lastMsg;
+	
 	//vars used for parsing a ldbn xml string with type assignment_list
 	//map format: assignment id in the DB -> name
 	private Map<String, String> assignmentList;
@@ -45,16 +52,36 @@ public final class LdbnParser {
 		lastMsgType = MSG_TYPE.unknown;
 	}
 	
-	public static LdbnParser get() {
-		if(inst == null) {
-			inst = new LdbnParser();
-		}
-		return inst;
+	
+	public void clear() {
+		lastLdbnType = LDBN_TYPE.unknown;
+		lastMsgType = MSG_TYPE.unknown;
+		currentDomain = null;
+		currentFDs = null;
+		isLHS = false;
+		assignment = null;
+		assignmentList = null;
+		lastMsg = null;
 	}
 	
+	public Assignment getAssignment() {
+		return assignment;
+	}
+	
+	public Map<String, String> getAssignmentList() {
+		return assignmentList;
+	}
 	
 	public LDBN_TYPE getLastLdbnType() {
 		return lastLdbnType;
+	}
+	
+	public String getMsgText() {
+		return lastMsg;
+	}
+	
+	public MSG_TYPE getMsgType() {
+		return lastMsgType;
 	}
 	
 	public LDBN_TYPE parse(String xml) {
@@ -87,33 +114,6 @@ public final class LdbnParser {
 		
 		
 		return lastLdbnType;
-	}
-	
-	public MSG_TYPE getMsgType() {
-		return lastMsgType;
-	}
-	
-	public String getMsgText() {
-		return lastMsg;
-	}
-	
-	public Map<String, String> getAssignmentList() {
-		return assignmentList;
-	}
-	
-	public Assignment getAssignment() {
-		return assignment;
-	}
-	
-	public void clear() {
-		lastLdbnType = LDBN_TYPE.unknown;
-		lastMsgType = MSG_TYPE.unknown;
-		currentDomain = null;
-		currentFDs = null;
-		isLHS = false;
-		assignment = null;
-		assignmentList = null;
-		lastMsg = null;
 	}
 	
 	

@@ -11,7 +11,14 @@ public final class RenameDialog extends OkCancelDialog {
 	public static String REGEX = "([\\w]|\\-){1,20}";
 	private static RenameDialog inst;
 	
+	public static RenameDialog get() {
+		if (inst == null) {
+			inst = new RenameDialog();
+		}
+		return inst;
+	}
 	private RenameDialogCallback caller;
+	
 	private TextBox nameBox;
 	
 	private RenameDialog() {
@@ -19,13 +26,13 @@ public final class RenameDialog extends OkCancelDialog {
 		caller = null;
 	}
 	
-	public static RenameDialog get() {
-		if (inst == null) {
-			inst = new RenameDialog();
-		}
-		return inst;
+	public void rename(RenameDialogCallback rdc) {
+		if(rdc == null) return;
+		caller = rdc;
+		nameBox.setText(rdc.getOldName());
+		center();
 	}
-	
+
 	protected Widget getContentWidget() {
 		if (nameBox == null) {
 			nameBox = new TextBox();
@@ -33,7 +40,14 @@ public final class RenameDialog extends OkCancelDialog {
 		}
 		return nameBox;
 	}
-
+	
+	protected void onCancelClick() {
+		super.onCancelClick();
+		if(caller != null) {
+			caller.onRenameCanceled();
+		}
+	}
+	
 	protected void onOkClick() {
 		String s = nameBox.getText();
 		if(s.matches(REGEX)) {
@@ -58,19 +72,5 @@ public final class RenameDialog extends OkCancelDialog {
 		} else {
 			setErrorMsg("Invalid name.");
 		}
-	}
-	
-	protected void onCancelClick() {
-		super.onCancelClick();
-		if(caller != null) {
-			caller.onRenameCanceled();
-		}
-	}
-	
-	public void rename(RenameDialogCallback rdc) {
-		if(rdc == null) return;
-		caller = rdc;
-		nameBox.setText(rdc.getOldName());
-		center();
 	}
 }

@@ -37,42 +37,9 @@ public class AlignmentButton extends Image implements MouseListener,
 		}
 	}
 	
-	public void removeListener(AlignmentButtonListener l) {
-		if (l != null) {
-			listeners.remove(l);
-		}
+	public boolean isHorizontal() {
+		return isHorizontal;
 	}
-	
-	private void notifyListeners(boolean isHorizontal) {
-		for (AlignmentButtonListener abl : listeners) {
-			abl.onAlignmentChanged(isHorizontal);
-		}
-	}
-
-	public void onMouseEnter(Widget sender) {
-		if(isHorizontal) {
-			setVisibleRect(15, 0, 15, 15);
-		} else {
-			setVisibleRect(15, 15, 15, 15);
-		}
-	}
-
-	
-	public void onMouseLeave(Widget sender) {
-		if(isHorizontal) {
-			setVisibleRect(0, 0, 15, 15);
-		} else {
-			setVisibleRect(0, 15, 15, 15);
-		}
-	}
-	
-	public void onMouseDown(Widget sender, int x, int y) {}
-
-	public void onMouseMove(Widget sender, int x, int y) {}
-
-	
-	public void onMouseUp(Widget sender, int x, int y) {}
-
 	
 	public void onClick(Widget sender) {
 		if (isHorizontal) {
@@ -85,9 +52,42 @@ public class AlignmentButton extends Image implements MouseListener,
 		notifyListeners(isHorizontal);
 		
 	}
+
+	public void onMouseDown(Widget sender, int x, int y) {}
+
 	
-	public boolean isHorizontal() {
-		return isHorizontal;
+	public void onMouseEnter(Widget sender) {
+		if(isHorizontal) {
+			setVisibleRect(15, 0, 15, 15);
+		} else {
+			setVisibleRect(15, 15, 15, 15);
+		}
+	}
+	
+	public void onMouseLeave(Widget sender) {
+		if(isHorizontal) {
+			setVisibleRect(0, 0, 15, 15);
+		} else {
+			setVisibleRect(0, 15, 15, 15);
+		}
+	}
+
+	public void onMouseMove(Widget sender, int x, int y) {}
+
+	
+	public void onMouseUp(Widget sender, int x, int y) {}
+
+	
+	public void removeListener(AlignmentButtonListener l) {
+		if (l != null) {
+			listeners.remove(l);
+		}
+	}
+	
+	private void notifyListeners(boolean isHorizontal) {
+		for (AlignmentButtonListener abl : listeners) {
+			abl.onAlignmentChanged(isHorizontal);
+		}
 	}
 
 }

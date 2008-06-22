@@ -20,15 +20,6 @@ import com.google.gwt.user.client.ui.Widget;
 public final class FDEditorWidget extends Composite
 	implements ClickListener {
 	
-	private FDEditorTextArea leftTA;
-	private FDEditorTextArea rightTA;
-	private Image arrowImg;
-	private HorizontalPanel mainPanel;
-	private Button clearButton;
-	private Button addButton;
-	private FDHolderPanel currnetFDHP;
-	private DomainTable currentDomain;
-	
 	private final class FDEditorTextArea extends AttributeTextArea  {
 		
 		public void onDrop (DragContext context) {
@@ -71,6 +62,15 @@ public final class FDEditorWidget extends Composite
 			}
 		}
 	}
+	private FDEditorTextArea leftTA;
+	private FDEditorTextArea rightTA;
+	private Image arrowImg;
+	private HorizontalPanel mainPanel;
+	private Button clearButton;
+	private Button addButton;
+	private FDHolderPanel currnetFDHP;
+	
+	private DomainTable currentDomain;
 	
 	public FDEditorWidget() {
 		super();
@@ -110,14 +110,23 @@ public final class FDEditorWidget extends Composite
 		initWidget(mainPanel);
 	}
 	
+	public void clearText() {
+		leftTA.setText("");
+		rightTA.setText("");
+	}
+	
+	public DomainTable getCurrentDomain() {
+		return currentDomain;
+	}
+
 	public AttributeTextArea getLeftTextArea() {
 		return leftTA;
 	}
-	
+
 	public AttributeTextArea getRightTextArea() {
 		return rightTA;
 	}
-
+	
 	public void onClick(Widget sender) {
 		FDEditorDialog.get().setErrorMsg("");
 		if (sender.equals(clearButton)) {
@@ -135,18 +144,17 @@ public final class FDEditorWidget extends Composite
 			
 		}
 	}
-
+	
+	public void setCurrentDomain(DomainTable currentDomain) {
+		this.currentDomain = currentDomain;
+	}
+	
 	public void setCurrentFDHolderPanel(FDHolderPanel fdHP) {
 		currnetFDHP = fdHP;
 	}
 	
 	public void setFDWidtet(FDWidget fdw) {
 		leftTA.setFDWidget(fdw);
-	}
-	
-	public void clearText() {
-		leftTA.setText("");
-		rightTA.setText("");
 	}
 	
 	/**
@@ -159,7 +167,12 @@ public final class FDEditorWidget extends Composite
 		}
 	}
 	
-	//returns null if the size of LHS or RHS is < 1
+	private void clearTextAreas() {
+		leftTA.setText("");
+		rightTA.setText("");
+	}
+
+	/** returns null if the size of LHS or RHS is < 1 */
 	private FDWidget createFD() {
 		FD fd = new FD(currentDomain);
 		List<String> l = leftTA.parseAttributes();
@@ -191,18 +204,5 @@ public final class FDEditorWidget extends Composite
 		FDWidget fdw = new FDWidget(true, fd);
 		clearTextAreas();
 		return fdw;
-	}
-	
-	private void clearTextAreas() {
-		leftTA.setText("");
-		rightTA.setText("");
-	}
-	
-	public DomainTable getCurrentDomain() {
-		return currentDomain;
-	}
-
-	public void setCurrentDomain(DomainTable currentDomain) {
-		this.currentDomain = currentDomain;
 	}
 }

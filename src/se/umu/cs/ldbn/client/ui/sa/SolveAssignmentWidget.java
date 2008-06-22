@@ -6,7 +6,6 @@ import java.util.List;
 import se.umu.cs.ldbn.client.Assignment;
 import se.umu.cs.ldbn.client.AssignmentGenerator;
 import se.umu.cs.ldbn.client.CommonFunctions;
-import se.umu.cs.ldbn.client.Main;
 import se.umu.cs.ldbn.client.core.Algorithms;
 import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.FD;
@@ -29,6 +28,12 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	implements ClickListener, LoadAssignmentDialogCallback, AssignmentLoaderCallback {
 
 	private static SolveAssignmentWidget inst;
+	public static SolveAssignmentWidget get() {
+		if (inst == null) {
+			inst = new SolveAssignmentWidget();
+		}
+		return inst;
+	}
 	//assignment variables  
 	private DomainTable domain;
 	private List<FD> fds;
@@ -46,6 +51,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	private DisclosureWidget dwGivenAttributes;
 	private DisclosureWidget dwFDs;
 	private DisclosureWidget dwMinimalCover;
+	
 	private DisclosureWidget dwDecomposition2NF;
 	
 	private SolveAssignmentWidget() {
@@ -103,64 +109,32 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		loadAssignment(a);
 	}
 	
-	public static SolveAssignmentWidget get() {
-		if (inst == null) {
-			inst = new SolveAssignmentWidget();
-		}
-		return inst;
-	}
-	
 	public DomainTable getDomainTable() {
 		return domain;
 	}
 	
+	public void onAssignmentLoaded(Assignment a) {
+		loadAssignment(a);
+	}
+
+	public void onAssignmentLoadError() {}
+
 	public void onClick(Widget sender) {
 		if(sender == checkSolution) {
-			//Window.alert("Not implemented yet");
-			Main.get().showGlassPanel();
+			Window.alert("Not implemented yet");
 		} else if (sender == newAssignment) {
 			LoadAssignmentDialog.get().load(this);
 		} else if (sender == showSolution) {
-			//Window.alert("Not implemented yet");
-			Main.get().hideGlassPanel();
+			Window.alert("Not implemented yet");
 		}
 	}
+
+	public void onLoadCanceled() {}
 
 	public void onLoaded(String id, String name) {
 		AssignmentLoader.loadFromURL(id, this);
 	}
 
-	public void onLoadCanceled() {}
-
-	public void onAssignmentLoadError() {}
-
-	public void onAssignmentLoaded(Assignment a) {
-		loadAssignment(a);
-	}
-
-	private void loadAssignment(Assignment a) {
-		clearData();
-		restoreDefaultSize();
-		this.domain.loadDomainTable(a.getDomain()); //not new so the listeners stay
-		this.fds = a.getFDs();
-		givenFDsWidget.setFDs(fds);
-	}
-	
-	private void clearData() {
-		domain.clearData();
-		givenFDsWidget.clearData();
-		minimalCoverWidget.getFDHolderPanel().clearData();
-		fds.clear();
-		decomposition2NF.clearData();
-	}
-	
-	private void restoreDefaultSize() {
-		dwGivenAttributes.resetHeightToDefault();
-		dwFDs.resetHeightToDefault();
-		dwMinimalCover.resetHeightToDefault();
-		dwDecomposition2NF.resetHeightToDefault();
-	}
-	
 	private void checkSolution() {
 		//check minimal cover
 		List<FD> minCovFDs = minimalCoverWidget.getFDHolderPanel().getFDs();
@@ -210,5 +184,28 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		*/
 		
 		//AssignmentXML axml  = new AssignmentXML();
+	}
+	
+	private void clearData() {
+		domain.clearData();
+		givenFDsWidget.clearData();
+		minimalCoverWidget.getFDHolderPanel().clearData();
+		fds.clear();
+		decomposition2NF.clearData();
+	}
+	
+	private void loadAssignment(Assignment a) {
+		clearData();
+		restoreDefaultSize();
+		this.domain.loadDomainTable(a.getDomain()); //not new so the listeners stay
+		this.fds = a.getFDs();
+		givenFDsWidget.setFDs(fds);
+	}
+	
+	private void restoreDefaultSize() {
+		dwGivenAttributes.resetHeightToDefault();
+		dwFDs.resetHeightToDefault();
+		dwMinimalCover.resetHeightToDefault();
+		dwDecomposition2NF.resetHeightToDefault();
 	}
 }

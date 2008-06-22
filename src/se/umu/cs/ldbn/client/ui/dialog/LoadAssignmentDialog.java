@@ -16,10 +16,6 @@ import com.google.gwt.user.client.ui.Widget;
 
 public final class LoadAssignmentDialog extends OkCancelDialog {
 
-	private Panel mainPanel;
-	private MyLabel lastSelected;
-	private LoadAssignmentDialogCallback caller;
-	
 	private class MyLabel extends Label implements ClickListener {
 		String id;
 		String name;
@@ -43,15 +39,19 @@ public final class LoadAssignmentDialog extends OkCancelDialog {
 			addStyleName("nad-myLabel-selected");
 		}
 	}
-	
 	private static LoadAssignmentDialog inst;
-	
 	public static LoadAssignmentDialog get() {
 		if (inst == null) {
 			inst = new LoadAssignmentDialog();
 		}
 		return inst;
 	}
+	
+	private Panel mainPanel;
+	
+	private MyLabel lastSelected;
+	
+	private LoadAssignmentDialogCallback caller;
 	
 	private LoadAssignmentDialog() {
 		super("Load assigment", "Choose an assigment from the list bellow", true);
@@ -92,6 +92,11 @@ public final class LoadAssignmentDialog extends OkCancelDialog {
 		return sp;
 	}
 	
+	protected void onCancelClick()  {
+		super.onCancelClick();
+		lastSelected = null;
+	}
+	
 	protected void onOkClick() {
 		if(lastSelected == null) {
 			setErrorMsg("Invalid selection.");
@@ -104,10 +109,5 @@ public final class LoadAssignmentDialog extends OkCancelDialog {
 		}
 		caller.onLoaded(lastSelected.id, lastSelected.name);
 		hide();
-	}
-	
-	protected void onCancelClick()  {
-		super.onCancelClick();
-		lastSelected = null;
 	}
 } 

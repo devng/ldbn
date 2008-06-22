@@ -36,19 +36,19 @@ public class MinimalCoverWidget extends Composite implements ClickListener,
 		initWidget(mainPanel);
 	}
 	
-	public void onClick(Widget sender) {
-		if (sender == minCovAddFD) {
-			FDEditorDialog.get().center(); //always center first
-			FDEditorDialog.get().setCurrentFDHolderPanel(mainPanel);
-			FDEditorDialog.get().setCurrentDomain(SolveAssignmentWidget.get().getDomainTable());
-		}
+	public Widget[] getAdditionalControlls() {
+		return mainPanel.getAdditionalControlls();
 	}
 	
 	public FDHolderPanel getFDHolderPanel() {
 		return mainPanel;
 	}
 	
-	public Widget[] getAdditionalControlls() {
-		return mainPanel.getAdditionalControlls();
+	public void onClick(Widget sender) {
+		if (sender == minCovAddFD) {
+			FDEditorDialog.get().center(); //always center first
+			FDEditorDialog.get().setCurrentFDHolderPanel(mainPanel);
+			FDEditorDialog.get().setCurrentDomain(SolveAssignmentWidget.get().getDomainTable());
+		}
 	}
 }
