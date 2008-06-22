@@ -1,5 +1,6 @@
 package se.umu.cs.ldbn.client.ui.dialog;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -10,6 +11,7 @@ public final class HelpDialog extends CloseDialog {
 	
 	private HelpDialog() {
 		super("Help Dialog", "", false);
+		DOM.setStyleAttribute(viewer.getElement(), "background", "white");
 	}
 	
 	public static HelpDialog get() {

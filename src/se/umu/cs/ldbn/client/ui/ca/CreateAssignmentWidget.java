@@ -28,8 +28,16 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FileUpload;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FormHandler;
+import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.FormSubmitCompleteEvent;
+import com.google.gwt.user.client.ui.FormSubmitEvent;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -52,6 +60,9 @@ public final class CreateAssignmentWidget extends Composite
 	private Button newButton;
 	private Button saveButton;
 	private Button editButton;
+	private Label editMode;
+	private DisclosureWidget dwGivenAttributes;
+	private DisclosureWidget dwGivenFDs;
 	
 	private CreateAssignmentWidget() {
 		mainPanel = new AbsolutePanel();
@@ -72,12 +83,14 @@ public final class CreateAssignmentWidget extends Composite
 		CommonFunctions.setCursorPointer(editButton);
 		InfoButton info = new InfoButton("example");
 		info.setStyleName("att-img");
-
+		
 		hw.add(newButton);
 		hw.add(saveButton);
 		hw.add(editButton);
 		hw.add(info);
-		
+		editMode = new Label("Edit mode - Assigment will be updated in the DB");
+		editMode.setVisible(false);
+		hw.add(editMode);
 		mainPanel.add(hw);
 		
 		VerticalPanel vp = new VerticalPanel();
@@ -93,8 +106,8 @@ public final class CreateAssignmentWidget extends Composite
 		egas = new EditableGivenAttributesWidget();
 		vp.add(egas);
 		
-		DisclosureWidget dw = new DisclosureWidget("Given attributes", vp);
-		mainPanel.add(dw);
+		dwGivenAttributes = new DisclosureWidget("Given attributes", vp);
+		mainPanel.add(dwGivenAttributes);
 		
 		givenFDs = new FDHolderPanel();
 		hp = new HorizontalPanel();
@@ -106,8 +119,8 @@ public final class CreateAssignmentWidget extends Composite
 		hp.add(addFDs);
 		hp.add(new InfoButton("example"));
 		givenFDs.add(hp);
-		dw = new DisclosureWidget("Given FDs", givenFDs);
-		mainPanel.add(dw);
+		dwGivenFDs = new DisclosureWidget("Given FDs", givenFDs);
+		mainPanel.add(dwGivenFDs);
 		
 		initWidget(mainPanel);
 	}
@@ -127,6 +140,7 @@ public final class CreateAssignmentWidget extends Composite
 		egas.getDomain().clearData();
 		givenFDs.clearData();
 		currentAssignment = null;
+		editMode.setVisible(false);
 	}
 	
 	public void onClick(Widget sender) {
@@ -141,6 +155,7 @@ public final class CreateAssignmentWidget extends Composite
 			
 		}  else if (sender == newButton) {
 			clearData();
+			restoreDefaultSize();
 			loadedId = null;
 			loadedName = null;
 		} else if (sender == saveButton) {
@@ -178,23 +193,12 @@ public final class CreateAssignmentWidget extends Composite
 		saveAssignemnt(s);
 		
 	}
-	
-	private void saveAssignemnt(String name) {
-		if(currentAssignment != null) {
-			String xml = AssignmentSaver.buildXML(currentAssignment);
-			AssignmentSaver.sendToSaveScript(xml, name, loadedId == null ? "" : loadedId);
-			currentAssignment  = null;
-		} else {
-			Log.warn("CurrentAsigment = null. Could not save assigment.");
-		}
-		
-	}
 
 	public void onRenameCanceled() {
 		currentAssignment = null;
 	}
 	
-	public void loadedIdAndName(String id, String name) {
+	public void onLoaded(String id, String name) {
 		loadedId = id;
 		loadedName = name;
 		AssignmentLoader.loadFromURL(id, this);
@@ -202,13 +206,38 @@ public final class CreateAssignmentWidget extends Composite
 	
 	public void onLoadCanceled() {}
 	
-	public void onAssignmentLoadError() {}
+	public void onAssignmentLoadError() {
+		editMode.setVisible(false);
+		loadedId = null;
+		loadedName = null;
+	}
 
 	public void onAssignmentLoaded(Assignment a) {
 		clearData();
+		restoreDefaultSize();
 		egas.getDomain().loadDomainTable(a.getDomain());
 		for (FD fd : a.getFDs()) {
 			givenFDs.addFDWidget(new FDWidget(true, fd));
 		}
+		editMode.setVisible(true);
+	}
+	
+	private void saveAssignemnt(String name) {
+		if(currentAssignment != null) {
+			String xml = AssignmentSaver.buildXML(currentAssignment);
+			AssignmentSaver.sendToSaveScript(xml, name, loadedId == null ? "" : loadedId);
+			currentAssignment  = null;
+			editMode.setVisible(false);
+			loadedId = null;
+			loadedName = null;
+			//TODO Use callbacks and on success set values to null 
+		} else {
+			Log.warn("CurrentAsigment = null. Could not save assigment.");
+		}
+	}
+	
+	private void restoreDefaultSize() {
+		dwGivenAttributes.resetHeightToDefault();
+		dwGivenFDs.resetHeightToDefault();
 	}
 }

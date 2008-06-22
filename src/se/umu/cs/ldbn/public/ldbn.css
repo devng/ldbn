@@ -6,6 +6,13 @@ body {
   margin: 0px 20px 20px 20px;
 }
 
+
+.glassPanel {
+   background: white;
+   opacity: 0.4;
+   filter: alpha(opacity=40);  
+}
+
 .att-but {
 	min-width: 120px;
 	margin: 4px;
@@ -186,9 +193,10 @@ body {
 
 /* HeaderWidget */
 .hw {
-	width: 100%;
-	background-color: #BBCBD9;
+	background-color: #e8eef7;
 	margin-bottom: 6px;
+	width: 100%;
+	border-bottom: 1px solid #7F9DB9;
 }
 /* END HeaderWidget */
 
@@ -202,7 +210,7 @@ body {
 
 .gwt-TabBar {
   padding-top: 2px;
-  border-bottom: 4px solid #BBCBD9;
+  border-bottom: 4px solid #e8eef7;
   background-color: #fff;
 }
 
@@ -217,7 +225,7 @@ body {
   cursor: pointer;
   cursor: hand;
 
-  background-color: #e8eef7;
+  background-color: #F6F6F6;
   border-bottom: 2px solid white;
   margin-right: 2px;
 }
@@ -227,10 +235,10 @@ body {
   font-weight: bold;
   cursor: default;
 
-  background-image: url(img/raw-bg.png);
+  background-image: url(img/2.png);
   background-repeat: repeat-x;
-  background-color: #BBCBD9;
+  background-color: #e8eef7;
   border: 1px solid #7F9DB9;
-  border-bottom: 2px solid #BBCBD9;
+  border-bottom: 2px solid #e8eef7;
   margin-right: 2px;
 }

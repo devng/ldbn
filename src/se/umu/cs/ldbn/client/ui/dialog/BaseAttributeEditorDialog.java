@@ -16,7 +16,7 @@ abstract class BaseAttributeEditorDialog extends CloseDialog {
 	protected Button setButton;
 	
 	protected BaseAttributeEditorDialog(String title, String msg) {
-		super(title, msg, false);
+		super(title, msg+"<BR>You can use Drag'n'Drop.", false);
 	}
 	
 	protected abstract AttributeTextArea getAttributeTextArea();

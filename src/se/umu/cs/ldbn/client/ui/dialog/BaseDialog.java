@@ -1,6 +1,7 @@
 package se.umu.cs.ldbn.client.ui.dialog;
 
 import se.umu.cs.ldbn.client.CommonFunctions;
+import se.umu.cs.ldbn.client.Main;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Button;
@@ -20,9 +21,12 @@ abstract class BaseDialog extends DialogBox implements ClickListener {
 	protected Button okButton;
 	protected Button closeButton;
 	protected Label errorLabel;
+	protected boolean isModal;
 	
 	public BaseDialog(String title, String msg ,boolean modal) {
 		super(false, modal);
+		isModal = modal;
+		
 		setText(title);
 		DockPanel dock = new DockPanel();
 		dock.setSpacing(4);
@@ -39,9 +43,10 @@ abstract class BaseDialog extends DialogBox implements ClickListener {
 		CommonFunctions.setCursorPointer(okButton);
 		CommonFunctions.setCursorPointer(closeButton);
 		HorizontalPanel hp = new HorizontalPanel();
-		
+		hp.setSpacing(4);
 		hp.add(okButton);
 		hp.add(closeButton);
+		
 		
 		errorLabel = new Label("");
 		Grid g = new Grid(1,2);
@@ -57,9 +62,19 @@ abstract class BaseDialog extends DialogBox implements ClickListener {
 		setWidget(dock);
 	}
 	
+	public void center() {
+		super.center();
+		if (isModal) {
+			Main.get().showGlassPanel();
+		}
+	}
+	
 	public void hide() {
 		super.hide();
 		setErrorMsg("");
+		if (isModal) {
+			Main.get().hideGlassPanel();
+		}
 	}
 	
 	protected abstract Widget getContentWidget();

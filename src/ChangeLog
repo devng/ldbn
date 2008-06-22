@@ -1,0 +1,34 @@
+2008-06-22_0250
+* Now when an assignment is being created in editor mode a label is shown to indicate this.  
+* Case insensitive checking of attribute names. 
+* Minor fixes in error messages with FDEditorWidget.  
+* Style changes. 
+* DisclosureWidget can now be expanded to its default height.  
+* GlassPanel class - "light box" effect added - now it is clear which dialog is modal, and which is not. 
+* Window classes form the GWT-DND demo are added but not used. 
+* ChangeLog and TODO list are added.
+
+2008-06-20_0535
+* Minor UI bug fixes
+
+2008-06-20_0340
+* Working and stable version of the UI
+* Check solution and Solve solution buttons not working
+* Refactoring
+
+2008-06-18_1354
+* Fixed Opera DnD Bug.
+* Fixed CreateAssigment null pointer bug.
+* New versions of GWT-LOG and GWT-DND.
+* Refactoring.
+
+2008-06-10_1510
+* Split the UI package into several packages.
+* A lot changes and refactoring.
+
+2008-05-27_0848
+* Initial version of the core classes.
+* Java 5 Syntax
+
+2008-03-27_1647 
+* Initial commit. GUI Classes only.

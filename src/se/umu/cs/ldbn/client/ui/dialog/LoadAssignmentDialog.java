@@ -102,7 +102,7 @@ public final class LoadAssignmentDialog extends OkCancelDialog {
 			Log.warn("LoadAssignmentDialog.caller == null. Cannot load assignment");
 			return;
 		}
-		caller.loadedIdAndName(lastSelected.id, lastSelected.name);
+		caller.onLoaded(lastSelected.id, lastSelected.name);
 		hide();
 	}
 	

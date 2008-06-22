@@ -58,16 +58,10 @@ public final class DomainTable {
 			listeners.remove(l);
 	}
 	
-	private void notifyListeners() {
-		for (DomainTableListener l : listeners) {
-			l.onDomainChange();
-		}
-	}
-	
 	public boolean addAtt(String attName) {
 		if(index >= 64) return false;
 		long val = 1L << index;
-		if(attNames.contains(attName)) return false;
+		if(containsNameCanseInsensitive(attName)) return false;
 		attNames.add(attName);
 		attIndices.add(new Long(val));
 		index++;
@@ -77,7 +71,7 @@ public final class DomainTable {
 	
 	public boolean removeAtt(String attName) {
 		if(index < 1) return false;
-		int i = attNames.indexOf(attName);
+		int i = indexNameCaseInsensitive(attName);
 		if(i >= 0) {
 			attNames.remove(i);
 			attIndices.remove(i);
@@ -107,7 +101,7 @@ public final class DomainTable {
 	
 	public boolean renameAtt(String oldAttName, String newAttName) {
 		if(index < 1) return false;
-		int i = attNames.indexOf(oldAttName);
+		int i = indexNameCaseInsensitive(oldAttName);
 		if(i >= 0) {
 			attNames.remove(i);
 			attNames.add(i, newAttName);
@@ -118,7 +112,7 @@ public final class DomainTable {
 	}
 	
 	public long getAttIndex(String name) {
-		int i = attNames.indexOf(name);
+		int i = indexNameCaseInsensitive(name);
 		if(i >= 0) {
 			return attIndices.get(i).longValue();
 		} else {
@@ -172,5 +166,28 @@ public final class DomainTable {
 			result |= l;
 		}
 		return result;
+	}
+	
+	private int indexNameCaseInsensitive(String name) {
+		if (name == null) return -1;
+		int i = 0;
+		for (String attName : attNames) {
+			if(attName.toLowerCase().trim().equals(name.toLowerCase().trim())) {
+				return i;
+			}
+			i++;
+		}
+		return -1;
+	}
+	
+	private boolean containsNameCanseInsensitive(String name) {
+		return indexNameCaseInsensitive(name) != -1;
+	}
+	
+	
+	private void notifyListeners() {
+		for (DomainTableListener l : listeners) {
+			l.onDomainChange();
+		}
 	}
 }

@@ -13,7 +13,8 @@ public final class FDEditorDialog extends CloseDialog {
 	private static FDEditorDialog inst;
 	
 	private FDEditorDialog() {
-		super("FD Editor","Create an FD by giving the left and right hand side attributes.", false);
+		super("FD Editor","Create an FD by giving the left and right hand side " +
+				"attributes.<BR>You can use Drag'n'Drop.", false);
 	}
 	
 	public static FDEditorDialog get() {
