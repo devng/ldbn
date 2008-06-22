@@ -1,5 +1,7 @@
 package se.umu.cs.ldbn.client.ui;
 
+import se.umu.cs.ldbn.client.Main;
+
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
@@ -19,7 +21,7 @@ public class GlassPanel extends Composite {
 	   super();
 	   panel = new SimplePanel();
        initWidget(panel);
-       panel.setSize("800", "10000");
+       panel.setSize(Main.WIDTH_PX+"px", "10000px");
        this.parent = parent;
        panel.setStylePrimaryName("glassPanel");
    }

@@ -77,9 +77,9 @@ abstract class BaseDialog extends DialogBox implements ClickListener {
 		}
 	}
 	
-	protected abstract Widget getContentWidget();
-	
 	public void setErrorMsg(String msg) {
 		errorLabel.setText(msg);
 	}
+	
+	protected abstract Widget getContentWidget();
 }

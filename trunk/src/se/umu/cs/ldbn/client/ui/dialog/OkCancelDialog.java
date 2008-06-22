@@ -23,14 +23,6 @@ public abstract class OkCancelDialog extends BaseDialog {
 	}
 	
 	
-	protected abstract Widget getContentWidget();
-	
-	protected abstract void onOkClick();
-	
-	protected void onCancelClick() {
-		hide();
-	}
-	
 	public void onClick(Widget sender) {
 		if(sender == closeButton) {
 			onCancelClick();
@@ -38,4 +30,12 @@ public abstract class OkCancelDialog extends BaseDialog {
 			onOkClick();
 		}
 	}
+	
+	protected abstract Widget getContentWidget();
+	
+	protected void onCancelClick() {
+		hide();
+	}
+	
+	protected abstract void onOkClick();
 }

@@ -7,12 +7,6 @@ import com.google.gwt.user.client.ui.Widget;
 public final class HelpDialog extends CloseDialog {
 
 	private static HelpDialog inst;
-	private Frame viewer;
-	
-	private HelpDialog() {
-		super("Help Dialog", "", false);
-		DOM.setStyleAttribute(viewer.getElement(), "background", "white");
-	}
 	
 	public static HelpDialog get() {
 		if (inst == null) {
@@ -21,10 +15,11 @@ public final class HelpDialog extends CloseDialog {
 		return inst;
 	}
 	
-	protected Widget getContentWidget() {
-		viewer = new Frame();
-		viewer.setSize("400px", "250px");
-		return viewer;
+	private Frame viewer;
+	
+	private HelpDialog() {
+		super("Help Dialog", "", false);
+		DOM.setStyleAttribute(viewer.getElement(), "background", "white");
 	}
 	
 	/**
@@ -35,5 +30,11 @@ public final class HelpDialog extends CloseDialog {
 	public void showInfo(String fileName) {
 		viewer.setUrl("info/"+fileName);
 		center();
+	}
+	
+	protected Widget getContentWidget() {
+		viewer = new Frame();
+		viewer.setSize("400px", "250px");
+		return viewer;
 	}
 }

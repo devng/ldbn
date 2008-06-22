@@ -28,7 +28,7 @@ public final class Algorithms {
 	 */
 	public static AttributeSet attributeClosure(AttributeSet a, List<FD> fds) {
 		AttributeSet r = a.clone();
-		long lastAtts = 0;
+		int lastAtts = 0;
 		do {
 			lastAtts = r.attMask();
 			for (int i = 0; i < fds.size(); i++) {
@@ -102,7 +102,7 @@ public final class Algorithms {
 			AttributeSet leftSide =  fd.getLHS().clone();
 			AttributeSetIterator iter = leftSide.iterator();
 			for (; iter.hasNext();) {
-				long j = iter.nextAttIndex();
+				int j = iter.nextAttIndex();
 				iter.remove();
 				AttributeSet b = attributeClosure(leftSide, fds);
 				if(fd.getRHS().isSubSetOf(b)) {
@@ -133,7 +133,7 @@ public final class Algorithms {
 			AttributeSet rightSide = fd.getRHS();
 			AttributeSetIterator iter = rightSide.iterator();
 			for(; iter.hasNext(); ) {
-				long j = iter.nextAttIndex();
+				int j = iter.nextAttIndex();
 				iter.remove();
 				AttributeSet b = attributeClosure(fd.getLHS(), fds);
 				if(!b.containsAtt(j)) {
@@ -233,10 +233,10 @@ equivalent
 	 */
 	public static List<AttributeSet> findAllKeyCandidates(List<FD> fds, AttributeSet atts) {
 		
-		long mask = atts.attMask();
+		int mask = atts.attMask();
 		List<AttributeSet> keys = new ArrayList<AttributeSet>();
-		for (long l = 0; l <= mask; l++) {
-			long keyMask = mask & l;
+		for (int l = 0; l <= mask; l++) {
+			int keyMask = mask & l;
 			if(keyMask != 0L) {
 				AttributeSet key = new AttributeSet(atts.domain());
 				key.setMask(keyMask);
@@ -384,7 +384,7 @@ equivalent
 	public static boolean isLossless(List<FD> initialFDs, AttributeSet atts, 
 			List<Relation> decomposition) {
 		AttributeSet[] s = new AttributeSet[decomposition.size()];
-		long[] sMask = new long[s.length];
+		int[] sMask = new int[s.length];
 		for (int i = 0; i < s.length; i++) {
 			s[i] = decomposition.get(i).getAttrbutes().clone();
 			sMask[i] = s[i].attMask();
@@ -407,7 +407,7 @@ equivalent
 		return false;
 	}
 	
-	private static boolean hasSChanged(long[] sMask, AttributeSet[] s) {
+	private static boolean hasSChanged(int[] sMask, AttributeSet[] s) {
 		boolean result = false;
 		for (int i = 0; i < s.length; i++) {
 			if(sMask[i] != s[i].attMask()) {

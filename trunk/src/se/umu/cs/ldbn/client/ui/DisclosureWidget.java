@@ -1,6 +1,7 @@
 package se.umu.cs.ldbn.client.ui;
 
 import se.umu.cs.ldbn.client.CommonFunctions;
+import se.umu.cs.ldbn.client.Main;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -243,7 +244,7 @@ public final class DisclosureWidget extends Composite implements ClickListener,
 
 		scroller = new ScrollPanel(content);
 		scroller.setStyleName("dw-content");
-		scroller.setWidth("798px");
+		scroller.setWidth(""+(Main.WIDTH_PX - 2)+"px");
 		borderPanel.add(scroller);
 		resizer = new ResizePanel();
 		resizer.setStyleName("dw-resizer");

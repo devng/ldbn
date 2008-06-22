@@ -19,14 +19,6 @@ abstract class BaseAttributeEditorDialog extends CloseDialog {
 		super(title, msg+"<BR>You can use Drag'n'Drop.", false);
 	}
 	
-	protected abstract AttributeTextArea getAttributeTextArea();
-	protected abstract void onInfoButClicked();
-	protected abstract void onAddButClicked();
-	
-	protected void onClearButClicked() {
-		getAttributeTextArea().setText("");
-	}
-	
 	public void onClick(Widget sender) {
 		super.onClick(sender);
 		if (sender == clearButton) {
@@ -35,7 +27,7 @@ abstract class BaseAttributeEditorDialog extends CloseDialog {
 			onAddButClicked();
 		}
 	}
-	
+	protected abstract AttributeTextArea getAttributeTextArea();
 	protected Widget getContentWidget() {
 		if(mainPanel != null) {
 			return mainPanel;
@@ -63,4 +55,12 @@ abstract class BaseAttributeEditorDialog extends CloseDialog {
 	
 		return mainPanel;
 	}
+	
+	protected abstract void onAddButClicked();
+	
+	protected void onClearButClicked() {
+		getAttributeTextArea().setText("");
+	}
+	
+	protected abstract void onInfoButClicked();
 }

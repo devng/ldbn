@@ -16,9 +16,6 @@ import com.google.gwt.user.client.ui.Widget;
 
 public final class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 	
-	private RelationAttributesWidget raw;
-	private KeyTextArea kta;
-	
 	private final class KeyTextArea extends AttributeTextArea {
 
 		public void onDrop(DragContext context) {
@@ -54,12 +51,7 @@ public final class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 			}
 		}
 	}
-
 	private static KeyEditorDialog inst = null;
-	
-	private KeyEditorDialog() {
-		super("Key Editor", "Give a valid candidate key for the relation.");
-	}
 	
 	public static KeyEditorDialog get() {
 		if (inst == null) {
@@ -67,10 +59,30 @@ public final class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 		}
 		return inst;
 	}
+
+	private RelationAttributesWidget raw;
+	
+	private KeyTextArea kta;
+	
+	private KeyEditorDialog() {
+		super("Key Editor", "Give a valid candidate key for the relation.");
+	}
+	
+	@Override
+	public void hide() {
+		super.hide();
+		Main.get().getDragController().unregisterDropController(getAttributeTextArea());
+	}
 	
 	public void setCurrentRelationAttributesWidget(RelationAttributesWidget raw) {
 		this.raw = raw;
 		kta.setAttributeSet(raw.getKey());
+	}
+	
+	@Override
+	public void show() {
+		super.show();
+		Main.get().getDragController().registerDropController(getAttributeTextArea());
 	}
 	
 	protected AttributeTextArea getAttributeTextArea() {
@@ -100,18 +112,6 @@ public final class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 	
 	protected void onInfoButClicked() {
 		HelpDialog.get().showInfo("example.html");
-	}
-	
-	@Override
-	public void show() {
-		super.show();
-		Main.get().getDragController().registerDropController(getAttributeTextArea());
-	}
-	
-	@Override
-	public void hide() {
-		super.hide();
-		Main.get().getDragController().unregisterDropController(getAttributeTextArea());
 	}
 
 }

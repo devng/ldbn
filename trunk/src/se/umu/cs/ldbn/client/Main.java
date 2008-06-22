@@ -9,7 +9,6 @@ import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -20,6 +19,8 @@ import com.google.gwt.user.client.ui.TabPanel;
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public final class Main implements EntryPoint {
+	
+	public static int WIDTH_PX = 800;
 	
 	static {
 		Config.get(); //Load the configurations asynchrony
@@ -68,7 +69,7 @@ public final class Main implements EntryPoint {
 		}
 		
 		mainPanel = new AbsolutePanel();
-		mainPanel.setWidth("800px");
+		mainPanel.setWidth(WIDTH_PX+"px");
 		dragControll = new PickupDragController(mainPanel, false);
 		dragControll.setBehaviorDragProxy(true);
 		

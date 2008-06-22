@@ -1,3 +1,9 @@
+2008-06-22_1220
+* Changing the core classes to use integer masks instead of long due to a performance issue. See DomainTable.java. 
+* TODO and ChangeLog moved to the root folder of the project.
+* Members are sorted, imports are . 
+
+
 2008-06-22_0250
 * Now when an assignment is being created in editor mode a label is shown to indicate this.  
 * Case insensitive checking of attribute names. 

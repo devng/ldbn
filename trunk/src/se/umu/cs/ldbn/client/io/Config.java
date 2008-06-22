@@ -32,17 +32,6 @@ public final class Config {
 	
 	private static Config inst = null;
 	
-	private Map<String, String> configMap;
-	
-	/** indicates if a warning has already been shown, which notifies the user
-	 * that the configuration file cannot be loaded
-	 */
-	private boolean isWarningShown = false;
-	
-	private Config() {
-		configMap =  new HashMap<String, String>();
-	};
-	
 	public static Config get() {
 		if (inst == null) {
 			inst = new Config();
@@ -50,6 +39,50 @@ public final class Config {
 		}
 		return inst;
 	}
+	
+	private Map<String, String> configMap;
+	
+	/** indicates if a warning has already been shown, which notifies the user
+	 * that the configuration file cannot be loaded
+	 */
+	private boolean isWarningShown = false;;
+	
+	private Config() {
+		configMap =  new HashMap<String, String>();
+	}
+	
+	public Map<String, String> getConfigMap() {
+		return configMap;
+	}
+	
+	public String getListScriptURL() {
+		String url = configMap.get(CONFIG_KEYS[0]);
+		if(url == null) {
+			showWarning();
+			url = DEFAULT_VALUES[0];
+		}
+		return url;
+	}
+	
+	public String getLoadScriptURL() {
+		String url = configMap.get(CONFIG_KEYS[1]);
+		if(url == null) {
+			showWarning();
+			url = DEFAULT_VALUES[1];
+		}
+		return url;
+	}
+	
+	public String getSaveScriptURL() {
+		String url = configMap.get(CONFIG_KEYS[2]);
+		if(url == null) {
+			showWarning();
+			url = DEFAULT_VALUES[2];
+		}
+		return url;
+	}
+	
+
 	
 	/**
 	 * Loads the configurations from a file. This method is automatically called
@@ -94,39 +127,6 @@ public final class Config {
 				}
 			}
 		}
-	}
-	
-	public Map<String, String> getConfigMap() {
-		return configMap;
-	}
-	
-	public String getListScriptURL() {
-		String url = configMap.get(CONFIG_KEYS[0]);
-		if(url == null) {
-			showWarning();
-			url = DEFAULT_VALUES[0];
-		}
-		return url;
-	}
-	
-
-	
-	public String getLoadScriptURL() {
-		String url = configMap.get(CONFIG_KEYS[1]);
-		if(url == null) {
-			showWarning();
-			url = DEFAULT_VALUES[1];
-		}
-		return url;
-	}
-	
-	public String getSaveScriptURL() {
-		String url = configMap.get(CONFIG_KEYS[2]);
-		if(url == null) {
-			showWarning();
-			url = DEFAULT_VALUES[2];
-		}
-		return url;
 	}
 	
 	private void showWarning() {

@@ -21,14 +21,14 @@ public final class FD {
 		}
 	}
 	
-	public void recalculateMask() {
-		leftHandSide.recalculateMask();
-		rightHandSide.recalculateMask();
-	}
-	
 	public FD(AttributeSet l, AttributeSet r) {
 		leftHandSide = l;
 		rightHandSide = r;
+	}
+	
+	public void recalculateMask() {
+		leftHandSide.recalculateMask();
+		rightHandSide.recalculateMask();
 	}
 	
 	public AttributeSet getLHS() {
