@@ -65,7 +65,8 @@ public final class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 	private KeyTextArea kta;
 	
 	private KeyEditorDialog() {
-		super("Key Editor", "Give a valid candidate key for the relation.");
+		super("Key Editor", "Give a valid candidate key for the relation.<BR>" +
+				"You can use Drag'n'Drop.");
 	}
 	
 	@Override

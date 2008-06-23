@@ -1,5 +1,5 @@
 <ldbn type="msg">
-	<msg type="error">Unknown database 'ldbn2'</msg>
+	<msg type="error">Unknown database 'ldbn2'.</msg>
 </ldbn>
 
 <ldbn type="msg">
@@ -11,7 +11,8 @@
 </ldbn>
 
 <ldbn type="assignment_list">
-	<entry id="1" name="test" />
+	<entry id="1" name="test-1" />
+	<entry id="2" name="test-minimal-cover" />
 </ldbn>
 
 <ldbn type="assignment">

@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 import com.allen_sauer.gwt.log.client.Log;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -61,7 +62,7 @@ public final class Config {
 			showWarning();
 			url = DEFAULT_VALUES[0];
 		}
-		return url;
+		return GWT.getModuleBaseURL()+url;
 	}
 	
 	public String getLoadScriptURL() {
@@ -70,7 +71,7 @@ public final class Config {
 			showWarning();
 			url = DEFAULT_VALUES[1];
 		}
-		return url;
+		return GWT.getModuleBaseURL()+url;
 	}
 	
 	public String getSaveScriptURL() {
@@ -79,7 +80,7 @@ public final class Config {
 			showWarning();
 			url = DEFAULT_VALUES[2];
 		}
-		return url;
+		return GWT.getModuleBaseURL()+url;
 	}
 	
 
@@ -89,8 +90,8 @@ public final class Config {
 	 * when a new instance of this class is made.
 	 */
 	private void loadConfigFile() {
-		RequestBuilder rb = new RequestBuilder(RequestBuilder.POST, 
-				CONFIG_FILE_URL);
+		RequestBuilder rb = new RequestBuilder(RequestBuilder.GET, 
+				GWT.getModuleBaseURL()+CONFIG_FILE_URL);
 		rb.setCallback(new RequestCallback() {
 
 			public void onError(Request request, Throwable exception) {
@@ -99,6 +100,7 @@ public final class Config {
 
 			public void onResponseReceived(Request request, Response response) {
 				String txt = response.getText();
+				Log.debug(txt);
 				parceResponce(txt);
 			}
 		});
@@ -131,8 +133,8 @@ public final class Config {
 	
 	private void showWarning() {
 		if(isWarningShown) return;
-		String msg = "The configuration file cannot be loaded.<br>" +
-				"Default settings weill be used.<br>" +
+		String msg = "The configuration file cannot be loaded.\n" +
+				"Default settings weill be used.\n" +
 				"To fix this try reloading the page.";
 		Window.alert(msg);
 		isWarningShown = true;

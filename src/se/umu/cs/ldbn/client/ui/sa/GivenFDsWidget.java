@@ -59,6 +59,7 @@ public final class GivenFDsWidget extends Composite
 		for (Widget w : currentContent) {
 			newP.add(w);
 		}
+		SolveAssignmentWidget.get().dwFDs.resetHeightToDefault();
 		mainPanel.setWidget(0, 0, newP);
 		mainPanelChild = newP;
 	}

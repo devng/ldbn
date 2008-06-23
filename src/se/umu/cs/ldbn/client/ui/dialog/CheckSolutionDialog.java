@@ -1,43 +1,67 @@
 package se.umu.cs.ldbn.client.ui.dialog;
 
-import se.umu.cs.ldbn.client.CommonFunctions;
-
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.DialogBox;
+import com.allen_sauer.gwt.log.client.Log;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-//TODO DO it properly
-public final class CheckSolutionDialog extends DialogBox 
-	implements ClickListener {
 
-	private Panel mainPanel;
+public final class CheckSolutionDialog extends CloseDialog  {
+
+	public enum MSG_TYPE {error, warn, ok, title};
+	
+	private VerticalPanel mainPanel;
 	
 	private static CheckSolutionDialog inst;
 	
 	private CheckSolutionDialog() {
-		super(false, false);
-		setText("Check Solution Dialog");
-		Button closeButton = new Button("Close", this);
-		CommonFunctions.setCursorPointer(closeButton);
-		mainPanel = new VerticalPanel();
-		mainPanel.setStyleName("csd-innerPanel");
+		super("Check Solution Dialog", "", false);
 	}
 	
 	public static CheckSolutionDialog get() {
 		if (inst == null) {
 			inst = new CheckSolutionDialog();
 		}
+		
 		return inst;
 	}
 	
-	
-	public void onClick(Widget sender) {
-		hide();
+	public void msg(String msg, MSG_TYPE type) {
+		if(msg == null) {
+			Log.warn("CheckSolutionDialog: msg cannot be null.");
+			return;
+		}
+		HorizontalPanel hp = new HorizontalPanel();
+		hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+		Image img;
+		switch (type) {
+		case error:
+			img = new Image("img/errMsg.png");
+			break;
+		case warn:
+			img = new Image("img/warnMsg.png");
+			break;
+		case ok:
+			img = new Image("img/okMsg.png");
+			break;
+		default:
+			img = null;
+			break;
+		}
+		if(img != null) {
+			hp.add(img);
+		}
+		Label l = new Label(msg);
+		if(type.equals(MSG_TYPE.title)) {
+			DOM.setStyleAttribute(l.getElement(), "font-weight", "bold");
+		}
+		hp.add(l);
+		mainPanel.add(hp);
 	}
 	
 	public void clearMsgs() {
@@ -45,24 +69,31 @@ public final class CheckSolutionDialog extends DialogBox
 	}
 	
 	public void msgOK(String msg) {
-		HorizontalPanel hp = new HorizontalPanel();
-		Image okMsg   = new Image("img/okMsg.png");
-		hp.add(okMsg);
-		hp.add(new Label(msg));
+		this.msg(msg, MSG_TYPE.ok);
 	}
 	
 	public void msgErr(String msg) {
-		HorizontalPanel hp = new HorizontalPanel();
-		Image errMsg  = new Image("img/warnMsg.png");
-		hp.add(errMsg);
-		hp.add(new Label(msg));
+		this.msg(msg, MSG_TYPE.error);
 	}
 	
 	public void msgWarn(String msg) {
-		HorizontalPanel hp = new HorizontalPanel();
-		Image warnMsg = new Image("img/errMsg.png");
-		hp.add(warnMsg);
-		hp.add(new Label(msg));
+		this.msg(msg, MSG_TYPE.warn);
 	}
-
+	
+	public void msgTitle(String msg) {
+		this.msg(msg, MSG_TYPE.title);
+	}
+	
+	protected Widget getContentWidget() {
+		ScrollPanel sp = new ScrollPanel();
+		mainPanel = new VerticalPanel();
+		sp.setSize("320px", "240px");
+		Grid grid = new Grid(1,1);
+		grid.setSize("100%", "100%");
+		DOM.setStyleAttribute(grid.getElement(), "background", "white");
+		sp.add(grid);
+		grid.setWidget(0, 0, mainPanel);
+		//sp.add(mainPanel);
+		return sp;
+	}
 }

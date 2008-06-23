@@ -125,6 +125,14 @@ public final class FDHolderPanel extends VerticalPanel
 		return false;
 	}
 	
+	public void add(Widget w) {
+		if (w instanceof FDWidget) {
+			addFDWidget((FDWidget) w);
+		} else {
+			super.add(w);
+		}
+	}
+	
 	public void addFDWidget(FDWidget fd) {
 		add(getCheckBoxPanel(fd));
 		fds.add(fd);

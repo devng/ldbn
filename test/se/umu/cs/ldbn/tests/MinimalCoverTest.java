@@ -1,14 +1,16 @@
 package se.umu.cs.ldbn.tests;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import se.umu.cs.ldbn.client.core.*;
 //TODO As junit
 public class MinimalCoverTest {
 	public static void main(String[] args) {
+		
 		ArrayList<FD> fds = new ArrayList<FD>();
-		String[] a = {"A", "B", "C", "D", "E", "F", "G"};
- 		AttributeNameTable dom = new AttributeNameTable(a);
+		String[] a = {"A", "B", "C", "D", "E", "G"};
+ 		DomainTable dom = new DomainTable(a);
  		/*
  		F = { AB -> C, C -> A, BC -> D, ACD -> B, D -> E, D -> G, BE -> C, 
  			  CG -> B, CG -> D, CE -> A, CE -> G}
@@ -16,77 +18,77 @@ public class MinimalCoverTest {
  		
  		//AB -> C
 		FD fd = new FD(dom);
-		fd.getLeftSide().addAtt("A");
-		fd.getLeftSide().addAtt("B");
-		fd.getRightSide().addAtt("C");
+		fd.getLHS().addAtt("A");
+		fd.getLHS().addAtt("B");
+		fd.getRHS().addAtt("C");
 		fds.add(fd);
 		
 		//C -> A
 		fd = new FD(dom);
-		fd.getLeftSide().addAtt("C");
-		fd.getRightSide().addAtt("A");
+		fd.getLHS().addAtt("C");
+		fd.getRHS().addAtt("A");
 		fds.add(fd);
 		
 		//BC -> D
 		fd = new FD(dom);
-		fd.getLeftSide().addAtt("B");
-		fd.getLeftSide().addAtt("C");
-		fd.getRightSide().addAtt("D");
+		fd.getLHS().addAtt("B");
+		fd.getLHS().addAtt("C");
+		fd.getRHS().addAtt("D");
 		fds.add(fd);
 		
 		//ACD -> B
 		fd = new FD(dom);
-		fd.getLeftSide().addAtt("A");
-		fd.getLeftSide().addAtt("C");
-		fd.getLeftSide().addAtt("D");
-		fd.getRightSide().addAtt("B");
+		fd.getLHS().addAtt("A");
+		fd.getLHS().addAtt("C");
+		fd.getLHS().addAtt("D");
+		fd.getRHS().addAtt("B");
 		fds.add(fd);
 		
 		//D -> E
 		fd = new FD(dom);
-		fd.getLeftSide().addAtt("D");
-		fd.getRightSide().addAtt("E");
+		fd.getLHS().addAtt("D");
+		fd.getRHS().addAtt("E");
 		fds.add(fd);
 		
 		//D -> G
 		fd = new FD(dom);
-		fd.getLeftSide().addAtt("D");
-		fd.getRightSide().addAtt("G");
+		fd.getLHS().addAtt("D");
+		fd.getRHS().addAtt("G");
 		fds.add(fd);
 		
 		//BE -> C
 		fd = new FD(dom);
-		fd.getLeftSide().addAtt("B");
-		fd.getLeftSide().addAtt("E");
-		fd.getRightSide().addAtt("C");
+		fd.getLHS().addAtt("B");
+		fd.getLHS().addAtt("E");
+		fd.getRHS().addAtt("C");
 		fds.add(fd);
 		
 		//CG -> B
 		fd = new FD(dom);
-		fd.getLeftSide().addAtt("C");
-		fd.getLeftSide().addAtt("G");
-		fd.getRightSide().addAtt("B");
+		fd.getLHS().addAtt("C");
+		fd.getLHS().addAtt("G");
+		fd.getRHS().addAtt("B");
 		fds.add(fd);
 		
 		//CG -> D
 		fd = new FD(dom);
-		fd.getLeftSide().addAtt("C");
-		fd.getLeftSide().addAtt("G");
-		fd.getRightSide().addAtt("D");
+		fd.getLHS().addAtt("C");
+		fd.getLHS().addAtt("G");
+		fd.getRHS().addAtt("D");
 		fds.add(fd);
 		
 		//CE -> A
 		fd = new FD(dom);
-		fd.getLeftSide().addAtt("C");
-		fd.getLeftSide().addAtt("E");
-		fd.getRightSide().addAtt("A");
+		fd.getLHS().addAtt("C");
+		fd.getLHS().addAtt("E");
+		fd.getRHS().addAtt("A");
 		fds.add(fd);
 		
 		//CE -> G
 		fd = new FD(dom);
-		fd.getLeftSide().addAtt("C");
-		fd.getLeftSide().addAtt("E");
-		fd.getRightSide().addAtt("G");
+		fd.getLHS().addAtt("C");
+		fd.getLHS().addAtt("E");
+		fd.getRHS().addAtt("G");
 		fds.add(fd);
 		
 		Algorithms.minimalCover(fds);
@@ -101,5 +103,13 @@ public class MinimalCoverTest {
 		/*
 		Yes it works :)
 		 */
+		AttributeSet allAtts = new AttributeSet(dom);
+		for (int i = 0; i < a.length; i++) {
+			allAtts.addAtt(a[i]);
+		}
+		List<AttributeSet> keys = Algorithms.findAllKeyCandidates(fds, allAtts);
+		for (AttributeSet k : keys) {
+			System.out.println("Key: " + k);
+		}
 	}
 }

@@ -12,13 +12,13 @@ import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.io.AssignmentLoader;
 import se.umu.cs.ldbn.client.io.AssignmentLoaderCallback;
 import se.umu.cs.ldbn.client.ui.DisclosureWidget;
+import se.umu.cs.ldbn.client.ui.FDWidget;
 import se.umu.cs.ldbn.client.ui.HeaderWidget;
 import se.umu.cs.ldbn.client.ui.InfoButton;
+import se.umu.cs.ldbn.client.ui.dialog.CheckSolutionDialog;
 import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialog;
 import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialogCallback;
 
-import com.allen_sauer.gwt.log.client.Log;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -49,21 +49,20 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	//2nf decomposition
 	private DecompositionWidget decomposition2NF;
 	private DisclosureWidget dwGivenAttributes;
-	private DisclosureWidget dwFDs;
 	private DisclosureWidget dwMinimalCover;
-	
 	private DisclosureWidget dwDecomposition2NF;
+	DisclosureWidget dwFDs;
 	
 	private SolveAssignmentWidget() {
 		super();
 		setWidth("100%");
-		//this are not used, before an assigment has been loaded,  but
+		//this are not used, before an assignment has been loaded,  but
 		//if they are not set a NullPointer or IllegalArgument exception
 		//can be thrown
 		domain = new DomainTable();
 		fds = new ArrayList<FD>();
 		
-		//Controlls
+		//Controls
 		givenAttributesWidget = new GivenAttributesWidget();
 		newAssignment = new Button("New Assignment");
 		newAssignment.setStyleName("att-but");
@@ -121,11 +120,11 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 
 	public void onClick(Widget sender) {
 		if(sender == checkSolution) {
-			Window.alert("Not implemented yet");
+			checkSolution();
 		} else if (sender == newAssignment) {
 			LoadAssignmentDialog.get().load(this);
 		} else if (sender == showSolution) {
-			Window.alert("Not implemented yet");
+			showSolution();
 		}
 	}
 
@@ -144,26 +143,35 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		}
 		boolean isMinCoverRight = false;
 		Algorithms.minimalCover(deepCopy);
+		CheckSolutionDialog dialog = CheckSolutionDialog.get();
+		dialog.clearMsgs();
+		dialog.msgTitle("Minimal Cover Check:");
 		if (!Algorithms.equivalence(fds, minCovFDs)) {
-			Log.info("minimal cover - wrong - fds are not equivalent to the given fds.");
+			dialog.msgErr("wrong - fds are not equivalent to the given fds");
 		} else if(deepCopy.size() != minCovFDs.size()) {
-			Log.info("minimal cover - wrong - too much fds.");
-		} else if (!deepCopy.containsAll(minCovFDs)) {
-			Log.info("minimal cover - wrong - some fds are not redused.");
+			dialog.msgErr("wrong - too much fds");
+		} else if (!deepCopy.containsAll(minCovFDs)) { 
+			// compute the minimal cover over the user input and compare it with
+			// the user actual input, if it does not contain all FDs, then a 
+			// FD was not minimal and it was computed and added to the list. 
+			dialog.msgErr("wrong - some fds are not redused");
 		} else {
-			Log.info("minimal cover - right.");
+			dialog.msgOK("right");
 			isMinCoverRight = true;
 		}
 		//check 2nf
+		dialog.msgTitle("2NF Decomposition Check:");
 		if(!isMinCoverRight) {
-			Log.info("Minimal cover was wrong, program will compute it, but not show the solution, in order to check the decomposition solutions. Note that different minimal covers may give different solutions.");
+			dialog.msgWarn("Minimal cover was wrong, program will compute " +
+				"it, in order to check the decomposition solutions, but it " +
+				"wont show the solution,  Note that different minimal covers " +
+				"may give different solutions.");
 			deepCopy = new ArrayList<FD>();
 			for (FD fd2 : fds) {
 				deepCopy.add(fd2);
 			}
 			Algorithms.minimalCover(deepCopy);
 		}
-		Log.info("Checking 2nf...");
 		/*
 		List<Relation> relations = NF2DecompositionEditorWidget.getRelations();
 		boolean is2NF = Algorithms.isIn2NF(relations, deepCopy); 
@@ -184,14 +192,34 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		*/
 		
 		//AssignmentXML axml  = new AssignmentXML();
+		dialog.center();
+	}
+	
+	private void showSolution() {
+		clearUserInput();
+		//minimal cover
+		List<FD> deepCopy = new ArrayList<FD>(fds.size());
+		for (FD fd : fds) {
+			deepCopy.add(fd.clone());
+		}
+		Algorithms.minimalCover(deepCopy);
+		for (FD fd : deepCopy) {
+			FDWidget fdw = new FDWidget(true, fd);
+			minimalCoverWidget.getFDHolderPanel().addFDWidget(fdw);
+		}
+	}
+	
+	private void clearUserInput() {
+		minimalCoverWidget.getFDHolderPanel().clearData();
+		decomposition2NF.clearData();
+		
 	}
 	
 	private void clearData() {
+		clearUserInput();
 		domain.clearData();
 		givenFDsWidget.clearData();
-		minimalCoverWidget.getFDHolderPanel().clearData();
 		fds.clear();
-		decomposition2NF.clearData();
 	}
 	
 	private void loadAssignment(Assignment a) {
