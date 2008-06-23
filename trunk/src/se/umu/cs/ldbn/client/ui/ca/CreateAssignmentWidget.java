@@ -6,6 +6,7 @@ import java.util.List;
 import se.umu.cs.ldbn.client.Assignment;
 import se.umu.cs.ldbn.client.CommonFunctions;
 import se.umu.cs.ldbn.client.core.DomainTable;
+import se.umu.cs.ldbn.client.core.DomainTableListener;
 import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.io.AssignmentLoader;
 import se.umu.cs.ldbn.client.io.AssignmentLoaderCallback;
@@ -103,6 +104,7 @@ public final class CreateAssignmentWidget extends Composite
 		mainPanel.add(dwGivenAttributes);
 		
 		givenFDs = new FDHolderPanel();
+		egas.getDomain().addListener(givenFDs);
 		hp = new HorizontalPanel();
 		hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		addFDs = new Button("Add FDs");

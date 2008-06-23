@@ -3,6 +3,7 @@ package se.umu.cs.ldbn.client.ui;
 import se.umu.cs.ldbn.client.CommonFunctions;
 import se.umu.cs.ldbn.client.Main;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -33,54 +34,6 @@ import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
  */
 public final class DisclosureWidget extends Composite implements ClickListener,
 		MouseListener {
-
-	/** An image for the collapse button in the left top corner. */
-	private Image collapseButton;
-	/** When a mouse moves over the image a shadow is used. */
-	private boolean useShadows;
-	/** The content of the widget, which is wrapped in a scroll panel. */
-	private Widget content;
-	/** A ScrollPanel that wraps around the content panel. */
-	private ScrollPanel scroller;
-	/**set of controls that may be set in the header. */
-	private Widget[] headerContorls;
-	/** A panel for the additional controls, if there are any. */
-	private HorizontalPanel headerControlsPanel;
-
-	/* Variables used for resizing the widget manually **/
-	/** A panel which holds the button for resizing the widget. */
-	private ResizePanel resizer;
-	/** Indicates if the widget is being resized manually at the moment. */
-	private boolean isResizing;
-	/** last position of the mouse during resizing.  */
-	private int lastY;
-	/** 
-	 * Has the widget been resized manually.If it hasn't been, then 
-	 * when the <code>scroller</code> is expanded next time, 
-	 * <code>setHeight</code> will be set to \"\" 
-	 */
-	private boolean hasBeenResized;
-	/* Variables used for the blinding effect **/
-	/** 
-	 * Indicates if the effect is still in progress. If false than no other 
-	 * effects can be engaged 
-	 **/
-	private boolean isFxFinished;
-	/**
-	 * Is the widget open. It can only be true after a blind up effect.  
-	 */
-	private boolean isOpen;
-	/**
-	 * Last height after a blind up effect. 
-	 */
-	private int lastHeight;
-	/**
-	 * How many pixels per step should be added/subtract to/from the widget 
-	 * content panel, when a blind up/down effect has been engeged. 
-	 */
-	private int pxStep;
-	/** Timer for the blind effect. */
-	private FXTimer fxT;
 
 	/**
 	 * Timer for the blind up/down effect. 
@@ -114,7 +67,6 @@ public final class DisclosureWidget extends Composite implements ClickListener,
 			}
 		}
 	}
-
 	/**
 	 * Panel used for resizing. It uses directly the DOM classes for capturing 
 	 * mouse events because, the widget has to be aware of drag events even
@@ -166,6 +118,55 @@ public final class DisclosureWidget extends Composite implements ClickListener,
 			}
 		}
 	}
+	/** An image for the collapse button in the left top corner. */
+	private Image collapseButton;
+	/** When a mouse moves over the image a shadow is used. */
+	private boolean useShadows;
+	/** The content of the widget, which is wrapped in a scroll panel. */
+	private Widget content;
+	/** A ScrollPanel that wraps around the content panel. */
+	private ScrollPanel scroller;
+
+	/**set of controls that may be set in the header. */
+	private Widget[] headerContorls;
+	/** A panel for the additional controls, if there are any. */
+	private HorizontalPanel headerControlsPanel;
+	/* Variables used for resizing the widget manually **/
+	/** A panel which holds the button for resizing the widget. */
+	private ResizePanel resizer;
+	/** Indicates if the widget is being resized manually at the moment. */
+	private boolean isResizing;
+	/** last position of the mouse during resizing.  */
+	private int lastY;
+	/** 
+	 * Has the widget been resized manually.If it hasn't been, then 
+	 * when the <code>scroller</code> is expanded next time, 
+	 * <code>setHeight</code> will be set to \"\" 
+	 */
+	private boolean hasBeenResized;
+	/* Variables used for the blinding effect **/
+	/** 
+	 * Indicates if the effect is still in progress. If false than no other 
+	 * effects can be engaged 
+	 **/
+	private boolean isFxFinished;
+	/**
+	 * Is the widget open. It can only be true after a blind up effect.  
+	 */
+	private boolean isOpen;
+	/**
+	 * Last height after a blind up effect. 
+	 */
+	private int lastHeight;
+
+	/**
+	 * How many pixels per step should be added/subtract to/from the widget 
+	 * content panel, when a blind up/down effect has been engeged. 
+	 */
+	private int pxStep;
+
+	/** Timer for the blind effect. */
+	private FXTimer fxT;
 
 	/**
 	 * Creates a DisclosureWidget.
@@ -262,6 +263,53 @@ public final class DisclosureWidget extends Composite implements ClickListener,
 		return content;
 	}
 
+	public void onClick(Widget sender) {
+		fxBlind();
+	}
+
+	/**  Unused method from the MouseListener interface.*/
+	public void onMouseDown(Widget sender, int x, int y) {
+	}
+
+	public void onMouseEnter(Widget sender) {
+		useShadows = true;
+		if (isOpen) {
+			collapseButton.setVisibleRect(15, 15, 15, 15);
+		} else {
+			collapseButton.setVisibleRect(15, 0, 15, 15);
+		}
+	}
+
+	public void onMouseLeave(Widget sender) {
+		useShadows = false;
+		if (isOpen) {
+			collapseButton.setVisibleRect(0, 15, 15, 15);
+		} else {
+			collapseButton.setVisibleRect(0, 0, 15, 15);
+		}
+	}
+
+	/* Methods used by this.collapseButton */
+
+	/**  Unused method from the MouseListener interface.*/
+	public void onMouseMove(Widget sender, int x, int y) {
+	}
+
+	/**  Unused method from the MouseListener interface.*/
+	public void onMouseUp(Widget sender, int x, int y) {
+	}
+
+	/** Expands the widget to the default height */
+	public void resetHeightToDefault() {
+		hasBeenResized = false;
+		scroller.setVisible(true);
+		resizer.setVisible(true);
+		headerControlsPanel.setVisible(true);
+		isOpen = true;
+		scroller.setHeight("");
+		collapseButton.setVisibleRect(0, 15, 15, 15);
+	}
+
 	/**
 	 * Replace the content widget.
 	 *  
@@ -272,29 +320,6 @@ public final class DisclosureWidget extends Composite implements ClickListener,
 			this.scroller.remove(this.content);
 		this.content = content;
 		this.scroller.add(content);
-	}
-
-	/**
-	 * A blind up and down effect. (40 FPS for 0.25 sec.)
-	 */
-	private void fxBlind() {
-		if (!isFxFinished) {
-			return;
-		}
-			
-		isFxFinished = false;
-		if (isOpen) {
-			lastHeight = scroller.getOffsetHeight();
-		} else {
-			scroller.setVisible(true);
-		}
-		if (lastHeight <= 1)
-			return;
-		pxStep = lastHeight / 10;
-		if (pxStep < 1) {
-			pxStep = 1;
-		}
-		fxT.scheduleRepeating(25);
 	}
 
 	/**
@@ -316,6 +341,27 @@ public final class DisclosureWidget extends Composite implements ClickListener,
 	}
 
 	/**
+	 * A blind up and down effect. (40 FPS for 0.25 sec.)
+	 */
+	private void fxBlind() {
+		if (!isFxFinished) {
+			return;
+		}
+			
+		isFxFinished = false;
+		if (isOpen) {
+			lastHeight = scroller.getOffsetHeight();
+		} else {
+			scroller.setVisible(true);
+		}
+		pxStep = lastHeight / 10;
+		if (pxStep < 1) {
+			pxStep = 1;
+		}
+		fxT.scheduleRepeating(25);
+	}
+	
+	/**
 	 * Increment the height of the this.scroller.
 	 * 
 	 * @param dY how many pixels to increment.
@@ -336,50 +382,5 @@ public final class DisclosureWidget extends Composite implements ClickListener,
 		}
 		
 		return false;
-	}
-
-	/* Methods used by this.collapseButton */
-
-	public void onClick(Widget sender) {
-		fxBlind();
-	}
-
-	public void onMouseEnter(Widget sender) {
-		useShadows = true;
-		if (isOpen) {
-			collapseButton.setVisibleRect(15, 15, 15, 15);
-		} else {
-			collapseButton.setVisibleRect(15, 0, 15, 15);
-		}
-	}
-
-	public void onMouseLeave(Widget sender) {
-		useShadows = false;
-		if (isOpen) {
-			collapseButton.setVisibleRect(0, 15, 15, 15);
-		} else {
-			collapseButton.setVisibleRect(0, 0, 15, 15);
-		}
-	}
-
-	/**  Unused method from the MouseListener interface.*/
-	public void onMouseDown(Widget sender, int x, int y) {
-	}
-
-	/**  Unused method from the MouseListener interface.*/
-	public void onMouseMove(Widget sender, int x, int y) {
-	}
-
-	/**  Unused method from the MouseListener interface.*/
-	public void onMouseUp(Widget sender, int x, int y) {
-	}
-	
-	/** Expands the widget to the default height */
-	public void resetHeightToDefault() {
-		hasBeenResized = false;
-		scroller.setVisible(true);
-		isOpen = true;
-		scroller.setHeight("");
-		collapseButton.setVisibleRect(0, 15, 15, 15);
 	}
 }
