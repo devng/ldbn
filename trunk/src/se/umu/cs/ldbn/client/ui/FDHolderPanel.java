@@ -1,6 +1,7 @@
 package se.umu.cs.ldbn.client.ui;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -111,6 +112,11 @@ public final class FDHolderPanel extends VerticalPanel
 		}
 		return r;
 	} 
+	
+	
+	public Collection<FDWidget> getFDWidgets() {
+		return fds;
+	}
 	
 	
 	

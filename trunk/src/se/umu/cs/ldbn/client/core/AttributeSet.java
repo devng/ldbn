@@ -3,6 +3,8 @@ package se.umu.cs.ldbn.client.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.allen_sauer.gwt.log.client.Log;
+
 public final class AttributeSet {
 	
 	private DomainTable domain;
@@ -185,6 +187,10 @@ public final class AttributeSet {
 			return r == this.attMask;
 		}
 		return false;
+	}
+	
+	public boolean isEmpty() {
+		return attMask == 0;
 	}
 	
 	public boolean containsAttSet(AttributeSet a) {

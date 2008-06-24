@@ -1,3 +1,7 @@
+2008-06-24_1500
+* Show solution now works , without the BCNF solution
+* Refactoring 
+
 2008-06-23_1950
 * .htaccess files had been removed, due to problems with some servers (e.g. freehostia.com).
 * Better, more OO implementation of the CheckSolutionDialog class. 

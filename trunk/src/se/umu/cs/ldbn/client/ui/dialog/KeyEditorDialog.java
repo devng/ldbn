@@ -14,9 +14,9 @@ import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.google.gwt.user.client.ui.Widget;
 
-public final class KeyEditorDialog  extends BaseAttributeEditorDialog  {
+public class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 	
-	private final class KeyTextArea extends AttributeTextArea {
+	protected final class MyTextArea extends AttributeTextArea {
 
 		public void onDrop(DragContext context) {
 			Widget w = context.draggable;
@@ -60,13 +60,17 @@ public final class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 		return inst;
 	}
 
-	private RelationAttributesWidget raw;
+	protected RelationAttributesWidget raw;
 	
-	private KeyTextArea kta;
+	protected MyTextArea kta;
 	
 	private KeyEditorDialog() {
 		super("Key Editor", "Give a valid candidate key for the relation.<BR>" +
 				"You can use Drag'n'Drop.");
+	}
+	
+	protected KeyEditorDialog(String title, String msg) {
+		super(title, msg);
 	}
 	
 	@Override
@@ -88,7 +92,7 @@ public final class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 	
 	protected AttributeTextArea getAttributeTextArea() {
 		if(kta == null)
-			kta = new KeyTextArea();
+			kta = new MyTextArea();
 		return kta;
 	}
 	
@@ -106,9 +110,13 @@ public final class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 		for (String str : atts) {
 			as.addAtt(str);
 		}
-		raw.setKey(as);
+		handleAttributeSet(as);
 		kta.setText("");
-		
+		hide();
+	}
+	
+	protected void handleAttributeSet(AttributeSet as) {
+		raw.setKey(as);
 	}
 	
 	protected void onInfoButClicked() {

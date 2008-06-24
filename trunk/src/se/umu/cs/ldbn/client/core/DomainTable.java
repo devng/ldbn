@@ -3,6 +3,8 @@ package se.umu.cs.ldbn.client.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.allen_sauer.gwt.log.client.Log;
+
 /**
  * Max 32 attributes.
  *  
@@ -42,6 +44,10 @@ public final class DomainTable {
 			attIndices.add(new Integer(val));
 		}
 		index = i;
+	}
+	
+	public List<DomainTableListener> getListers() {
+		return listeners;
 	}
 	
 	public void setNewNames(List<String> names) {
@@ -178,6 +184,15 @@ public final class DomainTable {
 		for (Integer l : attIndices) {
 			result |= l;
 		}
+		return result;
+	}
+	
+	/**
+	 * Creates attribute set with all attributes within the domain. 
+	 */
+	public AttributeSet createAttributeSet() {
+		AttributeSet result = new AttributeSet(this);
+		result.setMask(getAttIndicesAsInteger());
 		return result;
 	}
 	
