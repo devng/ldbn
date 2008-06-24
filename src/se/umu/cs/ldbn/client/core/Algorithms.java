@@ -52,13 +52,13 @@ public final class Algorithms {
 	 * @return the minimal cover as list of FD Objects.
 	 */
 	public static void minimalCover(List<FD> f) {
-		leftReduction(f);
+		leftReduction(f); //TODO what happens when list is empty or null
 		rightReduction(f);
 		
 		//clean FD such as A -> {}
 		for (Iterator<FD> iter = f.iterator(); iter.hasNext();) {
 			FD fd = iter.next();
-			if(fd.getRHS().attMask() == 0L) {
+			if(fd.getRHS().attMask() == 0) {
 				iter.remove();
 			}
 		}
@@ -225,19 +225,25 @@ equivalent
 	}
 	
 	/**
-	 * Gives all key candidates of a relationship, thus the keys are minimal.
+	 * Gives all key candidates of a relationship, thus the keys are minimal,
+	 * if the FDs List is null or empty, a list with only one element is 
+	 * returned containing  <code>att</code>. 
 	 * 
 	 * @param fds
 	 * @param atts
 	 * @return
 	 */
 	public static List<AttributeSet> findAllKeyCandidates(List<FD> fds, AttributeSet atts) {
-		
-		int mask = atts.attMask();
 		List<AttributeSet> keys = new ArrayList<AttributeSet>();
+		if(fds == null || fds.size() == 0) {
+			keys.add(atts);
+			return keys;
+		}
+		int mask = atts.attMask();
+		
 		for (int l = 0; l <= mask; l++) {
 			int keyMask = mask & l;
-			if(keyMask != 0L) {
+			if(keyMask != 0) {
 				AttributeSet key = new AttributeSet(atts.domain());
 				key.setMask(keyMask);
 				
@@ -278,6 +284,8 @@ equivalent
 	
 	//TODO better or use find allKeyCandidates
 	public static AttributeSet findKey(Relation r) {
+		if(1==1) throw new UnsupportedOperationException("DO TUCH THIS, IT IS WRONG");
+		
 		List<FD> fds = r.getFds();
 		if(fds == null) {
 			throw new IllegalArgumentException("Relation has no assosiate FDs");
@@ -366,7 +374,7 @@ equivalent
 	 * @return true if an element of the LHS is present in the RHS as well.
 	 */
 	private static boolean isTrivial(FD f) {
-		if((f.getLHS().attMask() & f.getRHS().attMask()) == 0L) {
+		if((f.getLHS().attMask() & f.getRHS().attMask()) == 0) {
 			return false;
 		}
 		return true;
@@ -422,6 +430,7 @@ equivalent
 		List<Relation> result = new ArrayList<Relation>();
 		List<FD> fds = r.getFds();
 		minimalCover(fds);
+		List<AttributeSet> allKeys = findAllKeyCandidates(fds, r.getAttrbutes());
 		
 		//create new relations
 		for (Iterator<FD> iter = fds.iterator(); iter.hasNext();) {
@@ -432,8 +441,8 @@ equivalent
 			att3nf.union(fd.getRHS());
 			Relation r3nf = new Relation(
 					att3nf);
+			r3nf.setFDs(fds3nf);
 			result.add(r3nf);
-			
 		}
 		
 		//Find FDs for each relation
@@ -449,13 +458,34 @@ equivalent
 				}
 			}
 		}
+		if(allKeys.size() > 0) {
+			boolean containsKey = false;
+			for (Relation rr : result) {
+				for (AttributeSet k : allKeys) {
+					if(rr.getAttrbutes().containsAttSet(k)) {
+						containsKey = true;
+						break;
+					}
+				}
+			}
+			
+			if(!containsKey) {
+				Relation keyR = new Relation(allKeys.get(0));
+				result.add(keyR);
+				keyR.setFDs(new ArrayList<FD>()); //should not be null;
+				keyR.setKeys(allKeys.get(0).clone());
+			}
+		} else {
+			Log.warn("Could not find key for the relation");
+		}
+
 		
-		//find a key for each relation
-		for (Iterator<Relation> iter = result.iterator(); iter.hasNext();) {
-			Relation r3nf = iter.next();
+		//find a key for each relation 
+		//TODO is this right, because it finds a key and not a key candidate?? 
+		for (Relation r3nf : result) {
+			System.out.println(r3nf);
 			List<FD> fds3nf = r3nf.getFds();
-			for (Iterator<FD> iter2 = fds3nf.iterator(); iter2.hasNext();) {
-				FD fd3nf = iter2.next();
+			for (FD fd3nf : fds3nf) {
 				if(isKey(fd3nf.getLHS(), r3nf.getAttrbutes(), fds3nf)) {
 					r3nf.setKeys(fd3nf.getLHS());
 				}
@@ -466,15 +496,16 @@ equivalent
 		}
 		
 		//eliminate relationships such as Ra is subset of Rb
-		for (Iterator<Relation> iter = result.iterator(); iter.hasNext();) {
-			Relation r1 = iter.next();
-			for (Iterator<Relation> iter2 = result.iterator(); iter2.hasNext();) {
-				Relation r2 = iter2.next();
-				if(r2.getAttrbutes().isSubSetOf(r1.getAttrbutes())) {
-					iter2.remove();
+		List<Relation> toRemove = new ArrayList<Relation>();
+		for (Relation r1 : result) {
+			for (Relation r2 : result) {
+				if(r1 == r2) continue;
+				if(r1.getAttrbutes().containsAttSet(r2.getAttrbutes())) {
+					toRemove.add(r2);
 				}
 			}
 		}
+		result.removeAll(toRemove);
 		return result;
 	}
 	
@@ -487,7 +518,7 @@ equivalent
 			//with this relationship
 			if(r2nf.getFds() == null) {
 				Log.info("No fds set, assosiating new relation fds");
-				r2nf.assciateFDs(minimalCoverFDs);
+				//r2nf.assciateFDs(minimalCoverFDs); TODO
 			}
 			//if no key is set find one. Note that in the extreme situation 
 			//it could be the every element of the relationship
@@ -547,7 +578,7 @@ equivalent
 			//with this relationship
 			if(r2nf.getFds() == null) {
 				Log.info("No fds set, assosiating new relation fds");
-				r2nf.assciateFDs(minimalCoverFDs);
+				//r2nf.assciateFDs(minimalCoverFDs); TODO
 			}
 			//if no key is set find one. Note that in the extreme situation 
 			//it could be the every element of the relationship 
@@ -570,13 +601,11 @@ equivalent
 				for (AttributeSetIterator iter2 = nonKeyAtt.iterator(); iter2
 						.hasNext();) {
 					for (FD fd : r2nf.getFds()) {
-						System.out.println("!"+fd);
 						if(fd.getRHS().containsAtt(iter2.nextAttIndex()) &
 								!fd.getLHS().equals(key)) {
 							return false;
 						}
 					}
-					
 				}
 			}
 		}

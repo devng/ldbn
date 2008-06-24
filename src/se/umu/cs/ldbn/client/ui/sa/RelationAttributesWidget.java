@@ -1,5 +1,6 @@
 package se.umu.cs.ldbn.client.ui.sa;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -10,11 +11,11 @@ import se.umu.cs.ldbn.client.ui.FDWidget;
 
 import com.google.gwt.user.client.ui.HTML;
 
-public final class RelationAttributesWidget extends HTML 
-	implements FDHolderPanelListener{
+public final class RelationAttributesWidget extends HTML {
 	
 	private AttributeSet attributes;
 	private AttributeSet key;
+	private List<RelationAttributesWidgetListener> listeners;
 	
 	public RelationAttributesWidget() {
 		this(new AttributeSet(SolveAssignmentWidget.get().getDomainTable())
@@ -29,35 +30,18 @@ public final class RelationAttributesWidget extends HTML
 			AttributeSet key) {
 		this.attributes = attributes;
 		this.key = key;
-		
+		listeners = new ArrayList<RelationAttributesWidgetListener>();
 		setHTML(generateAttributeHTML());
 		setStyleName("fdw");
 		Main.get().getDragController().makeDraggable(this);
 	}
 	
-	public void allFDsRemoved() {
-		attributes.clearAllAttributes();
-		setHTML(generateAttributeHTML());
-		
+	public void addListener(RelationAttributesWidgetListener l) {
+		listeners.add(l);
 	}
 	
-	public void fdAdded(Collection<FDWidget> currentFDs) {
-		for (FDWidget fdw : currentFDs) {
-			attributes.union(fdw.getFD().getLHS());
-			attributes.union(fdw.getFD().getRHS());
-		}
-		setHTML(generateAttributeHTML());
-	}
-	
-	public void fdRemoved(Collection<FDWidget> currentFDs) {
-		attributes.clearAllAttributes();
-		for (FDWidget fdw : currentFDs) {
-			attributes.union(fdw.getFD().getLHS());
-			attributes.union(fdw.getFD().getRHS());
-			
-		}
-		key.andOperator(attributes);
-		setHTML(generateAttributeHTML());
+	public void removeListener(RelationAttributesWidgetListener l) {
+		listeners.remove(l);
 	}
 	
 	public AttributeSet getAttributes() {
@@ -71,6 +55,9 @@ public final class RelationAttributesWidget extends HTML
 	public void setAttributes(AttributeSet atts) {
 		this.attributes = atts;
 		setHTML(generateAttributeHTML());
+		for (RelationAttributesWidgetListener l : listeners) {
+			l.onAttributesChange();
+		}
 	}
 	
 	public void setKey(AttributeSet key) {
@@ -78,7 +65,7 @@ public final class RelationAttributesWidget extends HTML
 		setHTML(generateAttributeHTML());
 	}
 	
-	private String generateAttributeHTML() {
+	String generateAttributeHTML() {
 		StringBuffer sb = new StringBuffer(); 
 		sb.append("<table border='0' cellpadding='2' cellspacing='2'>");
 		sb.append("<tr>");

@@ -5,11 +5,16 @@ import java.util.Iterator;
 import java.util.List;
 
 import se.umu.cs.ldbn.client.CommonFunctions;
+import se.umu.cs.ldbn.client.core.FD;
+import se.umu.cs.ldbn.client.core.Relation;
+import se.umu.cs.ldbn.client.ui.FDHolderPanel;
+import se.umu.cs.ldbn.client.ui.FDWidget;
 import se.umu.cs.ldbn.client.ui.HasAdditionalControlls;
 import se.umu.cs.ldbn.client.ui.InfoButton;
 import se.umu.cs.ldbn.client.ui.MouseAdapter;
 import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
@@ -101,6 +106,44 @@ public final class DecompositionWidget extends Composite
 				}
 			}
 		}
+	}
+	
+	public void addRelationList(List<Relation> list) {
+		for (Relation r : list) {
+			addRelation(r);
+		}
+	}
+	
+	public void addRelation(Relation r) {
+		List<FD> fds = r.getFds();
+		if(fds == null) {
+			Log.error("DecompositonWidget.addRelation : FD List is null");
+			return;
+		}
+		RelationWidget rw = new RelationWidget("R"+rCounter);
+		RelationAttributesWidget raw = rw.getRelationAttributesWidget();
+		rCounter++;
+		relations.add(rw);
+		relationsPanel.add(rw);
+		FDHolderPanel fdhp = rw.getFDHolderPanel();
+		
+		if(r.getAttrbutes() != null) {
+			raw.setAttributes(r.getAttrbutes());
+		} else {
+			Log.warn("DecompositonWidget.addRelation : attributes are null, skip it");
+		}
+		
+		if(r.getKeys() != null) {
+			raw.setKey(r.getKeys());
+		} else {
+			Log.warn("DecompositonWidget.addRelation : keys are null, skip it");
+		}
+
+		for (FD fd : fds) {
+			fdhp.addFDWidget(new FDWidget(true, fd));
+		}
+		
+
 	}
 	
 	public List<RelationWidget> getRelations() {

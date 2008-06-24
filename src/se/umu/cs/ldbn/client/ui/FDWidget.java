@@ -37,7 +37,7 @@ public final class FDWidget extends HTML {
 		this.isEditable = isEditable;
 	}
 
-	private void rebuildHTML() {
+	public void rebuildHTML() {
 		StringBuffer sb = new StringBuffer(); 
 		sb.append("<table border='0' cellpadding='2' cellspacing='2'>");
 		sb.append("<tr>");

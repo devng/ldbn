@@ -16,7 +16,7 @@ import se.umu.cs.ldbn.client.ui.FDHolderPanel;
 import se.umu.cs.ldbn.client.ui.FDWidget;
 import se.umu.cs.ldbn.client.ui.HeaderWidget;
 import se.umu.cs.ldbn.client.ui.InfoButton;
-import se.umu.cs.ldbn.client.ui.dialog.AttributeEditorDialog;
+import se.umu.cs.ldbn.client.ui.dialog.DomainTableEditorDialog;
 import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
 import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialog;
 import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialogCallback;
@@ -140,7 +140,7 @@ public final class CreateAssignmentWidget extends Composite
 	
 	public void onClick(Widget sender) {
 		if(sender == addAtts) {
-			AttributeEditorDialog atd = AttributeEditorDialog.get();
+			DomainTableEditorDialog atd = DomainTableEditorDialog.get();
 			atd.center();
 		} else if (sender == addFDs) {
 			FDEditorDialog fded = FDEditorDialog.get();

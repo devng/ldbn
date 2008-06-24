@@ -8,7 +8,7 @@ import se.umu.cs.ldbn.client.ui.ca.CreateAssignmentWidget;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
 
-public final class AttributeEditorDialog extends BaseAttributeEditorDialog {
+public final class DomainTableEditorDialog extends BaseAttributeEditorDialog {
 
 	//NO drag and drop here because it mackes no sence 
 	private class EditTextArea extends AttributeTextArea {
@@ -20,18 +20,18 @@ public final class AttributeEditorDialog extends BaseAttributeEditorDialog {
 		public void onLeave(DragContext context) {}
 	}
 	
-	private static AttributeEditorDialog inst;
+	private static DomainTableEditorDialog inst;
 	
-	public static AttributeEditorDialog get() {
+	public static DomainTableEditorDialog get() {
 		if (inst == null) {
-			inst = new AttributeEditorDialog();
+			inst = new DomainTableEditorDialog();
 		}
 		return inst;
 	}
 	
 	private EditTextArea eta;
 	
-	private AttributeEditorDialog() {
+	private DomainTableEditorDialog() {
 		super("Add/Remove Attributes","Separate the attributes by commas.");
 	}
 	

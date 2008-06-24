@@ -1,7 +1,15 @@
 package se.umu.cs.ldbn.client.ui.sa;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import se.umu.cs.ldbn.client.CommonFunctions;
+import se.umu.cs.ldbn.client.core.AttributeSet;
 import se.umu.cs.ldbn.client.ui.FDHolderPanel;
+import se.umu.cs.ldbn.client.ui.FDHolderPanelListener;
+import se.umu.cs.ldbn.client.ui.FDWidget;
+import se.umu.cs.ldbn.client.ui.dialog.AttributesEditorDialog;
+import se.umu.cs.ldbn.client.ui.dialog.DomainTableEditorDialog;
 import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
 import se.umu.cs.ldbn.client.ui.dialog.KeyEditorDialog;
 
@@ -20,7 +28,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
 
 public final class RelationWidget extends Composite implements ClickListener,
-	MouseListener {
+	MouseListener, FDHolderPanelListener, RelationAttributesWidgetListener {
 	
 	private VerticalPanel mainPanel;
 	private Grid mainPanelWrapper;
@@ -42,6 +50,7 @@ public final class RelationWidget extends Composite implements ClickListener,
 	public RelationWidget(String name) {
 		isOpen = true;
 		raw = new RelationAttributesWidget();
+		raw.addListener(this);
 		mainPanel = new VerticalPanel();
 		mainPanel.setStyleName("relW");
 		
@@ -52,6 +61,11 @@ public final class RelationWidget extends Composite implements ClickListener,
 		collapseButton.addMouseListener(this);
 		CommonFunctions.setCursorPointer(collapseButton);
 		collapseButton.setStyleName("relW-collapseBut");
+		
+		editBut = new Image("img/edit-big.png", 0, 0, 20, 20);
+		editBut.addMouseListener(this);
+		editBut.addClickListener(this);
+		CommonFunctions.setCursorPointer(editBut);
 		
 		keyButton = new Image("img/key-but-big.png", 0, 0, 20, 20);
 		keyButton.addClickListener(this);
@@ -64,12 +78,6 @@ public final class RelationWidget extends Composite implements ClickListener,
 		
 		relName = new Label(name);
 		header.setWidget(0, 1, relName);
-		
-		editBut = new Image("img/edit-name.png", 0, 0, 15, 15);
-		editBut.addMouseListener(this);
-		editBut.addClickListener(this);
-		CommonFunctions.setCursorPointer(editBut);
-		//header.setWidget(0, 2, editBut);
 		
 		addBut = new Image("img/add.png", 0, 15, 15, 15);
 		addBut.addClickListener(this);
@@ -97,13 +105,15 @@ public final class RelationWidget extends Composite implements ClickListener,
 		HorizontalPanel hp = new HorizontalPanel();
 		hp.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
 		hp.add(raw);
+		hp.add(editBut);
+		hp.setSpacing(4);
 		hp.add(keyButton);
 		
 		fdHP.add(attsTitle);
 		
 		fdHP.add(hp);
 		fdHP.add(fdTitle);
-		fdHP.addListener(raw);
+		fdHP.addListener(this);
 		mainPanel.add(header);
 		mainPanel.add(fdHP);
 		
@@ -117,6 +127,10 @@ public final class RelationWidget extends Composite implements ClickListener,
 	
 	public FDHolderPanel getFDHolderPanel() {
 		return fdHP;
+	}
+	
+	public RelationAttributesWidget getRelationAttributesWidget() {
+		return raw;
 	}
 	
 	public void onClick(Widget sender) { 
@@ -143,6 +157,10 @@ public final class RelationWidget extends Composite implements ClickListener,
 			KeyEditorDialog ked = KeyEditorDialog.get();
 			ked.center();
 			ked.setCurrentRelationAttributesWidget(raw);
+		} else if (sender == editBut) {
+			AttributesEditorDialog dialog = AttributesEditorDialog.get();
+			dialog.center();
+			dialog.setCurrentRelationAttributesWidget(raw);
 		}
 	}
 
@@ -158,7 +176,7 @@ public final class RelationWidget extends Composite implements ClickListener,
 		} else if (sender == addBut) {
 			addBut.setVisibleRect(15, 15, 15, 15);
 		} else if (sender == editBut) {
-			editBut.setVisibleRect(15, 0, 15, 15);
+			editBut.setVisibleRect(20, 0, 20, 20);
 		} else if (sender == keyButton) {
 			keyButton.setVisibleRect(20, 0, 20, 20);
 		}
@@ -175,7 +193,7 @@ public final class RelationWidget extends Composite implements ClickListener,
 		} else if (sender == addBut) {
 			addBut.setVisibleRect(0, 15, 15, 15);
 		} else if (sender == editBut) {
-			editBut.setVisibleRect(0, 0, 15, 15);
+			editBut.setVisibleRect(0, 0, 20, 20);
 		} else if (sender == keyButton) {
 			keyButton.setVisibleRect(0, 0, 20, 20);
 		}
@@ -192,5 +210,54 @@ public final class RelationWidget extends Composite implements ClickListener,
 	
 	public boolean isChecked() {
 		return checkBox.isChecked();
+	}
+
+	public void allFDsRemoved() {
+		raw.getAttributes().clearAllAttributes();
+		raw.setHTML(raw.generateAttributeHTML());
+		
+	}
+	
+	public void fdAdded(Collection<FDWidget> currentFDs) {
+		for (FDWidget fdw : currentFDs) {
+			raw.getAttributes().union(fdw.getFD().getLHS());
+			raw.getAttributes().union(fdw.getFD().getRHS());
+		}
+		raw.setHTML(raw.generateAttributeHTML());
+	}
+	
+	public void fdRemoved(Collection<FDWidget> currentFDs) {
+//		attributes.clearAllAttributes();
+//		for (FDWidget fdw : currentFDs) {
+//			attributes.union(fdw.getFD().getLHS());
+//			attributes.union(fdw.getFD().getRHS());
+//			
+//		}
+//		key.andOperator(attributes);
+//		setHTML(generateAttributeHTML());
+	}
+
+	
+	public void onAttributesChange() {
+		//DO NOT USE FDHolderPanel.removeFDWidget(), or you will notify the listener
+		//and there will be an endless loop.
+		Collection<FDWidget> widgets = getFDHolderPanel().getFDWidgets();
+		AttributeSet att = raw.getAttributes();
+		for (Iterator<FDWidget> i = widgets.iterator(); i.hasNext();) {
+			FDWidget fdw = i.next();
+			fdw.getFD().getLHS().andOperator(att);
+			if(fdw.getFD().getLHS().isEmpty()) {
+				fdw.getParent().removeFromParent();
+				i.remove();
+				continue;
+			}
+			fdw.getFD().getRHS().andOperator(att);
+			if(fdw.getFD().getRHS().isEmpty()) {
+				fdw.getParent().removeFromParent();
+				i.remove();
+				continue;
+			}
+			fdw.rebuildHTML();
+		}
 	}
 }
