@@ -17,7 +17,7 @@ include("opendb.php");
 		$id = $_POST['id'];
 	}
 	
-	if(isset($id)) {
+	if(isset($id) && $id != "") {
 		if(isset($xml) && isset($name)) {
 			checkID($id);
 			checkName($name);

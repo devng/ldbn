@@ -22,6 +22,10 @@ public class InfoButton extends Image implements ClickListener {
 		return fileBase;
 	}
 	
+	public void setFileBase(String fileBase) {
+		this.fileBase = fileBase;
+	}
+	
 	public void onClick(Widget sender) {
 		HelpDialog.get().showInfo(fileBase+".html");
 //		WindowController windowController = new WindowController(RootPanel.get());

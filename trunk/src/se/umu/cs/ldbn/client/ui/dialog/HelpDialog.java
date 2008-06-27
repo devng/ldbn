@@ -34,7 +34,7 @@ public final class HelpDialog extends CloseDialog {
 	
 	protected Widget getContentWidget() {
 		viewer = new Frame();
-		viewer.setSize("400px", "250px");
+		viewer.setSize("420px", "250px");
 		return viewer;
 	}
 }

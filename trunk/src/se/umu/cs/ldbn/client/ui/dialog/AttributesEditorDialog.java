@@ -17,6 +17,7 @@ public class AttributesEditorDialog extends KeyEditorDialog {
 	private AttributesEditorDialog() {
 		super("Add/Remove Attributes", "Separate the attributes by commas.<BR>" +
 				"You can also use Drag'n'Drop.");
+		infoButton.setFileBase("addrematt");
 	}
 	
 	protected void handleAttributeSet(AttributeSet as) {

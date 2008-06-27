@@ -1,6 +1,7 @@
 package se.umu.cs.ldbn.client.ui.sa;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -69,7 +70,7 @@ public final class DecompositionWidget extends Composite
 		HorizontalPanel hp = new HorizontalPanel();
 		hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		hp.add(addRelation);
-		hp.add(new InfoButton("example"));
+		hp.add(new InfoButton("decompose"));
 		vp.add(hp);
 		relationsPanel = new HorizontalPanel();
 		vp.add(relationsPanel);
@@ -108,7 +109,7 @@ public final class DecompositionWidget extends Composite
 		}
 	}
 	
-	public void addRelationList(List<Relation> list) {
+	public void addRelationList(Collection<Relation> list) {
 		for (Relation r : list) {
 			addRelation(r);
 		}
@@ -117,9 +118,10 @@ public final class DecompositionWidget extends Composite
 	public void addRelation(Relation r) {
 		List<FD> fds = r.getFds();
 		if(fds == null) {
-			Log.error("DecompositonWidget.addRelation : FD List is null");
-			return;
+			Log.warn("DecompositonWidget.addRelation : FD List is null");
+			fds = new ArrayList<FD>(); //Place holder
 		}
+		
 		RelationWidget rw = new RelationWidget("R"+rCounter);
 		RelationAttributesWidget raw = rw.getRelationAttributesWidget();
 		rCounter++;
@@ -133,8 +135,8 @@ public final class DecompositionWidget extends Composite
 			Log.warn("DecompositonWidget.addRelation : attributes are null, skip it");
 		}
 		
-		if(r.getKeys() != null) {
-			raw.setKey(r.getKeys());
+		if(r.getSuperKey() != null) {
+			raw.setKey(r.getSuperKey());
 		} else {
 			Log.warn("DecompositonWidget.addRelation : keys are null, skip it");
 		}
@@ -146,8 +148,16 @@ public final class DecompositionWidget extends Composite
 
 	}
 	
-	public List<RelationWidget> getRelations() {
+	public List<RelationWidget> getRelationWidgets() {
 		return relations;
+	}
+	
+	public List<Relation> getRelations() {
+		ArrayList<Relation> result = new ArrayList<Relation>(relations.size());
+		for (RelationWidget rw : relations) {
+			result.add(rw.getRelation());
+		}
+		return result;
 	}
 	
 	public void clearData() {

@@ -1,3 +1,8 @@
+2008-06-27_2030
+* Fixed bug with the syntheses algorithm.
+* BCNF decomposition now works.
+* Help dialogs are now displaying real information.  
+
 2008-06-24_1500
 * Show solution now works , without the BCNF solution
 * Refactoring 
