@@ -30,7 +30,7 @@ public class MinimalCoverWidget extends Composite implements ClickListener,
 		HorizontalPanel buttons = new HorizontalPanel();
 		buttons.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		buttons.add(minCovAddFD);
-		buttons.add(new InfoButton("example"));
+		buttons.add(new InfoButton("find-mincov"));
 		
 		mainPanel.add(buttons);
 		initWidget(mainPanel);

@@ -2,9 +2,12 @@ package se.umu.cs.ldbn.client.ui.sa;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import se.umu.cs.ldbn.client.CommonFunctions;
 import se.umu.cs.ldbn.client.core.AttributeSet;
+import se.umu.cs.ldbn.client.core.FD;
+import se.umu.cs.ldbn.client.core.Relation;
 import se.umu.cs.ldbn.client.ui.FDHolderPanel;
 import se.umu.cs.ldbn.client.ui.FDHolderPanelListener;
 import se.umu.cs.ldbn.client.ui.FDWidget;
@@ -235,6 +238,15 @@ public final class RelationWidget extends Composite implements ClickListener,
 //		}
 //		key.andOperator(attributes);
 //		setHTML(generateAttributeHTML());
+	}
+	
+	public Relation getRelation() {
+		Relation r = new Relation();
+		AttributeSet atts = raw.getAttributes();
+		List<FD> fds = fdHP.getFDs();
+		r.setAttributes(atts);
+		r.setFDs(fds);
+		return r;
 	}
 
 	

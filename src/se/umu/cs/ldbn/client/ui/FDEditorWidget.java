@@ -94,7 +94,7 @@ public final class FDEditorWidget extends Composite
 		mainPanel.setVerticalAlignment(VerticalPanel.ALIGN_TOP);
 		
 		VerticalPanel vp = new VerticalPanel();
-		vp.add(new InfoButton("example"));
+		vp.add(new InfoButton("fdeditor"));
 		addButton = new Button("Set/Add");
 		addButton.addClickListener(this);
 		CommonFunctions.setCursorPointer(addButton);

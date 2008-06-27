@@ -14,6 +14,7 @@ abstract class BaseAttributeEditorDialog extends CloseDialog {
 	protected HorizontalPanel mainPanel;
 	protected Button clearButton;
 	protected Button setButton;
+	protected InfoButton infoButton;
 	
 	protected BaseAttributeEditorDialog(String title, String msg) {
 		super(title, msg, false);
@@ -40,7 +41,8 @@ abstract class BaseAttributeEditorDialog extends CloseDialog {
 		mainPanel.add(textArea);
 		
 		VerticalPanel vp = new VerticalPanel();
-		vp.add(new InfoButton("example"));
+		infoButton = new InfoButton("example");
+		vp.add(infoButton);
 		setButton = new Button("Set");
 		setButton.setStyleName("dew-btn");
 		setButton.addClickListener(this);

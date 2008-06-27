@@ -75,7 +75,7 @@ public final class CreateAssignmentWidget extends Composite
 		CommonFunctions.setCursorPointer(saveButton);
 		editButton.setStyleName("att-but");
 		CommonFunctions.setCursorPointer(editButton);
-		InfoButton info = new InfoButton("example");
+		InfoButton info = new InfoButton("ca-tab");
 		info.setStyleName("att-img");
 		
 		hw.add(newButton);
@@ -86,7 +86,7 @@ public final class CreateAssignmentWidget extends Composite
 		editMode.setVisible(false);
 		hw.add(editMode);
 		mainPanel.add(hw);
-		
+		//given attributes
 		VerticalPanel vp = new VerticalPanel();
 		addAtts = new Button ("Add/Remove Attributes");
 		addAtts.setStyleName("min-cov-but");
@@ -95,14 +95,14 @@ public final class CreateAssignmentWidget extends Composite
 		HorizontalPanel hp = new HorizontalPanel();
 		hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		hp.add(addAtts);
-		hp.add(new InfoButton("example"));
+		hp.add(new InfoButton("givenatt-ca"));
 		vp.add(hp);
 		egas = new EditableGivenAttributesWidget();
 		vp.add(egas);
 		
 		dwGivenAttributes = new DisclosureWidget("Given attributes", vp);
 		mainPanel.add(dwGivenAttributes);
-		
+		//Given FDs
 		givenFDs = new FDHolderPanel();
 		egas.getDomain().addListener(givenFDs);
 		hp = new HorizontalPanel();
@@ -112,7 +112,7 @@ public final class CreateAssignmentWidget extends Composite
 		addFDs.addClickListener(this);
 		CommonFunctions.setCursorPointer(addFDs);
 		hp.add(addFDs);
-		hp.add(new InfoButton("example"));
+		hp.add(new InfoButton("givenfds-ca"));
 		givenFDs.add(hp);
 		dwGivenFDs = new DisclosureWidget("Given FDs", givenFDs);
 		mainPanel.add(dwGivenFDs);

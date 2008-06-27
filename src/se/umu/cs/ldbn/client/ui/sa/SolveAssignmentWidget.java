@@ -1,6 +1,7 @@
 package se.umu.cs.ldbn.client.ui.sa;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import se.umu.cs.ldbn.client.Assignment;
@@ -85,7 +86,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		showSolution.setStyleName("att-but");
 		CommonFunctions.setCursorPointer(showSolution);
 		showSolution.addClickListener(this);
-		InfoButton info = new InfoButton("example");
+		InfoButton info = new InfoButton("sa-tab");
 		info.setStyleName("att-img");
 		HeaderWidget hw = new HeaderWidget();
 		hw.add(newAssignment);
@@ -103,7 +104,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		add(dwFDs);
 		//Minimal Cover
 		minimalCoverWidget = new MinimalCoverWidget();
-		dwMinimalCover = new DisclosureWidget("Find the minimal cover of FDs", 
+		dwMinimalCover = new DisclosureWidget("Find minimal cover of FDs", 
 				minimalCoverWidget);
 		add(dwMinimalCover); 
 		//2NF
@@ -180,16 +181,42 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		//check 2nf
 		dialog.msgTitle("2NF Decomposition Check:");
 		if(!isMinCoverRight) { //TODO is this right????
-			dialog.msgWarn("Minimal cover was wrong, program will compute " +
-				"it, in order to check the decomposition solutions, but it " +
-				"wont show the solution,  Note that different minimal covers " +
-				"may give different solutions.");
+//			dialog.msgWarn("Minimal cover was wrong, program will compute " +
+//				"it, in order to check the decomposition solutions, but it " +
+//				"wont show the solution,  Note that different minimal covers " +
+//				"may give different solutions.");
 			deepCopy = new ArrayList<FD>();
 			for (FD fd2 : fds) {
 				deepCopy.add(fd2);
 			}
 			Algorithms.minimalCover(deepCopy);
 		}
+		boolean isDependencyPreserving = false;
+		isDependencyPreserving = Algorithms.isDependencyPreserving(fds, decomposition2NF.getRelations());
+		if(isDependencyPreserving) {
+			dialog.msgOK("Decomposition is dependency preserving");
+		} else {
+			dialog.msgErr("Decomposition is NOT dependency preserving");
+		}
+		//check 3nf
+		dialog.msgTitle("3NF Decomposition Check:");
+		isDependencyPreserving = Algorithms.isDependencyPreserving(fds, decomposition3NF.getRelations());
+		if(isDependencyPreserving) {
+			dialog.msgOK("Decomposition is dependency preserving");
+		} else {
+			dialog.msgErr("Decomposition is NOT dependency preserving");
+		}
+		//check bcnf
+		dialog.msgTitle("BCNF Decomposition Check:");
+		isDependencyPreserving = Algorithms.isDependencyPreserving(fds, decompositionBCNF.getRelations());
+		if(isDependencyPreserving) {
+			dialog.msgOK("Decomposition is dependency preserving");
+		} else {
+			dialog.msgWarn("Decomposition is NOT dependency preserving");
+		}		
+		
+		
+		
 		/*
 		List<Relation> relations = NF2DecompositionEditorWidget.getRelations();
 		boolean is2NF = Algorithms.isIn2NF(relations, deepCopy); 
@@ -220,6 +247,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		for (FD fd : fds) {
 			deepCopy.add(fd.clone());
 		}
+		Algorithms.minimalCover(deepCopy); // TODO THIS IS A BUG
 		Algorithms.minimalCover(deepCopy);
 		for (FD fd : deepCopy) {
 			FDWidget fdw = new FDWidget(true, fd);
@@ -228,10 +256,12 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		//2nf 3nf
 		Relation r = new Relation();
 		r.setAttributes(domain.createAttributeSet());
-		r.setFDs(fds);
-		List<Relation> synthese = Algorithms.synthese(r);
+		r.setFDs(deepCopy);
+		Collection<Relation> synthese = Algorithms.synthese(r, true);
 		decomposition2NF.addRelationList(synthese);
 		decomposition3NF.addRelationList(synthese);
+		Collection<Relation> bcnf = Algorithms.findBCNF(synthese);
+		decompositionBCNF.addRelationList(bcnf);
 		
 	}
 	

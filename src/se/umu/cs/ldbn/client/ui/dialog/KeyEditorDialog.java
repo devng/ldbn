@@ -67,6 +67,7 @@ public class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 	private KeyEditorDialog() {
 		super("Key Editor", "Give a valid candidate key for the relation.<BR>" +
 				"You can use Drag'n'Drop.");
+		infoButton.setFileBase("keyeditor");
 	}
 	
 	protected KeyEditorDialog(String title, String msg) {
