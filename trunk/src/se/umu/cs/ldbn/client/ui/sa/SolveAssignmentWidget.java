@@ -2,12 +2,14 @@ package se.umu.cs.ldbn.client.ui.sa;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import se.umu.cs.ldbn.client.Assignment;
 import se.umu.cs.ldbn.client.AssignmentGenerator;
 import se.umu.cs.ldbn.client.CommonFunctions;
 import se.umu.cs.ldbn.client.core.Algorithms;
+import se.umu.cs.ldbn.client.core.AttributeSet;
 import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.core.Relation;
@@ -21,7 +23,6 @@ import se.umu.cs.ldbn.client.ui.dialog.CheckSolutionDialog;
 import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialog;
 import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialogCallback;
 
-import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -37,8 +38,16 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		}
 		return inst;
 	}
+	//cache
+	/**
+	 * Holds the partial FD cover for every user created relation.
+	 * The key is the hash code  of the relation attribute set
+	 */
+	private HashMap<Integer, List<FD>> cacheFD;
+	private HashMap<Integer, List<AttributeSet>> cacheKeys;
 	//assignment variables  
 	private DomainTable domain;
+	private AttributeSet domainAsAttSet;
 	private List<FD> fds;
 	//given attributes
 	private Button checkSolution;
@@ -119,6 +128,9 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		decompositionBCNF = new DecompositionWidget();
 		dwDecompositionBCNF = new DisclosureWidget("Decompose in BCNF", decompositionBCNF);
 		add(dwDecompositionBCNF);
+		//cache
+		cacheFD = new HashMap<Integer, List<FD>>();
+		cacheKeys = new HashMap<Integer, List<AttributeSet>>();
 		
 		//start with  a loaded assignment
 		this.domain = new DomainTable(); //this is necessary 
@@ -154,13 +166,12 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	}
 
 	private void checkSolution() {
-		//check minimal cover
+		//minimal cover check
 		List<FD> minCovFDs = minimalCoverWidget.getFDHolderPanel().getFDs();
 		List<FD> deepCopy = new ArrayList<FD>(minCovFDs.size());
 		for (FD fd : minCovFDs) {
 			deepCopy.add(fd.clone());
 		}
-		boolean isMinCoverRight = false;
 		Algorithms.minimalCover(deepCopy);
 		CheckSolutionDialog dialog = CheckSolutionDialog.get();
 		dialog.clearMsgs();
@@ -176,68 +187,125 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 			dialog.msgErr("wrong - some fds are not redused");
 		} else {
 			dialog.msgOK("right");
-			isMinCoverRight = true;
 		}
-		//check 2nf
-		dialog.msgTitle("2NF Decomposition Check:");
-		if(!isMinCoverRight) { //TODO is this right????
-//			dialog.msgWarn("Minimal cover was wrong, program will compute " +
-//				"it, in order to check the decomposition solutions, but it " +
-//				"wont show the solution,  Note that different minimal covers " +
-//				"may give different solutions.");
-			deepCopy = new ArrayList<FD>();
-			for (FD fd2 : fds) {
-				deepCopy.add(fd2);
-			}
-			Algorithms.minimalCover(deepCopy);
-		}
+		//2nf check
+		AttributeSet initAtts = domain.createAttributeSet();
 		boolean isDependencyPreserving = false;
+		dialog.msgTitle("2NF Decomposition Check:");
+		List<Relation> relations = decomposition2NF.getRelations();
+		checkForLossless(fds, initAtts, relations);
 		isDependencyPreserving = Algorithms.isDependencyPreserving(fds, decomposition2NF.getRelations());
 		if(isDependencyPreserving) {
 			dialog.msgOK("Decomposition is dependency preserving");
 		} else {
 			dialog.msgErr("Decomposition is NOT dependency preserving");
 		}
-		//check 3nf
+		updateCache(relations);
+		checkFDInput(relations);
+		checkKeyInput(relations);
+		updateRelations(relations);
+		boolean isIn2NF = Algorithms.isIn2NF(relations);
+		System.out.println(isIn2NF);
+		//3nf check
 		dialog.msgTitle("3NF Decomposition Check:");
+		relations = decomposition3NF.getRelations();
+		checkForLossless(fds, initAtts, relations);
 		isDependencyPreserving = Algorithms.isDependencyPreserving(fds, decomposition3NF.getRelations());
 		if(isDependencyPreserving) {
 			dialog.msgOK("Decomposition is dependency preserving");
 		} else {
 			dialog.msgErr("Decomposition is NOT dependency preserving");
 		}
-		//check bcnf
+		updateCache(relations);
+		checkFDInput(relations);
+		checkKeyInput(relations);
+		//bcnf check
 		dialog.msgTitle("BCNF Decomposition Check:");
+		relations = decompositionBCNF.getRelations();
+		checkForLossless(fds, initAtts, relations);
 		isDependencyPreserving = Algorithms.isDependencyPreserving(fds, decompositionBCNF.getRelations());
 		if(isDependencyPreserving) {
 			dialog.msgOK("Decomposition is dependency preserving");
 		} else {
 			dialog.msgWarn("Decomposition is NOT dependency preserving");
 		}		
-		
-		
-		
-		/*
-		List<Relation> relations = NF2DecompositionEditorWidget.getRelations();
-		boolean is2NF = Algorithms.isIn2NF(relations, deepCopy); 
-		if(is2NF) {
-			Log.info("2 NF Decomposition - right");
-		} else {
-			Log.info("2 NF Decomposition - wrong");
-		}
-		
-		Log.info("Checking 3nf...");
-		relations = NF3DecompositionEditorWidget.getRelations();
-		boolean is3NF = Algorithms.isIn3NF(relations, deepCopy); 
-		if(is3NF) {
-			Log.info("3 NF Decomposition - right");
-		} else {
-			Log.info("3 NF Decomposition - wrong");
-		}
-		*/
-		
-		//AssignmentXML axml  = new AssignmentXML();
+		updateCache(relations);
+		checkFDInput(relations);
+		checkKeyInput(relations);
 		dialog.center();
+	}
+	
+	
+	private boolean checkFDInput(List<Relation> rel) {
+		boolean resultFD = true;
+		CheckSolutionDialog dialog = CheckSolutionDialog.get();
+		for (Relation r : rel) {
+			List<FD> fdsRBR = cacheFD.get(r.getAttrbutes().hashCode());
+			for (FD fd : r.getFds()) {
+				if (!Algorithms.member(fd, fdsRBR)) {
+					resultFD = false;
+					dialog.msgErr("The FD "+fd.toString()+" for \""+r.getName()+"\" are incorrect");
+					break;
+				}
+					
+			}
+		}
+		return resultFD;
+	}
+	
+	private boolean checkKeyInput(List<Relation> rel) {
+		boolean result = false;
+		CheckSolutionDialog dialog = CheckSolutionDialog.get();
+		for (Relation r : rel) {
+			List<AttributeSet> keys = cacheKeys.get(r.getAttrbutes().hashCode());
+			boolean isKeyFound = false;
+			for (AttributeSet k : keys) {
+				if(k.equals(r.getSuperKey())) {
+					isKeyFound = true;
+					break;
+				}
+			}
+			if(!isKeyFound) {
+				dialog.msgErr("The Key for \""+r.getName()+"\" is incorrect");
+				result = false;
+			}
+			
+		}
+		return result;
+	}
+	
+	private void checkForLossless(List<FD> fds, AttributeSet initAtts, List<Relation> relations) {
+		CheckSolutionDialog dialog = CheckSolutionDialog.get();
+		boolean isLossless = Algorithms.isLossless(fds, initAtts, relations);
+		if(isLossless) {
+			dialog.msgOK("Decomposition is lossless");
+		} else {
+			dialog.msgErr("Decomposition is NOT lossless");
+		}
+	}
+	
+	private void updateCache(Collection<Relation> rel) {
+		for (Relation r : rel) {
+			int i = r.getAttrbutes().hashCode();
+			if(!cacheFD.containsKey(i)) {
+				List<FD> fdsRBR = Algorithms.reductionByResolution(domainAsAttSet, fds, r.getAttrbutes());
+				Algorithms.minimalCover(fdsRBR);
+				cacheFD.put(i, fdsRBR);
+			}
+			if(!cacheKeys.containsKey(i)) {
+				List<FD> fdsRBR = cacheFD.get(i);
+				List<AttributeSet> keys = Algorithms.findAllKeyCandidates(fdsRBR, r.getAttrbutes());
+				cacheKeys.put(i, keys);
+			}
+		}
+	}
+	
+	
+	private void updateRelations(List<Relation> rel) {
+		for (Relation r : rel) {
+			r.setFDs(cacheFD.get(r.getAttrbutes().hashCode()));
+			r.setKeyCandidates(cacheKeys.get(r.getAttrbutes().hashCode()));
+		}
 	}
 	
 	private void showSolution() {
@@ -274,6 +342,8 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	
 	private void clearData() {
 		clearUserInput();
+		cacheFD.clear();
+		cacheKeys.clear();
 		domain.clearData();
 		givenFDsWidget.clearData();
 		fds.clear();
@@ -283,6 +353,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		clearData();
 		restoreDefaultSize();
 		this.domain = a.getDomain();
+		this.domainAsAttSet = domain.createAttributeSet();
 		givenAttributesWidget.setDomain(domain);
 		this.fds = a.getFDs();
 		

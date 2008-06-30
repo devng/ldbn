@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
+
 import com.allen_sauer.gwt.log.client.Log;
 
 /**
@@ -279,24 +281,6 @@ public final class Algorithms {
 		return b.equals(atts);
 	}
 
-	// TODO better or use find allKeyCandidates
-	public static AttributeSet findKey(Relation r) {
-		if (1 == 1)
-			throw new UnsupportedOperationException("DO TUCH THIS, IT IS WRONG");
-
-		List<FD> fds = r.getFds();
-		if (fds == null) {
-			throw new IllegalArgumentException("Relation has no assosiate FDs");
-		}
-		for (FD fd : fds) {
-			AttributeSet lhs = fd.getLHS();
-			if (isKey(lhs, r.getAttrbutes(), fds)) {
-				return lhs.clone();
-			}
-		}
-		return r.getAttrbutes().clone();
-	}
-
 	/**
 	 * Check if a decomposition (a list of relationships) is dependency
 	 * preserving. Dependency preservation ensures that no FDs are lost during a
@@ -407,15 +391,18 @@ public final class Algorithms {
 		int[] sMask = new int[s.length];
 		for (int i = 0; i < s.length; i++) {
 			s[i] = decomposition.get(i).getAttrbutes().clone();
-			sMask[i] = s[i].attMask();
+			sMask[i] = decomposition.get(i).getAttrbutes().attMask();
 		}
 		do {
 			for (FD fd : initialFDs) {
+				boolean containsLHSRHS =  false;
 				for (int i = 0; i < s.length; i++) {
-					if (s[i].containsAttSet(fd.getLHS())) {
-						s[i].union(fd.getRHS());
+					if (s[i].containsAttSet(fd.getLHS()) && s[i].containsAttSet(fd.getRHS())) {
+						containsLHSRHS = true;
+						break;
 					}
 				}
+				setSymbol(s, fd.getLHS(), fd.getRHS(), containsLHSRHS);
 			}
 		} while (hasSChanged(sMask, s));
 
@@ -436,6 +423,18 @@ public final class Algorithms {
 			}
 		}
 		return result;
+	}
+	
+	private static void setSymbol(AttributeSet[] s, AttributeSet x, AttributeSet y, boolean isASymbol) {
+		for (AttributeSet sA : s) {
+			if(sA.containsAttSet(x)) {
+				if(isASymbol) {
+					sA.union(y);
+				} else {
+					sA.removeAttSet(y);
+				}
+			}
+		}
 	}
 
 	public static Collection<Relation> synthese(Relation r, boolean areFDMinimalCoder) {
@@ -645,63 +644,51 @@ public final class Algorithms {
 		return nonBCNF;
 	}
 
-	public static boolean isIn2NF(List<Relation> r, List<FD> minimalCoverFDs) {
-		// for (Iterator<Relation> iter = r.iterator(); iter.hasNext();) {
-		// Relation r2nf = iter.next();
-		// Log.info("Checking " + r2nf.toString());
-		// //if there are not FDs associated with this relationship, take the
-		// //minimal cover FDs, and find out which ones can be associated
-		// //with this relationship
-		// if(r2nf.getFds() == null) {
-		// Log.info("No fds set, assosiating new relation fds");
-		// //r2nf.assciateFDs(minimalCoverFDs); TODO
-		// }
-		// //if no key is set find one. Note that in the extreme situation
-		// //it could be the every element of the relationship
-		// if(r2nf.getKeys() == null) {
-		// Log.info("No key set, finding new Key");
-		// AttributeSet key = findKey(r2nf);
-		// r2nf.setKeys(key);
-		// }
-		// //see if the key is actually a key ( verify user input).
-		// if(r2nf.getKeys().size() == 1) {//TODO better
-		// Log.info("Key size == 1");
-		// return true;
-		// } else {
-		// //to see if the relation ship is in 2 nf we hae to insure that
-		// //every element that is not part of the key, aka not a key element,
-		// //is not depending on only just part of the key, e.g.
-		// //Relationship ABCD with FDs AB -> CD, B->C
-		// //is not in 2NF since C depends also on B, which
-		// //is part of the key. In order to insure that is not the case ,
-		// //we iterate over every FD and compare it LHS (left hand side) with
-		// ///the key, if the LHS is part of the key, then the relationship
-		// //is not in 2 nf
-		// AttributeSet key = r2nf.getKeys();
-		// for (FD fd2 : minimalCoverFDs) {
-		// if(!fd2.getLHS().equals(key) &
-		// key.containsAttSet(fd2.getLHS())) {
-		// return true;
-		// }
-		// }
-		//				
-		//				
-		// //see every element depend only on the key
-		//				
-		// AttributeSet nonKeyAtt = r2nf.getAttrbutes().clone();
-		// nonKeyAtt.removeAttSet(key);
-		// for (AttributeSetIterator iter2 = nonKeyAtt.iterator(); iter2
-		// .hasNext();) {
-		// for (FD fd : r2nf.getFds()) {
-		// if(fd.getRHS().containsAtt(iter2.nextAttIndex()) &
-		// !fd.getLHS().equals(key)) {
-		// return false;
-		// }
-		// }
-		//					
-		// }
-		// }
-		// }
+	
+	/**
+	 * Checks if a decomposition is in 2nd normal form (2NF).
+	 * @param rel list of relations with computed key candidates and FDs 
+	 * computed with reduce by resolution algorithm.
+	 * @return true if every relation is in 2NF.  
+	 */
+	public static boolean isIn2NF(List<Relation> rel) {
+        //to see if the relation ship is in 2 nf we hae to insure that
+        //every element that is not part of the key, aka not a key element,
+        //is not depending on only just part of the key, e.g.
+        //Relationship ABCD with FDs AB -> CD, B->C
+        //is not in 2NF since C depends also on B, which
+        //is part of the key. In order to insure that is not the case ,
+        //we iterate over every FD and compare it LHS (left hand side) with
+        //the key, if the LHS is part of the key, then the relationship
+        //is not in 2 nf
+		
+		for (Relation r : rel) {
+			List<AttributeSet> keys = r.getKeyCandidates();
+			AttributeSet keyAttributes = new AttributeSet(SolveAssignmentWidget.get().getDomainTable());
+			for (AttributeSet k : keys) {
+				keyAttributes.union(k);
+			}
+			if(keyAttributes.equals(r.getAttrbutes())) {
+				return true; // all attributes are key attributes 
+			}
+			for (AttributeSet k : keys) {
+				for (int i = 0; i <= k.attMask(); i++) {
+					int tmpAtt = i & k.attMask();
+					if((tmpAtt != k.attMask()) && (tmpAtt != 0)) {
+						AttributeSet tmp = new AttributeSet(SolveAssignmentWidget.get().getDomainTable());
+						tmp.setMask(tmpAtt);
+						if(keys.contains(tmp)) continue;
+						
+						AttributeSet tmp2 = attributeClosure(tmp, r.getFds());
+						if(tmp2.attMask() != 0 && tmp.attMask() != tmp2.attMask() && !keyAttributes.containsAttSet(tmp2)) {
+							return false;
+						}
+					}
+				}
+			}
+			
+		}
+		
 		return true;
 	}
 

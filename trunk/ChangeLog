@@ -1,3 +1,9 @@
+2008-06-30_1810
+* Checking for lossless decomposition.
+* Checking the correctness of the FDs given by the user.
+* Checking the correctness of the key given by the user.
+* Checking if a decomposition is in 2nd normal form (2NF)
+
 2008-06-27_2030
 * Fixed bug with the syntheses algorithm.
 * BCNF decomposition now works.

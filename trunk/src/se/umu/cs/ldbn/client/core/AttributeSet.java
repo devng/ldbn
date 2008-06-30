@@ -3,8 +3,6 @@ package se.umu.cs.ldbn.client.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.allen_sauer.gwt.log.client.Log;
-
 public final class AttributeSet {
 	
 	private DomainTable domain;
