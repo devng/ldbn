@@ -3,7 +3,10 @@ package se.umu.cs.ldbn.tests;
 import java.util.ArrayList;
 import java.util.List;
 
-import se.umu.cs.ldbn.client.core.*;
+import se.umu.cs.ldbn.client.core.Algorithms;
+import se.umu.cs.ldbn.client.core.AttributeSet;
+import se.umu.cs.ldbn.client.core.DomainTable;
+import se.umu.cs.ldbn.client.core.FD;
 //TODO As junit
 public class MinimalCoverTest {
 	public static void main(String[] args) {

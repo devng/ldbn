@@ -8,6 +8,7 @@ public final class Relation {
 	private List<AttributeSet> allKeyCandidates;
 	private AttributeSet superKey;
 	private List<FD> fds;
+	private String name;
 	
 	public Relation() {
 	}
@@ -86,5 +87,13 @@ public final class Relation {
 		}
 		sb.append("------------------------------");
 		return sb.toString();
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

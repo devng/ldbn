@@ -12,7 +12,6 @@ import se.umu.cs.ldbn.client.ui.FDHolderPanel;
 import se.umu.cs.ldbn.client.ui.FDHolderPanelListener;
 import se.umu.cs.ldbn.client.ui.FDWidget;
 import se.umu.cs.ldbn.client.ui.dialog.AttributesEditorDialog;
-import se.umu.cs.ldbn.client.ui.dialog.DomainTableEditorDialog;
 import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
 import se.umu.cs.ldbn.client.ui.dialog.KeyEditorDialog;
 
@@ -245,7 +244,9 @@ public final class RelationWidget extends Composite implements ClickListener,
 		AttributeSet atts = raw.getAttributes();
 		List<FD> fds = fdHP.getFDs();
 		r.setAttributes(atts);
+		r.setSuperKey(raw.getKey());
 		r.setFDs(fds);
+		r.setName(relName.getText());
 		return r;
 	}
 

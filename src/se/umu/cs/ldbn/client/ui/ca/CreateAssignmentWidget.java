@@ -6,7 +6,6 @@ import java.util.List;
 import se.umu.cs.ldbn.client.Assignment;
 import se.umu.cs.ldbn.client.CommonFunctions;
 import se.umu.cs.ldbn.client.core.DomainTable;
-import se.umu.cs.ldbn.client.core.DomainTableListener;
 import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.io.AssignmentLoader;
 import se.umu.cs.ldbn.client.io.AssignmentLoaderCallback;
