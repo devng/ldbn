@@ -90,6 +90,11 @@ public final class Main implements EntryPoint {
 		return dragControll;
 	}
 	
+	public void showGlassPanelLoading() {
+		glass.setLoadingAnimationNextTime(true);
+		glass.show();
+	}
+	
 	public void showGlassPanel() {
 		glass.show();
 	}

@@ -545,18 +545,18 @@ public final class Algorithms {
 	}
 
 	/**
-	 * Fidns a BCNF decompostion if there is one. The input is the output of the
+	 * Finds a BCNF decomposition if there is one. The input is the output of the
 	 * syntese algorithm.
 	 * 
-	 * Algorithm is decribed in the book [1]. page 187
+	 * Algorithm is described in the book [1]. page 187
 	 * 
 	 * @param list
 	 * @return
 	 */
-	public static Collection<Relation> findBCNF(Collection<Relation> list) {
+	public static Collection<Relation> findBCNF(Collection<Relation> synthese) {
 		List<FD> nonBCNF = null;
 		Relation curRel = null;
-		for (Relation r : list) {
+		for (Relation r : synthese) {
 			List<FD> tmp = isBCNF(r);
 			if (tmp != null) {
 				nonBCNF = tmp;
@@ -591,13 +591,13 @@ public final class Algorithms {
 			r2.setKeyCandidates(keys);
 			r2.setSuperKey(keys.get(0));
 
-			list.remove(curRel);
-			list.add(r1);
-			list.add(r2);
-			findBCNF(list);
+			synthese.remove(curRel);
+			synthese.add(r1);
+			synthese.add(r2);
+			findBCNF(synthese);
 		}
 
-		return list;
+		return synthese;
 	}
 
 	/**
@@ -626,19 +626,17 @@ public final class Algorithms {
 			AttributeSet rhs = fd.getRHS();
 			if (lhs.containsAttSet(rhs))
 				continue; // FD trivial
-			boolean isSuperKey = false; // LHS of FD is SuperKey
+			boolean isKey = false; // if LHS of FD is a super key
 			for (AttributeSet key : keys) { 
 				if (lhs.containsAttSet(key)) {
-					isSuperKey = true;
+					isKey = true;
 					break;
 				}
 			}
-			
-
-			if (isSuperKey)
+			if (isKey) {
 				continue;
+			}
 			nonBCNF.add(fd);
-
 		}
 		if(nonBCNF.isEmpty()) return null;
 		return nonBCNF;
@@ -692,46 +690,51 @@ public final class Algorithms {
 		return true;
 	}
 
-	public static boolean isIn3NF(List<Relation> r, List<FD> minimalCoverFDs) {
-		// for (Iterator<Relation> iter = r.iterator(); iter.hasNext();) {
-		// Relation r2nf = iter.next();
-		// Log.info("Checking " + r2nf.toString());
-		// //if there are not FDs associated with this relationship, take the
-		// //minimal cover FDs, and find out which ones can be associated
-		// //with this relationship
-		// if(r2nf.getFds() == null) {
-		// Log.info("No fds set, assosiating new relation fds");
-		// //r2nf.assciateFDs(minimalCoverFDs); TODO
-		// }
-		// //if no key is set find one. Note that in the extreme situation
-		// //it could be the every element of the relationship
-		// if(r2nf.getKeys() == null) {
-		// Log.info("No key set, finding new Key");
-		// AttributeSet key = findKey(r2nf);
-		// r2nf.setKeys(key);
-		// }
-		// System.out.println("Key " + r2nf.getKeys());
-		// //see if the key is actually a key ( verify user input).
-		// if(r2nf.getKeys().size() == 1) {//TODO better
-		// Log.info("Key size == 1");
-		// return true;
-		// } else {
-		// //see every element depend only on the key, and there are no
-		// //transitive functional dependacies
-		// AttributeSet key = r2nf.getKeys();
-		// AttributeSet nonKeyAtt = r2nf.getAttrbutes().clone();
-		// nonKeyAtt.removeAttSet(key);
-		// for (AttributeSetIterator iter2 = nonKeyAtt.iterator(); iter2
-		// .hasNext();) {
-		// for (FD fd : r2nf.getFds()) {
-		//						if(fd.getRHS().containsAtt(iter2.nextAttIndex()) &
-		//								!fd.getLHS().equals(key)) {
-		//							return false;
-		//						}
-		//					}
-		//				}
-		//			}
-		//		}
+	public static boolean isIn3NF(List<Relation> rel) {
+		for (Relation r : rel) {
+			List<AttributeSet> keys = r.getKeyCandidates();
+			AttributeSet keyAttributes = new AttributeSet(SolveAssignmentWidget.get().getDomainTable());
+			for (AttributeSet k : keys) {
+				keyAttributes.union(k);
+			}
+			List<FD> fds = r.getFds();
+			for (FD fd : fds) { 
+				if (fd.getRHS().isSubSetOf(fd.getLHS())) {
+					continue;
+				} else if (fd.getRHS().isSubSetOf(keyAttributes)) {
+					continue;
+				} else {
+					boolean isKey = false;
+					for (AttributeSet k : keys) {
+						if(fd.getLHS().equals(k)) {
+							isKey = true;
+							break;
+						}
+					}
+					if(isKey) {
+						continue;
+					}
+				}
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public static boolean isInBCNF(List<Relation> rel) {
+		for (Relation r : rel) {
+			List<FD> tmp = isBCNF(r);
+			if(tmp == null || tmp.size() == 0) {
+				continue;
+			} else {
+				System.out.println(r.getName());
+				for (FD fd : tmp) {
+					System.out.println(fd.toString());
+				}
+				System.out.println("--------------------------");
+			}
+			return false;
+		}
 		return true;
 	}
 }

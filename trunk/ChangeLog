@@ -1,3 +1,9 @@
+2008-07-01_2100
+* Solution checks are now performed sequentially, thus if a previous test returns false, the next test will not be executed. 
+* Checking if a decomposition is in 3NF.
+* Checking if a decomposition is in BCNF.
+* Fixed bug with the decomposing in BCNF. 
+
 2008-06-30_1810
 * Checking for lossless decomposition.
 * Checking the correctness of the FDs given by the user.

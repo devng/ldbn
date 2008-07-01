@@ -34,6 +34,7 @@ public final class FDHolderPanel extends VerticalPanel
 		public EditButton() {
 			super("img/edit-big.png", 0, 0, 20, 20);
 			CommonFunctions.setCursorPointer(this);
+			setTitle("Edit FD");
 		}
 	}
 

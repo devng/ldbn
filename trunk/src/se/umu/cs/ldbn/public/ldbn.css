@@ -242,3 +242,9 @@ body {
   border-bottom: 2px solid #e8eef7;
   margin-right: 2px;
 }
+
+/* CheckSolutionDialog */
+.csd-title {
+	font-weight: bold;
+}
+

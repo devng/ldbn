@@ -5,6 +5,9 @@ import se.umu.cs.ldbn.client.Main;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
@@ -14,16 +17,24 @@ import com.google.gwt.user.client.ui.SimplePanel;
 */
 public class GlassPanel extends Composite {
 
-   private SimplePanel panel;
+   private HorizontalPanel panel;
    private AbsolutePanel parent;
+   private Image loading;
 
    public GlassPanel(AbsolutePanel parent){
 	   super();
-	   panel = new SimplePanel();
+	   panel = new HorizontalPanel();
+	   panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+	   loading = new Image("img/loading.gif");
+	   panel.add(loading);
        initWidget(panel);
        panel.setSize(Main.WIDTH_PX+"px", "10000px");
        this.parent = parent;
        panel.setStylePrimaryName("glassPanel");
+   }
+   
+   public void setLoadingAnimationNextTime(boolean useAnimation) {
+	   loading.setVisible(useAnimation);
    }
 
    public void show(){
@@ -37,6 +48,7 @@ public class GlassPanel extends Composite {
    }
 
    public void hide(){
+	   loading.setVisible(false);
        parent.remove(this);
    }
 } 

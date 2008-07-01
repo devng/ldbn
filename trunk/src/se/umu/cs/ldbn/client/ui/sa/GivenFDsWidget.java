@@ -32,6 +32,7 @@ public final class GivenFDsWidget extends Composite
 		initWidget(mainPanel);
 		
 		ab = new AlignmentButton(false);
+		ab.setTitle("Align horizontal/vertical");
 		additionalControlls = new Widget[1];
 		additionalControlls[0] = ab;
 		ab.addListener(this);

@@ -67,11 +67,13 @@ public final class RelationWidget extends Composite implements ClickListener,
 		editBut = new Image("img/edit-big.png", 0, 0, 20, 20);
 		editBut.addMouseListener(this);
 		editBut.addClickListener(this);
+		editBut.setTitle("Edit attributes");
 		CommonFunctions.setCursorPointer(editBut);
 		
 		keyButton = new Image("img/key-but-big.png", 0, 0, 20, 20);
 		keyButton.addClickListener(this);
 		keyButton.addMouseListener(this);
+		keyButton.setTitle("Define a key");
 		CommonFunctions.setCursorPointer(keyButton);
 		
 		checkBox = new CheckBox();
@@ -85,6 +87,7 @@ public final class RelationWidget extends Composite implements ClickListener,
 		addBut.addClickListener(this);
 		addBut.addMouseListener(this);
 		CommonFunctions.setCursorPointer(addBut);
+		addBut.setTitle("Add FDs");
 		header.setWidget(0, 3, addBut);
 		
 		fdHP = new FDHolderPanel();

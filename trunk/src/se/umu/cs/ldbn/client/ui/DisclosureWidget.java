@@ -205,11 +205,9 @@ public final class DisclosureWidget extends Composite implements ClickListener,
 		}
 
 		if (this.headerContorls != null) {
-			for (int i = 0; i < headerContorls.length; i++) {
-				headerControlsPanel.add(headerContorls[i]);
-				headerContorls[i].addStyleName("dw-heder-controls");
-				//Common.setCursorPointer(headerContorls[i]);
-
+			for (int i = 0; i < this.headerContorls.length; i++) {
+				this.headerContorls[i].addStyleName("dw-heder-controls");;
+				headerControlsPanel.add(this.headerContorls[i]);
 			}
 		}
 		hasBeenResized = false;
