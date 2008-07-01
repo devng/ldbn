@@ -8,6 +8,7 @@ import java.util.List;
 import se.umu.cs.ldbn.client.Assignment;
 import se.umu.cs.ldbn.client.AssignmentGenerator;
 import se.umu.cs.ldbn.client.CommonFunctions;
+import se.umu.cs.ldbn.client.Main;
 import se.umu.cs.ldbn.client.core.Algorithms;
 import se.umu.cs.ldbn.client.core.AttributeSet;
 import se.umu.cs.ldbn.client.core.DomainTable;
@@ -19,13 +20,19 @@ import se.umu.cs.ldbn.client.ui.DisclosureWidget;
 import se.umu.cs.ldbn.client.ui.FDWidget;
 import se.umu.cs.ldbn.client.ui.HeaderWidget;
 import se.umu.cs.ldbn.client.ui.InfoButton;
+import se.umu.cs.ldbn.client.ui.MouseAdapter;
 import se.umu.cs.ldbn.client.ui.dialog.CheckSolutionDialog;
 import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialog;
 import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialogCallback;
+import se.umu.cs.ldbn.client.ui.dialog.CheckSolutionDialog.MSG_TYPE;
 
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.DeferredCommand;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
 public final class SolveAssignmentWidget extends AbsolutePanel 
@@ -71,6 +78,9 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	private DisclosureWidget dwDecomposition3NF;
 	private DisclosureWidget dwDecompositionBCNF;
 	DisclosureWidget dwFDs;
+	//imports
+	private Image import2NF;
+	private Image import3NF;
 	
 	private SolveAssignmentWidget() {
 		super();
@@ -108,8 +118,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		add(dwGivenAttributes);
 		//Given FDs
 		givenFDsWidget = new GivenFDsWidget();
-		dwFDs = new DisclosureWidget("Given FDs", 
-				givenFDsWidget);
+		dwFDs = new DisclosureWidget("Given FDs", givenFDsWidget);
 		add(dwFDs);
 		//Minimal Cover
 		minimalCoverWidget = new MinimalCoverWidget();
@@ -121,12 +130,50 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		dwDecomposition2NF = new DisclosureWidget("Decompose in 2 NF", decomposition2NF);
 		add(dwDecomposition2NF);
 		//3NF
+		import2NF = new Image("img/import.png", 0, 0, 15, 15);
+		import2NF.addClickListener(this);
+		import2NF.setTitle("Import relations");
+		CommonFunctions.setCursorPointer(import2NF);
+		import2NF.addMouseListener(new MouseAdapter(){
+
+			public void onMouseEnter(Widget sender) {
+				import2NF.setVisibleRect(15, 0, 15, 15);
+			}
+			
+			public void onMouseLeave(Widget sender) {
+				import2NF.setVisibleRect(0, 0, 15, 15);
+			}
+		});
 		decomposition3NF = new DecompositionWidget();
-		dwDecomposition3NF = new DisclosureWidget("Decompose in 3 NF", decomposition3NF);
+		Widget[] tmp = new Widget[decomposition3NF.getAdditionalControlls().length+1];
+		for (int i = 1; i < tmp.length; i++) {
+			tmp[i] = decomposition3NF.getAdditionalControlls()[i-1];
+		}
+		tmp[0] = import2NF;
+		dwDecomposition3NF = new DisclosureWidget("Decompose in 3 NF", decomposition3NF, tmp);
 		add(dwDecomposition3NF);
 		//BCNF
+		import3NF = new Image("img/import.png", 0, 0, 15, 15);
+		import3NF.addClickListener(this);
+		import3NF.setTitle("Import relations");
+		CommonFunctions.setCursorPointer(import3NF);
+		import3NF.addMouseListener(new MouseAdapter(){
+
+			public void onMouseEnter(Widget sender) {
+				import3NF.setVisibleRect(15, 0, 15, 15);
+			}
+			
+			public void onMouseLeave(Widget sender) {
+				import3NF.setVisibleRect(0, 0, 15, 15);
+			}
+		});
 		decompositionBCNF = new DecompositionWidget();
-		dwDecompositionBCNF = new DisclosureWidget("Decompose in BCNF", decompositionBCNF);
+		tmp = new Widget[decompositionBCNF.getAdditionalControlls().length+1];
+		for (int i = 1; i < tmp.length; i++) {
+			tmp[i] = decompositionBCNF.getAdditionalControlls()[i-1];
+		}
+		tmp[0] = import3NF;
+		dwDecompositionBCNF = new DisclosureWidget("Decompose in BCNF", decompositionBCNF, tmp);
 		add(dwDecompositionBCNF);
 		//cache
 		cacheFD = new HashMap<Integer, List<FD>>();
@@ -151,11 +198,31 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 
 	public void onClick(Widget sender) {
 		if(sender == checkSolution) {
-			checkSolution();
+			Main.get().showGlassPanelLoading();
+			DeferredCommand.addCommand(new Command() {
+				public void execute() {
+					checkSolution();
+				}
+			});
 		} else if (sender == newAssignment) {
 			LoadAssignmentDialog.get().load(this);
 		} else if (sender == showSolution) {
-			showSolution();
+			Main.get().showGlassPanelLoading();
+			DeferredCommand.addCommand(new Command() {
+				public void execute() {
+					showSolution();
+				}
+			});
+		} else if (sender == import2NF) {
+			boolean b = Window.confirm("Do you wish to mport all relations from 2NF?");
+			if(b) {
+				decomposition3NF.addRelationList(decomposition2NF.getRelations());
+			}
+		} else if (sender == import3NF) {
+			boolean b = Window.confirm("Do you wish to mport all relations from 3NF?");
+			if(b) {
+				decompositionBCNF.addRelationList(decomposition3NF.getRelations());
+			}
 		}
 	}
 
@@ -189,49 +256,62 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 			dialog.msgOK("right");
 		}
 		//2nf check
-		AttributeSet initAtts = domain.createAttributeSet();
-		boolean isDependencyPreserving = false;
 		dialog.msgTitle("2NF Decomposition Check:");
 		List<Relation> relations = decomposition2NF.getRelations();
-		checkForLossless(fds, initAtts, relations);
-		isDependencyPreserving = Algorithms.isDependencyPreserving(fds, decomposition2NF.getRelations());
-		if(isDependencyPreserving) {
-			dialog.msgOK("Decomposition is dependency preserving");
-		} else {
-			dialog.msgErr("Decomposition is NOT dependency preserving");
-		}
 		updateCache(relations);
-		checkFDInput(relations);
-		checkKeyInput(relations);
-		updateRelations(relations);
-		boolean isIn2NF = Algorithms.isIn2NF(relations);
-		System.out.println(isIn2NF);
+		if(checkForLossless(relations)) {
+			if (checkDependencyPreservation(relations, false)) {
+				if (checkFDInput(relations)) {
+					if (checkKeyInput(relations)) {
+						updateRelations(relations);
+						boolean isIn2NF = Algorithms.isIn2NF(relations);
+						if(isIn2NF) {
+							dialog.msgOK("Decomposition is in 2nd NF.");
+						} else {
+							dialog.msgErr("Decomposition is NOT in 2nd NF.");
+						}
+					}
+				}
+			}
+		}
 		//3nf check
 		dialog.msgTitle("3NF Decomposition Check:");
 		relations = decomposition3NF.getRelations();
-		checkForLossless(fds, initAtts, relations);
-		isDependencyPreserving = Algorithms.isDependencyPreserving(fds, decomposition3NF.getRelations());
-		if(isDependencyPreserving) {
-			dialog.msgOK("Decomposition is dependency preserving");
-		} else {
-			dialog.msgErr("Decomposition is NOT dependency preserving");
-		}
 		updateCache(relations);
-		checkFDInput(relations);
-		checkKeyInput(relations);
+		if(checkForLossless(relations)) {
+			if (checkDependencyPreservation(relations, false)) {
+				if (checkFDInput(relations)) {
+					if (checkKeyInput(relations)) {
+						updateRelations(relations);
+						boolean isIn3NF = Algorithms.isIn3NF(relations);
+						if(isIn3NF) {
+							dialog.msgOK("Decomposition is in 3rd NF.");
+						} else {
+							dialog.msgErr("Decomposition is NOT in 3rd NF.");
+						}
+					}
+				}
+			}
+		}
 		//bcnf check
 		dialog.msgTitle("BCNF Decomposition Check:");
 		relations = decompositionBCNF.getRelations();
-		checkForLossless(fds, initAtts, relations);
-		isDependencyPreserving = Algorithms.isDependencyPreserving(fds, decompositionBCNF.getRelations());
-		if(isDependencyPreserving) {
-			dialog.msgOK("Decomposition is dependency preserving");
-		} else {
-			dialog.msgWarn("Decomposition is NOT dependency preserving");
-		}		
 		updateCache(relations);
-		checkFDInput(relations);
-		checkKeyInput(relations);
+		if(checkForLossless(relations)) {
+			checkDependencyPreservation(relations, true);
+			if (checkFDInput(relations)) {
+				if (checkKeyInput(relations)) {
+					updateRelations(relations);
+					boolean isInBCNF = Algorithms.isInBCNF(relations);
+					if(isInBCNF) {
+						dialog.msgOK("Decomposition is in BCNF.");
+					} else {
+						dialog.msgErr("Decomposition is NOT in BCNF.");
+					}
+				}
+			}
+		}
+		Main.get().hideGlassPanel();
 		dialog.center();
 	}
 	
@@ -250,11 +330,29 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 					
 			}
 		}
+		if(resultFD) {
+			dialog.msgOK("The FDs are correct.");
+		}
 		return resultFD;
 	}
 	
+	private boolean checkDependencyPreservation(List<Relation> rel, boolean displayOnlyWarning) {
+		boolean isDependencyPreserving = false;
+		CheckSolutionDialog dialog = CheckSolutionDialog.get();
+		isDependencyPreserving = Algorithms.isDependencyPreserving(fds, rel);
+		if(isDependencyPreserving) {
+			dialog.msgOK("Decomposition is dependency preserving");
+		} else {
+			
+			dialog.msg("Decomposition is NOT dependency preserving", displayOnlyWarning ? MSG_TYPE.warn : MSG_TYPE.error);
+		}
+		
+		
+		return isDependencyPreserving;
+	}
+	
 	private boolean checkKeyInput(List<Relation> rel) {
-		boolean result = false;
+		boolean result = true;
 		CheckSolutionDialog dialog = CheckSolutionDialog.get();
 		for (Relation r : rel) {
 			List<AttributeSet> keys = cacheKeys.get(r.getAttrbutes().hashCode());
@@ -271,17 +369,21 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 			}
 			
 		}
+		if(result) {
+			dialog.msgOK("The keys are correct.");
+		}
 		return result;
 	}
 	
-	private void checkForLossless(List<FD> fds, AttributeSet initAtts, List<Relation> relations) {
+	private boolean checkForLossless(List<Relation> relations) {
 		CheckSolutionDialog dialog = CheckSolutionDialog.get();
-		boolean isLossless = Algorithms.isLossless(fds, initAtts, relations);
+		boolean isLossless = Algorithms.isLossless(fds, domainAsAttSet, relations);
 		if(isLossless) {
 			dialog.msgOK("Decomposition is lossless");
 		} else {
 			dialog.msgErr("Decomposition is NOT lossless");
 		}
+		return isLossless;
 	}
 	
 	private void updateCache(Collection<Relation> rel) {
@@ -301,7 +403,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	}
 	
 	
-	private void updateRelations(List<Relation> rel) {
+	private void updateRelations(Collection<Relation> rel) {
 		for (Relation r : rel) {
 			r.setFDs(cacheFD.get(r.getAttrbutes().hashCode()));
 			r.setKeyCandidates(cacheKeys.get(r.getAttrbutes().hashCode()));
@@ -326,11 +428,19 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		r.setAttributes(domain.createAttributeSet());
 		r.setFDs(deepCopy);
 		Collection<Relation> synthese = Algorithms.synthese(r, true);
+
 		decomposition2NF.addRelationList(synthese);
 		decomposition3NF.addRelationList(synthese);
-		Collection<Relation> bcnf = Algorithms.findBCNF(synthese);
+		//bcnf
+		updateCache(synthese);
+		updateRelations(synthese);
+		Collection<Relation> bcnf = Algorithms.findBCNF(synthese); 
+		for (Relation rel : bcnf) {
+			List<FD> bcnfFDs = rel.getFds();
+			Algorithms.minimalCover(bcnfFDs);
+		}
 		decompositionBCNF.addRelationList(bcnf);
-		
+		Main.get().hideGlassPanel();
 	}
 	
 	private void clearUserInput() {

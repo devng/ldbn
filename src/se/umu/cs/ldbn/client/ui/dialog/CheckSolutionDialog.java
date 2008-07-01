@@ -58,8 +58,9 @@ public final class CheckSolutionDialog extends CloseDialog  {
 		}
 		Label l = new Label(msg);
 		if(type.equals(MSG_TYPE.title)) {
-			DOM.setStyleAttribute(l.getElement(), "font-weight", "bold");
+			l.setStyleName("csd-title");
 		}
+		l.setWordWrap(false);
 		hp.add(l);
 		mainPanel.add(hp);
 	}
