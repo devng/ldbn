@@ -1,6 +1,4 @@
 * REMARK: ByeHost sucks...
-* The style of the CheckSolutionDialog class is crap. 
-* Core classes implementation and integration!!! 
 * There are some memory leaks, find them and fix them if possible 
 * File upload for assignment-xml files
 * File download for assignment-xml files  
@@ -9,3 +7,4 @@
 * use image bundle 
 * move configuration to Main.gwt.config 
 * loading screen 
+* when user is changing mail send an activation mail again.

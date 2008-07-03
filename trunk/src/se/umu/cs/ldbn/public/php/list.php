@@ -1,5 +1,5 @@
 <?php
-	include("opendb.php");
+require_once("opendb.php");
 	$sql = "SELECT id, name FROM assignment ORDER BY id DESC";
 	if (! $sth = @mysql_query($sql)) {
 		die(getDBErrorXML());
@@ -12,6 +12,4 @@
 	}
 	
 	echo '</ldbn>';
-	
-	include("closedb.php");
 ?>
