@@ -1,5 +1,7 @@
 <?php
-include("opendb.php");
+require_once("opendb.php");
+require_once("checkinput.php");
+
 	$xml;
 	$name;
 	$id;
@@ -37,6 +39,4 @@ include("opendb.php");
 	echo ('<ldbn type="msg">' .
 			'<msg type="ok">Assignment is stored in the DB.</msg>' .
 		  '</ldbn>');
-		  
-include("closedb.php");
 ?>
