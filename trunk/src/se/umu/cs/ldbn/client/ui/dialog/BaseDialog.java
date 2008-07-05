@@ -1,6 +1,6 @@
 package se.umu.cs.ldbn.client.ui.dialog;
 
-import se.umu.cs.ldbn.client.CommonFunctions;
+import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.Main;
 
 import com.google.gwt.user.client.DOM;
@@ -40,8 +40,8 @@ abstract class BaseDialog extends DialogBox implements ClickListener {
 		okButton = new Button("OK", this);
 		closeButton = new Button("Close", this);
 		
-		CommonFunctions.setCursorPointer(okButton);
-		CommonFunctions.setCursorPointer(closeButton);
+		Common.setCursorPointer(okButton);
+		Common.setCursorPointer(closeButton);
 		HorizontalPanel hp = new HorizontalPanel();
 		hp.setSpacing(4);
 		hp.add(okButton);

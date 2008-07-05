@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import se.umu.cs.ldbn.client.CommonFunctions;
+import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.Main;
 import se.umu.cs.ldbn.client.core.DomainTableListener;
 import se.umu.cs.ldbn.client.core.FD;
@@ -33,7 +33,7 @@ public final class FDHolderPanel extends VerticalPanel
 	private class EditButton extends Image {
 		public EditButton() {
 			super("img/edit-big.png", 0, 0, 20, 20);
-			CommonFunctions.setCursorPointer(this);
+			Common.setCursorPointer(this);
 			setTitle("Edit FD");
 		}
 	}
@@ -63,11 +63,11 @@ public final class FDHolderPanel extends VerticalPanel
 		checkControlls = new Image[3];
 		checkControlls = new Image[3];
 		checkControlls[0] = new Image("img/check-box.png", 0, 0, 15, 15);
-		CommonFunctions.setCursorPointer(checkControlls[0]);
+		Common.setCursorPointer(checkControlls[0]);
 		checkControlls[0].setTitle("Select all");
 		checkControlls[0].addClickListener(this);
 		checkControlls[1] = new Image("img/check-box.png", 0, 15, 15, 15);
-		CommonFunctions.setCursorPointer(checkControlls[1]);
+		Common.setCursorPointer(checkControlls[1]);
 		checkControlls[1].setTitle("Select none");
 		checkControlls[1].addClickListener(this);
 		checkControlls[2] = new Image("img/bin.png", 0, 0, 15, 15);
@@ -81,7 +81,7 @@ public final class FDHolderPanel extends VerticalPanel
 				checkControlls[2].setVisibleRect(0, 0, 15, 15);
 			}
 		});
-		CommonFunctions.setCursorPointer(checkControlls[2]);
+		Common.setCursorPointer(checkControlls[2]);
 		checkControlls[2].addClickListener(this);
 	}
 	
@@ -275,7 +275,7 @@ public final class FDHolderPanel extends VerticalPanel
 		PickupDragController dc = Main.get().getDragController();
 		dc.makeDraggable(w);
 		CheckBox chBox = new CheckBox();
-		CommonFunctions.setCursorPointer(chBox);
+		Common.setCursorPointer(chBox);
 		HorizontalPanel hp = new HorizontalPanel();
 		hp.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
 		hp.add(chBox);

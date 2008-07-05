@@ -1,6 +1,6 @@
 package se.umu.cs.ldbn.client.ui;
 
-import se.umu.cs.ldbn.client.CommonFunctions;
+import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.Main;
 
 import com.google.gwt.user.client.DOM;
@@ -222,7 +222,7 @@ public final class DisclosureWidget extends Composite implements ClickListener,
 		collapseButton = new Image("img/dw-collapse-but.png", 0, 15, 15, 15);
 		collapseButton.addClickListener(this);
 		collapseButton.addMouseListener(this);
-		CommonFunctions.setCursorPointer(collapseButton);
+		Common.setCursorPointer(collapseButton);
 		/*header*/
 		Grid header = new Grid(1, 3);
 		CellFormatter cf = header.getCellFormatter();

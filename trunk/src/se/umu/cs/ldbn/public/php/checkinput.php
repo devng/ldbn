@@ -2,7 +2,7 @@
 	function checkID($id) {
 		if(!preg_match("/^[0-9]+$/D", $id)) {
 			die ('<ldbn type="msg">' .
-			'<msg type="error">SQL injection attempt.</msg>'.
+			'<msg type="error">Invalid ID.</msg>'.
 			'</ldbn>');
 		}
 	}
@@ -26,7 +26,7 @@
 	}
 	
 	function checkMail($mail) {
-		if(!preg_match("/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/D", $pass)) {
+		if(!preg_match("/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/D", $mail)) {
 			die ('<ldbn type="msg">' .
 			'<msg type="error">Invalid email.</msg>'.
 			'</ldbn>');

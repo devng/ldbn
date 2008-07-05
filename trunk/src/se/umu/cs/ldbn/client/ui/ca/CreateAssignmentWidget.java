@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import se.umu.cs.ldbn.client.Assignment;
-import se.umu.cs.ldbn.client.CommonFunctions;
+import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.io.AssignmentLoader;
@@ -69,11 +69,11 @@ public final class CreateAssignmentWidget extends Composite
 		editButton = new Button("Edit");
 		editButton.addClickListener(this);
 		newButton.setStyleName("att-but");
-		CommonFunctions.setCursorPointer(newButton);
+		Common.setCursorPointer(newButton);
 		saveButton.setStyleName("att-but");
-		CommonFunctions.setCursorPointer(saveButton);
+		Common.setCursorPointer(saveButton);
 		editButton.setStyleName("att-but");
-		CommonFunctions.setCursorPointer(editButton);
+		Common.setCursorPointer(editButton);
 		InfoButton info = new InfoButton("ca-tab");
 		info.setStyleName("att-img");
 		
@@ -90,7 +90,7 @@ public final class CreateAssignmentWidget extends Composite
 		addAtts = new Button ("Add/Remove Attributes");
 		addAtts.setStyleName("min-cov-but");
 		addAtts.addClickListener(this);
-		CommonFunctions.setCursorPointer(addAtts);
+		Common.setCursorPointer(addAtts);
 		HorizontalPanel hp = new HorizontalPanel();
 		hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		hp.add(addAtts);
@@ -109,7 +109,7 @@ public final class CreateAssignmentWidget extends Composite
 		addFDs = new Button("Add FDs");
 		addFDs.setStyleName("min-cov-but");
 		addFDs.addClickListener(this);
-		CommonFunctions.setCursorPointer(addFDs);
+		Common.setCursorPointer(addFDs);
 		hp.add(addFDs);
 		hp.add(new InfoButton("givenfds-ca"));
 		givenFDs.add(hp);

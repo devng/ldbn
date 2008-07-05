@@ -2,7 +2,7 @@ package se.umu.cs.ldbn.client.io;
 
 import java.util.Map;
 
-import se.umu.cs.ldbn.client.CommonFunctions;
+import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialog;
 
 import com.allen_sauer.gwt.log.client.Log;
@@ -31,7 +31,7 @@ public final class AssignmentLoader {
 				
 				public void onResponseReceived(Request request,
 						Response response) {
-					if (CommonFunctions.checkResponse(response)) {
+					if (Common.checkResponse(response)) {
 						LdbnParser p = LdbnParser.get();
 						if (p.getLastLdbnType() == LdbnParser.LDBN_TYPE.assignment_list) {
 							Map<String, String> list = p.getAssignmentList();
@@ -63,7 +63,7 @@ public final class AssignmentLoader {
 				}
 	
 				public void onResponseReceived(Request request, Response response) {
-					if (CommonFunctions.checkResponse(response)) {
+					if (Common.checkResponse(response)) {
 						LdbnParser p = LdbnParser.get();
 						if(p.getLastLdbnType() == LdbnParser.LDBN_TYPE.assignment) {
 							currentAlc.onAssignmentLoaded(p.getAssignment());

@@ -12,7 +12,7 @@ public class UserData {
 	}
 	
 	private String name;
-	private int id;
+	private String id;
 	private String pass;
 	private String session;
 	private String email;
@@ -28,11 +28,11 @@ public class UserData {
 		this.name = name;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -54,9 +54,14 @@ public class UserData {
 	
 	public void clear() {
 		pass = null;
-		id = 0;
+		id = null;
 		session = null;
-		pass = null;
+		name = null;
+		email = null;
+	}
+	
+	public boolean isLoggedIn() {
+		return session != null && id != null ;
 	}
 
 	public String getEmail() {

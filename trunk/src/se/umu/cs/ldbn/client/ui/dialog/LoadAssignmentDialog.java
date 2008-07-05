@@ -3,7 +3,7 @@ package se.umu.cs.ldbn.client.ui.dialog;
 import java.util.Map;
 import java.util.Set;
 
-import se.umu.cs.ldbn.client.CommonFunctions;
+import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.io.AssignmentLoader;
 
 import com.allen_sauer.gwt.log.client.Log;
@@ -27,7 +27,7 @@ public final class LoadAssignmentDialog extends OkCancelDialog {
 			this.id = id;
 			this.name = name;
 			addClickListener(this);
-			CommonFunctions.setCursorPointer(this);
+			Common.setCursorPointer(this);
 			addStyleName("nad-myLabel");
 		}
 		

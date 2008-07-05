@@ -3,7 +3,7 @@ package se.umu.cs.ldbn.client.io;
 import java.util.List;
 
 import se.umu.cs.ldbn.client.Assignment;
-import se.umu.cs.ldbn.client.CommonFunctions;
+import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.AttributeSet;
 import se.umu.cs.ldbn.client.core.FD;
@@ -36,7 +36,7 @@ public final class AssignmentSaver {
 				}
 
 				public void onResponseReceived(Request request, Response response) {
-					if (CommonFunctions.checkResponse(response)) {
+					if (Common.checkResponse(response)) {
 						LdbnParser p = LdbnParser.get();
 						if (p.getLastLdbnType() == LdbnParser.LDBN_TYPE.msg) {
 							Window.alert(p.getMsgText());

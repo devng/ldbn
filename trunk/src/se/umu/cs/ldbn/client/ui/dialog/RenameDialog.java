@@ -2,13 +2,14 @@ package se.umu.cs.ldbn.client.ui.dialog;
 
 import java.util.Collection;
 
+import se.umu.cs.ldbn.client.Common;
+
 import com.google.gwt.user.client.ui.HasName;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public final class RenameDialog extends OkCancelDialog {
 
-	public static String REGEX = "([\\w]|\\-){1,20}";
 	private static RenameDialog inst;
 	
 	public static RenameDialog get() {
@@ -50,7 +51,7 @@ public final class RenameDialog extends OkCancelDialog {
 	
 	protected void onOkClick() {
 		String s = nameBox.getText();
-		if(s.matches(REGEX)) {
+		if(s.matches(Common.NAME_REGEX)) {
 			Collection names = caller.getTakenNames();
 			if(names != null) {
 				String sLow = s.toLowerCase();

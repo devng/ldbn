@@ -40,6 +40,9 @@ if (isset($_POST['user_name']) && isset($_POST['user_pass']) && isset($_POST['us
 		$tmp1 = time(); $tmp2 = rand();
 		$activation_string = md5("$tmp1;$tmp2");
 		$sql = "INSERT INTO activation (activation_string, user_id) VALUES ($activation_string, $user_id)";
+		if (! $sth = @mysql_query($sql)) {
+			die(getDBErrorXML());
+		}
 		$user_link = "http://ldbnonline.com/php/activation.php?a=$activation_string";
 		//send mail
 		$subject = '{LDBNONLINE.COM} User account activation';
