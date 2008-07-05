@@ -15,6 +15,11 @@
 	<entry id="2" name="test-minimal-cover" />
 </ldbn>
 
+<ldbn type="session">
+	<session id="1" />
+	<user id="2" />
+</ldbn>
+
 <ldbn type="assignment">
 	<att>a</att>
 	<att>b</att>

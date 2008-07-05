@@ -1,8 +1,8 @@
 package se.umu.cs.ldbn.client;
 
-import se.umu.cs.ldbn.client.io.Config;
 import se.umu.cs.ldbn.client.ui.GlassPanel;
 import se.umu.cs.ldbn.client.ui.ca.CreateAssignmentWidget;
+import se.umu.cs.ldbn.client.ui.home.HomeWidget;
 import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
@@ -22,10 +22,6 @@ public final class Main implements EntryPoint {
 	
 	public static int WIDTH_PX = 800;
 	
-	static {
-		Config.get(); //Load the configurations asynchrony
-	}
-
 	private static Main instance;
 
 	private PickupDragController dragControll;
@@ -74,8 +70,10 @@ public final class Main implements EntryPoint {
 		dragControll.setBehaviorDragProxy(true);
 		
 		TabPanel tabs = new TabPanel();
+		tabs.add(HomeWidget.get(), "Home");
 		tabs.add(SolveAssignmentWidget.get(), "Solve assignments");
 		tabs.add(CreateAssignmentWidget.get(), "Create assignments");
+		
 		tabs.setWidth("100%");
 		tabs.selectTab(0);
 		mainPanel.add(tabs);

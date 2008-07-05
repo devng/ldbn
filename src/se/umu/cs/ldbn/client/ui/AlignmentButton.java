@@ -3,7 +3,7 @@ package se.umu.cs.ldbn.client.ui;
 import java.util.Collection;
 import java.util.HashSet;
 
-import se.umu.cs.ldbn.client.CommonFunctions;
+import se.umu.cs.ldbn.client.Common;
 
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Image;
@@ -27,7 +27,7 @@ public class AlignmentButton extends Image implements MouseListener,
 		}
 		addMouseListener(this);
 		addClickListener(this);
-		CommonFunctions.setCursorPointer(this);
+		Common.setCursorPointer(this);
 		listeners = new HashSet<AlignmentButtonListener>();
 	}
 	

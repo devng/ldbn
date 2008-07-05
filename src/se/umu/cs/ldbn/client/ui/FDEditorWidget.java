@@ -2,7 +2,7 @@ package se.umu.cs.ldbn.client.ui;
 
 import java.util.List;
 
-import se.umu.cs.ldbn.client.CommonFunctions;
+import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
@@ -97,12 +97,12 @@ public final class FDEditorWidget extends Composite
 		vp.add(new InfoButton("fdeditor"));
 		addButton = new Button("Set/Add");
 		addButton.addClickListener(this);
-		CommonFunctions.setCursorPointer(addButton);
+		Common.setCursorPointer(addButton);
 		addButton.setStyleName("fdew-btn");
 		vp.add(addButton);
 		clearButton = new Button("Clear");
 		clearButton.addClickListener(this);
-		CommonFunctions.setCursorPointer(clearButton);
+		Common.setCursorPointer(clearButton);
 		clearButton.setStyleName("fdew-btn");
 		vp.add(clearButton);
 		mainPanel.add(vp);

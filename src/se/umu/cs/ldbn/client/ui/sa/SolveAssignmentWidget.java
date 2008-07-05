@@ -7,7 +7,7 @@ import java.util.List;
 
 import se.umu.cs.ldbn.client.Assignment;
 import se.umu.cs.ldbn.client.AssignmentGenerator;
-import se.umu.cs.ldbn.client.CommonFunctions;
+import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.Main;
 import se.umu.cs.ldbn.client.core.Algorithms;
 import se.umu.cs.ldbn.client.core.AttributeSet;
@@ -95,15 +95,15 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		givenAttributesWidget = new GivenAttributesWidget();
 		newAssignment = new Button("New Assignment");
 		newAssignment.setStyleName("att-but");
-		CommonFunctions.setCursorPointer(newAssignment);
+		Common.setCursorPointer(newAssignment);
 		newAssignment.addClickListener(this);
 		checkSolution = new Button("Check Solution");
 		checkSolution.setStyleName("att-but");
-		CommonFunctions.setCursorPointer(checkSolution);
+		Common.setCursorPointer(checkSolution);
 		checkSolution.addClickListener(this);
 		showSolution = new Button("Show Solution");
 		showSolution.setStyleName("att-but");
-		CommonFunctions.setCursorPointer(showSolution);
+		Common.setCursorPointer(showSolution);
 		showSolution.addClickListener(this);
 		InfoButton info = new InfoButton("sa-tab");
 		info.setStyleName("att-img");
@@ -133,7 +133,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		import2NF = new Image("img/import.png", 0, 0, 15, 15);
 		import2NF.addClickListener(this);
 		import2NF.setTitle("Import relations");
-		CommonFunctions.setCursorPointer(import2NF);
+		Common.setCursorPointer(import2NF);
 		import2NF.addMouseListener(new MouseAdapter(){
 
 			public void onMouseEnter(Widget sender) {
@@ -156,7 +156,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		import3NF = new Image("img/import.png", 0, 0, 15, 15);
 		import3NF.addClickListener(this);
 		import3NF.setTitle("Import relations");
-		CommonFunctions.setCursorPointer(import3NF);
+		Common.setCursorPointer(import3NF);
 		import3NF.addMouseListener(new MouseAdapter(){
 
 			public void onMouseEnter(Widget sender) {

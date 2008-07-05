@@ -19,7 +19,7 @@ import com.google.gwt.xml.client.impl.DOMParseException;
 
 public final class LdbnParser {
 	
-	public static enum LDBN_TYPE {assignment, msg, assignment_list, unknown};
+	public static enum LDBN_TYPE {assignment, msg, assignment_list, session, unknown};
 	
 	public static enum MSG_TYPE {ok, warn, error, unknown};
 	
@@ -47,6 +47,10 @@ public final class LdbnParser {
 	//map format: assignment id in the DB -> name
 	private Map<String, String> assignmentList;
 	
+	//vars used for session
+	private String userid;
+	private String sessionid;
+	
 	private LdbnParser() {
 		lastLdbnType = LDBN_TYPE.unknown;
 		lastMsgType = MSG_TYPE.unknown;
@@ -62,6 +66,8 @@ public final class LdbnParser {
 		assignment = null;
 		assignmentList = null;
 		lastMsg = null;
+		sessionid = null;
+		userid = null;
 	}
 	
 	public Assignment getAssignment() {
@@ -82,6 +88,14 @@ public final class LdbnParser {
 	
 	public MSG_TYPE getMsgType() {
 		return lastMsgType;
+	}
+	
+	public String getSessionId() {
+		return sessionid;
+	}
+	
+	public String getUserId() {
+		return userid;
 	}
 	
 	public LDBN_TYPE parse(String xml) {
@@ -107,6 +121,9 @@ public final class LdbnParser {
 		} else if (type.equals(LDBN_TYPE.assignment_list.toString())) {
 			lastLdbnType = LDBN_TYPE.assignment_list;
 			assignmentList = new HashMap<String, String>();
+			visitElementNodes(ldbn);
+		} else if (type.equals(LDBN_TYPE.session.toString())) {
+			lastLdbnType = LDBN_TYPE.session;
 			visitElementNodes(ldbn);
 		} else {
 			return LDBN_TYPE.unknown;
@@ -186,6 +203,10 @@ public final class LdbnParser {
 					fdatt = fd.getRHS();
 				}
 				fdatt.addAtt(val);
+			} else if (tag.equals("session")) {
+				sessionid = el.getAttribute("id");
+			} else if (tag.equals("user")) {
+				userid = el.getAttribute("id");
 			}
 			visitElementNodes(child);
 		}

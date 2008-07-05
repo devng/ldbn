@@ -3,6 +3,7 @@ package se.umu.cs.ldbn.client.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.ui.dialog.RenameDialog;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
@@ -25,8 +26,6 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public abstract class AttributeTextArea extends TextArea 
 	implements DropController {
-
-	public static String REGEX = RenameDialog.REGEX;
 	
 	private boolean omitted;
 	
@@ -72,7 +71,7 @@ public abstract class AttributeTextArea extends TextArea
 		List<String> result = new ArrayList<String>();
 		for (int i = 0; i < r.length; i++) {
 			r[i] = r[i].trim();
-			if(r[i].matches(REGEX)) {
+			if(r[i].matches(Common.NAME_REGEX)) {
 				result.add(r[i]);
 			} else {
 				omitted = true;

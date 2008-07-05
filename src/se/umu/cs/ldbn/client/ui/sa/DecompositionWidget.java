@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import se.umu.cs.ldbn.client.CommonFunctions;
+import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.core.Relation;
 import se.umu.cs.ldbn.client.ui.FDHolderPanel;
@@ -40,11 +40,11 @@ public final class DecompositionWidget extends Composite
 		checkControlls = new Image[3];
 		checkControlls = new Image[3];
 		checkControlls[0] = new Image("img/check-box.png", 0, 0, 15, 15);
-		CommonFunctions.setCursorPointer(checkControlls[0]);
+		Common.setCursorPointer(checkControlls[0]);
 		checkControlls[0].setTitle("Select all");
 		checkControlls[0].addClickListener(this);
 		checkControlls[1] = new Image("img/check-box.png", 0, 15, 15, 15);
-		CommonFunctions.setCursorPointer(checkControlls[1]);
+		Common.setCursorPointer(checkControlls[1]);
 		checkControlls[1].setTitle("Select none");
 		checkControlls[1].addClickListener(this);
 		checkControlls[2] = new Image("img/bin.png", 0, 0, 15, 15);
@@ -59,14 +59,14 @@ public final class DecompositionWidget extends Composite
 			}
 		});
 		checkControlls[2].addClickListener(this);
-		CommonFunctions.setCursorPointer(checkControlls[2]);
+		Common.setCursorPointer(checkControlls[2]);
 		
 		VerticalPanel vp = new VerticalPanel();
 		relations = new ArrayList<RelationWidget>();
 		addRelation = new Button("Add new Relation");
 		addRelation.setStyleName("min-cov-but");
 		addRelation.addClickListener(this);
-		CommonFunctions.setCursorPointer(addRelation);
+		Common.setCursorPointer(addRelation);
 		HorizontalPanel hp = new HorizontalPanel();
 		hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		hp.add(addRelation);

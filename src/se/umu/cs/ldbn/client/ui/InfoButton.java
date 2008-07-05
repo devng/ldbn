@@ -1,6 +1,6 @@
 package se.umu.cs.ldbn.client.ui;
 
-import se.umu.cs.ldbn.client.CommonFunctions;
+import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.ui.dialog.HelpDialog;
 
 import com.google.gwt.user.client.ui.ClickListener;
@@ -13,7 +13,7 @@ public class InfoButton extends Image implements ClickListener {
 	
 	public InfoButton (String fileBase) {
 		super("img/info.png");
-		CommonFunctions.setCursorPointer(this);
+		Common.setCursorPointer(this);
 		this.fileBase = fileBase;
 		this.addClickListener(this);
 	}

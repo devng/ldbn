@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import se.umu.cs.ldbn.client.CommonFunctions;
+import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.DomainTableListener;
 import se.umu.cs.ldbn.client.ui.SingleAttributeWidget;
@@ -57,7 +57,7 @@ public final class EditableGivenAttributesWidget extends GivenAttributesWidget
 			Image img = new Image("img/edit-name.png", 0, 0, 15, 15); 
 			map.put(img, saw);
 			img.addClickListener(this);
-			CommonFunctions.setCursorPointer(img);
+			Common.setCursorPointer(img);
 			vp.add(saw);
 			vp.add(img);
 			DOM.setStyleAttribute(img.getElement(), "margin", "2px");

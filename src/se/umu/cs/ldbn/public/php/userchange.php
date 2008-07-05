@@ -1,6 +1,7 @@
 <?php
-require_once("opendb.php");
-require_once("checkinput.php");
+//require_once("opendb.php");
+//require_once("checkinput.php");
+require_once("sessioncheck.php");
 $user_id;
 if(isset($_POST['user_id'])) {
 	$user_id = $_POST['user_id'];

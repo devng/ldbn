@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import se.umu.cs.ldbn.client.CommonFunctions;
+import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.core.AttributeSet;
 import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.core.Relation;
@@ -61,23 +61,23 @@ public final class RelationWidget extends Composite implements ClickListener,
 		collapseButton = new Image("img/dw-collapse-but.png", 0, 15, 15, 15);
 		collapseButton.addClickListener(this);
 		collapseButton.addMouseListener(this);
-		CommonFunctions.setCursorPointer(collapseButton);
+		Common.setCursorPointer(collapseButton);
 		collapseButton.setStyleName("relW-collapseBut");
 		
 		editBut = new Image("img/edit-big.png", 0, 0, 20, 20);
 		editBut.addMouseListener(this);
 		editBut.addClickListener(this);
 		editBut.setTitle("Edit attributes");
-		CommonFunctions.setCursorPointer(editBut);
+		Common.setCursorPointer(editBut);
 		
 		keyButton = new Image("img/key-but-big.png", 0, 0, 20, 20);
 		keyButton.addClickListener(this);
 		keyButton.addMouseListener(this);
 		keyButton.setTitle("Define a key");
-		CommonFunctions.setCursorPointer(keyButton);
+		Common.setCursorPointer(keyButton);
 		
 		checkBox = new CheckBox();
-		CommonFunctions.setCursorPointer(checkBox);
+		Common.setCursorPointer(checkBox);
 		header.setWidget(0, 0, checkBox);
 		
 		relName = new Label(name);
@@ -86,7 +86,7 @@ public final class RelationWidget extends Composite implements ClickListener,
 		addBut = new Image("img/add.png", 0, 15, 15, 15);
 		addBut.addClickListener(this);
 		addBut.addMouseListener(this);
-		CommonFunctions.setCursorPointer(addBut);
+		Common.setCursorPointer(addBut);
 		addBut.setTitle("Add FDs");
 		header.setWidget(0, 3, addBut);
 		
@@ -95,7 +95,7 @@ public final class RelationWidget extends Composite implements ClickListener,
 		for (int i = 0; i < fdHP.getCheckBoxControlls().length; i++) {
 			headerControlsPanel.add(fdHP.getCheckBoxControlls()[i]);
 			fdHP.getCheckBoxControlls()[i].addStyleName("dw-heder-controls");
-			CommonFunctions.setCursorPointer(fdHP.getCheckBoxControlls()[i]);
+			Common.setCursorPointer(fdHP.getCheckBoxControlls()[i]);
 		}
 		header.setWidget(0, 4, headerControlsPanel);
 		CellFormatter cf = header.getCellFormatter();

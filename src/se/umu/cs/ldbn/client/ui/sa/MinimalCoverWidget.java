@@ -1,6 +1,6 @@
 package se.umu.cs.ldbn.client.ui.sa;
 
-import se.umu.cs.ldbn.client.CommonFunctions;
+import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.ui.FDHolderPanel;
 import se.umu.cs.ldbn.client.ui.HasAdditionalControlls;
 import se.umu.cs.ldbn.client.ui.InfoButton;
@@ -26,7 +26,7 @@ public class MinimalCoverWidget extends Composite implements ClickListener,
 		minCovAddFD = new Button("Add new FD");
 		minCovAddFD.setStyleName("min-cov-but");
 		minCovAddFD.addClickListener(this);
-		CommonFunctions.setCursorPointer(minCovAddFD);
+		Common.setCursorPointer(minCovAddFD);
 		HorizontalPanel buttons = new HorizontalPanel();
 		buttons.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		buttons.add(minCovAddFD);

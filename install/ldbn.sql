@@ -17,11 +17,20 @@ CREATE TABLE user (
 	PRIMARY KEY (user_id)
 );
 
+DROP TABLE IF EXISTS session;
+CREATE TABLE session (
+	session_string VARCHAR(32) NOT NULL ,
+	user_id INT(10) NOT NULL,
+	added_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+	PRIMARY KEY (session_string)
+);
+
+
 DROP TABLE IF EXISTS activation;
 CREATE TABLE activation (
 	activation_string VARCHAR(32) NOT NULL ,
 	user_id INT(10) NOT NULL,
 	added_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
-	PRIMARY KEY (activation_string);
+	PRIMARY KEY (activation_string)
 );
 
