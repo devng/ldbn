@@ -11,7 +11,9 @@ public final class Config {
 		"php/userlogin.php",
 		"php/userregister.php",
 		"php/userchange.php",
-		"php/userlogout.php"
+		"php/killsession.php",
+		"php/resendactivation.php",
+		"php/sendnewpassword.php"
 	};
 	
 	private static Config inst = null;
@@ -50,9 +52,16 @@ public final class Config {
 		return GWT.getModuleBaseURL()+DEFAULT_VALUES[5];
 	}
 	
-	public String getUserLogoutScriptURL() {
+	public String getKillSessionScriptURL() {
 		return GWT.getModuleBaseURL()+DEFAULT_VALUES[6];
 	}
 	
+	public String getResendActivationScriptURL() {
+		return GWT.getModuleBaseURL()+DEFAULT_VALUES[7];
+	}
+	
+	public String getSendNewPasswordScriptURL() {
+		return GWT.getModuleBaseURL()+DEFAULT_VALUES[8];
+	}
 	
 }

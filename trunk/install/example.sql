@@ -10,3 +10,9 @@ INSERT INTO assignment (name, xml) VALUES
 //user admin with password ldbn
 INSERT INTO user (name, email, pass_md5, active) VALUES
 ('admin', 'admin@ldbnonline.com', '46cd73323a9b7c4df4ca30ccc4f60426', 1);
+
+
+//alter assinment
+ALTER TABLE assignment 
+CHANGE added_on modified_on 
+TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP

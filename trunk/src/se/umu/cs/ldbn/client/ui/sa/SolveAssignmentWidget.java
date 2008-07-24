@@ -16,6 +16,7 @@ import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.core.Relation;
 import se.umu.cs.ldbn.client.io.AssignmentLoader;
 import se.umu.cs.ldbn.client.io.AssignmentLoaderCallback;
+import se.umu.cs.ldbn.client.io.AssignmentListEntry;
 import se.umu.cs.ldbn.client.ui.DisclosureWidget;
 import se.umu.cs.ldbn.client.ui.FDWidget;
 import se.umu.cs.ldbn.client.ui.HeaderWidget;
@@ -228,8 +229,8 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 
 	public void onLoadCanceled() {}
 
-	public void onLoaded(String id, String name) {
-		AssignmentLoader.loadFromURL(id, this);
+	public void onLoaded(AssignmentListEntry entry) {
+		AssignmentLoader.get().loadFromURL(entry.getId(), this);
 	}
 
 	private void checkSolution() {

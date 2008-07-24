@@ -9,7 +9,10 @@ import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.io.AssignmentLoader;
 import se.umu.cs.ldbn.client.io.AssignmentLoaderCallback;
+import se.umu.cs.ldbn.client.io.AssignmentListEntry;
 import se.umu.cs.ldbn.client.io.AssignmentSaver;
+import se.umu.cs.ldbn.client.io.Login;
+import se.umu.cs.ldbn.client.io.LoginListener;
 import se.umu.cs.ldbn.client.ui.DisclosureWidget;
 import se.umu.cs.ldbn.client.ui.FDHolderPanel;
 import se.umu.cs.ldbn.client.ui.FDWidget;
@@ -36,7 +39,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 public final class CreateAssignmentWidget extends Composite 
 	implements ClickListener, RenameDialogCallback, LoadAssignmentDialogCallback,
-	AssignmentLoaderCallback {
+	AssignmentLoaderCallback, LoginListener {
 	
 	//assignment variables  
 	private Assignment currentAssignment;
@@ -54,6 +57,7 @@ public final class CreateAssignmentWidget extends Composite
 	private Button saveButton;
 	private Button editButton;
 	private Label editMode;
+	private Label loginFirst;
 	private DisclosureWidget dwGivenAttributes;
 	private DisclosureWidget dwGivenFDs;
 	
@@ -85,6 +89,8 @@ public final class CreateAssignmentWidget extends Composite
 		editMode.setVisible(false);
 		hw.add(editMode);
 		mainPanel.add(hw);
+		loginFirst = new Label("You have to login first.");
+		hw.add(loginFirst);
 		//given attributes
 		VerticalPanel vp = new VerticalPanel();
 		addAtts = new Button ("Add/Remove Attributes");
@@ -117,6 +123,8 @@ public final class CreateAssignmentWidget extends Composite
 		mainPanel.add(dwGivenFDs);
 		
 		initWidget(mainPanel);
+		Login.get().addListener(this);
+		onSessionKilled();
 	}
 	
 	public static CreateAssignmentWidget get() {
@@ -192,10 +200,10 @@ public final class CreateAssignmentWidget extends Composite
 		currentAssignment = null;
 	}
 	
-	public void onLoaded(String id, String name) {
-		loadedId = id;
-		loadedName = name;
-		AssignmentLoader.loadFromURL(id, this);
+	public void onLoaded(AssignmentListEntry entry) {
+		loadedId = entry.getId();
+		loadedName = entry.getName();
+		AssignmentLoader.get().loadFromURL(entry.getId(), this);
 	}
 	
 	public void onLoadCanceled() {}
@@ -219,7 +227,8 @@ public final class CreateAssignmentWidget extends Composite
 	private void saveAssignemnt(String name) {
 		if(currentAssignment != null) {
 			String xml = AssignmentSaver.buildXML(currentAssignment);
-			AssignmentSaver.sendToSaveScript(xml, name, loadedId == null ? "" : loadedId);
+			AssignmentSaver.get().sendToSaveScript(xml, name, 
+					loadedId == null ? "" : loadedId);
 			currentAssignment  = null;
 			editMode.setVisible(false);
 			loadedId = null;
@@ -233,5 +242,23 @@ public final class CreateAssignmentWidget extends Composite
 	private void restoreDefaultSize() {
 		dwGivenAttributes.resetHeightToDefault();
 		dwGivenFDs.resetHeightToDefault();
+	}
+
+	public void onSessionKilled() {
+		loginFirst.setVisible(true);
+		newButton.setEnabled(false);
+		saveButton.setEnabled(false);
+		editButton.setEnabled(false);
+		editMode.setVisible(false);
+		loadedId = null;
+		loadedName = null;
+	}
+
+	public void onLoginSuccess() {
+		loginFirst.setVisible(false);
+		newButton.setEnabled(true);
+		saveButton.setEnabled(true);
+		editButton.setEnabled(true);
+		
 	}
 }

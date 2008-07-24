@@ -1,6 +1,6 @@
 package se.umu.cs.ldbn.client.ui.user;
 
-public class UserData {
+public final class UserData {
 	
 	private static UserData inst;
 	

@@ -17,13 +17,15 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Nikolay Georgiev (ens07ngv@cs.umu.se)
  */
 public final class Common {
+	
+	public final static int MIN_PASSWORD_LENGTH = 4; 
 	/*
 	 * regular expressions for validating user data, peace not if you change
 	 * the expressions here you have to change them in the PHP scripts as well.
 	 */
 	public final static String NAME_REGEX = "([\\w]|\\-){1,20}";
 	
-	public final static String EMAIL_REGEX = "[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}";
+	public final static String EMAIL_REGEX = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}";
 	
 	/**
 	 * Set the transparent background colour of a widget

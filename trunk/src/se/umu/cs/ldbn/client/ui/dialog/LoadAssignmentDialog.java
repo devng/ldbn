@@ -1,10 +1,12 @@
 package se.umu.cs.ldbn.client.ui.dialog;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.io.AssignmentLoader;
+import se.umu.cs.ldbn.client.io.AssignmentListEntry;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -17,15 +19,13 @@ import com.google.gwt.user.client.ui.Widget;
 public final class LoadAssignmentDialog extends OkCancelDialog {
 
 	private class MyLabel extends Label implements ClickListener {
-		String id;
-		String name;
-		public MyLabel(String name, String id) {
-			super(name);
-			if(name == null || id == null) {
+		private AssignmentListEntry entry;
+		public MyLabel(AssignmentListEntry entry) {
+			super(entry.getName());
+			if(entry == null) {
 				throw new IllegalArgumentException("Some arguments are null");
 			}
-			this.id = id;
-			this.name = name;
+			this.entry = entry;
 			addClickListener(this);
 			Common.setCursorPointer(this);
 			addStyleName("nad-myLabel");
@@ -65,18 +65,17 @@ public final class LoadAssignmentDialog extends OkCancelDialog {
 	 */
 	public void load(LoadAssignmentDialogCallback caller) {
 		this.caller = caller;
-		AssignmentLoader.loadAssignmentList();
+		AssignmentLoader.get().loadAssignmentList();
 	}
 	
 	/**
 	 * Used by the AssignmentLoader.
 	 * @param list
 	 */
-	public void loadAssigmentList(Map<String, String> list) {
+	public void loadAssigmentList(List<AssignmentListEntry> list) {
 		mainPanel.clear();
-		Set<String> keys = list.keySet();
-		for (String k : keys) {
-			MyLabel l = new MyLabel(list.get(k), k);
+		for (AssignmentListEntry entry : list) {
+			MyLabel l = new MyLabel(entry);
 			mainPanel.add(l);
 		}
 		center();
@@ -107,7 +106,7 @@ public final class LoadAssignmentDialog extends OkCancelDialog {
 			Log.warn("LoadAssignmentDialog.caller == null. Cannot load assignment");
 			return;
 		}
-		caller.onLoaded(lastSelected.id, lastSelected.name);
+		caller.onLoaded(lastSelected.entry);
 		hide();
 	}
 } 
