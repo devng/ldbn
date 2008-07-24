@@ -26,7 +26,7 @@
 	}
 	
 	function checkMail($mail) {
-		if(!preg_match("/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/D", $mail)) {
+		if(!preg_match("/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/D", $mail)) {
 			die ('<ldbn type="msg">' .
 			'<msg type="error">Invalid email.</msg>'.
 			'</ldbn>');

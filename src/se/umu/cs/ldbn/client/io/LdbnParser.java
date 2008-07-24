@@ -45,11 +45,12 @@ public final class LdbnParser {
 	
 	//vars used for parsing a ldbn xml string with type assignment_list
 	//map format: assignment id in the DB -> name
-	private Map<String, String> assignmentList;
+	private ArrayList<AssignmentListEntry> assignmentList;
 	
 	//vars used for session
 	private String userid;
 	private String sessionid;
+	private String email;
 	
 	private LdbnParser() {
 		lastLdbnType = LDBN_TYPE.unknown;
@@ -74,7 +75,7 @@ public final class LdbnParser {
 		return assignment;
 	}
 	
-	public Map<String, String> getAssignmentList() {
+	public List<AssignmentListEntry> getAssignmentList() {
 		return assignmentList;
 	}
 	
@@ -96,6 +97,10 @@ public final class LdbnParser {
 	
 	public String getUserId() {
 		return userid;
+	}
+	
+	public String getEmail() {
+		return email;
 	}
 	
 	public LDBN_TYPE parse(String xml) {
@@ -120,7 +125,7 @@ public final class LdbnParser {
 			visitElementNodes(ldbn);
 		} else if (type.equals(LDBN_TYPE.assignment_list.toString())) {
 			lastLdbnType = LDBN_TYPE.assignment_list;
-			assignmentList = new HashMap<String, String>();
+			assignmentList = new ArrayList<AssignmentListEntry>() ;
 			visitElementNodes(ldbn);
 		} else if (type.equals(LDBN_TYPE.session.toString())) {
 			lastLdbnType = LDBN_TYPE.session;
@@ -176,8 +181,14 @@ public final class LdbnParser {
 			} else if (tag.equals("entry")) {
 				String id = el.getAttribute("id");
 				String name = el.getAttribute("name");
+				String author_id  = el.getAttribute("author_id");
+				String author = el.getAttribute("author");
+				String last_modified = el.getAttribute("last_modified");
+				AssignmentListEntry data = 
+					new AssignmentListEntry(id, name, author_id, author, 
+							last_modified);
 				if(name != null && id != null) {
-					assignmentList.put(id, name);
+					assignmentList.add(data);
 				}
 			} else if (tag.equals("att")) { 
 				//TODO There can be a  null pointer exception, if the user
@@ -207,6 +218,8 @@ public final class LdbnParser {
 				sessionid = el.getAttribute("id");
 			} else if (tag.equals("user")) {
 				userid = el.getAttribute("id");
+			} else if (tag.equals("email")) {
+				email = el.getAttribute("val");
 			}
 			visitElementNodes(child);
 		}

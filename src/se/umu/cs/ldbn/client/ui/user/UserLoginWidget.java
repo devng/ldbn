@@ -2,7 +2,6 @@ package se.umu.cs.ldbn.client.ui.user;
 
 import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.io.Login;
-import se.umu.cs.ldbn.client.io.LoginCallback;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -14,7 +13,7 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class UserLoginWidget extends Composite implements ClickListener {
+public final class UserLoginWidget extends Composite implements ClickListener {
 	
 	private HorizontalPanel mainPanel;
 	//user
@@ -23,8 +22,12 @@ public class UserLoginWidget extends Composite implements ClickListener {
 	//pass
 	private PasswordTextBox passTB;
 	private Label passLabel;
-	//login
+	// login
 	private Button login;
+	// register
+	private Button register;
+	//help
+	private Button help;
 	
 	public UserLoginWidget() {
 		mainPanel = new HorizontalPanel();
@@ -47,20 +50,40 @@ public class UserLoginWidget extends Composite implements ClickListener {
 		login.addClickListener(this);
 		mainPanel.add(login);
 		Common.setCursorPointer(login);
+		//register
+		register = new Button("Register");
+		register.addClickListener(this);
+		mainPanel.add(register);
+		Common.setCursorPointer(register);
+		//help
+		help = new Button("Help");
+		help.addClickListener(this);
+		mainPanel.add(help);
+		Common.setCursorPointer(help);
 	}
 	
 	public void onClick(Widget sender) {
 		if(sender == login) {
-			String username = userTB.getText();
+			String username = userTB.getText().trim();
 			if(username.matches(Common.NAME_REGEX)) {
 				
 			} else {
 				
 			}
-			String pass = Common.md5(passTB.getText());
+			String pass = Common.md5(passTB.getText().trim());
 			UserData.get().setName(username);
 			UserData.get().setPass(pass);
 			Login.get().sendLogin(username, pass);
+			
+		} else if (sender == register) {
+			RegisterUserDialog.get().center();
+		} else if (sender == help) {
+			UserHelpDialog.get().center();
 		}
+	}
+	
+	public void clear() {
+		userTB.setText("");
+		passTB.setText("");
 	}
 }

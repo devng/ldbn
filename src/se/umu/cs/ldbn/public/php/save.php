@@ -30,7 +30,7 @@ if(isset($id) && $id != "") {
 } else {
 	if(isset($xml) && isset($name)) {
 		checkName($name);
-		$sql = 'INSERT INTO assignment(name, xml) VALUES (\''.$name.'\', \''.$xml.'\');';
+		$sql = "INSERT INTO assignment(user_id, name, xml) VALUES ('$user_id', '$name', '$xml');";
 	} else {
 		die ('<ldbn type="msg"><msg type="error">Some arguments are not set.</msg></ldbn>');
 	};

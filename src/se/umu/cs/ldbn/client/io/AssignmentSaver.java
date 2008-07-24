@@ -19,38 +19,25 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Text;
 import com.google.gwt.xml.client.XMLParser;
 
-public final class AssignmentSaver {
+public final class AssignmentSaver extends AbstractRequestSender {
+	
+	private static AssignmentSaver inst;
+	
+	public static AssignmentSaver get() {
+		if (inst == null) {
+			inst = new AssignmentSaver();
+		}
+		return inst;
+	}
+	
+	private String data;
 	
 	private AssignmentSaver() {}
 	
-	public static void sendToSaveScript(String xml, String name, String id) {
-		RequestBuilder rb = new RequestBuilder(RequestBuilder.POST,
-			Config.get().getSaveScriptURL());
-		rb.setHeader("Content-type", "application/x-www-form-urlencoded");
-		String data = "id="+id+"&name="+name+"&xml="+xml;
-		try {
-			rb.sendRequest(data, new RequestCallback() {
-				
-				public void onError(Request request, Throwable exception) {
-					Log.error("Request Callback Error", exception);
-				}
-
-				public void onResponseReceived(Request request, Response response) {
-					if (Common.checkResponse(response)) {
-						LdbnParser p = LdbnParser.get();
-						if (p.getLastLdbnType() == LdbnParser.LDBN_TYPE.msg) {
-							Window.alert(p.getMsgText());
-						} else {
-							Log.warn("Invalid response by the server:\n");
-							Log.warn(response.getText());
-						}
-					}
-				}
-			});
-		} catch (Exception e) {
-			Log.error("Request failed", e);
-		}
-
+	public void sendToSaveScript(String xml, String name, String id) {
+		data = "id="+id+"&name="+name+"&xml="+xml;
+		data = addSessionData(data);
+		send();
 	}
 	
 	public static String buildXML(Assignment a) {
@@ -93,5 +80,22 @@ public final class AssignmentSaver {
 			
 		}
 		return doc.toString();
+	}
+
+	protected String getData() {
+		return data;
+	}
+
+	protected String getURL() {
+		return Config.get().getSaveScriptURL();
+	}
+	
+	protected boolean handleResponce() {
+		LdbnParser p = LdbnParser.get();
+		if (p.getLastLdbnType() == LdbnParser.LDBN_TYPE.msg) {
+			Window.alert(p.getMsgText());
+			return true;
+		} 
+		return false;
 	}
 }

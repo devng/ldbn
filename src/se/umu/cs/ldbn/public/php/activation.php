@@ -10,7 +10,7 @@ require_once("checkinput.php");
 if (isset($_GET['a'])) {
 	$a = $_GET['a'];
 	checkMD5($a);
-	$sql = "SELECT user_id FROM activation WHERE activation_string=$a";
+	$sql = "SELECT user_id FROM activation WHERE activation_string='$a'";
 	if (! $sth = @mysql_query($sql)) {
 		die(getDBErrorXML());
 	}
@@ -21,9 +21,9 @@ if (isset($_GET['a'])) {
 			die(getDBErrorXML());
 		}
 		echo ('<P><B>Your account is now activated. <B><BR>You can go to the ' .
-			  '<A HREF="www.ldbnonline.com">main page</A>' .
+			  '<A HREF="http://'.$ldbnhost.'">main page</A>' .
     		  ' and login with your username and password.');
-    	$sql = "DELETE FROM user WHERE activation_string=$a";
+    	$sql = "DELETE FROM activation WHERE activation_string='$a'";
     	@mysql_query($sql);
 	} else {
 		echo ("<P>Invalid activation string.</P>");
