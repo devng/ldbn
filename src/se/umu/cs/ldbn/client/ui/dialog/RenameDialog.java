@@ -2,7 +2,7 @@ package se.umu.cs.ldbn.client.ui.dialog;
 
 import java.util.Collection;
 
-import se.umu.cs.ldbn.client.util.Common;
+import se.umu.cs.ldbn.client.utils.Common;
 
 import com.google.gwt.user.client.ui.HasName;
 import com.google.gwt.user.client.ui.TextBox;

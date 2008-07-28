@@ -1,9 +1,15 @@
+2008-07-29_0200
+* Change some SQL statements in the install folder
+* Minor bug fixes
+* Backup
+
 2008-07-28_2020
 * A final working version of the user management.
 * Leaving a comment for each assignemtn is now possible.
 * About and licence text added.
 * Fixed bug with UserLogoutWidget, where a username didn't change after second login.
 * Minor UI changes.
+* Exporting and importing assignment is working
 * Backup
 
 2008-07-24_0420

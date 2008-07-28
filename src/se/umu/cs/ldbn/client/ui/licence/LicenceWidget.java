@@ -31,7 +31,7 @@ public class LicenceWidget extends Composite {
 		mainPanel.add(hw);
 		Frame viewer = new Frame("info/licence.html");
 		viewer.setWidth("100%");
-		viewer.setHeight("400px");
+		viewer.setHeight("420px");
 		DisclosureWidget dw = new DisclosureWidget("Copyright", viewer);
 		mainPanel.add(dw);
 		

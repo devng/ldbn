@@ -3,7 +3,7 @@ package se.umu.cs.ldbn.client.ui;
 import java.util.Collection;
 import java.util.HashSet;
 
-import se.umu.cs.ldbn.client.util.Common;
+import se.umu.cs.ldbn.client.utils.Common;
 
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Image;

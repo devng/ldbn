@@ -13,7 +13,7 @@ import se.umu.cs.ldbn.client.ui.FDWidget;
 import se.umu.cs.ldbn.client.ui.dialog.AttributesEditorDialog;
 import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
 import se.umu.cs.ldbn.client.ui.dialog.KeyEditorDialog;
-import se.umu.cs.ldbn.client.util.Common;
+import se.umu.cs.ldbn.client.utils.Common;
 
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;

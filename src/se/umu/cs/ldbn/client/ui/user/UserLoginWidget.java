@@ -2,7 +2,7 @@ package se.umu.cs.ldbn.client.ui.user;
 
 import se.umu.cs.ldbn.client.io.Login;
 import se.umu.cs.ldbn.client.ui.InfoButton;
-import se.umu.cs.ldbn.client.util.Common;
+import se.umu.cs.ldbn.client.utils.Common;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;

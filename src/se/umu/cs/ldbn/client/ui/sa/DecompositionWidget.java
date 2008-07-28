@@ -13,7 +13,7 @@ import se.umu.cs.ldbn.client.ui.HasAdditionalControlls;
 import se.umu.cs.ldbn.client.ui.InfoButton;
 import se.umu.cs.ldbn.client.ui.MouseAdapter;
 import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
-import se.umu.cs.ldbn.client.util.Common;
+import se.umu.cs.ldbn.client.utils.Common;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.ui.Button;

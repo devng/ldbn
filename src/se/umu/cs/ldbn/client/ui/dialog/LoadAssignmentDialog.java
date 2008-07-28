@@ -6,7 +6,7 @@ import java.util.List;
 
 import se.umu.cs.ldbn.client.io.AssignmentListEntry;
 import se.umu.cs.ldbn.client.io.AssignmentLoader;
-import se.umu.cs.ldbn.client.util.Common;
+import se.umu.cs.ldbn.client.utils.Common;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.ui.ClickListener;

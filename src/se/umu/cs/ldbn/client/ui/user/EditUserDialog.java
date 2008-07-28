@@ -2,7 +2,7 @@ package se.umu.cs.ldbn.client.ui.user;
 
 import se.umu.cs.ldbn.client.io.Login;
 import se.umu.cs.ldbn.client.io.UserManagement;
-import se.umu.cs.ldbn.client.util.Common;
+import se.umu.cs.ldbn.client.utils.Common;
 
 import com.google.gwt.user.client.Window;
 
@@ -58,7 +58,9 @@ public final class EditUserDialog extends RegisterUserDialog {
 	
 	public void setOKStatus() {
 		super.setOKStatus();
-		Window.alert("You have to login again.");
-		Login.get().sendKillSession(UserData.get().getSession());
+		if(UserData.get().isLoggedIn()) {
+			Window.alert("You have to login again.");
+			Login.get().sendKillSession(UserData.get().getSession());
+		}
 	}
 }
