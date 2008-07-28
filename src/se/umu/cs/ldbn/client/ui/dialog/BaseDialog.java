@@ -1,7 +1,7 @@
 package se.umu.cs.ldbn.client.ui.dialog;
 
-import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.Main;
+import se.umu.cs.ldbn.client.util.Common;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Button;

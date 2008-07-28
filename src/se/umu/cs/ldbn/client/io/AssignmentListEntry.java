@@ -6,9 +6,15 @@ public class AssignmentListEntry
 	public enum compareAttribute {id, name, author, modified}
 	
 	private static compareAttribute defaultComparationAtt = compareAttribute.id;
+	private static boolean isDec = false;
 	
 	public static void setCompareAttribute (compareAttribute att) {
 		defaultComparationAtt = att;
+	}
+	
+	public static void setDecreasing(boolean isDecreasing) {
+		isDec = isDecreasing;
+		
 	}
 	
 	private String id;
@@ -17,8 +23,8 @@ public class AssignmentListEntry
 	private String authorID;
 	private String modifiedOn;
 	
-	public AssignmentListEntry(String id, String name, String author, 
-			String authorID, String modifiedOn) {
+	public AssignmentListEntry(String id, String name, String authorID, 
+			String author, String modifiedOn) {
 		if(id == null || name == null || author == null || authorID == null || 
 				modifiedOn == null) {
 			throw new IllegalArgumentException("Some arguments are null.");
@@ -31,17 +37,26 @@ public class AssignmentListEntry
 	}
 	
 	public int compareTo(AssignmentListEntry o) {
+		int result;
 		switch (defaultComparationAtt) {
 		case name:
-			return this.name.compareToIgnoreCase(o.name);
+			result = this.name.compareToIgnoreCase(o.name);
+			break;
 		case author:
-			return this.authorID.compareToIgnoreCase(o.authorID);
+			result = this.authorID.compareToIgnoreCase(o.authorID);
+			break;
 		case modified:
-			return this.modifiedOn.compareToIgnoreCase(o.modifiedOn);
+			result = this.modifiedOn.compareToIgnoreCase(o.modifiedOn);
+			break;
 		case id:
 		default:
-			return this.id.compareToIgnoreCase(o.id);
+			result = this.id.compareToIgnoreCase(o.id);
+			break;
 		}
+		if(isDec) {
+			result = -result;
+		}
+		return result;
 	}
 
 	public static compareAttribute getDefaultComparationAtt() {

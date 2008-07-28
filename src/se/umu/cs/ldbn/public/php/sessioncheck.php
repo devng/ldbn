@@ -1,6 +1,6 @@
 <?php
 require_once("opendb.php");
-require_once("checkinput.php");
+require_once("common.php");
 $id_session;
 $user_id;
 

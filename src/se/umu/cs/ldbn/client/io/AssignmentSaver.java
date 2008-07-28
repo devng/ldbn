@@ -2,11 +2,11 @@ package se.umu.cs.ldbn.client.io;
 
 import java.util.List;
 
-import se.umu.cs.ldbn.client.Assignment;
-import se.umu.cs.ldbn.client.Common;
+import se.umu.cs.ldbn.client.core.Assignment;
 import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.AttributeSet;
 import se.umu.cs.ldbn.client.core.FD;
+import se.umu.cs.ldbn.client.util.Common;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.http.client.Request;

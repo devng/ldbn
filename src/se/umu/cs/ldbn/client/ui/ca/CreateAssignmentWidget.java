@@ -3,14 +3,14 @@ package se.umu.cs.ldbn.client.ui.ca;
 import java.util.Collection;
 import java.util.List;
 
-import se.umu.cs.ldbn.client.Assignment;
-import se.umu.cs.ldbn.client.Common;
+import se.umu.cs.ldbn.client.core.Assignment;
 import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.io.AssignmentLoader;
 import se.umu.cs.ldbn.client.io.AssignmentLoaderCallback;
 import se.umu.cs.ldbn.client.io.AssignmentListEntry;
 import se.umu.cs.ldbn.client.io.AssignmentSaver;
+import se.umu.cs.ldbn.client.io.Config;
 import se.umu.cs.ldbn.client.io.Login;
 import se.umu.cs.ldbn.client.io.LoginListener;
 import se.umu.cs.ldbn.client.ui.DisclosureWidget;
@@ -22,8 +22,12 @@ import se.umu.cs.ldbn.client.ui.dialog.DomainTableEditorDialog;
 import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
 import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialog;
 import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialogCallback;
+import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialogFilter;
 import se.umu.cs.ldbn.client.ui.dialog.RenameDialog;
 import se.umu.cs.ldbn.client.ui.dialog.RenameDialogCallback;
+import se.umu.cs.ldbn.client.ui.dialog.UploadDialog;
+import se.umu.cs.ldbn.client.ui.user.UserData;
+import se.umu.cs.ldbn.client.util.Common;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.Window;
@@ -31,7 +35,13 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FormHandler;
+import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.FormSubmitCompleteEvent;
+import com.google.gwt.user.client.ui.FormSubmitEvent;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -39,7 +49,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 public final class CreateAssignmentWidget extends Composite 
 	implements ClickListener, RenameDialogCallback, LoadAssignmentDialogCallback,
-	AssignmentLoaderCallback, LoginListener {
+	LoadAssignmentDialogFilter, AssignmentLoaderCallback, LoginListener {
 	
 	//assignment variables  
 	private Assignment currentAssignment;
@@ -56,10 +66,14 @@ public final class CreateAssignmentWidget extends Composite
 	private Button newButton;
 	private Button saveButton;
 	private Button editButton;
+	private Button exportButton;
+	private Button importButton;
 	private Label editMode;
 	private Label loginFirst;
 	private DisclosureWidget dwGivenAttributes;
 	private DisclosureWidget dwGivenFDs;
+	private FormPanel downloadForm;
+	private Hidden hidenXML;
 	
 	private CreateAssignmentWidget() {
 		mainPanel = new AbsolutePanel();
@@ -72,20 +86,30 @@ public final class CreateAssignmentWidget extends Composite
 		saveButton.addClickListener(this);
 		editButton = new Button("Edit");
 		editButton.addClickListener(this);
+		exportButton = new Button("Export");
+		exportButton.addClickListener(this);
+		importButton = new Button("Import");
+		importButton.addClickListener(this);
 		newButton.setStyleName("att-but");
 		Common.setCursorPointer(newButton);
 		saveButton.setStyleName("att-but");
 		Common.setCursorPointer(saveButton);
 		editButton.setStyleName("att-but");
 		Common.setCursorPointer(editButton);
+		exportButton.setStyleName("att-but");
+		Common.setCursorPointer(importButton);
+		importButton.setStyleName("att-but");
+		Common.setCursorPointer(exportButton);
 		InfoButton info = new InfoButton("ca-tab");
 		info.setStyleName("att-img");
 		
 		hw.add(newButton);
 		hw.add(saveButton);
 		hw.add(editButton);
+		hw.add(exportButton);
+		hw.add(importButton);
 		hw.add(info);
-		editMode = new Label("Edit mode - Assigment will be updated in the DB");
+		editMode = new Label("Edit mode");
 		editMode.setVisible(false);
 		hw.add(editMode);
 		mainPanel.add(hw);
@@ -125,6 +149,22 @@ public final class CreateAssignmentWidget extends Composite
 		initWidget(mainPanel);
 		Login.get().addListener(this);
 		onSessionKilled();
+		
+
+	}
+	
+	private void setDownloadForm() {
+		//upload
+		downloadForm = new FormPanel();
+		hidenXML = new Hidden();
+		hidenXML.setName("xml");
+		hidenXML.setValue("");
+		downloadForm.setEncoding(FormPanel.ENCODING_MULTIPART);
+		downloadForm.setMethod(FormPanel.METHOD_POST);
+		downloadForm.setAction(Config.get().getDownloadScriptURL());
+	    // Create a panel to hold all of the form widgets.
+		downloadForm.setWidget(hidenXML);
+		mainPanel.add(downloadForm);
 	}
 	
 	public static CreateAssignmentWidget get() {
@@ -154,30 +194,45 @@ public final class CreateAssignmentWidget extends Composite
 			fded.center(); //always center first
 			fded.setCurrentFDHolderPanel(givenFDs);
 			fded.setCurrentDomain(egas.getDomain());
-			
 		}  else if (sender == newButton) {
 			clearData();
 			restoreDefaultSize();
 			loadedId = null;
 			loadedName = null;
 		} else if (sender == saveButton) {
-			DomainTable domain = egas.getDomain();
-			if(domain.size() < 1) {
-				Window.alert("You did not enter any attributes.");
-				return;
-			}
-			List<FD> fds = givenFDs.getFDs();
-			if(fds.size() < 1) {
-				Window.alert("You did not enter any FDs.");
-				return;
-				
-			}
-			currentAssignment = new Assignment(domain, fds);
+			Assignment tmp = getAssignemntFromUserInput();
+			if (tmp == null) return;
+			currentAssignment = tmp;
 			RenameDialog.get().rename(this);
 		} else if (sender == editButton) {
 			LoadAssignmentDialog.get().load(this);
+		} else if (sender == exportButton) {
+			Assignment tmp = getAssignemntFromUserInput();
+			if (tmp == null) return;
+			if (downloadForm == null) setDownloadForm();
+			currentAssignment = tmp;
+			String data = AssignmentSaver.buildXML(currentAssignment);
+			hidenXML.setValue(data);
+			downloadForm.submit();
+		} else if (sender == importButton) {
+			UploadDialog.get().center();
 		}
 		
+	}
+	
+	private Assignment getAssignemntFromUserInput() {
+		DomainTable domain = egas.getDomain();
+		if(domain.size() < 1) {
+			Window.alert("You did not enter any attributes.");
+			return null;
+		}
+		List<FD> fds = givenFDs.getFDs();
+		if(fds.size() < 1) {
+			Window.alert("You did not enter any FDs.");
+			return null;
+			
+		}
+		return new Assignment(domain, fds);
 	}
 
 	public String getOldName() {
@@ -249,7 +304,10 @@ public final class CreateAssignmentWidget extends Composite
 		newButton.setEnabled(false);
 		saveButton.setEnabled(false);
 		editButton.setEnabled(false);
+		exportButton.setEnabled(false);
+		importButton.setEnabled(false);
 		editMode.setVisible(false);
+		
 		loadedId = null;
 		loadedName = null;
 	}
@@ -259,6 +317,15 @@ public final class CreateAssignmentWidget extends Composite
 		newButton.setEnabled(true);
 		saveButton.setEnabled(true);
 		editButton.setEnabled(true);
-		
+		importButton.setEnabled(true);
+		exportButton.setEnabled(true);
+	}
+	
+	public boolean filter(AssignmentListEntry entry) {
+		String userId = UserData.get().getId();
+		if(userId == null) {
+			return false;
+		}
+		return userId.equals(entry.getAuthorID());
 	}
 }

@@ -1,4 +1,4 @@
-package se.umu.cs.ldbn.client;
+package se.umu.cs.ldbn.client.util;
 
 import se.umu.cs.ldbn.client.io.LdbnParser;
 import se.umu.cs.ldbn.client.io.LdbnParser.LDBN_TYPE;
@@ -7,6 +7,7 @@ import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -46,6 +47,12 @@ public final class Common {
 		DOM.setStyleAttribute(w.getElement(), "cursor", "pointer");
 	}
 	
+	public static Label createCursorLabel(String labelText) {
+		Label l = new Label(labelText);
+		setCursorPointer(l);
+		return l;
+	}
+	
 	/**
 	 * Check a response, returned by the server. The following checks are 
 	 * being performed:
@@ -61,13 +68,17 @@ public final class Common {
 	 */
 	public static boolean checkResponse(Response response) {
 		if(response.getStatusCode() != 200) {
-			Log.debug(response.getText());
 			Window.alert("The server returned a " + 
 					response.getStatusCode() + " error code.");
 			return false;
 		}
+		String responce = response.getText();
+		return checkResponceTextOnly(responce);
+	}
+	
+	public static boolean checkResponceTextOnly(String responce) {
 		LdbnParser p = LdbnParser.get();
-		LdbnParser.LDBN_TYPE type = p.parse(response.getText());
+		LdbnParser.LDBN_TYPE type = p.parse(responce);
 		if (type == LDBN_TYPE.unknown) {
 			Window.alert("The server returned an unknown XML responce.");
 			return false;
@@ -79,6 +90,89 @@ public final class Common {
 		
 		return true;
 	}
+	
+	public static String escapeHTMLCharacters(String str) {
+		final StringBuilder result = new StringBuilder();
+		char[] chars = new char[str.length()];
+		str.getChars(0, str.length(), chars, 0);
+		for (char character : chars) {
+			if (character == '<') {
+				result.append("&lt;");
+			} else if (character == '>') {
+				result.append("&gt;");
+			} else if (character == '&') {
+				result.append("&amp;");
+			} else if (character == '\"') {
+				result.append("&quot;");
+			} else if (character == '\'') {
+				result.append("&#039;");
+			} else if (character == '(') {
+				result.append("&#040;");
+			} else if (character == ')') {
+				result.append("&#041;");
+			} else if (character == '#') {
+				result.append("&#035;");
+			} else if (character == '%') {
+				result.append("&#037;");
+			} else if (character == ';') {
+				result.append("&#059;");
+			} else if (character == '+') {
+				result.append("&#043;");
+			} else if (character == '-') {
+				result.append("&#045;");
+			} else {
+				// the char is not a special one
+				// add it to the result as is
+				result.append(character);
+			}
+		}
+		return result.toString();
+	}
+	
+	public static native String base64decode(final String data) /*-{
+
+	var tab = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+	var out = "", c1, c2, c3, e1, e2, e3, e4;
+	for (var i = 0; i < data.length; ) {
+		e1 = tab.indexOf(data.charAt(i++));
+		e2 = tab.indexOf(data.charAt(i++));
+		e3 = tab.indexOf(data.charAt(i++));
+		e4 = tab.indexOf(data.charAt(i++));
+		c1 = (e1 << 2) + (e2 >> 4);
+		c2 = ((e2 & 15) << 4) + (e3 >> 2);
+		c3 = ((e3 & 3) << 6) + e4;
+		out += String.fromCharCode(c1);
+		if (e3 != 64)
+			out += String.fromCharCode(c2);
+		if (e4 != 64)
+			out += String.fromCharCode(c3);
+	}
+	return out;
+
+	}-*/;
+	
+	
+	public static native String base64encode(final String data) /*-{
+
+	var tab = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+	var out = "", c1, c2, c3, e1, e2, e3, e4;
+    for (var i = 0; i < data.length; ) {
+       c1 = data.charCodeAt(i++);
+       c2 = data.charCodeAt(i++);
+       c3 = data.charCodeAt(i++);
+       e1 = c1 >> 2;
+       e2 = ((c1 & 3) << 4) + (c2 >> 4);
+       e3 = ((c2 & 15) << 2) + (c3 >> 6);
+       e4 = c3 & 63;
+       if (isNaN(c2))
+         e3 = e4 = 64;
+       else if (isNaN(c3))
+         e4 = 64;
+       out += tab.charAt(e1) + tab.charAt(e2) + tab.charAt(e3) + tab.charAt(e4);
+    }
+    return out;
+
+	}-*/;
 	
 
 	public static native String md5(String string) /*-{

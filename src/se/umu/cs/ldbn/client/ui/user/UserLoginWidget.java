@@ -1,7 +1,8 @@
 package se.umu.cs.ldbn.client.ui.user;
 
-import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.io.Login;
+import se.umu.cs.ldbn.client.ui.InfoButton;
+import se.umu.cs.ldbn.client.util.Common;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -59,6 +60,8 @@ public final class UserLoginWidget extends Composite implements ClickListener {
 		help = new Button("Help");
 		help.addClickListener(this);
 		mainPanel.add(help);
+		//info button
+		mainPanel.add(new InfoButton("login"));
 		Common.setCursorPointer(help);
 	}
 	

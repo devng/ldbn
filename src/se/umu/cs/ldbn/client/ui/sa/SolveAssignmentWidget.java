@@ -5,11 +5,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import se.umu.cs.ldbn.client.Assignment;
-import se.umu.cs.ldbn.client.AssignmentGenerator;
-import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.Main;
 import se.umu.cs.ldbn.client.core.Algorithms;
+import se.umu.cs.ldbn.client.core.Assignment;
 import se.umu.cs.ldbn.client.core.AttributeSet;
 import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.FD;
@@ -17,6 +15,9 @@ import se.umu.cs.ldbn.client.core.Relation;
 import se.umu.cs.ldbn.client.io.AssignmentLoader;
 import se.umu.cs.ldbn.client.io.AssignmentLoaderCallback;
 import se.umu.cs.ldbn.client.io.AssignmentListEntry;
+import se.umu.cs.ldbn.client.io.Comment;
+import se.umu.cs.ldbn.client.io.CommentCallback;
+import se.umu.cs.ldbn.client.io.CommentListEntry;
 import se.umu.cs.ldbn.client.ui.DisclosureWidget;
 import se.umu.cs.ldbn.client.ui.FDWidget;
 import se.umu.cs.ldbn.client.ui.HeaderWidget;
@@ -26,6 +27,8 @@ import se.umu.cs.ldbn.client.ui.dialog.CheckSolutionDialog;
 import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialog;
 import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialogCallback;
 import se.umu.cs.ldbn.client.ui.dialog.CheckSolutionDialog.MSG_TYPE;
+import se.umu.cs.ldbn.client.util.AssignmentGenerator;
+import se.umu.cs.ldbn.client.util.Common;
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
@@ -37,7 +40,8 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
 public final class SolveAssignmentWidget extends AbsolutePanel 
-	implements ClickListener, LoadAssignmentDialogCallback, AssignmentLoaderCallback {
+	implements ClickListener, LoadAssignmentDialogCallback, 
+	AssignmentLoaderCallback, CommentCallback {
 
 	private static SolveAssignmentWidget inst;
 	public static SolveAssignmentWidget get() {
@@ -59,7 +63,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	private List<FD> fds;
 	//given attributes
 	private Button checkSolution;
-	private Button newAssignment;
+	private Button loadAssignment;
 	private Button showSolution;
 	private GivenAttributesWidget givenAttributesWidget;
 	//given fds
@@ -79,12 +83,19 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	private DisclosureWidget dwDecomposition3NF;
 	private DisclosureWidget dwDecompositionBCNF;
 	DisclosureWidget dwFDs;
+	private DisclosureWidget dwComments;
 	//imports
 	private Image import2NF;
 	private Image import3NF;
+	//current assignment
+	private String curAssinmentId;
 	
 	private SolveAssignmentWidget() {
 		super();
+		curAssinmentId = "1";
+	}
+	
+	private void init() {
 		setWidth("100%");
 		//this are not used, before an assignment has been loaded,  but
 		//if they are not set a NullPointer or IllegalArgument exception
@@ -94,10 +105,10 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		
 		//Controls
 		givenAttributesWidget = new GivenAttributesWidget();
-		newAssignment = new Button("New Assignment");
-		newAssignment.setStyleName("att-but");
-		Common.setCursorPointer(newAssignment);
-		newAssignment.addClickListener(this);
+		loadAssignment = new Button("Load Assignment");
+		loadAssignment.setStyleName("att-but");
+		Common.setCursorPointer(loadAssignment);
+		loadAssignment.addClickListener(this);
 		checkSolution = new Button("Check Solution");
 		checkSolution.setStyleName("att-but");
 		Common.setCursorPointer(checkSolution);
@@ -109,7 +120,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		InfoButton info = new InfoButton("sa-tab");
 		info.setStyleName("att-img");
 		HeaderWidget hw = new HeaderWidget();
-		hw.add(newAssignment);
+		hw.add(loadAssignment);
 		hw.add(checkSolution);
 		hw.add(showSolution);
 		hw.add(info);
@@ -176,6 +187,9 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		tmp[0] = import3NF;
 		dwDecompositionBCNF = new DisclosureWidget("Decompose in BCNF", decompositionBCNF, tmp);
 		add(dwDecompositionBCNF);
+		//comments
+		dwComments = new DisclosureWidget("User Comments", CommentsWidget.get());
+		add(dwComments);
 		//cache
 		cacheFD = new HashMap<Integer, List<FD>>();
 		cacheKeys = new HashMap<Integer, List<AttributeSet>>();
@@ -189,6 +203,10 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	
 	public DomainTable getDomainTable() {
 		return domain;
+	}
+	
+	public String getCurrentAssignmentId() {
+		return curAssinmentId;
 	}
 	
 	public void onAssignmentLoaded(Assignment a) {
@@ -205,7 +223,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 					checkSolution();
 				}
 			});
-		} else if (sender == newAssignment) {
+		} else if (sender == loadAssignment) {
 			LoadAssignmentDialog.get().load(this);
 		} else if (sender == showSolution) {
 			Main.get().showGlassPanelLoading();
@@ -230,7 +248,26 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	public void onLoadCanceled() {}
 
 	public void onLoaded(AssignmentListEntry entry) {
+		curAssinmentId = entry.getId();
 		AssignmentLoader.get().loadFromURL(entry.getId(), this);
+	}
+	
+	public String getAssignmentID() {
+		return curAssinmentId;
+	}
+
+	public String getComment() {
+		return null;
+	}
+
+	public void onCommentsReceived(List<CommentListEntry> comments,
+			String assignentID) {
+		CommentsWidget.get().addComments(comments);
+	}
+	
+	protected void onAttach() {
+		super.onAttach();
+		init();
 	}
 
 	private void checkSolution() {
@@ -458,6 +495,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		domain.clearData();
 		givenFDsWidget.clearData();
 		fds.clear();
+		CommentsWidget.get().clearData();
 	}
 	
 	private void loadAssignment(Assignment a) {
@@ -467,8 +505,12 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		this.domainAsAttSet = domain.createAttributeSet();
 		givenAttributesWidget.setDomain(domain);
 		this.fds = a.getFDs();
-		
 		givenFDsWidget.setFDs(fds);
+		DeferredCommand.addCommand(new Command() {
+			public void execute() {
+				Comment.get().send(SolveAssignmentWidget.this);
+			}
+		});
 	}
 	
 	private void restoreDefaultSize() {

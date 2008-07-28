@@ -15,6 +15,11 @@
 	<entry id="2" name="test-minimal-cover" author="ngg" author_id="2" last_modified="2008-07-24 02:13:32"/>
 </ldbn>
 
+<ldbn type="comments_list" assignment_id="1">
+	<comment id="1" author="admin" author_id="1" last_modified="2008-06-16 21:19:55">base64string</comment>
+	<comment id="2" author="ngg" author_id="2" last_modified="2008-07-24 02:13:32">base64string</comment>
+</ldbn>
+
 <ldbn type="session">
 	<session id="1" />
 	<user id="2" />

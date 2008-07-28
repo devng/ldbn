@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.Main;
 import se.umu.cs.ldbn.client.core.DomainTableListener;
 import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
+import se.umu.cs.ldbn.client.util.Common;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.log.client.Log;

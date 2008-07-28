@@ -1,8 +1,8 @@
 package se.umu.cs.ldbn.client.ui.dialog;
 
-import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.ui.AttributeTextArea;
 import se.umu.cs.ldbn.client.ui.InfoButton;
+import se.umu.cs.ldbn.client.util.Common;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
