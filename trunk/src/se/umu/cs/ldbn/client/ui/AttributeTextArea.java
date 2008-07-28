@@ -3,8 +3,7 @@ package se.umu.cs.ldbn.client.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import se.umu.cs.ldbn.client.ui.dialog.RenameDialog;
-import se.umu.cs.ldbn.client.util.Common;
+import se.umu.cs.ldbn.client.utils.Common;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.DragController;

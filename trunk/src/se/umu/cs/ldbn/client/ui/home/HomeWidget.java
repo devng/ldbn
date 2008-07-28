@@ -4,12 +4,9 @@ import se.umu.cs.ldbn.client.io.Login;
 import se.umu.cs.ldbn.client.io.LoginListener;
 import se.umu.cs.ldbn.client.ui.DisclosureWidget;
 import se.umu.cs.ldbn.client.ui.HeaderWidget;
-import se.umu.cs.ldbn.client.ui.user.UserData;
 import se.umu.cs.ldbn.client.ui.user.UserLoginWidget;
 import se.umu.cs.ldbn.client.ui.user.UserLogoutWidget;
 
-import com.allen_sauer.gwt.log.client.Log;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Frame;

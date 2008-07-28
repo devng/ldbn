@@ -82,7 +82,10 @@ public final class Main implements EntryPoint {
 		tabs.selectTab(0);
 		mainPanel.add(tabs);
 		glass = new GlassPanel(mainPanel);
-		DOM.setInnerHTML(RootPanel.get("loading").getElement(), "");
+		DOM.setInnerHTML(RootPanel.get("loading").getElement(), 
+				"Copyright 2008 <a href=\"mailto:ens07ngv@cs.umu.se\" " +
+				"style=\"color: gray; text-decoration:none;\">" +
+				"Nikolay Georgiev</a>");
 		Panel rp = RootPanel.get("gwtapp");
 		rp.add(mainPanel);
 	}

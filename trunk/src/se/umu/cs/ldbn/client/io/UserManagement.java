@@ -2,9 +2,7 @@ package se.umu.cs.ldbn.client.io;
 
 import java.util.ArrayList;
 
-import com.allen_sauer.gwt.log.client.Log;
-
-import se.umu.cs.ldbn.client.ui.user.UserData;
+import com.google.gwt.user.client.Window;
 
 public final class UserManagement extends AbstractRequestSender {
 
@@ -78,6 +76,7 @@ public final class UserManagement extends AbstractRequestSender {
 		LdbnParser p = LdbnParser.get();
 		if (p.getLastLdbnType() == LdbnParser.LDBN_TYPE.msg) {
 			if(p.getMsgType() == LdbnParser.MSG_TYPE.ok) {
+				Window.alert(p.getMsgText());
 				for (UserManagementListener l : listeners) {
 						l.setOKStatus();
 				}

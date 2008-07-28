@@ -1,7 +1,7 @@
 package se.umu.cs.ldbn.client.io;
 
 import se.umu.cs.ldbn.client.ui.user.UserData;
-import se.umu.cs.ldbn.client.util.Common;
+import se.umu.cs.ldbn.client.utils.Common;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.http.client.Request;

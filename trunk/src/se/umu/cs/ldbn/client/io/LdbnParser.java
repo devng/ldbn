@@ -7,7 +7,7 @@ import se.umu.cs.ldbn.client.core.Assignment;
 import se.umu.cs.ldbn.client.core.AttributeSet;
 import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.FD;
-import se.umu.cs.ldbn.client.util.Common;
+import se.umu.cs.ldbn.client.utils.Common;
 
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
@@ -91,7 +91,10 @@ public final class LdbnParser {
 	}
 	
 	public String getMsgText() {
-		return lastMsg;
+		String msg = lastMsg.replaceAll("\\n", "\n");
+		msg = msg.replaceAll("<BR>", "\n");
+		msg = msg.replaceAll("<br>", "\n");
+		return msg;
 	}
 	
 	public MSG_TYPE getMsgType() {

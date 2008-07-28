@@ -6,7 +6,7 @@ import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
 import se.umu.cs.ldbn.client.ui.sa.RelationAttributesWidget;
-import se.umu.cs.ldbn.client.util.Common;
+import se.umu.cs.ldbn.client.utils.Common;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.google.gwt.user.client.ui.Button;

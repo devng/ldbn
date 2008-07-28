@@ -9,7 +9,6 @@ import se.umu.cs.ldbn.client.ui.sa.CommentsWidget;
 import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
 
 import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public class CommentDialog extends OkCancelDialog implements CommentCallback {

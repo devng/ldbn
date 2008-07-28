@@ -10,7 +10,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import se.umu.cs.ldbn.client.io.UserHelpSender;
 import se.umu.cs.ldbn.client.ui.dialog.OkCancelDialog;
-import se.umu.cs.ldbn.client.util.Common;
+import se.umu.cs.ldbn.client.utils.Common;
 
 public class UserHelpDialog extends OkCancelDialog{
 	

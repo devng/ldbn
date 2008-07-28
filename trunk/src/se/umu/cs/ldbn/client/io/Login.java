@@ -3,8 +3,6 @@ package se.umu.cs.ldbn.client.io;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.allen_sauer.gwt.log.client.Log;
-
 import se.umu.cs.ldbn.client.ui.user.UserData;
 
 public final class Login extends AbstractRequestSender {

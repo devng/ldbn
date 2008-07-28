@@ -10,7 +10,7 @@ import se.umu.cs.ldbn.client.ui.SingleAttributeWidget;
 import se.umu.cs.ldbn.client.ui.dialog.RenameDialog;
 import se.umu.cs.ldbn.client.ui.dialog.RenameDialogCallback;
 import se.umu.cs.ldbn.client.ui.sa.GivenAttributesWidget;
-import se.umu.cs.ldbn.client.util.Common;
+import se.umu.cs.ldbn.client.utils.Common;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.DOM;

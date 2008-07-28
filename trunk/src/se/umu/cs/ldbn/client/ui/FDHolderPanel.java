@@ -13,7 +13,7 @@ import se.umu.cs.ldbn.client.Main;
 import se.umu.cs.ldbn.client.core.DomainTableListener;
 import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
-import se.umu.cs.ldbn.client.util.Common;
+import se.umu.cs.ldbn.client.utils.Common;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.log.client.Log;

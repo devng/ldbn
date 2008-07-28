@@ -27,8 +27,8 @@ import se.umu.cs.ldbn.client.ui.dialog.CheckSolutionDialog;
 import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialog;
 import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialogCallback;
 import se.umu.cs.ldbn.client.ui.dialog.CheckSolutionDialog.MSG_TYPE;
-import se.umu.cs.ldbn.client.util.AssignmentGenerator;
-import se.umu.cs.ldbn.client.util.Common;
+import se.umu.cs.ldbn.client.utils.AssignmentGenerator;
+import se.umu.cs.ldbn.client.utils.Common;
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;

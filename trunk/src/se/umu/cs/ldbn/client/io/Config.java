@@ -5,18 +5,18 @@ import com.google.gwt.core.client.GWT;
 public final class Config {
 	
 	public static final String[] DEFAULT_VALUES = {
-		"php/list.php",
-		"php/load.php",
-		"php/save.php",
-		"php/userlogin.php",
-		"php/userregister.php",
-		"php/userchange.php",
-		"php/killsession.php",
-		"php/resendactivation.php",
-		"php/sendnewpassword.php",
-		"php/download.php",
-		"php/upload.php.",
-		"php/comment.php"
+		"php/list.php",                     // 0
+		"php/load.php",                     // 1
+		"php/save.php",                     // 2
+		"php/userlogin.php",                // 3
+		"php/userregister.php",             // 4
+		"php/userchange.php",               // 5
+		"php/killsession.php",              // 6
+		"php/resendactivation.php",         // 7
+		"php/sendnewpassword.php",          // 8
+		"php/download.php",                 // 9
+		"php/upload.php",                   // 10
+		"php/comment.php"                   // 11
 	};
 	
 	private static Config inst = null;

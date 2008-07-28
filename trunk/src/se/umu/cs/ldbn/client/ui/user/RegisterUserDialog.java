@@ -3,9 +3,8 @@ package se.umu.cs.ldbn.client.ui.user;
 import se.umu.cs.ldbn.client.io.UserManagement;
 import se.umu.cs.ldbn.client.io.UserManagementListener;
 import se.umu.cs.ldbn.client.ui.dialog.OkCancelDialog;
-import se.umu.cs.ldbn.client.util.Common;
+import se.umu.cs.ldbn.client.utils.Common;
 
-import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;

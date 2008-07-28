@@ -3,7 +3,7 @@ package se.umu.cs.ldbn.client.io;
 import java.util.List;
 
 import se.umu.cs.ldbn.client.ui.user.UserData;
-import se.umu.cs.ldbn.client.util.Common;
+import se.umu.cs.ldbn.client.utils.Common;
 
 public class Comment extends AbstractRequestSender {
 	
