@@ -3,8 +3,8 @@ package se.umu.cs.ldbn.client.io;
 import java.util.List;
 import java.util.Map;
 
-import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialog;
+import se.umu.cs.ldbn.client.util.Common;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.http.client.Request;

@@ -5,7 +5,7 @@
 <body>
 <?php
 require_once("opendb.php");
-require_once("checkinput.php");
+require_once("common.php");
 	
 if (isset($_GET['a'])) {
 	$a = $_GET['a'];

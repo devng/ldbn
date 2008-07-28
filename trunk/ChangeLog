@@ -1,3 +1,11 @@
+2008-07-28_2020
+* A final working version of the user management.
+* Leaving a comment for each assignemtn is now possible.
+* About and licence text added.
+* Fixed bug with UserLogoutWidget, where a username didn't change after second login.
+* Minor UI changes.
+* Backup
+
 2008-07-24_0420
 * A working user management.
 * Backup

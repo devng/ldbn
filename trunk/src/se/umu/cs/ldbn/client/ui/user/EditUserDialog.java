@@ -1,8 +1,8 @@
 package se.umu.cs.ldbn.client.ui.user;
 
-import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.io.Login;
 import se.umu.cs.ldbn.client.io.UserManagement;
+import se.umu.cs.ldbn.client.util.Common;
 
 import com.google.gwt.user.client.Window;
 

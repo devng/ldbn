@@ -1,14 +1,13 @@
 package se.umu.cs.ldbn.client.io;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import se.umu.cs.ldbn.client.Assignment;
-import se.umu.cs.ldbn.client.core.DomainTable;
+import se.umu.cs.ldbn.client.core.Assignment;
 import se.umu.cs.ldbn.client.core.AttributeSet;
+import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.FD;
+import se.umu.cs.ldbn.client.util.Common;
 
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
@@ -19,7 +18,8 @@ import com.google.gwt.xml.client.impl.DOMParseException;
 
 public final class LdbnParser {
 	
-	public static enum LDBN_TYPE {assignment, msg, assignment_list, session, unknown};
+	public static enum LDBN_TYPE {assignment, msg, assignment_list, session, 
+		comment, unknown};
 	
 	public static enum MSG_TYPE {ok, warn, error, unknown};
 	
@@ -51,6 +51,10 @@ public final class LdbnParser {
 	private String userid;
 	private String sessionid;
 	private String email;
+	//vars used for comments
+	private List<CommentListEntry> comments;
+	//comments for which assignment
+	private String assignmentIDComent;
 	
 	private LdbnParser() {
 		lastLdbnType = LDBN_TYPE.unknown;
@@ -69,6 +73,9 @@ public final class LdbnParser {
 		lastMsg = null;
 		sessionid = null;
 		userid = null;
+		email = null;
+		assignmentIDComent = null;
+		comments = null;
 	}
 	
 	public Assignment getAssignment() {
@@ -102,6 +109,15 @@ public final class LdbnParser {
 	public String getEmail() {
 		return email;
 	}
+
+	public List<CommentListEntry> getComments() {
+		return comments;
+	}
+
+
+	public String getAssignmentIDComent() {
+		return assignmentIDComent;
+	}
 	
 	public LDBN_TYPE parse(String xml) {
 		clear();
@@ -130,7 +146,12 @@ public final class LdbnParser {
 		} else if (type.equals(LDBN_TYPE.session.toString())) {
 			lastLdbnType = LDBN_TYPE.session;
 			visitElementNodes(ldbn);
-		} else {
+		} else if (type.equals("comments_list")) {
+			lastLdbnType = LDBN_TYPE.comment;
+			comments = new ArrayList<CommentListEntry>();
+			assignmentIDComent = ((Element) ldbn).getAttribute("assignment_id");
+			visitElementNodes(ldbn);
+		}else {
 			return LDBN_TYPE.unknown;
 		}
 		
@@ -183,7 +204,7 @@ public final class LdbnParser {
 				String name = el.getAttribute("name");
 				String author_id  = el.getAttribute("author_id");
 				String author = el.getAttribute("author");
-				String last_modified = el.getAttribute("last_modified");
+				String last_modified = el.getAttribute("last_modified").replaceAll("\\s", "_");
 				AssignmentListEntry data = 
 					new AssignmentListEntry(id, name, author_id, author, 
 							last_modified);
@@ -220,8 +241,25 @@ public final class LdbnParser {
 				userid = el.getAttribute("id");
 			} else if (tag.equals("email")) {
 				email = el.getAttribute("val");
+			} else if (tag.equals("comment")) {
+				CommentListEntry cle = new CommentListEntry(
+						el.getAttribute("id"),
+						el.getAttribute("author_id"),
+						el.getAttribute("author"),
+						el.getAttribute("last_modified"),
+						null);
+				Node lastChild = el.getLastChild();
+				if(lastChild != null) {
+					String val = lastChild.getNodeValue().trim();
+					val = val.replaceAll("\\s", "+");
+					val = Common.base64decode(val);
+					val = Common.escapeHTMLCharacters(val);
+					cle.setCommentString(val);
+					comments.add(cle);
+				}
 			}
 			visitElementNodes(child);
 		}
 	}
+
 }

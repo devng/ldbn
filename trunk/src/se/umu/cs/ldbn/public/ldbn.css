@@ -14,7 +14,6 @@ body {
 }
 
 .att-but {
-	min-width: 120px;
 	margin: 4px;
 	font-size: 10pt;
 }
@@ -135,6 +134,7 @@ body {
 	background-color: #FFFFFF;
 	border: 1px solid #CED4DA;
 	width: 100%;
+	padding: 4px;
 }
 
 .relW-header {
@@ -181,12 +181,21 @@ body {
 	margin: 2px;
 }
 
-.nad-myLabel-selected {
+.nad-selected {
 	background-image: url(img/raw-bg.png);
 	background-repeat: repeat-x;
 	background-color: #B8C8D8;
 	border: 1px solid #7F9DB9;
 	color: #333;
+}
+
+.nad-column-header {
+	background-image: url(img/raw-bg.png);
+	background-repeat: repeat-x;
+	background-color: #B8C8D8;
+	border: 1px solid #7F9DB9;
+	color: #333;
+	width: 100%;
 }
 
 /* END NewAssignmentDialog */

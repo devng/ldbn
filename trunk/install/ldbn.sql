@@ -35,3 +35,14 @@ CREATE TABLE activation (
 	PRIMARY KEY (activation_string)
 );
 
+DROP TABLE IF EXISTS comment;
+CREATE TABLE comment (
+	id INT(10) NOT NULL AUTO_INCREMENT,
+	assignment_id INT(10) NOT NULL,
+	user_id INT(10) NOT NULL,
+	comment_val TEXT NOT NULL ,
+	modified_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP 
+        	ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (id)
+);
+

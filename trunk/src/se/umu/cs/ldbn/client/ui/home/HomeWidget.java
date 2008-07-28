@@ -2,6 +2,7 @@ package se.umu.cs.ldbn.client.ui.home;
 
 import se.umu.cs.ldbn.client.io.Login;
 import se.umu.cs.ldbn.client.io.LoginListener;
+import se.umu.cs.ldbn.client.ui.DisclosureWidget;
 import se.umu.cs.ldbn.client.ui.HeaderWidget;
 import se.umu.cs.ldbn.client.ui.user.UserData;
 import se.umu.cs.ldbn.client.ui.user.UserLoginWidget;
@@ -11,6 +12,7 @@ import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Frame;
 
 public class HomeWidget extends Composite implements LoginListener {
 	
@@ -36,6 +38,11 @@ public class HomeWidget extends Composite implements LoginListener {
 		hw = new HeaderWidget();
 		hw.add(login);
 		mainPanel.add(hw);
+		Frame viewer = new Frame("info/about.html"); 
+		viewer.setWidth("100%");
+		viewer.setHeight("400px");
+		DisclosureWidget dw = new DisclosureWidget("About", viewer);
+		mainPanel.add(dw);
 		Login.get().addListener(this);
 	}
 

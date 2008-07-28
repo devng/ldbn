@@ -1,9 +1,9 @@
 package se.umu.cs.ldbn.client.ui.user;
 
-import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.io.UserManagement;
 import se.umu.cs.ldbn.client.io.UserManagementListener;
 import se.umu.cs.ldbn.client.ui.dialog.OkCancelDialog;
+import se.umu.cs.ldbn.client.util.Common;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.ui.Grid;

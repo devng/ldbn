@@ -1,7 +1,8 @@
 package se.umu.cs.ldbn.client.ui.user;
 
-import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.io.Login;
+import se.umu.cs.ldbn.client.ui.InfoButton;
+import se.umu.cs.ldbn.client.util.Common;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -9,7 +10,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 public final class UserLogoutWidget extends Composite implements ClickListener {
@@ -26,7 +26,7 @@ public final class UserLogoutWidget extends Composite implements ClickListener {
 		mainPanel.setSpacing(5);
 		//label;
 		label = new HTML();
-		label.setHTML("Logged in as <b>"+UserData.get().getName()+"</b>");
+		
 		mainPanel.add(label);
 		//logout
 		logout = new Button("Logout");
@@ -37,6 +37,8 @@ public final class UserLogoutWidget extends Composite implements ClickListener {
 		edit = new Button("Edit");
 		edit.addClickListener(this);
 		mainPanel.add(edit);
+		//info button
+		mainPanel.add(new InfoButton("logout"));
 		Common.setCursorPointer(edit);
 	}
 	
@@ -46,6 +48,11 @@ public final class UserLogoutWidget extends Composite implements ClickListener {
 		} else if (sender == edit) {
 			EditUserDialog.get().center();
 		}
+	}
+	
+	protected void onAttach() {
+		super.onAttach();
+		label.setHTML("Logged in as <b>"+UserData.get().getName()+"</b>");
 	}
 
 }

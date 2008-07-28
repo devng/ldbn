@@ -8,9 +8,9 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import se.umu.cs.ldbn.client.Common;
 import se.umu.cs.ldbn.client.io.UserHelpSender;
 import se.umu.cs.ldbn.client.ui.dialog.OkCancelDialog;
+import se.umu.cs.ldbn.client.util.Common;
 
 public class UserHelpDialog extends OkCancelDialog{
 	

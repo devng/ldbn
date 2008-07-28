@@ -3,15 +3,18 @@ package se.umu.cs.ldbn.client;
 import se.umu.cs.ldbn.client.ui.GlassPanel;
 import se.umu.cs.ldbn.client.ui.ca.CreateAssignmentWidget;
 import se.umu.cs.ldbn.client.ui.home.HomeWidget;
+import se.umu.cs.ldbn.client.ui.licence.LicenceWidget;
 import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 
@@ -20,7 +23,7 @@ import com.google.gwt.user.client.ui.TabPanel;
  */
 public final class Main implements EntryPoint {
 	
-	public static int WIDTH_PX = 800;
+	public static int WIDTH_PX = 850;
 	
 	private static Main instance;
 
@@ -73,15 +76,15 @@ public final class Main implements EntryPoint {
 		tabs.add(HomeWidget.get(), "Home");
 		tabs.add(SolveAssignmentWidget.get(), "Solve assignments");
 		tabs.add(CreateAssignmentWidget.get(), "Create assignments");
+		tabs.add(LicenceWidget.get(), "Licence");
 		
 		tabs.setWidth("100%");
 		tabs.selectTab(0);
 		mainPanel.add(tabs);
-		
-		RootPanel.get().add(mainPanel);
-		
 		glass = new GlassPanel(mainPanel);
-		
+		DOM.setInnerHTML(RootPanel.get("loading").getElement(), "");
+		Panel rp = RootPanel.get("gwtapp");
+		rp.add(mainPanel);
 	}
 	
 	public PickupDragController getDragController() {

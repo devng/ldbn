@@ -1,7 +1,8 @@
-package se.umu.cs.ldbn.client;
+package se.umu.cs.ldbn.client.util;
 
 import java.util.ArrayList;
 
+import se.umu.cs.ldbn.client.core.Assignment;
 import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.FD;
 
@@ -90,8 +91,9 @@ public final class AssignmentGenerator {
 		fd.getLHS().addAtt("E");
 		fd.getRHS().addAtt("G");
 		fds.add(fd);
-		
-		return new Assignment(dom, fds);
+		Assignment result = new Assignment(dom, fds);
+//		result.setLoadedFromDB(false);
+		return result;
 	}
 	
 	
