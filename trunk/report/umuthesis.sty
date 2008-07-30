@@ -1,0 +1,436 @@
+% MASTER THESIS TEMPLATE FOR LATEX
+% Pedher Johansson (pedher@cs.umu.se), april 2004
+%
+% This is a layout package developed mainly for master thesis
+% reports. Its main purpose is to make the reports a bit nicer and
+% easy to write. 
+%
+% Read the comments in this file for guidance in how to adapt it to
+% your needs, language, and own preferences. It also includes some tips
+% and tricks that can be of use, especially regarding graphics, but
+% also other things. At the end of the document a simple template for
+% a document can be found. 
+%
+% 1. USAGE
+%
+% This layout package is written to be used with the 'report' or
+% 'article' document class. Include the following in the beginning of
+% your latex document. 
+%    \documentclass[a4paper,11pt,twoside]{report}
+%    \usepackage{umuthesis}
+% or
+%    \documentclass[a4paper,11pt,twoside]{article}
+%    \usepackage{umuthesis}
+%
+% There are two valid options to the package. One if the thesis is
+% written in Swedish and one if you like to have page headers.
+%    \usepackage[swe]{umuthesis} 
+% or
+%    \usepackage[headings]{umuthesis}
+% You can of course also use them in combination:
+%    \usepackage[swe,headings]{umuthesis}
+%
+% 2. PRODUCING PDF-DOCUMENTS
+%
+% In some LaTeX distributions there exist a program called
+% 'pdflatex'. This program makes the production of good looking PDF 
+% documents easy. Use it like you use 'latex'. The difference is that
+% this program does not produce a dvi-file, but instead makes a
+% PDF-document directly. You should, if you like to use 'pdflatex', 
+% be careful with graphics and avoid using the pstricks package and 
+% also read the following section about image inclusion.
+%
+% If 'pdflatex' for some reason does not work, you could use
+% ps2pdf instead. It does not do as good job as pdflatex, and
+% you have to be careful with the input flags, otherwise the
+% PDF-document will look horrible, but you might have less trouble
+% getting your latex documents though the compiler.
+%
+% ps2pdf, as the name says, converts PS-files to PDF-documents. So,
+% first run latex, then dvips, and finaly ps2pdf. Notice the flags
+% used below, they makes sure, the correct fonts are used. 
+%   > latex thesis.tex
+%   > dvips -D 600 -Z -G0 -Ppdf thesis.dvi | thesis.ps
+%   > ps2pdf thesis.ps
+%
+% 2. INCLUDING PICTURES
+%
+% Graphics can be a mess. In this layout package, the graphicx package
+% for graphics is used, when it provides some good functionality. 
+% First of all, LaTeX, are tricky about which graphics  formats to
+% use. Basically, only EPS-files should be used. EPS stands for
+% Encapsulated PostScript and is a format good for vector graphics but
+% not so good for bitmaps. However, if you like to work with 
+% PDF-documents using 'pdflatex', other graphic formats should be
+% used. 
+%
+% One of the pros of LaTeX is that it produces very good looking
+% documents, and therefore you also want the graphics to look nice. If
+% you have found a program that can produce vector graphics, use
+% it. It can also often convert the pictures to the correct
+% format. In my experience use the formats illustrated in the 
+% following table:
+%
+%                  |    PostScript    |    PDF-documents
+% -----------------+------------------+-----------------------------
+% Vector graphics  |       EPS        |      PDF
+% Bitmaps          |       EPS        |      PNG
+% 
+% So, if you both like to produce PS as well as PDF documents, you
+% often need two versions of the pictures. This is probably not a
+% problem when they are early exported to the wanted format in the
+% image software used (Illustrator, XFig etc.), but how to make LaTeX
+% understand which picture to use? Well, LaTeX does this automagicaly.
+%
+% First we can tell LaTeX where to find our pictures,
+%  \graphicspath{{pictures/}} 
+% This makes LaTeX search the subfolder ./pictures/ for pictures to
+% include as well as the current folder.
+%
+% Secondly, use the \includegraphics command to include your pictures.
+%  \includegraphics[width=70mm]{complicated}
+%
+% Notice, that there are NO extension used on the name of the
+% picture. This makes latex to search for the right one, e.g., a PNG-
+% file if it is a PDF document, otherwise an EPS-file.
+%
+% You can do all sorts of tricks with the include pictures, where
+% scaling is the most common. Use 'scale', 'width', height' as in the
+% example above.
+%
+% Also notice how the graphics package are included below if you are
+% not using the 'umuthesis' package.
+% 
+% 3. ABSTRACT, ACKNOWLEDGMENT
+%
+% The abstract is usually put on a separate page before the table of
+% contents. Use the 'abstract' environment, possibly with the
+% \cleardoublepage command defined below, i.e.,
+%   \begin{abstract}
+%      Bla, bla.
+%   \end{abstract}
+%   \cleardoublepage
+%
+% The acknowledgent is usualy put first, or last, but can also be
+% written as a section in the introduction. However, if it is put first
+% or last as an own section, you propably don't want it to have its own
+% chapter number. For this you can use the \chapter* command, i.e.,
+%   \chapter*{Acknowledgments}
+%
+% The \chapter* command also make sure it is not included in the table
+% of cotents. If you like to include it in the table of contents (but
+% without the secion number), you need to do this manualy as follows:
+%   \cleardoublepage   (or \clearpage)
+%   \addcontentsline{toc}{chapter}{Acknowledgments}
+%   \chapter*{Acknowledgments}
+%
+% 4. REFERENCES
+%
+% There is a lot to be said about references. However, I recommend
+% that you find some information on how to use bibtex. It can be a bit
+% tricky at first but worth it in the long run. However, a few things
+% can be useful to notice. 
+%
+% Authors should always be given with their full names, with the sir
+% name last, e.g., Jan Pedher Johansson. If there are more then one
+% author they should ALL be separated with an 'and', regardless if
+% there are two, three or ten. This is all handled and made correct
+% by bibtex. 
+%   Bo Andersson and Anders Eriksson and Erik Bosson  
+%
+% Company names, abbreviations etc. can look funny using bibtex. Use 
+% { } if there are something you like to force.
+%
+%    {Umeå Universitet}      (so it does not become U. Universitet)
+%    {HTML}                  (so it does not become html or Html)
+%
+% In the report document class references are not included in the
+% table of contents. If you like it to be, use the trick described in
+% the previous section about acknowledgments.
+%
+% 5. OTHER TRICKS
+%
+% Notice the tabular* and the tabularx (requires the tabularx package)
+% environments. With these enviroments you can have tables with a
+% fixed width: 
+%    \begin{tabular*}{0.8\linewidth}{rll}
+%    \end{tabular*}
+%
+% The tabularx has a great feature if you like a column that works
+% like a p{<width>}-column but with a variable width. In this example
+% the first column will stretch to use the full width of the table
+% depending on the with of the two last columns. 
+%    \begin{tabularx}{0.8\linewidth}{Xll}
+%    \end{tabularx}
+% Notice that tabularx can not be used in your own defined
+% environments. Then the \begintabularx and \endtabularx must be used.
+%
+%
+% In some large documents, it can look nice if the first pages, with
+% the abstract, possible acknowledgment, table of contents, list of
+% figures etc. are numbered differently then the rest of the document,
+% usually with roman numbers. Then the numbering restarts with the
+% first chapter using normal numbers. To achieve this, put 
+%    \pagenumbering{roman}
+% before the first page, then
+%    \cleardoublepage
+%    \setcounter{page}{1}
+%    \pagenumbering{arabic}
+%    \chapter{Introduction}
+% before the first chapter.
+% 
+\NeedsTeXFormat{LaTeX2e} \ProvidesPackage{umuthesis} [2004/04/02
+Layout for Master Thesis Reports]
+
+% INCLUDED PACKAGES
+% -----------------
+
+% If you got a latex distribution where one of them are not included,
+% either download it or remove it below. If it is removed you may get
+% problems with some of the other stuff in this package, but it should
+% be safe to comment out rows that does not work. 
+\RequirePackage[latin1]{inputenc}  % Needed for Swedish characters.
+\RequirePackage{remreset}          % For internal use in the package.
+\RequirePackage{calc}              % Arithmetic calculations.
+\RequirePackage{float}             % Adds functionality for floats.
+\RequirePackage{fancyheadings}     % Used for nice page headings.
+\RequirePackage{courier}           % Nicer fonts are used. (not necessary)
+\RequirePackage{pslatex}           % Also nicer fonts. (not necessary)
+\RequirePackage[hang]{caption2}    % Nicer figure and table captions.
+\ifx\pdftexversion\undefined
+  \RequirePackage[dvips]{graphicx} % Graphics package used for ps-files.
+\else
+  \RequirePackage[pdftex]{graphicx}% Graphics package used for pdf-files.
+\fi
+
+
+% INTERNAL COMMAND
+% ----------------
+
+
+% Ignore this.
+\newif\if@article \@articlefalse
+\@ifundefined{chapter}{\@articletrue}
+	
+\def\redefine#1#2{
+   \ifx#1\@undefined\else%
+   \renewcommand#1{#2}%
+   \fi%
+}
+\def\title#1{\gdef\@title{#1}\gdef\thetitle{#1}}
+
+
+% PAGE SIZE
+% ---------
+\hoffset         -1in % reset offset to top left corner
+\voffset         -1in %       - " - 
+\textheight     222mm 
+\textwidth      140mm 
+\topmargin       20mm % Distance before the head
+\oddsidemargin   45mm % Good for two sided printing
+\evensidemargin  25mm %       - " -
+\headheight      10mm
+\headsep         15mm % Distance betwen the head and the text.
+\marginparwidth  15mm % You should not use margins.
+\marginparsep     7pt  
+\marginparpush   12pt
+
+
+% PACKAGE OPTIONS
+% ---------------
+
+% Swedish option. Use the package as 
+%   \usepackage[swe]{umuthesis} 
+% if it is written in Swedish. 
+\DeclareOption{swe}{
+  % Text indentation and paragraph separation usualy differs between
+  % text writing in Swedish and text in English. In Swedish texts (and
+  % sometimes in English texts) you prefer to have a larger space
+  % between paragraphs, but no indentation. This is can be adjusted with
+  % the following commands. If you like to have this style even in
+  % English texts, copy these two line and put them in the document.
+  \setlength{\parindent}{0pt}  % Text indentation.
+  \addtolength{\parskip}{6pt}  % Space between paragraphs 
+
+  % French spacing makes non-english text more readable.
+  \frenchspacing
+
+  % The following commands redefines some commands to use Swedish
+  % instead of English labels.
+  \redefine{\today}{\number\day\space\ifcase\month\or
+    januari\or februari\or mars\or april\or maj\or juni\or
+    juli\or augusti\or september\or oktober\or november\or december\fi
+    \space\number\year}
+  \redefine{\chaptername}{Kapitel}
+  \redefine{\contentsname}{Innehållsförteckning}
+  \redefine{\listfigurename}{Figurförteckning}
+  \redefine{\listtablename}{Tabellförteckning}
+  \redefine{\figurename}{Figur}
+  \redefine{\tablename}{Tabell}
+  \redefine{\partname}{Del}
+  \redefine{\appendixname}{Appendix}
+  \redefine{\bibname}{Källförteckning}
+  \redefine{\refname}{Källförteckning}
+  \redefine{\indexname}{Index}
+}
+% Headings. Use the package as
+%   \usepackage[headings]{umuthesis}
+% if you like a page header.
+\DeclareOption{headings}{
+  % Change this value to 0 if you do not like a ruler.
+  \setlength{\headrulewidth}{0.3pt} 
+
+  % Sets the page head on even pages to have the title of the thesis,
+  % and odd pages to have the name of the chapter.
+  \if@article
+    \renewcommand{\sectionmark}[1]{\markboth{#1}{}}
+  \else
+    \renewcommand{\chaptermark}[1]{\markboth{#1}{}}\fi
+  \lhead[\fancyplain{}{{\raggedright\scriptsize\sffamily\thetitle}}]{}
+  \rhead[]{\fancyplain{}{{\raggedleft\scriptsize\sffamily\leftmark}}}
+  \chead{}
+  \lfoot{}
+  \rfoot{}
+  \cfoot{\mbox{\small\bfseries\thepage}}
+
+  % Sets the page style. Change this to 'plain' if you do not like to
+  % have headings. 
+  \pagestyle{fancy}
+}
+
+\ProcessOptions
+
+
+% DOCUMENT SETTINGS
+% -----------------
+
+% Only number chapters, sections and subsections. Change this to 1, if
+% you only like to number chapter and sections.
+\setcounter{secnumdepth}{2}
+% This makes chapters, sections and subsections, but not
+% subsubsections appear in the table of contents.
+\setcounter{tocdepth}{2}
+
+% This does not make the text stretch to absolutely fill each page. 
+\raggedbottom
+
+% This can make the space between each line in the text a bit wider.
+% \renewcommand{\baselinestretch}{1.1}
+
+
+% CHANGE HEADERS
+% --------------
+
+% If you use the report document class, this makes sure a new chapter
+% will be on an odd page. If this is not necessary, comment out the
+% following redefinition.
+\if@article\else
+  \renewcommand\chapter{\cleardoublepage
+    \thispagestyle{plain}%
+    \global\@topnum\z@
+    \@afterindentfalse
+    \secdef\@chapter\@schapter}
+\fi
+
+% Redefines the \section command
+\renewcommand{\section}{%
+ \@startsection%
+  {section}%
+  {1}%                          % Level
+  {0pt}%                        % Indentation
+  {-2\baselineskip}%            % Distance before the header (ignore
+                                % the `-` sign. It indicatas that the
+                                % indentation of the paragraph
+                                % following the section is surpressed).
+  {0.5\baselineskip}%           % Distance after the header.
+  {\normalfont\large\bfseries}} % The font used for the header. Add 
+                                % \sffamily if you like a sans-serif font.
+
+% Redefines the \subsection command
+\renewcommand{\subsection}{%
+ \@startsection%
+  {subsection}%
+  {2}%
+  {0pt}%
+  {\baselineskip}%
+  {0.25\baselineskip}%
+  {\normalfont\normalsize\bfseries}}
+
+
+% TABLES AND FIGURES
+% ------------------
+
+% Let tables have a continuous numbering and not reset by chapters
+
+\if@article\else
+  \@removefromreset{table}{chapter}
+  \@removefromreset{figure}{chapter}
+\fi
+\renewcommand\thetable{\mbox{\@arabic\c@table}}
+\renewcommand\thefigure{\mbox{\@arabic\c@figure}}
+
+% This makes (in my opinion) the table flots look nicer. 
+\renewcommand\floatc@ruled[2]{{\@fs@cfont #1} #2\par}
+\renewcommand\fs@ruled{\def\@fs@cfont{\bfseries}\let\@fs@capt\floatc@ruled
+  \def\@fs@pre{\hrule height1.5pt depth0pt \kern4pt}%
+  \def\@fs@post{\kern2pt\hrule height0.8pt\relax}%
+  \def\@fs@mid{\kern2pt\hrule height0.8pt\kern2pt}%
+  \let\@fs@iftopcapt\iftrue}
+\floatstyle{ruled} 
+\restylefloat{table}
+
+% Captions
+\renewcommand{\captionlabelfont}{\bfseries} % Font used for the name
+\renewcommand{\captionfont}{\small}         % Font size 
+\setlength{\captionmargin}{0.05\linewidth}  
+
+
+% EXAMPLE TEMPLATE
+
+% \documentclass[a4paper,11pt,twoside]{report}
+% \usepackage[headings]{umuthesis}
+% 
+% \graphicspath{{pictures/}}
+%
+% \title{Title of this thesis}
+% \author{Author name}
+% 
+% \begin{document}
+% \pagenumbering{roman}
+% 
+% \maketitle
+% 
+% \begin{abstract}
+%       My abstract
+% \end{abstract}
+% 
+% \cleardoublepage
+% 
+% \tableofcontents
+% 
+% \cleardoublepage
+% 
+% \listoffigures
+% 
+% \cleardoublepage
+% \pagenumbering{arabic}
+% \setcounter{page}{1}
+% 
+% \chapter{Introduction}
+% 
+% \chapter{Next chapter}
+% 
+% \chapter{Last Chapter}
+% 
+% \cleardoublepage
+% \addcontentsline{toc}{chapter}{Acknowledgments}
+% \chapter*{Acknowledgments}
+% 
+% We wish to thank...
+% 
+% \cleardoublepage
+% \addcontentsline{toc}{chapter}{Bibliography}
+% \bibliography{biblio}
+% \bibliographystyle{plain}
+% 
+% \end{document}
