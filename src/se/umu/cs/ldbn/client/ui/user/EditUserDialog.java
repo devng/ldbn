@@ -59,6 +59,7 @@ public final class EditUserDialog extends RegisterUserDialog {
 	public void setOKStatus() {
 		super.setOKStatus();
 		if(UserData.get().isLoggedIn()) {
+			hide();
 			Window.alert("You have to login again.");
 			Login.get().sendKillSession(UserData.get().getSession());
 		}
