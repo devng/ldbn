@@ -19,3 +19,62 @@ Keywords: Database Normalization, Relational Data Model, Functional Dependency,
 Third Normal Form, Boyce-Codd Normal Form, Embedded Functional Dependencies
 
 
+1. Introduction
+-------------------------------------------------------------------------------
+For readers unfamiliar with the terms of relational database normalization and 
+functional dependencies can find a brief introduction on the subject in section 
+two.
+
+Relational database normalization is a well developed field [8]. Algorithms for 
+synthesize a normalized database using functional dependencies are widely know 
+and are well covered in textbooks by Elmasri [11], Kemper [12], Abiteboul [13] 
+and Silberschatz [14] 
+Such algorithm rely on the definition of normal forms. In order to find a right 
+solution, they often first compute the canonical cover by removing extraneous 
+attributes of functional dependencies (FDs) and then to convert each FD in the 
+canonical cover to a relation/table. For convenience we will refer to such algorithms as
+decomposition algorithms. However, such algorithms have the 
+disadvantage of possible decomposition of a schema, which is already satisfying certain
+normal form, into a new set of relations [3]. Thus we can observe another 
+issue related with normal forms, which is the fact, that there can be many possible,
+distinct decomposition of the same schema, which all satisfy the same normal form [?]. 
+This is a key aspect of the relational database normalization, because it directly affects
+our tool in a such way, that we cannot simply take a solution of a user and compare it 
+with the one, provided by the decomposition algorithms. We rather need
+algorithms for testing, if a given relational schema is violating certain normal 
+form, such as
+Second Normal From (2NF), Third Normal Form (3NF) and Boyce-Codd Normal Form (BCNF). 
+For convenience we will refer to this algorithms as 2NFTEST, 3NFTEST and BCNFTEST. 
+Such algorithms are necessary, but are
+not as widely covered as the decomposition algorithms. From four leading 
+textbooks on the subject of databases, which were mention above, only the one of 
+Silberschatz [14]
+is describing the problem and is providing algorithms for solving it. Thus students 
+are often required to understand relational database normalization only on the 
+simple definition of the normal forms [8] and on the definitions of such decomposition
+algorithms, which according to Kung [8], may not be the best way to help many 
+IS/IT students effectively understand the database normalization process. Therefore
+our tool has the goal to provide the students with an easy way to test themselves
+in practice by trying to decompose a relation schema. 
+Here it is worth mentioning, that the normalization algorithms often require 
+extensive relational algebraic backgrounds that most IS/IT students lack [8]. This
+is also an issue which our tool is trying to overcome by providing more intuitive 
+way of decomposing a schema and by providing an easy way to lecturers to
+teach by example and test the knowledge of their students. 
+
+Altought there are a couple of database normalization tools available [8] [10], 
+we will outline in the next section why we think our tool is better and more efficient
+in terms of teaching potential. We will also disguise possible reasons why the 
+other tools are not commonly used by students. 
+
+
+
+
+// not here but rather in section algorithms.
+Here it is worth mentioning.
+that more efficient algorithms for 3NFTEST and BCNFTEST were introduced by Mannila [3] 
+and by Gottlob [4]. Altought these tests are knowing to be NP-complete[2], Gottlob [4] has 
+shown, that in a large number of cases the tests can be done in polynomial time.  
+
+ 
+
