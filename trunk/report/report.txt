@@ -22,8 +22,8 @@ Third Normal Form, Boyce-Codd Normal Form, Embedded Functional Dependencies
 1. Introduction
 -------------------------------------------------------------------------------
 For readers unfamiliar with the terms of relational database normalization and 
-functional dependencies can find a brief introduction on the subject in section 
-two.
+functional dependencies can find a brief introduction on the subject in the beginning of
+chapter two. 
 
 Relational database normalization is a well developed field [8]. Algorithms for 
 synthesize a normalized database using functional dependencies are widely know 
@@ -62,10 +62,65 @@ is also an issue which our tool is trying to overcome by providing more intuitiv
 way of decomposing a schema and by providing an easy way to lecturers to
 teach by example and test the knowledge of their students. 
 
-Altought there are a couple of database normalization tools available [8] [10], 
+Altought there are a couple of other web-based database normalization tools 
+available [8] [15], 
 we will outline in the next section why we think our tool is better and more efficient
 in terms of teaching potential. We will also disguise possible reasons why the 
 other tools are not commonly used by students. 
+
+
+1.1. The Web-based Normalization Tool
+--------------------------------------------------------------------------------
+In this section we are going to informally outline the key features and consepsts of our 
+Web-based Normalization Tool, which is called LDBN (Lean DataBase Normalization) and
+it can be fond at ldbnonline.com . The outline here is important for the reader,
+in order to understand the need of the algorithms described in section two, which
+on the other side are important for the discussion of the implementation of the tool
+in section tree, where a more detailed description is provided. 
+
+image//: overview
+
+In the illustration {which number}, one can see the "Solve assignment" tab, which 
+is the most important section of LDBN. LDBN is assignment driven. This means 
+students have to choose an assignemtn form a list with assignments, submitted by
+other users. 
+
+image//: assignment list
+
+
+Furthermore an assignment consists of a relational schema in First Normal Form (1NF), 
+i.e., all the attributes in a single relation and a set of FDs on the attributes. The 
+students then have to use the user interface to define the other normal forms, but also
+key attributes and a minimal cover of the given FDs. This is one major difference between
+LDBN and the other tools [8] [15], which only show only one solution to the user,
+without users having the ability to test themselves, or lectures to test a student
+solution for instance. Another major advantage of LDBN over the other tools is the
+user-friendly interface. As Frye [10] and Dantin [17] stated, this is often 
+neglected feature,when it comes to educational software and therefore a 
+lot of the educational software suffers from unpopularity among students because of
+the lack of user-friendly interface. An a example here is "The Database 
+Normalization Tool" [15] and the "WEB-BASED TOOL TO ENHANCE TEACHING/LEARNING DATABASE 
+NORMALIZATION" by Kung [8], where inputing a relational schema in the program 
+takes quite sometime due to the fact, that
+user have to input every attribute manually and then also input every FD manually. 
+Furthermore relational schemas cannot be saved for future use like in LDBN, and 
+user have to input them again.  To overcome this slow input of user data, LDBN
+supports Drag and Drop, a feature widely used in desktop
+applications, but relatively new to the AJAX application such as LDBN. Every attribute
+and every FD in LDBN can be dragged and dropped, in order 
+to define or modify FDs, key attributes, etc... This ensures a really fast and easy
+usage of the tool without the need to use the keyboard. It should be mentioned,
+that inputing attributes the traditional way by tipping them is also supported.
+
+When the user is done with the 
+
+
+           
+ 
+
+
+
+
 
 
 
