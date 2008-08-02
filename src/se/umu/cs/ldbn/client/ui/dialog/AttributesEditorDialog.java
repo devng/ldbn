@@ -26,6 +26,7 @@ public class AttributesEditorDialog extends KeyEditorDialog {
 	
 	public void setCurrentRelationAttributesWidget(RelationAttributesWidget raw) {
 		this.raw = raw;
+		kta.setText("");
 		kta.setAttributeSet(raw.getAttributes());
 	}
 }

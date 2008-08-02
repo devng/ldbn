@@ -69,7 +69,7 @@ public final class Main implements EntryPoint {
 		
 		mainPanel = new AbsolutePanel();
 		mainPanel.setWidth(WIDTH_PX+"px");
-		dragControll = new PickupDragController(mainPanel, false);
+		dragControll = new PickupDragController(RootPanel.get(), false);
 		dragControll.setBehaviorDragProxy(true);
 		
 		TabPanel tabs = new TabPanel();

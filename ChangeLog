@@ -1,3 +1,10 @@
+2008-08-02_1540
+* Bug fix with KeyEditorDialog.
+* FDEditor is now working more intuitively now.
+* Bug fix with the minimal cover algorithm. It is now making more than one pass on each call.
+* Fixed bug with IE and uploading a XML file. 
+* Other minor changes. 
+
 2008-07-31_0100
 * Report files are added in a separate folder. 
 * Minor bug fixes

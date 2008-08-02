@@ -63,6 +63,4 @@ abstract class BaseAttributeEditorDialog extends CloseDialog {
 	protected void onClearButClicked() {
 		getAttributeTextArea().setText("");
 	}
-	
-	protected abstract void onInfoButClicked();
 }

@@ -17,7 +17,7 @@ if ($_FILES['clientfile']['error'] > 0) {
 
 if (is_uploaded_file($_FILES['clientfile']['tmp_name'])) {
 	$fileData = file_get_contents($_FILES['clientfile']['tmp_name']);
-	header('Content-type: text/plain');
+	//header('Content-type: text/plain');
 	echo "@".$fileData; //otherwise not the whole responce is beening shown
 } else {
 	die('<ldbn type="msg">' .

@@ -89,6 +89,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	private Image import3NF;
 	//current assignment
 	private String curAssinmentId;
+	private List<FD> minCoverF;
 	
 	private SolveAssignmentWidget() {
 		super();
@@ -273,19 +274,19 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	private void checkSolution() {
 		//minimal cover check
 		List<FD> minCovFDs = minimalCoverWidget.getFDHolderPanel().getFDs();
-		List<FD> deepCopy = new ArrayList<FD>(minCovFDs.size());
+		minCoverF = new ArrayList<FD>(minCovFDs.size());
 		for (FD fd : minCovFDs) {
-			deepCopy.add(fd.clone());
+			minCoverF.add(fd.clone());
 		}
-		Algorithms.minimalCover(deepCopy);
+		Algorithms.minimalCover(minCoverF);
 		CheckSolutionDialog dialog = CheckSolutionDialog.get();
 		dialog.clearMsgs();
 		dialog.msgTitle("Minimal Cover Check:");
 		if (!Algorithms.equivalence(fds, minCovFDs)) {
 			dialog.msgErr("wrong - fds are not equivalent to the given fds");
-		} else if(deepCopy.size() != minCovFDs.size()) {
+		} else if(minCoverF.size() != minCovFDs.size()) {
 			dialog.msgErr("wrong - too much fds");
-		} else if (!deepCopy.containsAll(minCovFDs)) { 
+		} else if (!minCoverF.containsAll(minCovFDs)) { 
 			// compute the minimal cover over the user input and compare it with
 			// the user actual input, if it does not contain all FDs, then a 
 			// FD was not minimal and it was computed and added to the list. 
@@ -415,7 +416,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	
 	private boolean checkForLossless(List<Relation> relations) {
 		CheckSolutionDialog dialog = CheckSolutionDialog.get();
-		boolean isLossless = Algorithms.isLossless(fds, domainAsAttSet, relations);
+		boolean isLossless = Algorithms.isLossless(minCoverF, domainAsAttSet, relations);
 		if(isLossless) {
 			dialog.msgOK("Decomposition is lossless");
 		} else {
@@ -455,7 +456,6 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		for (FD fd : fds) {
 			deepCopy.add(fd.clone());
 		}
-		Algorithms.minimalCover(deepCopy); // TODO THIS IS A BUG
 		Algorithms.minimalCover(deepCopy);
 		for (FD fd : deepCopy) {
 			FDWidget fdw = new FDWidget(true, fd);

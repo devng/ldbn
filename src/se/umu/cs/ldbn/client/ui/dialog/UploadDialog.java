@@ -58,18 +58,25 @@ public class UploadDialog extends OkCancelDialog {
 	      }
 
 	      public void onSubmitComplete(FormSubmitCompleteEvent event) {
-	  		hide();
+	  		
 	        // When the form submission is successfully completed, this event is
 	        // fired. Assuming the service returned a response of type text/html,
 	        // we can get the result text here (see the FormPanel documentation for
 	        // further explanation).
-	        String response = event.getResults().replaceFirst("@", "");
+	    	String response = event.getResults();
+	        response = event.getResults().replaceFirst("@", "");
 	        response = response.replaceAll("<PRE>", "");
 	        response = response.replaceAll("</PRE>", "");
 	        response = response.replaceAll("&gt;", ">");
 	        response = response.replaceAll("&lt;", "<");
 	        URL.decode(response);
-	        
+	        //IE bug - makes all tags to upper case??!!
+	        response = response.replaceAll("LDBN", "ldbn");
+	        response = response.replaceAll("ATT", "att");
+	        response = response.replaceAll("FD", "fd");
+	        response = response.replaceAll("LHS", "lhs");
+	        response = response.replaceAll("RHS", "rhs");
+	        response = response.replaceAll("FDATT", "fdatt");
 	        Common.checkResponceTextOnly(response);
 	        Assignment a = LdbnParser.get().getAssignment();
 	        if(a == null) {
@@ -77,6 +84,7 @@ public class UploadDialog extends OkCancelDialog {
 	        	return;
 	        } 
 	        CreateAssignmentWidget.get().onAssignmentLoaded(a);
+	        hide();
 	      }
 	    });
 		return form;

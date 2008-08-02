@@ -74,7 +74,6 @@ public class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 		super(title, msg);
 	}
 	
-	@Override
 	public void hide() {
 		super.hide();
 		Main.get().getDragController().unregisterDropController(getAttributeTextArea());
@@ -82,10 +81,10 @@ public class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 	
 	public void setCurrentRelationAttributesWidget(RelationAttributesWidget raw) {
 		this.raw = raw;
+		kta.setText("");
 		kta.setAttributeSet(raw.getKey());
 	}
 	
-	@Override
 	public void show() {
 		super.show();
 		Main.get().getDragController().registerDropController(getAttributeTextArea());
@@ -119,9 +118,4 @@ public class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 	protected void handleAttributeSet(AttributeSet as) {
 		raw.setKey(as);
 	}
-	
-	protected void onInfoButClicked() {
-		HelpDialog.get().showInfo("example.html");
-	}
-
 }

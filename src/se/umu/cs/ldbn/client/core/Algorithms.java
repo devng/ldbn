@@ -59,32 +59,64 @@ public final class Algorithms {
 	 * @return the minimal cover as list of FD Objects.
 	 */
 	public static void minimalCover(List<FD> f) {
-		leftReduction(f); // TODO what happens when list is empty or null
-		rightReduction(f);
-
-		// clean FD such as A -> {}
-		for (Iterator<FD> iter = f.iterator(); iter.hasNext();) {
-			FD fd = iter.next();
-			if (fd.getRHS().attMask() == 0) {
-				iter.remove();
-			}
+		if(f == null ) {
+			throw new IllegalArgumentException("F cannot be null");
 		}
+		List<FD> oldF;
+		int max_iterations = 10;
+		int i = 0;
+		do {
+			oldF = cloneF(f);
+			i++;
+			//reduction
+			leftReduction(f); 
+			rightReduction(f);
 
-		// group FD in such way that A -> B , A -> C equals to A -> BC
-		HashMap<AttributeSet, AttributeSet> table = new HashMap<AttributeSet, AttributeSet>();
+			// clean FD such as A -> {}
+			for (Iterator<FD> iter = f.iterator(); iter.hasNext();) {
+				FD fd = iter.next();
+				if (fd.getRHS().attMask() == 0) {
+					iter.remove();
+				}
+			}
+
+			// group FD in such way that A -> B , A -> C equals to A -> BC
+			HashMap<AttributeSet, AttributeSet> table = new HashMap<AttributeSet, AttributeSet>();
+			for (FD fd : f) {
+				if (table.containsKey(fd.getLHS())) {
+					AttributeSet rhs = table.get(fd.getLHS());
+					rhs.union(fd.getRHS());
+				} else {
+					table.put(fd.getLHS(), fd.getRHS());
+				}
+			}
+			f.clear();
+			Set<AttributeSet> lhsAtts = table.keySet();
+			for (AttributeSet lhs : lhsAtts) {
+				f.add(new FD(lhs, table.get(lhs)));
+			}
+			
+			
+		} while (i < max_iterations && isFChanged(f, oldF));
+		
+		oldF = null;
+		
+	}
+	
+	private static List<FD> cloneF(List<FD> f) {
+		ArrayList<FD> result = new ArrayList<FD>(f.size());
 		for (FD fd : f) {
-			if (table.containsKey(fd.getLHS())) {
-				AttributeSet rhs = table.get(fd.getLHS());
-				rhs.union(fd.getRHS());
-			} else {
-				table.put(fd.getLHS(), fd.getRHS());
-			}
+			result.add(fd.clone());
 		}
-		f.clear();
-		Set<AttributeSet> lhsAtts = table.keySet();
-		for (AttributeSet lhs : lhsAtts) {
-			f.add(new FD(lhs, table.get(lhs)));
+		return result;
+	}
+	
+	private static boolean isFChanged(List<FD> newF, List<FD> oldF) {
+		if(newF.size() != oldF.size()) {
+			return true;
 		}
+		boolean result = !newF.containsAll(oldF);
+		return result;
 	}
 
 	private static void leftReduction(List<FD> fds) {
