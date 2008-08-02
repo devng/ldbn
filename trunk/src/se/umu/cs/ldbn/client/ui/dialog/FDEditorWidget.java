@@ -1,10 +1,14 @@
-package se.umu.cs.ldbn.client.ui;
+package se.umu.cs.ldbn.client.ui.dialog;
 
 import java.util.List;
 
 import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.FD;
-import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
+import se.umu.cs.ldbn.client.ui.AttributeTextArea;
+import se.umu.cs.ldbn.client.ui.FDHolderPanel;
+import se.umu.cs.ldbn.client.ui.FDWidget;
+import se.umu.cs.ldbn.client.ui.InfoButton;
+import se.umu.cs.ldbn.client.ui.SingleAttributeWidget;
 import se.umu.cs.ldbn.client.ui.sa.RelationAttributesWidget;
 import se.umu.cs.ldbn.client.utils.Common;
 
@@ -53,17 +57,17 @@ public final class FDEditorWidget extends Composite
 			for (String str : atts) {
 				ata.appendAttributes(str);
 			}
-			if (fdw.isEditable()) {
-				if(currnetFDHP != null) { 
-					//TODO Do it better
-					//so that the widget is not removed, but rather edited
-					currnetFDHP.removeFDWidget(fdw);
-				}
+			if (fdw.isEditable() && currnetFDHP != null && 
+					currnetFDHP.containsFDWidget(fdw) && currentFDW == null) {
+					currentFDW = fdw;
+					fdw.getParent().setVisible(false);
+				
 			}
 		}
 	}
 	private FDEditorTextArea leftTA;
 	private FDEditorTextArea rightTA;
+	private FDWidget currentFDW;
 	private Image arrowImg;
 	private HorizontalPanel mainPanel;
 	private Button clearButton;
@@ -132,16 +136,26 @@ public final class FDEditorWidget extends Composite
 		if (sender.equals(clearButton)) {
 			clearTextAreas();
 		} else if (sender.equals(addButton)) {
-			FDWidget fd = createFD();
-			if(fd == null) {
+			FDWidget fdw = createFD();
+			if(fdw == null) {
 				FDEditorDialog.get().setErrorMsg("LHS or RHS of the FD has no valid attributes.");
 				return;
 			}
 			if (leftTA.hasOmittedAttributes() || rightTA.hasOmittedAttributes()) {
 				FDEditorDialog.get().setErrorMsg("Some attributes had invalid names.");
 			}
-			addFDWidget(fd);
 			
+			if(currentFDW != null && fdw.getFD().equals(currentFDW.getFD())) {
+				handleCurrentFDWidget();
+				return;
+			}
+			
+			if(currentFDW != null && currnetFDHP != null) {
+				currnetFDHP.removeFDWidget(currentFDW);
+			}
+			currentFDW = null;
+			
+			addFDWidget(fdw);
 		}
 	}
 	
@@ -155,6 +169,18 @@ public final class FDEditorWidget extends Composite
 	
 	public void setFDWidtet(FDWidget fdw) {
 		leftTA.setFDWidget(fdw);
+	}
+	
+	/**
+	 * This is used by FDEditorDialog, in order to restore the initial 
+	 * FDWidget if the "Close" Button is hit without setting or modifying the 
+	 * initial widget. 
+	 */
+	void handleCurrentFDWidget() {
+		if(currentFDW != null) {
+			currentFDW.getParent().setVisible(true);
+		}
+		currentFDW = null;
 	}
 	
 	/**

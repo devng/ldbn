@@ -119,7 +119,9 @@ public final class FDHolderPanel extends VerticalPanel
 		return fds;
 	}
 	
-	
+	public boolean containsFDWidget(FDWidget fdw) {
+		return fds.contains(fdw);
+	}
 	
 	public boolean removeFDWidget(FDWidget fdw) {
 		if(fds.remove(fdw)) {

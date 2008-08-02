@@ -2,8 +2,8 @@ package se.umu.cs.ldbn.client.ui.dialog;
 
 import se.umu.cs.ldbn.client.Main;
 import se.umu.cs.ldbn.client.core.DomainTable;
-import se.umu.cs.ldbn.client.ui.FDEditorWidget;
 import se.umu.cs.ldbn.client.ui.FDHolderPanel;
+import se.umu.cs.ldbn.client.ui.FDWidget;
 
 import com.google.gwt.user.client.ui.Widget;
 
@@ -28,13 +28,13 @@ public final class FDEditorDialog extends CloseDialog {
 		return fdew;
 	}
 	
-	@Override
 	public void hide() {
 		super.hide();
 		fdew.clearText();
-
+		
 		Main.get().getDragController().unregisterDropController(fdew.getRightTextArea());
 		Main.get().getDragController().unregisterDropController(fdew.getLeftTextArea());
+		fdew.handleCurrentFDWidget();
 		fdew.setCurrentFDHolderPanel(null); //TODO Is this needed?
 		fdew.setCurrentDomain(null);
 	}
@@ -47,7 +47,6 @@ public final class FDEditorDialog extends CloseDialog {
 		fdew.setCurrentFDHolderPanel(fdHP);
 	}
 	
-	@Override
 	public void show() {
 		super.show();
 		Main.get().getDragController().registerDropController(fdew.getRightTextArea());
