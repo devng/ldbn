@@ -90,35 +90,59 @@ in section tree, where a more detailed description of LDBN is provided.
 
 image//: overview
 
-In the illustration {which number}, one can see the "Solve assignment" tab, which 
+In the illustration {which number}, one can see the "Solve assignments" tab, which 
 is the most important part of LDBN. The first thing the reader may notice is the 
 fact, that LDBN is running within a browser. The client side of LDBN is written 
 in JavaScript following the AJAX techniques (more about this in chapter tree). 
 Also LDBN is assignment driven. This means students have to choose an assignemtn 
-form a list with assignments, submitted by other users. 
+form a list with assignments, submitted by other users. Such a list is shown in
+figure ...
 
 image//: assignment list
 
 
 Furthermore an assignment consists of a relational schema in First Normal Form (1NF), 
-i.e., all the attributes in a single relation and a set of FDs on the attributes. The 
-students then have to use the user interface (UI) to define the other normal forms, 
-but also key attributes and a minimal cover of the given FDs. This is one major 
-difference between LDBN and the other tools [8] [15], which only show only one 
-solution to the user, without users having the ability to test themselves, or 
-for instance, lectures to test a student handwritten solution using the tool. 
+i.e., all the attributes in a single relation and a set of FDs on the attributes. 
+After an assignment has been loaded, we require the students to go through the 
+following steps in LDBN:
+1. Determine a minimal cover of the given FDs, also known as canonical cover.
+2. Decompose the relational schema from 1NF into 2NF, 3NF, BCNF. 
+3. Determine a candidate key for each new schema in every decomposition. 
+
+Checking the solution is a nonprocedural task, thus the student can start solving
+an assignment in a different order and check his/her partial or complete 
+solution at any given time by pressing the Check Solution button. After that 
+the program will perform series of checks such as testing each decomposition for: 
+1. Losses join properly.
+2. Dependency preservation.
+3. Correctness of the associated with each relation FDs
+4. Correctness of the key of each relation
+5. Correctness of the decomposition, i.e., if the decomposition is really in 2NF, 3NF and BCNF
+6. Correctness of the minimal cover. 
+
+The user is shown a dialog with the result, and in case of an error, small hints
+where the error might be. Such dialog is shown in figure ???. In this case
+we can see, that the user has made has given a correct decomposition for 2NF and 3NF,
+but his/her decomposition in BCNF has some errors, namely the key of the relation R4 is
+incorrect. The dialog is also showing a , that the decomposition does not 
+satisfy the lossless join property, but in the case of BCNF decomposition, this
+is not allays possible.   //describe the error.
+
+The concept of assignments is one major
+difference between LDBN and the other normalization tools [8] [15], which only provide 
+one possible solution (decomposition) to the user, without users having the ability to test 
+themselves or the correctness of an arbitrary decompositions. LDBN can also be used
+by lectures to test a student handwritten assignments. 
 Another major advantage of LDBN over the other tools is the user-friendly UI. 
-As Frye [10] and Dantin [17] stated, this is often 
-neglected feature, when it comes to educational software and therefore a 
-lot of the educational software suffers from unpopularity among students because of
-the lack of user-friendly UI. An a example here could be "The Database 
-Normalization Tool" [15] and the "Web-based Tool to Enhance Teaching/Learning Database 
-Normalization" by Kung [8], where inputing a relational schema in the program 
+As Frye [10] and Dantin [17] stated, this is often a
+neglected feature, when it comes to educational software. The lack of  user-friendly UI 
+can often lead to unpopularity of the software among students. An example here could be "The Database 
+Normalization Tool" [15]. Inputing a relational schema in the program 
 takes quite sometime due to the fact, that
 user have to input every attribute manually using the keyboard and then also 
-have to input every FD the same way, which may take several minutes even for small 
+have to input every FD the same way. This may take several minutes even for small 
 assignments. Furthermore relational schemas cannot be saved for future use like 
-in LDBN, and user have to input them again. To overcome this slow input of user data, 
+in LDBN, and user have to input them again next time. To overcome this slow input of user data, 
 LDBN supports Drag and Drop, a feature widely used in desktop
 applications, but relatively new to the AJAX application such as LDBN. Every attribute
 and every FD in LDBN can be dragged and dropped, in order 
@@ -126,20 +150,11 @@ to define or modify FDs, key attributes, etc... This ensures a really fast and e
 usage of the tool without the need to use the keyboard. It should be mentioned,
 that inputing attributes the traditional way by tipping them is also supported.
 
-When the user is done with the done with the decomposition, he/she can check his 
-solution by clicking on the "Ceck Solution" button. After that the program will
-perform series of checks, which are disguised in detail in chapter two and tree.
-Then the user is shown a dialog with the result, and in case of an error, small hints
-where the error might be. Such dialog is shown in illustration ???. In this case
-we can see, that the user has made some errors //describe the error.
-
-
-
-Additional features of the tool include creating an assignment, this can be done 
+Additional features of the tool include creating an assignment, which can be done 
 only by registered users. This condition is necessary, in order users to be able 
 to distinct assignemtn provided from trusted users such as their database course
 lecturers. Registered users have also the ability to leave comments for every assignment.
-This will entire on the one hand, that user can easily communicate and share ideas
+User comments ensure on the one hand, that user can easily communicate and share ideas
 with each other, and one the other hand could also decrease the amount of workload
 for the lecturers in terms of giving an explanation of difficult decomposition.
 Such community features are not present in the other [8] [15] web-based 
