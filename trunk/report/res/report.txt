@@ -127,9 +127,9 @@ usage of the tool without the need to use the keyboard. It should be mentioned,
 that inputing attributes the traditional way by tipping them is also supported.
 
 When the user is done with the done with the decomposition, he/she can check his 
-solution by clicking on the "Ceck Solution" button. After that the programm will
-perform series of checks, which are diguisses in detail in chapter two and tree, and 
-then show the user a dialog with the result, and in case of an error, small hints
+solution by clicking on the "Ceck Solution" button. After that the program will
+perform series of checks, which are disguised in detail in chapter two and tree.
+Then the user is shown a dialog with the result, and in case of an error, small hints
 where the error might be. Such dialog is shown in illustration ???. In this case
 we can see, that the user has made some errors //describe the error.
 
