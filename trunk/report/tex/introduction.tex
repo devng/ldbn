@@ -1,73 +1,71 @@
 \chapter{Introduction}
 \label{chap:introduction}
-Readers unfamiliar with the terms of relational database normalization and 
+Readers unfamiliar with the terms of relational-database normalization and 
 functional dependencies can find a brief introduction on the subject in
 Chapter~\ref{chap:preliminaries}. 
 
 Due to its great importance for database applications, database schema design has
 attracted a lot of researchers~\cite{p1}. Relational database normalization is a 
-theoretical approach for organizing data in a database and it is very well developed~\cite{p8}.
-Unfortunately, however, theory does not have much impact on practice yet~\cite{p1}. 
-Theoretical investigations have accumulated many formal
-notations knows as normal forms, which ensure low storage cost and low update cost
-for databases.
-Also algorithms for synthesis of a normalized database into a certain normal form using 
-functional dependencies (FDs) are widely know 
-and are well covered in student literature such as textbooks by Elmasri and Navathe~\cite{bdb1}, 
-Kemper and Eickler~\cite{bdb2}, Abiteboul, Hull and Vianu~\cite{bdb3}
-and Silberschatz, Korth and Sudarshan~\cite{bdb4}.
-Such algorithms rely on the definition of normal forms. In order to find a right 
-solution, they often first compute the canonical cover by removing extraneous 
-attributes of functional dependencies (FDs) and then to convert each FD in the 
-canonical cover to a relation/table. For convenience we will refer to such algorithms as
-decomposition algorithms. However, such algorithms have the 
-disadvantage of possible decomposition of a schema, which is already satisfying 
-certain normal form, into a new set of relations/tables~\cite{p4}. Thus we can observe 
-another issue related with normal forms, which is the fact, that there can be many 
+theoretical approach for organizing data in a database and it is very well developed, 
+unfortunately, however, theory does not have much impact on practice yet~\cite{p1}.
+One of the reasons for this is the lack of good tools which could aid the students 
+during the learning process of relational-database normalization~\cite{p8}. 
+Thus our learning environment was developed in order to give students the ability to 
+easily and efficiently test
+their knowledge of the different normal forms in practice. Moreover, normal forms are formal
+notations, which ensure low storage cost and low update cost for databases, they are discussed
+more formally in Chapter~\ref{chap:preliminaries}. The environment assists the students by 
+providing them the following functionalities:
+
+\begin{enumerate}
+	\item Allow the student to specify a candidate decomposition of a given relation.
+	\item Assess the correctness of the student's proposed decomposition relative to many factors; including:
+		\begin{itemize}
+			\item Lossless join property.
+			\item Dependency preservation.
+			\item Specification of keys.
+			\item Correctness of the 2NF, 3NF and BCNF decompositions.
+		\end{itemize}
+	\item Provide students with sample decompositions when needed. 
+	\item Allow users to communicate with each other via comments/posts.
+\end{enumerate}
+
+Our learning environment uses many different normalization 
+algorithms for achieving the functionalities described above. 
+We can divide them into two different groups:
+
+\begin{description}
+	\item[Decomposition algorithms] are used for decomposing a normalized database 
+	schema into a certain normal form using functional dependencies (FDs).
+	\item[Test algorithms] for testing , whether a given relational schema is 
+	violating certain normal form, the lossless join property or other criteria.
+\end{description}
+
+It is very important to note that the \textit{Decomposition algorithms} are note enough for
+our purposes, since they have the 
+disadvantage that they could decompose a schema, which is already satisfying 
+certain normal form, into a new set of relations/tables~\cite{p4}. Thus there can be many 
 possible, distinct decomposition of the same schema, which all satisfy the same 
-normal form~\cite{bdb4}. 
-This is a key aspect of the relational-database normalization, because it directly 
-affects our learning environment in such way, that we cannot simply take a decomposition given 
-by the user/student and compare it with the one, provided by the decomposition algorithm. 
-We rather need algorithms for testing, whether a given relational schema is violating 
-certain normal form. We are going to focus on the Second Normal From (2NF), 
-the Third Normal Form (3NF) and the Boyce-Codd Normal Form (BCNF). For convenience we 
-will refer to these algorithms as 2NFTEST, 3NFTEST and BCNFTEST. Such algorithms 
-are necessary, but are not as widely covered in student literature as the 
-decomposition algorithms. From four leading textbooks on the subject of 
-databases, which were mention above, only the one of Silberschatz, Korth and Sudarshan~\cite{bdb4}
-is describing the problem and is providing algorithms for solving it. Thus students 
-are often required to understand relational database normalization only on the 
-simple definition of the normal forms and on the definitions of such decomposition
-algorithms. This according to Kung~\cite{p8}, may not be the best way to help many 
-IS/IT students effectively understand the database normalization process. Therefore
-our learning environment has the goal to provide students with an easy way 
-to test themselves
-in practice by giving them a way to decompose a relation schema and to 
-test the correctness of their results. 
+normal form~\cite{bdb4}. This is a key aspect of the relational-database normalization,
+which does not allow us to simply compare the
+students' solutions against solutions provided by the decomposition algorithms,
+therefore we need the \textit{Test algorithms}.
 
 Here it is worth mentioning that the normalization algorithms often require 
 extensive relational algebraic backgrounds that most IS/IT students lack~\cite{p8}. This
 is also an issue which our tool is trying to overcome by providing more intuitive 
-way of decomposing a schema and by providing an easy way for lecturers to
+way of decomposing a schema and by giving an easy way for lecturers to
 teach by example and test the knowledge of their students. 
-
-Altought there are a couple of other web-based database normalization tools 
-available such as the \textit{Web-based Tool to Enhance Teaching/Learning Database 
-Normalization} by Kung~\cite{p8} and the \textit{The Database Normalization Tool}
-\cite{w1}, 
-in Section~\ref{sec:introldbn} we are going to outline why we think our tool is better 
-and more efficient
-in terms of teaching potential. We will also discuss possible reasons why the 
-other tools are not commonly used by students. 
 
 \section{Organization of this report}
 \label{sec:organization}
-In the following section we are going to informally introduce 
+In the reminig sections of this chapter we are going to informally introduce 
 the key features and consepsts of our web-based learning environment, 
-called LDBN (Lean DataBase Normalization)~\cite{wldbn}. 
-The introduction at this point is important for the reader,
-in order to understand the need of the algorithms described in 
+called LDBN (Lean DataBase Normalization)~\cite{wldbn}; 
+compare it with a couple of other 
+available web-based database normalization tools; provide the reader with small glossary.  
+The introduction of LDBN in Section~\ref{sec:introldbn} is important for the reader
+in order for him/her to better understand the need and the concepts of the algorithms described in 
 Chapter~\ref{chap:preliminaries}, where we also give definitions to
 relational-database normalization and to the different normal forms. 
 In Chapter~\ref{chap:design} we discuss some design issues regarding LDBN like 
@@ -107,25 +105,26 @@ Such a list is shown in Figure~\ref{fig:screen02}.
 	\end{center}
 \end{figure}
 
-Moreover, an assignment consists of a relational schema in First Normal Form (1NF), 
-i.e., all the attributes in a single relation and a set of FDs on the attributes. 
+Moreover, an assignment consists of a relational schema in in 
+universal-relation form (URF), i.e., all the attributes in a single relation 
+and a set of FDs on the attributes. 
 After an assignment has been loaded, we require the students to go through the 
 following steps in LDBN:
 \begin{enumerate}
 	\item Determine a minimal cover of the given FDs, also known as canonical cover.
-	\item Decompose the relational schema from 1NF into 2NF, 3NF and BCNF. 
+	\item Decompose the relational schema from URF into 2NF, 3NF and BCNF. 
 	\item Determine a candidate key for each new relation/table. 
 \end{enumerate}
 
-Checking a solution is a nonprocedural task, thus the student can start solving
-an assignment in a different order. In addition to this,  a partial or complete 
+The task of checking a potential solution
+involves many subtasks which may be performed in any order. In addition to this,  a partial or complete 
 solution can be submitted at any given time by pressing the \textit{Check Solution} button. 
 After that the system analyzes the solution by performing the following checks:
 \begin{enumerate}
 	\item Correctness of the minimal cover of the given FDs. 
 	\item Losses join properly for every decomposition.
 	\item Dependency preservation for every decomposition.
-	\item Correctness of the associated with each relation FDs.
+	\item Correctness of the associated with each relation FDs; that is, if the FDs are actually in F+ (closure of F).
 	\item Correctness of the key of each relation.
 	\item Correctness of the decomposition, i.e., if the decomposition is really in 2NF, 3NF and BCNF.
 \end{enumerate}
@@ -147,20 +146,42 @@ incorrect. The dialog is also showing that the decomposition does not
 satisfy the lossless join property, but in the case of BCNF this
 is not allays possible, therefore it is only a warning. 
 
-The concept of assignments is a major
-difference between LDBN and the other normalization tools such as the
-\textit{Web-based Tool to Enhance Teaching/Learning Database 
-Normalization}~\cite{p8} and \textit{The Database Normalization Tool}~\cite{w1}, 
+Additional features of LDBN include creating an assignment, which can be done 
+only by registered users. This condition is necessary, in order users to be able 
+to distinct assignments provided by trusted users, e.g. their database course
+lecturers. Registered users have also the ability to leave textual comments 
+for every assignment. On the one hand, such
+comments ensure that user can easily communicate and share ideas
+with each other, and one the other hand, comments could also decrease the amount of workload
+for the lecturers in terms of giving an explanation to difficult decomposition.
+
+More detailed and formal description of the features of LDBN will be given 
+Chapter~\ref{chap:impl}. 
+
+\section{Comparation of LDBN with Other Tools}
+\label{sec:comparation}
+In this section we are going to compare LDBN with a couple of other 
+available web-based database normalization tools 
+such as the \textit{Web-based Tool to Enhance Teaching/Learning Database 
+Normalization} by Kung~\cite{p8} and the \textit{The Database Normalization Tool}
+\cite{w1}. Furthermore, we are going to discuss why we think our tool is better 
+and more efficient
+in terms of teaching potential, and give possible reasons why the 
+other tools are not commonly used by students.
+
+First of all, the concept of assignments is a major
+difference between LDBN and the other normalization tools, 
 which only provide 
 one possible solution (decomposition) to the user, without users having the ability to test 
-themselves. In addition, LDBN can be used for checking the correctness of any
+themselves. On the other hand, LDBN can be used for checking the correctness of any
 arbitrary decomposition, this could be useful for lectures to test handwritten assignments. 
+
 Another major advantage of LDBN over the other tools is the user interface (UI). 
 As Frye~\cite{p10} and Dantin~\cite{p9} stated, this is often a
 neglected feature, when it comes to educational software. The lack of user-friendly UI 
 can often lead to unpopularity of the software among students. An example here could be 
 \textit{The Database Normalization Tool}~\cite{w1}. Inputing a relational schema in the program can
-take quite sometime, due to the fact that
+take quite sometime due to the fact that
 users have to input every attribute manually using the keyboard and then also 
 have to input every FD the same way. This may take several minutes even for small  
 assignments. Furthermore, relational schemas cannot be saved for future use like 
@@ -170,22 +191,11 @@ applications, but relatively new to AJAX application such as LDBN. Every attribu
 and every FD in LDBN can be dragged and dropped, in order 
 to define or modify FDs, key attributes, etc... This ensures a really fast and easy
 usage of the tool without the need of a keyboard. It should be mentioned
-that inputing attributes the traditional way by tipping them is also supported.
+that inputing attributes the traditional way by typing them is also supported.
 
-Additional features of LDBN include creating an assignment, which can be done 
-only by registered users. This condition is necessary, in order users to be able 
-to distinct assignments provided by trusted users, e.g. their database course
-lecturers. Registered users have also the ability to leave textual comments 
-for every assignment. On the one hand, such
-comments ensure that user can easily communicate and share ideas
-with each other, and one the other hand, comments could also decrease the amount of workload
-for the lecturers in terms of giving an explanation to difficult decomposition.
-Such community features are not present in the other two web-based 
-normalization tools.
-
-More detailed and formal description of the features of LDBN will be given 
-Chapter~\ref{chap:impl}. 
-
+Community features like posting comments are not present in the other two web-based 
+normalization tools, but we believe they are very important when it comes to educational
+software. 
 
 \section{Glossary}
 \begin{description}
