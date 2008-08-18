@@ -30,18 +30,18 @@ options can be divided into three groups:
 \end{enumerate}
 
 The client-side solution consists of an application which runs entirely on the user's 
-computer within a browser. Examples here could be the Java applet, the Flash or the new 
+computer within a browser. Examples here could be the Java applet, the Adobe Flash or the new 
 Microsoft Silverlight technologies. However, this approach has the disadvantage
 of requiring a plug-in, which is not always available by default on all web browsers. 
 In addition, some organizations only allow software installed by the administrators. 
-As a result, many users cannot view Java applets nor Flash by default. This could 
+As a result, many users cannot view Java applets nor Adobe Flash by default. This could 
 have a negative impact on the accessibility of an application, 
 therefore we did not proceed with the client-side approach.
 
 In the server-side solution there is a web server and optionally a data service. 
 Web servers such as Apache, Tomcat, Lighttpd and IIS host the application 
 logic, which is written in Java, PHP, Ruby, C\# or other languages. 
-Data services are provided by databases such as MySQL, Oracle, Sql Server and 
+Data services are provided by databases systems such as MySQL, Oracle, Sql Server and 
 so forth. This approach has a centralized architecture, thus all tasks and 
 functions are performed on the server. After their completion a new HTML page is 
 send back to the client. This approach has two major drawbacks. In the first place, 
@@ -63,22 +63,23 @@ discuss AJAX more formally in the following section.
 \section{AJAX}
 \label{sec:ajax}
 AJAX stands for Asynchronous JavaScript And XML. It should be noted
-that when AJAX was first introduced, it was not a new technology, 
-but rather a new concept of using already existing technologies like XHTML, 
-CSS and JavaScript~\cite{w3}.  Prior AJAX browsers were treaded 
+that AJAX is not a new technology in itself but rather the integration of several 
+existing technologies like HTML, CSS and JavaScript~\cite{w3}. Prior AJAX browsers 
+were treaded 
 like dumb terminals, thus the browser was unable to remember its state and every 
 user interaction caused a HTTP round trip over the network, requiring browsers 
 to rerender the whole web page after each request. With AJAX browsers became 
 more powerful. Traditional web techniques like HTML and CSS are still used to 
-render the page. In addition to this, JavaScript can be used to access 
-and manipulate the DOM tree, i.e., JavaScript is able of changing only certain parts
+render the page, in spite of that, JavaScript can be used to access 
+and manipulate the Document Object Model (DOM) tree, i.e., 
+JavaScript is able of changing only certain parts
 of the content of a web page. However, the
 real potential of AJAX lies within the client-server communication model, which 
 is ilusrated in Figure~\ref{fig:ajax01}.  
 
 \begin{figure}[h]
 	\begin{center}
-		\includegraphics[width=0.8\textwidth]{./img/ajax01.png}
+		\includegraphics[width=0.8\textwidth]{./img/ajax01a.png}
 		\caption{AJAX Communication Model}
 		\label{fig:ajax01}
 	\end{center}
@@ -101,7 +102,7 @@ the UI to be more interactive and to respond more quickly to inputs.
 
 \begin{figure}[h]
 	\begin{center}
-		\includegraphics[width=0.8\textwidth]{./img/ajax02.png}
+		\includegraphics[width=0.8\textwidth]{./img/ajax02a.png}
 		\caption{AJAX Architectural Shift}
 		\label{fig:ajax02}
 	\end{center}
@@ -164,7 +165,7 @@ one code base, by which the the scalability of an application can be increased.
 
 \begin{figure}[h]
 	\begin{center}
-		\includegraphics[width=0.8\textwidth]{./img/gwt01.png}
+		\includegraphics[width=0.8\textwidth]{./img/gwt01a.png}
 		\caption{GWT Java-to-JavaScript Compiler}
 		\label{fig:gwt01}
 	\end{center}
