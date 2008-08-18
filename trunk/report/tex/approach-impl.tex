@@ -7,8 +7,8 @@ of some key aspects of the server-side implementation and communication
 between server and client. At the end of the chapter we go over some
 security issues and how LDBN deals with those. 
 
-\section{System architecture}
-Figure \ref{fig:sysarch} illustrates the architecture of LDBN. 
+\section{System Architecture}
+Figure~\ref{fig:sysarch} illustrates the architecture of LDBN. 
 As can be seen, the architecture is decentralized. The client-side implements 
 all of the tutoring functions and the server-side is used only for storing data.
 As it was mention earlier, such decentralized architecture ensures less HTTP requests to
@@ -36,7 +36,7 @@ As the names suggest, the
 \textit{Assignment Solver} is used
 for giving a sample solution to a given assignment, and the \textit{Solution Checker}
 performs series of checks to test the correctness of the given solution.
-As we mention in section~\ref{sec:introldbn}, an assignment consist of a 
+As we mention in Section~\ref{sec:introldbn}, an assignment consist of a 
 relation schema in 1NF. A solution to an assignment consists 
 of a decomposition of the schema from 1NF into 2NF, 3NF and BCNF. In addition,
 the user must define one of the key candidates of each new relation in each
@@ -64,9 +64,9 @@ It needs to have access to the \textit{Session Data}, in order to ensure that an
 user is always logged in,
 before he/she atemps to change any user data.    
 
-\section{Core package}
+\section{Core Package}
 In this section we are going to discuss the core package of LDBN, in which all 
-the algorithms described in section~\ref{sec:alg} are implemented. 
+the algorithms described in Section~\ref{sec:alg} are implemented. 
 The package is extensively
 used by the \textit{Assignment Solver} and \textit{Solution Checker}, and it is 
 an essential part of LDBN. Figure~\ref{fig:coreuml} shows an UML class diagram
@@ -122,7 +122,7 @@ case, therefore a lot of the produced output is being cached. This increases the
 memory usage, but it could make the application respond much quicker, which
 in our opinion is more important for the user.    
 
-\section{User interface}
+\section{User Interface}
 It possible to define tow distinct user groups, warranting at least two different
 user interfaces for LDBN.  One group would include the lecturers, who will
 focus their attention on creating assignments. The other group would be the 
@@ -173,7 +173,7 @@ relation by assigning attributes, FDs and a key candidate to it. All the relatio
 within a filed represent a decomposition. Different editors are provided to the users,
 such as
 the \textit{Attribute Editor}, the \textit{Key Editor} and the \textit{FD Editor}.
-The FD Editor is shown in figure~\ref{fig:fdedit}. Each editor has one or two
+The FD Editor is shown in Figure~\ref{fig:fdedit}. Each editor has one or two
 text boxes, where users can input names of attributes, in order to 
 add or to modify relations, FDs or keys. Furthermore,
 each of the editors is wrapped in a draggable dialog window. 
@@ -248,7 +248,7 @@ exchange format. The format has several types:
 	\item[Assignment] contains a LDBN assignment. 
 \end{description}  
 
-\section{Security issues}
+\section{Security Issues}
 The system uses HTTP 1.1 for the communication between the client and the web
 server. This can easily be secured by using HTTPS instead. The upgrade only
 require changes to the configuration of the web server. However, using an encrypted

@@ -2,7 +2,7 @@
 \label{chap:introduction}
 Readers unfamiliar with the terms of relational database normalization and 
 functional dependencies can find a brief introduction on the subject in
-chapter \ref{chap:preliminaries}. 
+Chapter~\ref{chap:preliminaries}. 
 
 Due to its great importance for database applications, database schema design has
 attracted a lot of researchers~\cite{p1}. Relational database normalization is a 
@@ -26,7 +26,7 @@ certain normal form, into a new set of relations/tables~\cite{p4}. Thus we can o
 another issue related with normal forms, which is the fact, that there can be many 
 possible, distinct decomposition of the same schema, which all satisfy the same 
 normal form~\cite{bdb4}. 
-This is a key aspect of the relational database normalization, because it directly 
+This is a key aspect of the relational-database normalization, because it directly 
 affects our learning environment in such way, that we cannot simply take a decomposition given 
 by the user/student and compare it with the one, provided by the decomposition algorithm. 
 We rather need algorithms for testing, whether a given relational schema is violating 
@@ -56,7 +56,7 @@ Altought there are a couple of other web-based database normalization tools
 available such as the \textit{Web-based Tool to Enhance Teaching/Learning Database 
 Normalization} by Kung~\cite{p8} and the \textit{The Database Normalization Tool}
 \cite{w1}, 
-in section \ref{sec:introldbn} we are going to outline why we think our tool is better 
+in Section~\ref{sec:introldbn} we are going to outline why we think our tool is better 
 and more efficient
 in terms of teaching potential. We will also discuss possible reasons why the 
 other tools are not commonly used by students. 
@@ -68,28 +68,28 @@ the key features and consepsts of our web-based learning environment,
 called LDBN (Lean DataBase Normalization)~\cite{wldbn}. 
 The introduction at this point is important for the reader,
 in order to understand the need of the algorithms described in 
-chapter~\ref{chap:preliminaries}, where we also give definitions to
+Chapter~\ref{chap:preliminaries}, where we also give definitions to
 relational-database normalization and to the different normal forms. 
-In chapter~\ref{chap:design} we discuss some design issues regarding LDBN like 
+In Chapter~\ref{chap:design} we discuss some design issues regarding LDBN like 
 platform choice and others. Chapter~\ref{chap:impl} provides a formal description
 of our reference implementation of the learning environment. 
 Chapter~\ref{chap:conclusion} shows our conclusions, and 
-appendix~\ref{chap:tutorial} contains a simple tutorial to the system.
+Appendix~\ref{chap:tutorial} contains a simple tutorial to the system.
 
-\section{Learning database normalization with LDBN}
+\section{Learning Database Normalization with LDBN}
 \label{sec:introldbn}
 In this section we are going to briefly introduce our reference implementation
 of the web-based learning environment, called LDBN.    
-Figure \ref{fig:screen01} shows an overview of the most important part of the UI - 
+Figure~\ref{fig:screen01} shows an overview of the most important part of the UI - 
 the \textit{Solve Assignment} view/tab. Here students can test their knowledge on 
 the subject of relational-database normalization. The first thing the reader 
 may notice is the fact that LDBN is running within a browser. The client-side 
 of LDBN is written in JavaScript following the AJAX techniques 
-(more about this in chapter \ref{chap:design}). 
+(more about this in Chapter~\ref{chap:design}). 
 Furthermore, LDBN is assignment driven. This means students have to first 
 choose an assignemtn 
 form a list with assignments, submitted by other users (lecturers). 
-Such a list is shown in figure \ref{fig:screen02}.
+Such a list is shown in Figure~\ref{fig:screen02}.
 
 \begin{figure}[h]
 	\begin{center}
@@ -140,7 +140,7 @@ After that the system analyzes the solution by performing the following checks:
 
 The user is shown a dialog with the result, and in case of an error the system offers
 feedback in form of small textual hints, indicating
-where the error might be. Such dialog is shown in figure \ref{fig:screen03}. In this case
+where the error might be. Such dialog is shown in Figure~\ref{fig:screen03}. In this case
 we can see, that the user has made a correct decomposition for 2NF and 3NF,
 but his/her decomposition for BCNF has some errors, namely the key of the relation R4 is
 incorrect. The dialog is also showing that the decomposition does not 
@@ -184,16 +184,16 @@ Such community features are not present in the other two web-based
 normalization tools.
 
 More detailed and formal description of the features of LDBN will be given 
-chapter~\ref{chap:impl}. 
+Chapter~\ref{chap:impl}. 
 
 
 \section{Glossary}
 \begin{description}
-	\item[2NF, 3NF, BCNF] Second Normal Form, Third Normal Form, Boyce-Codd Normal Form. See section~\ref{sec:nfintro} for more details.
-	\item[AJAX] Asynchronous JavaScript And XML is a group of interrelated web development techniques used for creating interactive web applications, for more details see section~\ref{sec:ajax}.
+	\item[2NF, 3NF, BCNF] Second Normal Form, Third Normal Form, Boyce-Codd Normal Form. See Section~\ref{sec:nfintro} for more details.
+	\item[AJAX] Asynchronous JavaScript And XML is a group of interrelated web development techniques used for creating interactive web applications, for more details see Section~\ref{sec:ajax}.
 	\item[CSS] Cascading Style Sheets is a stylesheet language used to describe the presentation of a document written in HTML.
 	\item[DBMS] A database management system (DBMS) is a complex set of software programs that controls the organization, storage, management, and retrieval of data in a database.
-	\item[GWT] Google Web Toolkit (GWT) is an open source Java software development framework that allows web developers to create AJAX applications in Java. More details in section~\ref{sec:gwt}.
+	\item[GWT] Google Web Toolkit (GWT) is an open source Java software development framework that allows web developers to create AJAX applications in Java. More details in Section~\ref{sec:gwt}.
 	\item[ODBC] Open Database Connectivity (ODBC) provides a standard software API method for using database management systems.
 	\item[RPC] Remote procedure call (RPC) is an Inter-process communication technology that allows a computer program to cause a subroutine or procedure to execute in another address space.
 	\item[SQL] Structured Query Language, is a computer language designed for the retrieval and management of data in relational database management systems, database schema creation and modification, and database object access control management.
