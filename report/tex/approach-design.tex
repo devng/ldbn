@@ -1,11 +1,11 @@
-\chapter{Design concepts}
+\chapter{Design Concepts}
 \label{chap:design}
 In this chapter we are going to discuss some design consents of LDBN such as
 reasons for moving towards a web-based application, platform choice and 
 design ideas which were disregarded in the final impletation. In the following the
 term client is used to refer to a browser.
 
-\section{Platform choice}
+\section{Platform Choice}
 Due to the fact that web-enabled educational 
 systems are becoming the dominant type of systems 
 available to students, we designed LDBN as a web-based application.
@@ -74,7 +74,7 @@ render the page. In addition to this, JavaScript can be used to access
 and manipulate the DOM tree, i.e., JavaScript is able of changing only certain parts
 of the content of a web page. However, the
 real potential of AJAX lies within the client-server communication model, which 
-is ilusrated in figure~\ref{fig:ajax01}.  
+is ilusrated in Figure~\ref{fig:ajax01}.  
 
 \begin{figure}[h]
 	\begin{center}
@@ -92,7 +92,7 @@ altought XML is not required for data interchange and often other text-based
 formats are used as an alternative such as JSON or plain text~\cite{bajax1}.
 
 Another advantage of AJAX is the so called \textit{Architectural Shift}~\cite{wgdd1}, 
-which is illustrated in figure~\ref{fig:ajax02}. 
+which is illustrated in Figure~\ref{fig:ajax02}. 
 It describes the ability of the client to handle events
 locally, without the need of a server. Such events can be for example the
 expansion of a tree. This has the two advantages. On the one hand, it frees server 
@@ -151,7 +151,7 @@ Another very important
 aspect of the compiler is the fact that when the code is compiled to JavaScript,
 it results in 
 a single JavaScript file for each browser type and target locale. This is illustrated 
-in figure~\ref{fig:gwt01}. So typically this means that a GWT application will be compiled to 
+in Figure~\ref{fig:gwt01}. So typically this means that a GWT application will be compiled to 
 a minimum of five separate JavaScript files. Each of these files is meant to run 
 on a specific browser type, version, and locale. A bootstrap script, initially 
 loaded by the browser, will 
@@ -231,7 +231,7 @@ of LDBN.
 
 \section{Limitations of GWT and JavaScript}
 Despite the fact that GWT offers solution to many of the problems
-described in section~\ref{sec:ajax}, it still has to deal with some 
+described in Section~\ref{sec:ajax}, it still has to deal with some 
 fundamental issues regarding 
 AJAX. Altought the client-side application is written in Java, 
 the produced code by the GWT compiler is still JavaScript, 
@@ -258,7 +258,7 @@ to a database~\cite{bajax1}, thus it requires a web server to establish the
 connection. Then the client-side communicate with the server-side using 
 predefined XML format.
 
-\section{Server-side platform choice}
+\section{Server-side Platform Choice}
 In this section we are going to give our reasons for choosing PHP as server-side
 scripting language and MySQL as database management system (DBMS). First we would
 like to mention that LDBN is open source and it is distributed under the 
@@ -277,7 +277,7 @@ PHP and MySQL, it is possible to use different tools and programming languages
 on the server-side with almost no modifications to the client-side. However, 
 the predefined XML data exchange format must stay the same.
 
-\section{Other design issues}
+\section{Other Design Issues}
 An initial design of LDBN included an assignment generator, i.e., assignments were not
 created by users, but rather automatically generated. However, this approach
 has proven to be highly ineffective in terms of creating good assignments. There 
