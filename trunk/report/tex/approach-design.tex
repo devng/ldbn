@@ -18,7 +18,7 @@ web-based applications from any location and at any time. This type of independe
 is of enormous value for learning environments due to the importance of
 flexibility and accessibility for the learning process.
  
-The problem, that really lies within the platform choice, is the fact that there are
+The problem, which really lies within the platform choice, is the fact that there are
 many different techniques for implementing a web-based application. A basic HTML 
 solution would not work since all pages in that case are static. The remaining 
 options can be divided into three groups:
@@ -30,7 +30,7 @@ options can be divided into three groups:
 \end{enumerate}
 
 The client-side solution consists of an application which runs entirely on the user's 
-computer within a browser. Examples here could be the Java applet, the Adobe Flash or the new 
+computer within a browser. Examples here could be the Java Applet, the Adobe Flash or the new 
 Microsoft Silverlight technologies. However, this approach has the disadvantage
 of requiring a plug-in, which is not always available by default on all web browsers. 
 In addition, some organizations only allow software installed by the administrators. 
@@ -74,18 +74,18 @@ render the page, in spite of that, JavaScript can be used to access
 and manipulate the Document Object Model (DOM) tree, i.e., 
 JavaScript is able of changing only certain parts
 of the content of a web page. However, the
-real potential of AJAX lies within the client-server communication model, which 
-is ilusrated in Figure~\ref{fig:ajax01}.  
+real potential of AJAX lies within the client-server communication, an example
+of which is ilusrated in Figure~\ref{fig:ajax01}.  
 
 \begin{figure}[h]
 	\begin{center}
 		\includegraphics[width=0.8\textwidth]{./img/ajax01a.png}
-		\caption{AJAX Communication Model}
+		\caption{Example of an AJAX Architecture}
 		\label{fig:ajax01}
 	\end{center}
 \end{figure}
 
-The XMLHttpRequest is an API, implemented by the browser. It is 
+The XMLHttpRequest is an API implemented by the browser. It is 
 used to handle the communication with the server in an asynchronous fashion using a
 simple HTTP connection. It is worth mentioning that other solutions also exists. 
 XML is often used to transfer data between the server and the client, 
@@ -93,10 +93,11 @@ altought XML is not required for data interchange and often other text-based
 formats are used as an alternative such as JSON or plain text~\cite{bajax1}.
 
 Another advantage of AJAX is the so called \textit{Architectural Shift}~\cite{wgdd1}, 
-which is illustrated in Figure~\ref{fig:ajax02}. 
+which is illustrated in Figure~\ref{fig:ajax02}. The figure 
+is an adaptation of Figure~3 of~\cite{wgdd1}. 
 It describes the ability of the client to handle events
 locally, without the need of a server. Such events can be for example the
-expansion of a tree. This has the two advantages. On the one hand, it frees server 
+expansion of a tree. This has two advantages. On the one hand, it frees server 
 and network resources for other tasks, on the other hand, it allows
 the UI to be more interactive and to respond more quickly to inputs.
 
@@ -152,7 +153,8 @@ Another very important
 aspect of the compiler is the fact that when the code is compiled to JavaScript,
 it results in 
 a single JavaScript file for each browser type and target locale. This is illustrated 
-in Figure~\ref{fig:gwt01}. So typically this means that a GWT application will be compiled to 
+in Figure~\ref{fig:gwt01}, which is an adaptation of Figure~7 of~\cite{wgio2}. 
+So typically this means that a GWT application will be compiled to 
 a minimum of five separate JavaScript files. Each of these files is meant to run 
 on a specific browser type, version, and locale. A bootstrap script, initially 
 loaded by the browser, will 
@@ -198,8 +200,8 @@ process of LDBN, include:
 	\item[JRE emulation library] This library contains 
 	the most commonly used parts of the full Java Runtime Environment (JRE), 
 	which can be compiled to JavaScript. LDBN uses extensively many of the collection 
-	classes of the emulated library such as the \textit{ArrayList}, \textit{HashMap}, 
-	\textit{Stack} and others classes.
+	classes of the emulated library such as the \verb=ArrayList=, \verb=HashMap=, 
+	and others classes.
 	\item[Web UI library] GWT includes a great set of UI classes, which 
 	enable the development of a web UI entirely in Java. The approach is similar 
 	to writing a Java Swing application, and it is used to develop the whole UI 
@@ -210,13 +212,13 @@ process of LDBN, include:
 	\item[XML Parser] To make it as simple as possible to deal with XML data formats 
 	on the client browser, GWT provides a DOM based XML parser.
 	\item[RequestBuilder API] GWT also provides an abstraction on top of the
-	XMLHTTP object. 
+	XMLHttpRequest object. 
 	\item[GWT-RPC] The GWT-RPC mechanism allows Java objects to be send between 
 	the client and the server. However, this is only true for 
 	Servlet containers such as the Apache Tomcat web server. 
 	\item[JSNI] The JavaScript Native Interface (JSNI) makes it possible to
 	write native JavaScript code within the Java code. The JavaScript code can 
-	then to be executed from Java code and vice versa - Java code can be executed
+	then be executed from Java code and vice versa - Java code can be executed
 	from JavaScript code. JSNI is very important part of GWT, as it enables 
 	the integration with already existing JavaSctipt applications.  
 	\item[Internationalization] Several techniques are provided by GWT that can 
@@ -267,8 +269,8 @@ Apache License, Version 2.0~\cite{walv2}. Furthermore, we would like to see
 LDBN installed on other servers as well. This could help LDBN become
 a leading learning environment across 
 different universities for teaching relational-database normalization. To ensure 
-portability, we decided to use the most common free 
-tools for web development. Apache Web Server with PHP and MySQL met those requirements. 
+portability we have decided to use the most common free 
+tools for web development. Apache Web Server with PHP and MySQL meet those requirements. 
 Apache is the most popular HTTP server on the Web~\cite{w3} and PHP is the most popular 
 Apache module~\cite{w4}. In addition, MySQL is the most popular open source 
 database~\cite{w5}.
