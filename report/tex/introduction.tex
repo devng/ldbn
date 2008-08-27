@@ -4,8 +4,8 @@ Readers unfamiliar with the terms of relational-database normalization and
 functional dependencies can find a brief introduction on the subject in
 Chapter~\ref{chap:preliminaries}. 
 
-Due to its great importance for database applications, database schema design has
-attracted a lot of researchers~\cite{p1}. Relational database normalization is a 
+Due to its great importance for database applications database schema design has
+attracted a lot of researchers~\cite{p1}. Relational-database normalization is a 
 theoretical approach for organizing data in a database and it is very well developed, 
 unfortunately, however, theory does not have much impact on practice yet~\cite{p1}.
 One of the reasons for this is the lack of good tools which could aid the students 
@@ -41,7 +41,7 @@ We can divide them into two different groups:
 	violating certain normal form, the lossless join property or other criteria.
 \end{description}
 
-It is very important to note that the \textit{Decomposition algorithms} are note enough for
+It is very important to note that the \textit{Decomposition algorithms} are not enough for
 our purposes, since they have the 
 disadvantage that they could decompose a schema, which is already satisfying 
 certain normal form, into a new set of relations/tables~\cite{p4}. Thus there can be many 
@@ -57,7 +57,7 @@ is also an issue which our tool is trying to overcome by providing more intuitiv
 way of decomposing a schema and by giving an easy way for lecturers to
 teach by example and test the knowledge of their students. 
 
-\section{Organization of this report}
+\section{Organization of This Report}
 \label{sec:organization}
 In the reminig sections of this chapter we are going to informally introduce 
 the key features and consepsts of our web-based learning environment, 
@@ -87,7 +87,17 @@ of LDBN is written in JavaScript following the AJAX techniques
 Furthermore, LDBN is assignment driven. This means students have to first 
 choose an assignemtn 
 form a list with assignments, submitted by other users (lecturers). 
-Such a list is shown in Figure~\ref{fig:screen02}.
+Such a list is shown in Figure~\ref{fig:screen02}. 
+Moreover, an assignment consists of a relational-database schema in
+universal-relation form (URF), i.e., all the attributes in a single relation 
+and a set of FDs on the attributes. 
+After an assignment has been loaded, we require the students to go through the 
+following steps in LDBN:
+\begin{enumerate}
+	\item Determine a minimal cover of the given FDs, also known as canonical cover.
+	\item Decompose the relational schema from URF into 2NF, 3NF and BCNF. 
+	\item Determine a candidate key for each new relation/table. 
+\end{enumerate}
 
 \begin{figure}[h]
 	\begin{center}
@@ -105,17 +115,6 @@ Such a list is shown in Figure~\ref{fig:screen02}.
 	\end{center}
 \end{figure}
 
-Moreover, an assignment consists of a relational schema in in 
-universal-relation form (URF), i.e., all the attributes in a single relation 
-and a set of FDs on the attributes. 
-After an assignment has been loaded, we require the students to go through the 
-following steps in LDBN:
-\begin{enumerate}
-	\item Determine a minimal cover of the given FDs, also known as canonical cover.
-	\item Decompose the relational schema from URF into 2NF, 3NF and BCNF. 
-	\item Determine a candidate key for each new relation/table. 
-\end{enumerate}
-
 The task of checking a potential solution
 involves many subtasks which may be performed in any order. In addition to this,  a partial or complete 
 solution can be submitted at any given time by pressing the \textit{Check Solution} button. 
@@ -124,7 +123,7 @@ After that the system analyzes the solution by performing the following checks:
 	\item Correctness of the minimal cover of the given FDs. 
 	\item Losses join properly for every decomposition.
 	\item Dependency preservation for every decomposition.
-	\item Correctness of the associated with each relation FDs; that is, if the FDs are actually in F+ (closure of F).
+	\item Correctness of the associated with each relation FDs; that is, if the FDs are actually in the embedded closure of F for this relation.
 	\item Correctness of the key of each relation.
 	\item Correctness of the decomposition, i.e., if the decomposition is really in 2NF, 3NF and BCNF.
 \end{enumerate}
@@ -137,17 +136,17 @@ After that the system analyzes the solution by performing the following checks:
 	\end{center}
 \end{figure}
 
-The user is shown a dialog with the result, and in case of an error the system offers
+A dialog with the result is shown to the user. In case of an error the system offers
 feedback in form of small textual hints, indicating
 where the error might be. Such dialog is shown in Figure~\ref{fig:screen03}. In this case
-we can see, that the user has made a correct decomposition for 2NF and 3NF,
+we can see that the user has made a correct decomposition for 2NF and 3NF,
 but his/her decomposition for BCNF has some errors, namely the key of the relation R4 is
 incorrect. The dialog is also showing that the decomposition does not 
 satisfy the lossless join property, but in the case of BCNF this
 is not allays possible, therefore it is only a warning. 
 
 Additional features of LDBN include creating an assignment, which can be done 
-only by registered users. This condition is necessary, in order users to be able 
+only by registered users. This restriction is necessary in order users to be able 
 to distinct assignments provided by trusted users, e.g. their database course
 lecturers. Registered users have also the ability to leave textual comments 
 for every assignment. On the one hand, such
@@ -155,7 +154,7 @@ comments ensure that user can easily communicate and share ideas
 with each other, and one the other hand, comments could also decrease the amount of workload
 for the lecturers in terms of giving an explanation to difficult decomposition.
 
-More detailed and formal description of the features of LDBN will be given 
+More detailed and formal description of the features of LDBN will be given in
 Chapter~\ref{chap:impl}. 
 
 \section{Comparation of LDBN with Other Tools}
