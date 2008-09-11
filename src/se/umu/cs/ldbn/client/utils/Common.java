@@ -1,5 +1,9 @@
 package se.umu.cs.ldbn.client.utils;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import se.umu.cs.ldbn.client.core.Relation;
 import se.umu.cs.ldbn.client.io.LdbnParser;
 import se.umu.cs.ldbn.client.io.LdbnParser.LDBN_TYPE;
 
@@ -91,6 +95,16 @@ public final class Common {
 		}
 		
 		return true;
+	}
+	
+	public static Collection<Relation> deepCopyDecomposition(Collection<Relation> decomposition) {
+		ArrayList<Relation> dc = new ArrayList<Relation>(decomposition.size());
+		for (Relation r : decomposition) {
+			if(r != null) {
+				dc.add(r.clone());
+			}
+		}
+		return dc;
 	}
 	
 	public static String escapeHTMLCharacters(String str) {

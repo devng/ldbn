@@ -1,3 +1,7 @@
+2008-09-11_1020
+* Bug fix when importing decomposition (List of relation) only a reference was copied, not it is a hard copy.
+* Bug fix after dynamically loading the different tabs the Create Assignment tab check session was broken. 
+
 2008-08-02_1540
 * Bug fix with KeyEditorDialog.
 * FDEditor is now working more intuitively now.

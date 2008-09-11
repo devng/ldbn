@@ -140,7 +140,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		add(dwMinimalCover); 
 		//2NF
 		decomposition2NF = new DecompositionWidget();
-		dwDecomposition2NF = new DisclosureWidget("Decompose in 2 NF", decomposition2NF);
+		dwDecomposition2NF = new DisclosureWidget("Decompose in 2NF", decomposition2NF);
 		add(dwDecomposition2NF);
 		//3NF
 		import2NF = new Image("img/import.png", 0, 0, 15, 15);
@@ -163,7 +163,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 			tmp[i] = decomposition3NF.getAdditionalControlls()[i-1];
 		}
 		tmp[0] = import2NF;
-		dwDecomposition3NF = new DisclosureWidget("Decompose in 3 NF", decomposition3NF, tmp);
+		dwDecomposition3NF = new DisclosureWidget("Decompose in 3NF", decomposition3NF, tmp);
 		add(dwDecomposition3NF);
 		//BCNF
 		import3NF = new Image("img/import.png", 0, 0, 15, 15);
@@ -234,14 +234,16 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 				}
 			});
 		} else if (sender == import2NF) {
-			boolean b = Window.confirm("Do you wish to mport all relations from 2NF?");
+			boolean b = Window.confirm("Do you wish to import all relations from 2NF?");
 			if(b) {
-				decomposition3NF.addRelationList(decomposition2NF.getRelations());
+				decomposition3NF.addRelationList(Common.
+						deepCopyDecomposition(decomposition2NF.getRelations()));
 			}
 		} else if (sender == import3NF) {
-			boolean b = Window.confirm("Do you wish to mport all relations from 3NF?");
+			boolean b = Window.confirm("Do you wish to import all relations from 3NF?");
 			if(b) {
-				decompositionBCNF.addRelationList(decomposition3NF.getRelations());
+				decompositionBCNF.addRelationList(Common.
+						deepCopyDecomposition(decomposition3NF.getRelations()));
 			}
 		}
 	}
@@ -283,14 +285,14 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		dialog.clearMsgs();
 		dialog.msgTitle("Minimal Cover Check:");
 		if (!Algorithms.equivalence(fds, minCovFDs)) {
-			dialog.msgErr("wrong - fds are not equivalent to the given fds");
+			dialog.msgErr("wrong - FDs are not equivalent to the given FDs");
 		} else if(minCoverF.size() != minCovFDs.size()) {
-			dialog.msgErr("wrong - too much fds");
+			dialog.msgErr("wrong - too much FDs");
 		} else if (!minCoverF.containsAll(minCovFDs)) { 
 			// compute the minimal cover over the user input and compare it with
 			// the user actual input, if it does not contain all FDs, then a 
 			// FD was not minimal and it was computed and added to the list. 
-			dialog.msgErr("wrong - some fds are not redused");
+			dialog.msgErr("wrong - some FDs are not reduced");
 		} else {
 			dialog.msgOK("right");
 		}
@@ -305,9 +307,9 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 						updateRelations(relations);
 						boolean isIn2NF = Algorithms.isIn2NF(relations);
 						if(isIn2NF) {
-							dialog.msgOK("Decomposition is in 2nd NF.");
+							dialog.msgOK("Decomposition is in 2NF.");
 						} else {
-							dialog.msgErr("Decomposition is NOT in 2nd NF.");
+							dialog.msgErr("Decomposition is NOT in 2NF.");
 						}
 					}
 				}
@@ -324,9 +326,9 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 						updateRelations(relations);
 						boolean isIn3NF = Algorithms.isIn3NF(relations);
 						if(isIn3NF) {
-							dialog.msgOK("Decomposition is in 3rd NF.");
+							dialog.msgOK("Decomposition is in 3NF.");
 						} else {
-							dialog.msgErr("Decomposition is NOT in 3rd NF.");
+							dialog.msgErr("Decomposition is NOT in 3NF.");
 						}
 					}
 				}
@@ -354,7 +356,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		dialog.center();
 	}
 	
-	
+	//this is unnecessary it is done by checking dependency preservation
 	private boolean checkFDInput(List<Relation> rel) {
 		boolean resultFD = true;
 		CheckSolutionDialog dialog = CheckSolutionDialog.get();
@@ -397,7 +399,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 			List<AttributeSet> keys = cacheKeys.get(r.getAttrbutes().hashCode());
 			boolean isKeyFound = false;
 			for (AttributeSet k : keys) {
-				if(k.equals(r.getSuperKey())) {
+				if(k.equals(r.getPrimaryKey())) {
 					isKeyFound = true;
 					break;
 				}
@@ -467,8 +469,8 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		r.setFDs(deepCopy);
 		Collection<Relation> synthese = Algorithms.synthese(r, true);
 
-		decomposition2NF.addRelationList(synthese);
-		decomposition3NF.addRelationList(synthese);
+		decomposition2NF.addRelationList(Common.deepCopyDecomposition(synthese));
+		decomposition3NF.addRelationList(Common.deepCopyDecomposition(synthese));
 		//bcnf
 		updateCache(synthese);
 		updateRelations(synthese);

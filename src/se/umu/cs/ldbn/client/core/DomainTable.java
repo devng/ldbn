@@ -172,7 +172,7 @@ public final class DomainTable {
 		return attNames.toArray(result);
 	}
 	
-	public Integer[] getAttIndices() {
+	public Integer[] getAttMasks() {
 		Integer[] result = new Integer[attIndices.size()];
 		return attIndices.toArray(result);
 	}
