@@ -129,7 +129,7 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 	private int lastSelectedRow;
 	
 	private LoadAssignmentDialog() {
-		super("Load assigment", "Choose an assigment from the list bellow", true);
+		super("Load Assignment", "Choose an assignment from the list bellow", true);
 		lastSelectedRow = 0;
 		colHeaders = new ArrayList<ColumnHeader>();
 		colHeaders.add(new ColumnHeader(1));

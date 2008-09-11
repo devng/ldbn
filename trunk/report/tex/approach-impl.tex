@@ -1,18 +1,18 @@
 \chapter{Implementation}
 \label{chap:impl}
-In this chapter we are going to give a formal overview of the system architecture,
+In this chapter we give a formal overview of the system architecture,
 some of the core classes and the most important
-feature of LDBN - the user interface. In addition, we are going to give an overview
-of some key aspects of the server-side implementation and communication
+feature of LDBN - the user interface. In addition, we give an overview
+of some key aspects of the server side implementation and communication
 between server and client. At the end of the chapter we go over some
 security issues and how LDBN deals with those. 
 
 \section{System Architecture}
 Figure~\ref{fig:sysarch} illustrates the architecture of LDBN. 
-As can be seen, the architecture is decentralized. The client-side implements 
-all of the tutoring functions and the server-side is used only for storing data.
-As it was mention earlier, such decentralized architecture ensures less HTTP requests to
-the server, which in a single thread environment like JavaScript means faster 
+As can be seen, the architecture is decentralized. The client side implements 
+all of the tutoring functions and the server side is used only for storing data.
+As it was mention earlier, such a decentralized architecture ensures fewer HTTP requests to
+the server, which in a single-thread environment like JavaScript means faster 
 responses of the UI to user inputs. The architecture also reduces the server load,
 which implies that the server can handle more users.
 
@@ -25,179 +25,208 @@ which implies that the server can handle more users.
 \end{figure}
 
 It should be noted that the functions in the diagram represent many classes and 
-static methods, which are all serving the same purpose/function. We are not 
-going to discuss all 
+static methods, which all serve the same purpose/function. We do not 
+discuss all 
 of the functions in detail, because most of them are straightforward and 
 self-explanatory. 
 
-\subsubsection{Client-side Functions}
+\subsubsection{The Client-Side Functions}
 
 \begin{description}
-	\item[Solve Assignment] function is used for generating a sample solution to 
+	\item[The Solve Assignment] function is used for generating a sample solution to 
 		a given assignment, and presenting it to the user. As we mention in 
 		Section~\ref{sec:introldbn}, an assignment consist of a relation schema in universal-relation form (URF).
-	\item[Check Solution] function, as the name suggests, performs series of checks to 
+	\item[The Check Solution] function, as the name suggests, performs series of checks to 
 		test the correctness of the given solution. A solution to an assignment consists 
 		of a decomposition of the schema from URF into 2NF, 3NF and BCNF. In addition,
-		the user must define one of the key candidates of each new relation in each
+		the user must define one of the candidate keys  of each new relation in each
 		decomposition. 
-	\item[Load Assignment] function presents a list of all assignments, which are 
+	\item[The Load Assignment] function presents a list of all assignments, which are 
 		stored in the database, to the user, and it can load new assignment from that list
 		in the UI.
-	\item[Manage Users] function allows unregistered users to create new account 
-		and registered users to login with their password and username. 
-	\item[Post Comment] function gives register users the ability to comment an assignment, 
+	\item[The Manage Users] function allows unregistered users to create new accounts 
+		and registered users to login with their password and user-name. 
+	\item[The Post Comment] function gives register users the ability to comment an assignment, 
 		thus be able to communicate with all other users.
-	\item[View Comments] function displays comments for each assignment, posted by registered users.
-	\item[Edit Assignment] function provides registered users with the 
+	\item[The View Comments] function displays comments for each assignment, posted by registered users.
+	\item[The Edit Assignment] function provides registered users with the 
 		ability to create, edit, save, export and import assignments. 
 \end{description}
 
 As we can see from Figure~\ref{fig:sysarch} the functions \textit{Post Comments} 
-and \textit{Edit Assignments} do not directly communicate with the Server-side, but rather 
+and \textit{Edit Assignments} do not directly communicate with the server side, but rather 
 communication goes first trough the \textit{Manage Users} function. This is done in order 
 to ensure that the users are properly logged in into the system before attempting 
 to use those functions. We will refer to functions which require users to login as restricted. 
 
 The functions \textit{Solve Assignment} and \textit{Check Solution} are definitely the most 
-important functions of LDBN, therefore we are going to illustrate how they perform their tasks
+important functions of LDBN, therefore we illustrate how they perform their tasks
 in more detail in Section~\ref{sec:keyfunctions}. 
 
-\subsubsection{Server-side Functions}
+\subsubsection{The Server Side Functions}
 
-Most of the functions on the server-side are used as communication links (CL) for the
-functions on the client-side to the database. This means, they retrieve/store data form/in the 
-database, then convert the data to a XML string and send it back to the client-side
+Most of the functions on the server side are used as communication links (CL) for the
+functions on the client side to the database. This means they retrieve/store data from/in the 
+database, and then convert the data to a XML string and send it back to the client side
 functions. 
 
 \begin{description}
-	\item[Load Assignment] is the CL for the \textit{Load Assignment} function on the 
-		client-side.
-	\item[Load Comments] is the CL for the \textit{View Comments} function.
-	\item[Manage Sessions] function ensures that the data is coming from a registered user.
-		is also responsible for creating a new session, and killing an existing one. Furthermore,
-		each session has an unique ID, which is generated and send back to the user 
+	\item[The Load Assignment] function is the CL for the \textit{Load Assignment} function on the 
+		client side.
+	\item[The Load Comments] function is the CL for the \textit{View Comments} function.
+	\item[The Manage Sessions] function ensures that the data is coming from a registered user.
+		is also responsible for creating a new session, and terminating an existing one. Furthermore,
+		each session has a unique ID, which is generated and send back to the user 
 		when he/she has logged in. This ID is stored in the \textit{Session Data} and it is used for
 		legitimizing the user in order for him/her to obtain access to restricted functions.
-	\item[Manage Users] function is the CL of the \textit{Manage Users} on the client-side.
+	\item[The Manage Users] function is the CL of the \textit{Manage Users} on the client side.
 		It is responsible 
 		for inserting new users into the database and for modifying existing data such as 
-		username, password and email.
+		user-name, password and email.
 		It uses the \textit{Manage Sessions} function in order to ensure that an 
-		user is always logged in, before he/she atemps to change any user data.  
-	\item[Save Assignment] is CL for the \textit{Edit Assignment} function on the client side. 
+		user is always logged in, before he/she attempts to change any user data.  
+	\item[The Save Assignment] function is the CL for the \textit{Edit Assignment} function on the client side. 
 		It is a restricted function, thus it uses the \textit{Manage Sessions} function. 
-	\item[Save Comment] is CL for the \textit{Post Comment} function on the client-side, it is 
+	\item[The Save Comment] function is CL for the \textit{Post Comment} function on the client side, it is 
 		a restricted function as well.
 \end{description} 
 
 \section{Core Package of LDBN}
-Before moving to Section~\ref{sec:keyfunctions}, where we discuss the  most important functions of 
+Before moving to Section~\ref{sec:keyfunctions}, where we discuss the most important functions of 
 LDBN namely the \textit{Solve Assignment} and the \textit{Check Solution} functions, 
-we are going to present the core package of LDBN. This package contains the foundation 
-classes, on which both of the functions functions depend, therefore it is an essential 
+we present the core package of LDBN. This package contains the foundation 
+classes, on which both of the functions depend, therefore it is an essential 
 part of LDBN. 
 
-Before going into more detail, we are going to present the different data items in LDBN. 
-We refer to data items as items nececary to describe a database schema.  
-The three key items in the implementation are relations, FDs, and keys.
+A very important part of LDBN is the representation of sets of attributes, since all 
+data items in a database schema are based on sets of attributes. Therefore we developed an
+efficient data structure called \verb=AttributeSet=, which holds a (sub)set of attributes of a relation.  
+Before going into more detail, we present the different data items in LDBN. 
+We refer to data items as items necessary to describe a database schema.  
+The three fundamental items in our implementation are relations, FDs, and keys. Furthermore,
+we are interested only in candidate keys and primary keys of a relation, not in superkeys.
 Figure~\ref{fig:relexample} is illustrating
 an (abstract) example of those data items and their structure in our system. 
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[scale=0.4]{./img/relation-example01a.png}
+    \caption{Example of a Relation}
+    \label{fig:relexample}
+  \end{center}
+\end{figure}
+
 As can be seen, the most important data item is the relation, since
 it holds the other two data items. This suggests itself, because FDs and keys have meaningful
 interpretation only in combination with a relation. Furthermore, a key is a subset of 
-the relation's attributes, and
-each relation can have a set of FDs. On the other hand, 
-each FD contains of two subsets of
-the realation's attributes, these represent the left-hand side (LHS) and the 
+the relation's attributes.
+Each relation have a set of candidate keys and one primary key, which is an element form that set. 
+Moreover, each relation is assigned with a set of FDs. On the other hand, 
+each FD consists of two subsets of
+the relation's attributes, these represent the left-hand side (LHS) and the 
 right-hand side (RHS) of a FD. Finally, a database schema or a decomposition of
 a database schema can be described as a set of relations.
 
-
-\begin{figure}[h]
-	\begin{center}
-		\includegraphics[scale=0.5]{./img/relation-example01a.png}
-		\caption{Example of a Relation}
-		\label{fig:relexample}
-	\end{center}
-\end{figure}
-
-At this point the reader schould be familiar with the different data items 
-and we can go into more detail of the 
-actual implementation of the different data stcutures in LDBN which are holding 
-the data items. Figure~\ref{fig:coreuml} shows an UML class diagram of the most important 
-classes and methods of the package. 
-
-\begin{figure}[h]
-	\begin{center}
-		\includegraphics[width=0.9\textwidth]{./img/uml02.png}
-		\caption{LDBN - Core Classes}
-		\label{fig:coreuml}
-	\end{center}
-\end{figure}
-
 As the reader may have noticed, each data item consists of attributes and/or other
-data items, therefore the \verb=AttributeSet= class is a fundamental class in LDBN. 
-It holds attributes of a relation. 
-In the early stages of the implementation of LDBN attribute sets
-were simply represented as arrays of strings. However, this has proven to be very
-inefficient even for trivial operations like comparation or union of two sets. This could 
+data items. Therefore we can use only our data structure \verb=AttributeSet=
+in order to describe how the different data items are constructed. 
+Figure~\ref{fig:relexample2} shows the same relation as in Figure~\ref{fig:relexample} with
+respect to the instances of the \verb=AttributeSet= necessary to construct the different
+data items.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[scale=0.4]{./img/relation-example02a.png}
+    \caption{Example of a Relation with respect to AttributeSet}
+    \label{fig:relexample2}
+  \end{center}
+\end{figure}
+
+As can be seen a (primary) key is simply an instance of \verb=AttributeSet=. The candidate keys
+are represented as a list of instances of \verb=AttributeSet=. A FD is constructed from
+two instances of \verb=AttributeSet=, one for the LHS and one for the RHS. And finally,
+a relation is a composition of an instance of  \verb=AttributeSet= for representing
+the relation's attributes, a primary key, a list of candidate keys and a list of FDs. 
+
+Here follows a description of the implementation of the \verb=AttributeSet= data structure. 
+In the early stages of the implementation of LDBN the \verb=AttributeSet=
+was simply an array of strings. However, this has proven to be very
+inefficient even for trivial operations like comparison or union of two sets. This could 
 lead to efficiency problems with
 bigger assignments, since set operations are used quite often due to the exponential
-complexity of many algorithms in LDBN.
-The solution was to use a variable of type integer as a representation of an entire
-attribute set. 
-This way attributes are added or removed from the set by using the bit operators, 
-thus every attribute is 
-a bit index in the integer variable. This has the disadvantage that
+complexity of many algorithms in LDBN. 
+The solution was to use a bit-vector (boolean array) representation of sets of attributes. The data structure is described 
+in~\cite{AhoHU83dsabook}, Section~4.3 \textit{A Bit-Vector Implementation of Sets}. 
+A set is represented by a bit-vector in which the $i^{th}$ bit is true if $i$ is an element of the set. In our
+implementation every attribute of a relation is assigned with a bit index. This is
+done when an assignment is loaded and
+we know all the possible attributes. Furthermore, we use an integer variable for representing
+the bit-vector. This has the disadvantage that
 assignments can contain only up to 32 attributes, but exceeding 32 attribute 
 is highly unlikely to happen in an educational software. On the other side, the 
 advantages are of much greater value, as set operations, which are used quite 
-often, are performed in almost constant time, since we are using bit operators only.
-For example, if we want to make the union of two sets, we just use the 
-bitwise OR operation on both integer variables.
+often, are performed in constant time, since we only use bitwise operators. The following 
+table illustrates how exactly different set operations such as 
+UNION, INTERSECTION, and DIFFERENCE are performed.
  
-Every \verb=AttributeSet= object has an associated domain name space called 
-\verb=AttributeNameTable=. 
-It contains a map, so that the string name of an attribute is mapped to its 
-integer representation. In this way information is never lost. It is worth mentioning 
-that initially a long variable was used
-instead of an integer. This gave us 64 possible attributes in an assignment, 
-however, JavaScript has only one numeric data type, which is the double. 
-Double has only 53 bits of precision, thus if one want a "real" long integer with 64 bit, 
-it has to be emulated. This could hurt the performance of an application~\cite{wgio1}, 
-therefore we switched to integers in LDBN. Furthermore, the \verb=AttributeNameTable=
+\begin{center}
+\begin{tabular}[h]{|l|l|}
+\hline
+Set Operation & Bitwise Operator \\
+\hline
+\hline
+UNION        & bit-vector$_1$  OR  bit-vector$_2$ \\
+INTERSECTION & bit-vector$_1$ AND  bit-vector$_2$ \\
+DIFFERENCE   & bit-vector$_1$ AND (NOT bit-vector$_2$) \\
+\hline
+\end{tabular}
+\end{center}
+
+In the following we would like to present other key aspects of the Core package. For reference we 
+use Figure~\ref{fig:coreuml}, which shows an UML class diagram of the most important 
+classes and methods of the package. We already discussed most of the classes like the \verb=AttributeSet=,
+the \verb=Key=, the \verb=FD= and the \verb=Relation= classes. Now we are going to present the  
+\verb=AttributeNameTable= class. Every \verb=AttributeSet= object has an associated domain name space called 
+\verb=AttributeNameTable=. It contains a map, such that the string name of an attribute is mapped to its 
+integer representation. In this way, information is never lost. 
+Furthermore, the \verb=AttributeNameTable=
 class uses the Event Listener design pattern, as a result of which classes implementing 
 the \verb=AttributeNameTableListner= interface can update their content,
 whenever changes in the \verb=AttributeNameTable= occur. This is used by instances of the 
 \verb=AttributeSet= class, but also by some UI classes, which are not shown in the diagram. 
 
-With the help of the \verb=AttributeSet= class we can easily implement the different data items.  
-First, a key item is only an instance of the the \verb=AttributeSet= class. Second, there is the
-\verb=FD= class, which is basically a composition of two \verb=AttributeSets=, 
-each one representing the LHS and RHS of the FD. Finally, the \verb=Relationship= class 
-holds a relationship, which consists of attributes, 
-list of FDs and a key. 
-\verb=Algorithm= class contains all of the algorithms described in Chapter~\ref{chap:preliminaries} as
-static functions. Some of the algorithms have exponential complexity in the worst
-case, therefore a lot of the produced output is being cached. This increases the
+The \verb=Algorithm= class contains all of the normalization algorithms used by LDBN to perform 
+the \textit{Solve Assignment} and \textit{Check Solution} functions. The algorithms are implemented 
+as static functions. Many of them have exponential complexity in the worst
+case. Therefore a lot of the produced output is being cached. This increases the
 memory usage, but it could make the application respond much quicker, which
-in our opinion is more important for the user.    
+in our opinion is more important for the user. The normalization algorithms are very important 
+part of LDBN. We present them in detail in the next section. 
 
-In the next section we are going to illustrate how LDBN uses the different algorithms
-to perform the \textit{Solve Assignment} and the \textit{Check Solution} functions.
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{./img/uml02.png}
+    \caption{LDBN - Core Classes}
+    \label{fig:coreuml}
+  \end{center}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Algorithms                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{./tex/alg}
 
 \section{Key Functions of LDBN}
 \label{sec:keyfunctions}
 As we stated earlier, the two most important functions of LDBN are the \textit{Solve Assignment} and 
 the \textit{Check Solution} functions. They build the foundation of the system and
-without them UI will loose its purpose, therefore we are going to
+without them UI will lose its purpose. Therefore, we
 discuss the two function more formally in this section.
 
 \subsubsection{Solve Assignment}  
 The \textit{Solve Assignment} function can provide the user with a sample solution
 to an assignment, thus it decomposes a database schema from URF into 3NF and BCNF. This
-task involves many different algorithms. Figure~\ref{fig:orderdecomposition} is 
+task involves several algorithms. Figure~\ref{fig:orderdecomposition} is 
 illustrating the order of how those algorithms are being applied.
 
 \begin{figure}[h]
@@ -213,42 +242,33 @@ First, the schema is passed trough the
 FDs of the schema are reduced in order to eliminate unnecessary FDs so that only 
 a minimal number of dependencies remains. After that we use the \verb=decompose3NF()=
 method, which implements the decomposition algorithm described in the textbook of 
-Kemper and Eickler~\cite{bdb2}. The algorithm was presented in Section~\ref{sec:algdec}.
-For quick reference, in this algorithm first we find all the key candidates of
-the initial relation, this is necessary in order to determine later if one of them
-is present in the new relations of the decomposition, which is required by the algorithm
-to ensure dependency preservation. After that, we build new relations corresponding
-to each FD, after they have been reduced. Then we need to eliminate relations, the attributes
-of which are subset of the attributes of another relation. Finally we need to associate a
-key for each of the new relations. The produced set of relations is dependency preserving and
-it is in 3NF.
+Kemper and Eickler~\cite{bdb2}, Section~6.8. The algorithm was presented in Section~\ref{sec:algdec}.
+We  present the new decomposition also as a solution for the 2NF, since
+a decomposition in 3NF is also in 2NF. 
 
 For computing the BCNF decomposition we use a slightly modified algorithm than the one described
-in by Kemper and Eickler~\cite{bdb2}, which we described in Section~\ref{sec:algdec}. In our implementation
+in by Kemper and Eickler~\cite{bdb2}, Section~6.9, which we described in Section~\ref{sec:algdec}. In our implementation
 the input for the algorithm is not the initial schema in URF, but the decomposition
 produced by the \verb=decompose3NF()= method. By doing this we 
 increase the performance of the system, since many decompositions which 
 are in 3NF are also in BCNF, or the differences are usually rather small, thus the algorithm
 requires fewer passes.   
-
-The reader may have noticed that LDBN does not provide an algorithm for decomposing a schema into
-2NF. As we mention in Chapter~\ref{chap:preliminaries}, every decomposition
-which is in 3NF is also in 2NF, and every
-decomposition in BCNF is also in 3NF. Thus we could theoretically decompose the schema only 
-into BCNF and present it as a solution for 2NF, 3NF and BCNF. However, a dependency 
-preserving decomposition in BCNF is not always possible~\cite{bdb1, bdb2, bdb3, bdb3}. 
-Because of this, we also present a dependency preserving 3NF decomposition, which is always
-possible to find.   
+  
+A given schema will always have a dependency-preserving 3NF
+decomposition, as well as a BCNF decomposition, but not necessarily a
+dependency-preserving BCNF decomposition. Thus, there are two
+distinct final goals for decomposition which may not always be
+realizable simultaneously. Because of this fact, we do not present the BCNF decomposition as solution
+for the 3NF, even tough BCNF decompositions are also in 3NF.
 
 \subsubsection{Check Solution}  
 The \textit{Check Solution} function of LDBN allows the system to test a solution 
-provided by the user and assess its correctness to many factors, which
-we are going to present later in this section. As we mention in Chapter~\ref{chap:introduction} 
-and~\ref{chap:preliminaries}, it is not possible
+provided by the user and assess its correctness relative to many factors, which
+we present later in this section. As we mention earlier it is not possible
 to compare a solution produces by LDBN with the one of the user, since they may be many
 possible solutions/decompositions to a certain database schema. Therefore we need the
 algorithms for testing a decomposition described in Section~\ref{sec:algtest}. In this section
-we are going to illustrate how we apply those algorithms in our implementation. 
+we illustrate how we apply those algorithms in our implementation. 
 
 First of all, a solution in LDBN is represented as a list of instances of the
 \verb=Relation= class. Those objects are build from the user input. The list is then
@@ -257,7 +277,19 @@ implement the all of the algorithms described in Section~\ref{sec:alg}.
 The system analyzes the solution to the following factors:
 
 \begin{description}
-	\item [Losses Join] properly for every decomposition. This check is done by directly applying the 
+  \item [Correctness of the FDs] of each relation, this means, testing whether the FDs associated by the user
+    for each new relation are actually in the closure of FDs for this relation. We do this by
+    using the \textit{Reduction by Resolution} algorithm for computing the embedded closure of FDs for the given
+    relation. This algorithm is described in 
+    Section~\ref{sec:algtest}, and it is implemented by the \verb=reductionByResolution()= method. Then we apply
+    the \textit{Equivalence} algorithm, also described in 
+    Section~\ref{sec:algtest}, to test whether both set of FDs, the one produced by 
+    the algorithm and the one provided by the user, are equivalent. Here the \textit{Reduction by Resolution}
+    algorithm can have exponential complexity in some bad cases~\cite{p4}, therefore we cache the results
+    of the algorithm for future use, e.g., when the user needs to recheck his solution, which can happen
+    quite often during the process of solving an assignment correctly. 
+
+	\item [The Losses Join] properly for every decomposition. This check is done by directly applying the 
 		algorithm \textit{Lossless Join Property Test}, which is 
 		implemented by the \verb=isLossless()= method.
 		
@@ -265,44 +297,26 @@ The system analyzes the solution to the following factors:
 		algorithm \textit{Dependency Preservation Test}, which is implemented by the 
 		\verb=isDependencyPreserving()= method.
 		
-	\item [Correctness of the FDs] of each relation, this means, testing if the FDs associated by the user
-		for each new relation are actually in the closure of FDs for this relation. We do this by
-		using the \textit{Reduction by Resolution} algorithm for computing the embedded closure of FDs for the given
-		relation. This algorithm is implemented by the \verb=reductionByResolution()= method. Then we apply
-		the \textit{Equivalence} algorithm to test if both set of FDs, the one produced by 
-		the algorithm and the one provided by the user, are equivalent. Here the \textit{Reduction by Resolution}
-		algorithm can have exponential complexity in some bad cases~\cite{p4}, therefore we cache the results
-		of the algorithm for future use, e.g., when the user needs to recheck his solution, which can happen
-		quite often during the process of solving an assignment correctly. 
-		
-		Here it should be noted that
-		eventough the \textit{Dependency Preservation} factor ensures that every FD from the URF is preserved
-		in the new decomposition, it does not give any information if the FDs provided by the user 
-		for a certain relation are
-		applicable on the subset of attributes for that relation. Therefore this factor is very important 
-		in order to ensure the correctness of the following checks. 
-		
 	\item [Correctness of the Key] of each relation. This check is performed by first computing 
-		every possible key candidate
-		for each new relation, by applying the algorithm \textit{Finding All Key Candidates}, 
+		every possible candidate key 
+		for each new relation, by applying the algorithm \textit{Finding All Candidate Keys}, 
 		which is implemented
-		by the \verb=findAllKeys()= method. The method returns a list of all possible key candidates
+		by the \verb=findAllKeys()= method. The method returns a list of all possible candidate keys
 		for a given relation. Then the system searches if the key suggested by the user is 
 		present in that list. The algorithm is quite slow due to the fact that the problem of
-		finding all key candidates is know to be NP-complete~\cite{p3}. To improve performance LDBN
+		finding all candidate keys is know to be NP-complete~\cite{p3}. To improve performance LDBN
 		caches every list found for each relation, so that whenever a user needs to rechecks his/her solution
-		the system computes only the lists of key candidates for new, uncached relations.  
+		the system computes only the lists of candidate keys for new, uncached relations.  
 		
-	\item [Correctness of the Decomposition] in this check we apply directly the 
-		\textit{2NF, 3NF, BCNF Properly Test} algorithms described in 
+	\item [Correctness of the Decomposition] In this check we apply directly the 
+		\textit{2NF, 3NF, BCNF Test} algorithms described in 
 		Section~\ref{sec:algtest}. The algorithms are implemented by the 
 		\verb=test2NF()=, \verb=test3NF()=, \verb=testBCNF()= methods.
-		
 \end{description}
 
 All the checks are performed in the exact order described above. If one of the checks fails the following ones
-are not executed. This way we are able to give the user a faster feedback, because 
-the most computationally expensive checks are at the end. For example, if the \textit{Dependency preservation}
+are not executed. This way we are able to give the user faster feedback, because 
+the most computationally expensive checks are at the end. For example, if the \textit{Dependency Preservation}
 check, which is performed in polynomial time, fails, then the other check such as the 
 \textit{Correctness of the Key} and the \textit{Correctness of the Decomposition}, both of which 
 have exponential complexity, are omitted, thus the user could get a much faster response from the system
@@ -322,14 +336,14 @@ We tried to provide both
 user groups with fast and easy to use UI. In order to achieve this we put a lot
 of our attention in finding a good layout for the UI. The requirements for
 the layout were to give the user as much information possible about an 
-assignment without loosing the general view. In order to achieve this goal  
+assignment without losing the general view. In order to achieve this goal  
 we split the UI in four different views using tabs:
 
 \begin{description}
 	\item[Home] view is where the users can login, register and view some information 
 	about the learning environment. It can be seen in Figure~\ref{fig:hv}.
 	\item[Solve Assignment] view is where students can load an assignment, give and
-	test their solutions. In case they have troubles finding the right solution
+	test their solutions. In case they have troubles finding a correct solution
 	LDBN could generate a sample one and present it. Figure~\ref{fig:sav} is showing
 	the view with a loaded assignment.
 	\item[Create Assignment] view is used by lecturers to create, edit, export or import
@@ -389,13 +403,13 @@ Figure~\ref{fig:relui}. In this example we have a relation with attributes
 \textit{\{A, B, C\}}, a key \textit{\{A, C\}} and only one FD in the set of FDs,
 namely \textit{\{A, B $\rightarrow$ C\}}.  Furthermore,
 each of the editors is wrapped in a draggable dialog window. 
-This way the editors do not require any space on any of the fields, 
+In this way, the editors do not require any space on any of the fields, 
 and can be open only when they are needed. In addition to this, every attribute and every FD,
 like the ones shown in the relation on Figure~\ref{fig:relui}, can be dragged and
 dropped in the text box of each editor, as a result of which the attributes/FDs
 are automatically inserted in the text areas of the editor.
 This can help user define attributes, keys or
-FDs much quicker, which on the other hand can help improve the usability of 
+FDs much more quickly, which on the other hand can help improve the usability of 
 the learning environment. 
 
 \begin{figure}[h]
@@ -429,14 +443,14 @@ The first one is the \textit{Minimal Cover} field, where the user has to define
 a set of FDs using the \textit{FD Editor}. The user defined FDs must
 build a minimal (canonical) cover of the \textit{Given FDs}.
 This field is intended to be an intermediate step, which will help the user 
-find easier a right decomposition
+find easier a correct decomposition
 in the \textit{2NF, 3NF and BCNF Decomposition} fields. Those last three fields all
 work the same way, with the only difference that the alogotithms for checking the 
 correnctnes of the 
 decomposition are are not the same.  
 In each decomposition field the user must define a set of relations, like the one shown 
 in Figure~\ref{fig:relui}. All the relations
-within a filed represent a decomposition. To check the decomposition the user must
+within a field represent a decomposition. To check the decomposition the user must
 use the \textit{Check Solution} button, 
 after that the system analyzes the solution by the criteria described in 
 Section~\ref{sec:keyfunctions} and show a dialog with the result 
@@ -446,7 +460,7 @@ Another useful feature, which also improves the usability of LDBN and greatly re
 the time for defining relations, 
 is the ability to 
 import entire decompositions from the 2NF into the 3NF field, and from the 
-3NF field into the BCNF field. This was done, because usually 
+3NF field into the BCNF field. This was done because usually 
 the differences between the decompositions are not huge, and each decomposition
 can be used as a good staring point for the other ones.	
 
@@ -479,8 +493,8 @@ window is shown in Figure~\ref{fig:screen-help}.
 \end{figure}
 
 
-\section{Server-side}
-The server-side is mainly used for persistent storage of assignments, user comments,
+\section{Server Side}
+The server side is mainly used for persistent storage of assignments, user comments,
 user and session data. The communication between the web server and the client
 is done using the POST method of the Hypertext Transfer Protocol - HTTP/1.1~\cite{w6}.
 The POST method has two advantages over the GET method. First, it is more secure, i.e., 
@@ -496,12 +510,12 @@ exchange format. The format has several types:
 
 \begin{description}
 	\item[Message] for sending string messages, which appear in an alert window on 
-	the client-side. Such messages can be for instance an error messages returned
+	the client side. Such messages can be for instance an error messages returned
 	by the database. 
 	\item[Comments] for sending user comments. 
-	\item[Session] contains session data for logged in users such as an unique session 
+	\item[Session] contains session data for logged in users such as a unique session 
 	ID, generated by the server and stored in the database. The ID is used for
-	legitimizing user actions on the server-side.
+	authorizing user actions on the server side.
 	\item[Assignment List] for sending back meta data for each assignment. This
 	information is used by the \textit{Load Assignment} function in order 
 	to display a list of all available assignments from the database.
@@ -526,9 +540,9 @@ which has the following line of code in it:
      $sql_statement := "SELECT * FROM assignment WHERE id=$_GET['id'] ";
 \end{verbatim}
 
-\noindent If the "id" argument of the GET method is crafted in a specific way by a 
+\noindent If the $id$ argument of the GET method is crafted in a specific way by a 
 malicious user, the SQL statement may do more than the code author intended. 
-For example, setting the "id" argument as:
+For example, setting the $id$ argument as:
 
 \begin{verbatim}
      1; DROP TABLE users;
@@ -540,7 +554,7 @@ For example, setting the "id" argument as:
      SELECT * FROM assignment WHERE id=1; DROP TABLE users;
 \end{verbatim}
 
-\noindent The statement would cause the deletion of the "users" table. 
+\noindent The statement would cause the deletion of the $users$ table. 
 
 In order to prevent SQL injection and cross-site 
 scripting attacks LDBN uses regular expressions for validating
@@ -549,6 +563,6 @@ To the best of our knowledge, it is not possible to perform such attacks on LDBN
 
 Another issue with web-based applications is password protection. LDBN uses the 
 MD5~\cite{w7} one-way encryption algorithm for hashing user passwords. 
-To authenticate an user, the password presented by him/her is hashed on the client-side, 
+To authenticate an user, the password presented by him/her is hashed on the client side, 
 then send to the web server and compared with the stored hash in the database. 
 This way the actual password of the user is never sent over the network.

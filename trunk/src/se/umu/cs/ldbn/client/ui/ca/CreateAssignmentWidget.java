@@ -144,9 +144,11 @@ public final class CreateAssignmentWidget extends Composite
 		
 		initWidget(mainPanel);
 		Login.get().addListener(this);
-		onSessionKilled();
-		
-
+		if(UserData.get().isLoggedIn()) {
+			onLoginSuccess();
+		} else {
+			onSessionKilled();
+		}
 	}
 	
 	private void setDownloadForm() {

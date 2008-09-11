@@ -1,12 +1,13 @@
 package se.umu.cs.ldbn.client.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class Relation {
 	
 	private AttributeSet attrbutes;
 	private List<AttributeSet> allKeyCandidates;
-	private AttributeSet superKey;
+	private AttributeSet primaryKey;
 	private List<FD> fds;
 	private String name;
 	
@@ -25,12 +26,12 @@ public final class Relation {
 		return attrbutes;
 	}
 	
-	public AttributeSet getSuperKey() {
-		return superKey;
+	public AttributeSet getPrimaryKey() {
+		return primaryKey;
 	}
 
-	public void setSuperKey(AttributeSet superKey) {
-		this.superKey = superKey;
+	public void setPrimaryKey(AttributeSet primaryKey) {
+		this.primaryKey = primaryKey;
 	}
 
 	public List<AttributeSet> getKeyCandidates() {
@@ -95,5 +96,42 @@ public final class Relation {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	
+	public Relation clone() {
+		Relation r = new Relation();
+		if(this.attrbutes != null) {
+			r.attrbutes = this.attrbutes.clone();
+		}
+		
+		if(this.allKeyCandidates != null) {
+			ArrayList<AttributeSet> tmp = new ArrayList<AttributeSet>();
+			for (AttributeSet key : allKeyCandidates) {
+				tmp.add(key.clone());
+			}
+			r.allKeyCandidates = tmp;
+		}
+		
+		if(primaryKey != null) {
+			r.primaryKey = primaryKey.clone();
+		}
+		
+		if(name != null) {
+			r.name = new String(name);
+		}
+		
+		if(fds != null) {
+			ArrayList<FD> tmp = new ArrayList<FD>(fds.size());
+			for (FD fd : fds) {
+				if(fd != null) {
+					tmp.add(fd.clone());
+				}
+			}
+			r.fds = tmp;
+		}
+		
+		
+		return r;
 	}
 }

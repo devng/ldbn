@@ -525,7 +525,7 @@ public final class Algorithms {
 				ArrayList<AttributeSet> keys = new ArrayList<AttributeSet>();
 				keys.add(allKeys.get(0));
 				keyRelation.setKeyCandidates(keys);
-				keyRelation.setSuperKey(allKeys.get(0));
+				keyRelation.setPrimaryKey(allKeys.get(0));
 
 			}
 		} else {
@@ -538,11 +538,11 @@ public final class Algorithms {
 			List<FD> fds3nf = r3nf.getFds();
 			for (FD fd3nf : fds3nf) {
 				if (isKey(fd3nf.getLHS(), r3nf.getAttrbutes(), fds3nf)) {
-					r3nf.setSuperKey(fd3nf.getLHS());
+					r3nf.setPrimaryKey(fd3nf.getLHS());
 				}
 			}
-			if (r3nf.getSuperKey() == null) {
-				r3nf.setSuperKey(r3nf.getAttrbutes());
+			if (r3nf.getPrimaryKey() == null) {
+				r3nf.setPrimaryKey(r3nf.getAttrbutes());
 			}
 		}
 
@@ -618,10 +618,10 @@ public final class Algorithms {
 			List<AttributeSet> keys = findAllKeyCandidates(r1.getFds(), r1
 					.getAttrbutes());
 			r1.setKeyCandidates(keys);
-			r1.setSuperKey(keys.get(0));
+			r1.setPrimaryKey(keys.get(0));
 			keys = findAllKeyCandidates(r2.getFds(), r2.getAttrbutes());
 			r2.setKeyCandidates(keys);
-			r2.setSuperKey(keys.get(0));
+			r2.setPrimaryKey(keys.get(0));
 
 			synthese.remove(curRel);
 			synthese.add(r1);

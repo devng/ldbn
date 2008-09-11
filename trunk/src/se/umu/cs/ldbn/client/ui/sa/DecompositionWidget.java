@@ -135,8 +135,8 @@ public final class DecompositionWidget extends Composite
 			Log.warn("DecompositonWidget.addRelation : attributes are null, skip it");
 		}
 		
-		if(r.getSuperKey() != null) {
-			raw.setKey(r.getSuperKey());
+		if(r.getPrimaryKey() != null) {
+			raw.setKey(r.getPrimaryKey());
 		} else {
 			Log.warn("DecompositonWidget.addRelation : keys are null, skip it");
 		}

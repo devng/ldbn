@@ -84,7 +84,7 @@
 	    \end{tabular}\par}%
 	  \vskip 22em%
 %	  {\large \@date \par}%
-	  {\large August 2008 \par}%
+	  {\large September 2008 \par}%
 	  {\large {Master's Thesis in Computing Science, \@credits} ECTS credits \par}%
 	  {\large {Supervisor at CS-UmU: \@supervisor} }\\%
 	  {\large {Examiner: \@examiner}}%

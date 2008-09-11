@@ -16,12 +16,14 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SourcesTabEvents;
+import com.google.gwt.user.client.ui.TabListener;
 import com.google.gwt.user.client.ui.TabPanel;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public final class Main implements EntryPoint {
+public final class Main implements EntryPoint, TabListener {
 	
 	public static int WIDTH_PX = 850;
 	
@@ -32,10 +34,18 @@ public final class Main implements EntryPoint {
 	private AbsolutePanel mainPanel;
 
 	private GlassPanel glass;
+
+	private TabPanel tabs;
+	
+	private AbsolutePanel tabSA;
+	private boolean isTabSALoaded;
+	private AbsolutePanel tabCA;
+	private boolean isTabCALoaded;
+	
 	
 	public static Main get() {
 		if (instance == null) {
-			throw new IllegalArgumentException("onModuleLoad method must bu " +
+			throw new IllegalArgumentException("onModuleLoad method must be " +
 					"called first.");
 		}
 		return instance;
@@ -72,11 +82,19 @@ public final class Main implements EntryPoint {
 		dragControll = new PickupDragController(RootPanel.get(), false);
 		dragControll.setBehaviorDragProxy(true);
 		
-		TabPanel tabs = new TabPanel();
+		
+		//tabs
+		tabSA = new AbsolutePanel();
+		isTabSALoaded = false;
+		tabCA = new AbsolutePanel();
+		isTabCALoaded = false;
+		
+		tabs = new TabPanel();
 		tabs.add(HomeWidget.get(), "Home");
-		tabs.add(SolveAssignmentWidget.get(), "Solve assignments");
-		tabs.add(CreateAssignmentWidget.get(), "Create assignments");
-		tabs.add(LicenceWidget.get(), "Licence");
+		tabs.add(tabSA, "Solve assignments");
+		tabs.add(tabCA, "Create assignments");
+		tabs.add(LicenceWidget.get(), "License");
+		tabs.addTabListener(this);
 		
 		tabs.setWidth("100%");
 		tabs.selectTab(0);
@@ -89,6 +107,7 @@ public final class Main implements EntryPoint {
 		Panel rp = RootPanel.get("gwtapp");
 		rp.add(mainPanel);
 	}
+	
 	
 	public PickupDragController getDragController() {
 		return dragControll;
@@ -105,5 +124,19 @@ public final class Main implements EntryPoint {
 	
 	public void hideGlassPanel() {
 		glass.hide();
+	}
+
+	public boolean onBeforeTabSelected(SourcesTabEvents sender, int tabIndex) {
+		return true;
+	}
+
+	public void onTabSelected(SourcesTabEvents sender, int tabIndex) {
+		if(tabIndex == 1 && !isTabSALoaded) {
+			tabSA.add(SolveAssignmentWidget.get());
+			isTabSALoaded = true;
+		} else if (tabIndex == 2 && !isTabCALoaded) {
+			tabCA.add(CreateAssignmentWidget.get());
+			isTabCALoaded = true;
+		} 
 	}
 }

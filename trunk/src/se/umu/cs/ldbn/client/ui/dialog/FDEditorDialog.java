@@ -3,7 +3,6 @@ package se.umu.cs.ldbn.client.ui.dialog;
 import se.umu.cs.ldbn.client.Main;
 import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.ui.FDHolderPanel;
-import se.umu.cs.ldbn.client.ui.FDWidget;
 
 import com.google.gwt.user.client.ui.Widget;
 
@@ -20,7 +19,7 @@ public final class FDEditorDialog extends CloseDialog {
 	private FDEditorWidget fdew;
 	
 	private FDEditorDialog() {
-		super("FD Editor","Create an FD by giving the left and right hand side " +
+		super("FD Editor","Create a FD by giving the left-hand and right-hand side " +
 				"attributes.<BR>You can use Drag'n'Drop.", false);
 	}
 	

@@ -247,7 +247,7 @@ public final class RelationWidget extends Composite implements ClickListener,
 		AttributeSet atts = raw.getAttributes();
 		List<FD> fds = fdHP.getFDs();
 		r.setAttributes(atts);
-		r.setSuperKey(raw.getKey());
+		r.setPrimaryKey(raw.getKey());
 		r.setFDs(fds);
 		r.setName(relName.getText());
 		return r;
