@@ -1,9 +1,9 @@
 \section{Normalization Algorithms}
 \label{sec:alg}
 In this section we present different normalization algorithms which are used
-in LDBN. A proof of their correctness and complexity would be out of the 
+in LDBN. A proof of their correctness and complexity would be beyond the 
 scope of this report and therefore it is omitted. We provide the
-reader with textual description and/or pseudo code for each algorithm. 
+reader with textual description and/or pseudocode for each algorithm. 
 A reference to additional information is also given. However, in this section we do not
 illustrate how the algorithms are applied in the learning environment in order
 to perform the \textit{Solve Assignment} and the \textit{Check Solution} functions.
@@ -18,7 +18,7 @@ We can divide the normalization algorithms used by LDBN into two different group
 
 \subsection{Algorithms for Testing}
 \label{sec:algtest}
-As we mention earlier we need algorithms for testing whether a decomposition 
+As we mentioned earlier we need algorithms for testing whether a decomposition 
 is in 2NF, 3NF and BCNF, since a given schema may have many decompositions into a given normal form. Therefore,
 simply computing one such decomposition with the \textit{Decomposition Algorithms} and comparing the student's solution to it is
 not satisfactory. 
@@ -32,45 +32,57 @@ algorithms, which we present first.
 \subsubsection{Attribute Closure}
 Let $\alpha$  be a set of attributes. 
 We call the set of attributes determined by $\alpha$ under a set $F$ of 
-FDs the closure of $\alpha$ under $F$, denoted $\alpha +$. The following algorithm
-computes $\alpha+$
+FDs the closure of $\alpha$ under $F$, denoted $\alpha\sp{+}$, thus \(\alpha \rightarrow \alpha\sp{+}\).
+Figure~\ref{fig:attclosure} shows  pseudocode for an algorithm which can compute $\alpha\sp{+}$
 
+\begin{figure}[htbp]
+\hrule
 \begin{alltt}
-INPUT
-  \(\alpha\)  : a set of attributes
-  \(F\)  : a set of FDs
-OUTPUT
-  \(\alpha+\) : a complete set of attributes  \(\alpha+\)  with  \(\alpha \rightarrow \alpha+\)
-BEGIN
-  \(\alpha+ = \alpha\)
-  while(No more changes in \(\alpha+\)) do
-    foreach FD \(\beta \rightarrow \gamma\) in \(F\) do
-      if \(\beta \subseteq \alpha+\) then \(\alpha+ \cup \gamma\)
-    return \(\alpha+\)
-\end{alltt} 
 
-The \textit{Attribute Closure} algorithm is one of the most important algorithms used in LDBN. It is
-part of every other normalization algorithm in the system. Therefore every improvement 
+Algorithm Classical-AttributeClosure(\(\alpha\): set of attributes, 
+              \(F\): set of FDs):
+           return: set of attributes
+/* This algorithm computes the closure of the set \(\alpha\) of
+    attributes with respect to the set  \(F\) of FDs */
+  \(\alpha\sp{+} = \alpha\)
+  while(No more changes in \(\alpha\sp{+}\)) do
+    foreach FD \(\beta \rightarrow \gamma\) in \(F\) do
+      if \(\beta \subseteq \alpha\sp{+}\) then 
+        \(\alpha\sp{+} \cup \gamma\)
+      end if
+    end foreach
+  end while
+  return \(\alpha\sp{+}\)
+\end{alltt} 
+\caption{Pseudocode for Algorithm ClassicalAttributeClosure}\label{fig:attclosure}
+\hrule
+\end{figure}
+
+Computing attribute closure is a very important part of every other normalization algorithm 
+in LDBN. Therefore every improvement 
 of the algorithm is significant. 
-The above algorithm is described in many textbooks including~\cite{bdb1, bdb2, bdb4}.
+The \textit{ClassicalAttributeClosure} algorithm is described in many textbooks including~\cite{bdb1, bdb2, bdb4}.
 It has worst case behavior quadratic in the size of $F$ and
 it is not suitable for large application like LDBN. We presented it only because it is
-easy to follow. In our learning environment we use a linear but more complicated algorithm for computing $\alpha+$ 
-called $SL_{FD}-Closure$~\cite{p10}:
+easy to follow. In our implementation of the learning environment we use a linear but more complicated 
+algorithm for computing $\alpha\sp{+}$ 
+called $SL_{FD}$-$Closure$~\cite{p10}, which is shown in Figure~\ref{alg:slfdclosure}
 
+\begin{figure}[htbp]
+\hrule
 \begin{alltt}
-INPUT
-  \(\alpha\)  : a set of attributes
-  \(F\)  : a set of FDs
-OUTPUT
-  \(\alpha+\) : a complete set of attributes  \(\alpha+\)  with  \(\alpha \rightarrow \alpha+\)
-BEGIN
+
+Algorithm SLFD-Closure(\(\alpha\): set of attributes, 
+              \(F\): set of FDs):
+           return: set of attributes
+/* This is a linear algorithm for computing the closure of 
+  the set \(\alpha\) of attributes with respect to the set \(F\) of FDs */
   \(\alpha\sb{new} = \alpha\)
   \(\alpha\sb{old} = \alpha\)
   repeat
     foreach FD \(\beta \rightarrow \gamma\) in \(F\) do
       if \(\beta \subseteq \alpha\sb{new}\) then 
-        \(\alpha\sb{new} \cup \gamma\)
+        \(\alpha\sb{new} = \alpha\sb{new} \cup \gamma\)
         \(F = F - \{\beta \rightarrow \gamma\}\) 
       elsif \(\gamma \subseteq \alpha\sb{new}\) then
         \(F = F - \{\beta \rightarrow \gamma\}\) 
@@ -80,142 +92,314 @@ BEGIN
       end if
     end foreach 
   until ((\(\alpha\sb{new} = \alpha\sb{old}\)) or \(|F| = 0\))
-  return \(\alpha+ = \alpha\sb{new}\)
+  return \(\alpha\sp{+} = \alpha\sb{new}\)
 \end{alltt} 
+\caption{Pseudocode for Algorithm SLFD-Closure}\label{alg:slfdclosure}
+\hrule
+\end{figure}
 
-There are several direct uses of the \textit{Attribute Closure} algorithm~\cite{bdb4}:
+The great efficiency improvement of such linear algorithms for computing the attribute closure
+comes from the idea of adding the right-hand side of each FD once we have checked that
+all their attributes are in the temporal closure. In
+this way, the algorithms traverse the set of FDs
+only once~\cite{p10}.
+
+There are several direct uses of the attribute closure~\cite[Section 7.4]{bdb4}:
 \begin{description}
-    \item[Superkey Test:] To test whether $\alpha$ is a superkey, we compute $\alpha+$, and check whether $\alpha+$ contains all attributes of $R$.
-    \item[Computing F+:] For each $\gamma \subseteq R$ we find the closure $\gamma+$, and for each $S \subseteq \gamma+$, we output a FD $\gamma \rightarrow S$.
+    \item[Superkey Test:] To test whether $\alpha$ is a superkey, we compute $\alpha\sp{+}$, and check whether $\alpha\sp{+}$ contains all attributes of $R$.
+    \item[Computing $F\sp{+}$:] For each $\gamma \subseteq R$ we find the closure $\gamma\sp{+}$, and for each $S \subseteq \gamma\sp{+}$, we output an FD $\gamma \rightarrow S$.
 \end{description}
 
 \subsubsection{FD Test}
-To check whether a functional dependency $\alpha \rightarrow \beta $ 
-holds (i.e. is in $F+$), just check whether $\beta \subseteq \alpha+$ holds~\cite{bdb4}.
- 
+Figure~\ref{fig:fdtest} shows pseudocode for an algorithm for checking 
+whether a functional dependency $\alpha \rightarrow \beta $ 
+holds (i.e. is in $F\sp{+}$). In order to compute this we just need to check 
+whether $\beta \subseteq \alpha\sp{+}$ holds~\cite[Section 7.4]{bdb4}.
+  
+\begin{figure}[htbp]
+\hrule
 \begin{alltt}
-INPUT 
-  \(f\) : a FD of the form \(\alpha \rightarrow \beta\)
-  \(F\) : a set of FDs
-OUTPUT 
-  true if \(f \in F+\), false otherwise
-BEGIN
-  compute \(\alpha+ = AttributeClosure(\alpha, F)\)   
-  if \(\beta \in \alpha+\) then
+
+Algorithm FDTest(\(f\): FD, \(F\): set of FDs):
+           return: boolean
+/* This is a polynomial-time algorithm, and 
+it checks whether \(f \in F\sp{+}\) holds */
+  \(\alpha\sp{+}\) = SLFD-Closure(\(\alpha, F\))   
+  if \(\beta \in \alpha\sp{+}\) then
     return true
   else
     return false
+  end if
 \end{alltt}
-  
+\caption{Pseudocode for Algorithm FDTest}\label{fig:fdtest}
+\hrule
+\end{figure}
+
 \subsubsection{Equivalence}
-To determine whether two set of FDs $F$ and $G$ are equivalent, we need to prove that $F+ = G+$. 
-However, computing $F+$ or
-$G+$ is exponential, therefore this approach cannot be recommended for practical use.
+To determine whether two set of FDs $F$ and $G$ are equivalent, we need to prove that $F\sp{+} = G\sp{+}$. 
+However, computing $F\sp{+}$ or
+$G\sp{+}$ is exponential, therefore this approach cannot be recommended for practical use.
 Fortunately, there is a much faster algorithm. We can conclude that $F$ and $G$ are
 equivalent, if we can prove that all FDs in $F$ can be inferred from the set of FDs in $G$ and vice
-versa. To achieve this we use the \textit{FD Test} algorithm.
+versa. To achieve this we use the \textit{FDTest} algorithm.
 
+\begin{figure}[htbp]
+\hrule
 \begin{alltt}
-INPUT 
-  \(F\) : a set of FDs
-  \(G\) : a set of FDs
-OUTPUT 
-  true if \(F \equiv G\), false otherwise
-BEGIN
+
+Algorithm Equivalence(\(F\): set of FDs, \(G\): set of FDs):
+            return: boolean
+/* This is a polynomial-time algorithm for checking whether \(F\sp{+} = G\sp{+}\), 
+  i.e., whether the two sets of FDs are equivalent */ 
   foreach FD \(f : \alpha \rightarrow \beta\) in \(F\) do
-    if not \(FDTest(f, G\)) then
+    if not FDTest(\(f, G\)) then
       return false
   end foreach
   
   foreach FD \(g : \alpha \rightarrow \beta\) in \(G\) do
-    if not \(FDTest(g, F\)) then
+    if not FDTest(\(g, F\)) then
       return false
   end foreach
-  
   return true
 \end{alltt}
+\caption{Pseudocode for Algorithm Equivalence}\label{alg:equivalence}
+\hrule
+\end{figure}
 
-\subsubsection{Lossless-Join Property Test}
+\subsubsection{Test Lossless-Join}
 In Section~\ref{sec:decofrel} it was shown that a decomposition of $R$ into $R_1$ and $R_2$ 
-has a lossless-join if one of the following FDs is in $F+$
+has a lossless-join if one of the following FDs is in $F\sp{+}$
 \begin{itemize}
   \item $f : R_1 \cap R_2 \rightarrow R_1$ 
   \item $g : R_1 \cap R_2 \rightarrow R_2$ 
 \end{itemize}
 
-We can use the \textit{FD Check} algorithm to test whether $f$ or $g$ are in $F+$. Furthermore,
-in~\cite{bdb2}, Section~6.5.1, it has been shown inductively that the above rule can be applied for a 
-decomposition with $n$ subschemas by using the associativity of the natural join~($\Join$):
-$$
-  R_1 \Join (R_2 \Join (...\Join(R_{n-1} \Join R_{n}) \newline
-  =R_1 \Join (R_2 \Join (...\Join(R_{n-2} \Join R_{n-1}')  \newline
-  =
-  ...
-  = R
-$$
-Knowing these facts, we can now define a simple algorithm for testing the lossless-join
-property of a decomposition \(\mathcal{R}\):
-   
+However, the above test is not suitable for decompositions with more than two relation. 
+Figure~\ref{alg:lossless} describes an algorithm which can be used to test
+the lossless-join property of decompositions with more than two relations. The algorithm comes 
+from~\cite[Algorithm 11.1]{bdb1}.
+
+It should be noted that there are two types of decompositions, acyclic and cyclic.
+Roughly speaking, with acyclicity, the lossless-join property may be
+checked pairwise; that is, two relations at a time.  With cyclic
+decompositions, this is not possible.  Most decompositions of
+practical interest, and virtually all decompositions which are studied
+in introductory database courses, are acyclic.  The differences will
+not be elaborated here; for an example of a cyclic decomposition see
+\cite[Section 7]{AhoBU79}, while for a systematic presentation see
+\cite{BeeriFMY83}. The testing algorithm which is presented here,
+and which is used in the system, is guaranteed to provide the correct
+result only for acyclic decompositions. It may report failure for a
+cyclic decomposition, even if that decomposition is lossless.  It may
+furthermore fail if degenerate FDs of the form
+ $\emptyset \rightarrow B$ are allowed; again, such dependency are
+rarely if ever considered in introductory courses. In short, neither
+of these restrictions is significant from a pedagogical point of view.
+
+Acyclic decompositions admit so-called monotone join expressions
+\cite[Theorem 3.4]{BeeriFMY83}. This implies in particular that if
+$D$ is a decomposition of $R$, then there is an ordering
+ $\langle R_1,R_2,..,R_n \rangle$
+of the elements of $D$ with the property that for each $i$,
+ $1{}\leq{}i{}\leq{}n$, the following holds.
+ \[
+   (\bigcup_{j=1}^{i}) R_i \cup R_{i+1} \neq \emptyset
+ \]
+ Call such a sequence \emph{monotone}.
+
+
+\begin{figure}[htbp]
+\hrule
 \begin{alltt}
-INPUT 
-  \(R\) : a relation
-  \(F\) : a set of FDs which hold in \(R\)
-  \(\mathcal{R}\) : a set of relations representing a decomposition of \(R\).
-OUTPUT 
-  true if  \(\mathcal{R}\) is lossless-join, false otherwise
-BEGIN
-  K = first element of \(\mathcal{R}\)
-  foreach \(R\sb{i} \in \mathcal{R}\) for \(i \geq 2\) do
-    if \(FDCheck(K \cap R\sb{i} \rightarrow K, F)\) or \(FDCheck(K \cap R\sb{i} \rightarrow R\sb{i}, F)\) then
-      \(K = K \cup R\sb{i}\)
-    else
-      return false
-    end if
+
+Algorithm TestLosslessJoin(\(R\): relation,
+              \(F\): set of FDs which hold in \(R\),
+              \(\mathcal{R}\): monotone sequence of relations 
+                  representing a decomposition of \(R\)):
+        return: boolean
+/* This algorithm tests whether the decomposition 
+\(\mathcal{R}\) has the lossless-join property */
+  
+  Create an initial matrix \(S\) with one row \(i\) for each relation 
+  \(R\sb{i} \in \mathcal{R}\), and one column \(j\) for each attribute \(A\sb{j}\) in R.  
+  
+   
+  \(S(i, j) = b\sb{ij}\) for all matrix entries. 
+  /* Each \(b\sb{ij}\) is a distinct symbol associated with indexes (i,j)*/
+  
+  foreach row \(i\) representing relation schema \(R\sb{i}\) do
+    foreach column \(j\) representing attributes \(A\sb{j}\) do
+      if \(A\sb{j} \in R\sb{i}\) then
+        \(S(i, j) = a\sb{j}\) /* \(a\sb{j}\) is a distinct symbol associated with a index \(j\) */
+      end if
+    end foreach
   end foreach
-  return true
+  
+  repeat
+    foreach FD \(\alpha \rightarrow \beta\) in \(F\) do
+      foreach row \(S\sb{i} \in S\) representing relation schema \(R\sb{S\sb{i}}\) do
+        if \(\alpha \subseteq R\sb{S\sb{i}}\) then
+          make the symbols in each column that correspond to
+          an attribute in \(\beta\) be the same in all these rows as follows:
+          if any of the rows has an \(a\) symbol for the column,
+          set the other rows to the same \(a\) symbol in the column.
+          If no \(a\) symbol exists for the attribute in any of the
+          rows, choose one of the \(b\) symbols that appear in one
+          of the rows for the attribute and set the other rows to
+          that same \(b\) symbol in the column
+        end if
+      end foreach
+    end foreach
+  until \(S\) does not change
+                  
+If a row is made up entirely of \(a\) symbols, then the decomposition 
+has the lossless join property; otherwise it does not.
 \end{alltt}
+\caption{Pseudocode for Algorithm TestLosslessJoin}\label{alg:lossless}
+\hrule
+\end{figure}
 
-%In the above algorithm we are using the $\cup$ operator instead of $\Join$. This is
-%permitted, since we are using only the attributes of the relation $R$ and not actual instances (i.e.,
-%relation with its contents).
+Here follows a short example which illustrates the \textit{TestLosslessJoin} algorithm. 
+The example comes from~\cite[Figure 11.1]{bdb1}:
 
-\subsubsection{Dependency Preservation Test} 
-Using the \textit{Equivalence} algorithm testing whether a decomposition $R_1,...,R_n$ of $R$ is dependency preserving
-becomes quite an easy task. We just need to compute: $$Equivalence(F, (F_1 \cup ... \cup F_n)) \mbox{ where } F_i \mbox{ is the set of FDs which holds in } R_i$$ 
+\vspace{0.2cm}
+
+\indent \begin{tabular}[h]{l l}
+  $R = \{A, B, C, D, E, F\}$ & $F = \{A \rightarrow B, C \rightarrow DE, AC \rightarrow F\}$ \\
+  Decompose $R$ in: & $R_1 = \{B, E\}$ $R_2 = \{A, C, D, E, F\}$\\
+\end{tabular}
+
+\vspace{0.2cm}
+
+\footnotesize
+\indent \begin{tabular}[h]{c|c|c|c|c|c|c|c}
+  \cline{2-7}
+  & A & B & C & D & E & F \\
+  \cline{2-7}
+  \cline{2-7}
+  $R_1$ & $b_{11}$ & $a_2$ & $b_{13}$ & $b_{14}$ & $a_3$ & $b_{16}$ \\
+  $R_2$ & $a_1$ & $b_{22}$ & $a_{3}$ & $a_4$ & $a_5$ & $a_6$ \\
+  \cline{2-7}
+  \multicolumn{8}{l}{No changes to matrix after applying the FDs}
+\end{tabular}
+\normalsize
+%\noindent No changes to matrix after applying the FDs, thus decomposition is not lossless-join.
+
+\vspace{0.2cm}
+
+The above matrix does not have a row only with $a$ symbols, thus the decomposition is 
+not lossless. Let us consider a different decomposition of the same relation, which has
+the lossless-join property:
+
+\vspace{0.2cm}
+
+\begin{tabular}[h]{l l}
+  $R = \{A, B, C, D, E, F\}$ & $F = \{A \rightarrow B, C \rightarrow DE, AC \rightarrow F\}$ \\
+  Decompose $R$ in: & $R_1 = \{A, B\}$ $R_2 = \{C, D, E\}$ $R_3 = \{A, C, F\}$\\
+\end{tabular} 
+
+\vspace{0.2cm}
+
+\footnotesize
+\hspace*{-0.5cm}\begin{minipage}[t]{0.5\linewidth}\centering
+\begin{tabular}[h]{c|c|c|c|c|c|c|}
+  \cline{2-7}
+  & A & B & C & D & E & F \\
+  \cline{2-7}
+  \cline{2-7}
+  $R_1$ & $a_{1}$ & $a_2$ & $b_{13}$ & $b_{14}$ & $b_{15}$ & $b_{16}$ \\
+  $R_2$ & $b_{21}$ & $b_{22}$ & $a_{3}$ & $a_4$ & $a_5$ & $b_{25}$ \\
+  $R_3$ & $a_1$ & $b_{32}$ & $a_{3}$ & $b_{34}$ & $b_{35}$ & $a_6$ \\
+  \cline{2-7}
+  \multicolumn{7}{l}{Matrix S at the beginning}
+\end{tabular}
+\end{minipage}
+\hspace*{-0.5cm}
+\begin{minipage}[t]{0.5\linewidth}\centering
+\begin{tabular}[h]{c|c|c|c|c|c|c|c}
+  \cline{2-7}
+  & A & B & C & D & E & F \\
+  \cline{2-7}
+  \cline{2-7}
+  $R_1$ & $a_{1}$ & $a_2$ & $b_{13}$ & $b_{14}$ & $b_{15}$ & $b_{16}$ \\
+  $R_2$ & $b_{21}$ & $b_{22}$ & $a_{3}$ & $a_4$ & $a_5$ & $b_{25}$ \\
+  $R_3$ & $a_1$ & $\cancel{b_{32}}$ $a_2$ & $a_{3}$ & $\cancel{b_{34}}$ $a_4$ &$\cancel{b_{35}}$ $a_5$ & $a_6$ \\
+  \cline{2-7}
+  \multicolumn{8}{l}{Matrix S after applying the first two FDs} \\
+\end{tabular}
+\end{minipage}
+\normalsize
+%\hrule
+%\end{figure}
+
+\subsubsection{Test Dependency Preservation} 
+Using the \textit{Equivalence} algorithm testing whether a decomposition 
+$R_1,...,R_n$ of $R$ is dependency preserving
+becomes quite an easy task. We just need to compute: 
+\[
+  Equivalence(F, (F_1 \cup ... \cup F_n)) \mbox{ where } F_i \mbox{ is the set of FDs which holds in } R_i \mbox{ for each } i 
+\] 
+
+Figure~\ref{fig:dptest} shows pseudocode for the algorithm.
+
+\begin{figure}[htbp]
+\hrule
+\begin{alltt}
+
+Algorithm TestDependencyPreservation(\(F\): set of FDs which hold in \(R\),
+           \((F_1,...,F_n)\): list of sets of FDs which holds in \(R_i\) for each \(i\)):
+          return: boolean
+/* This is a polynomial-time algorithm for testing the 
+dependency-preservation property of a given decomposition */
+  \(G = F_1 \cup ... \cup F_n\)
+  return Equivalence(G,F)
+\end{alltt}
+\caption{Pseudocode for Algorithm TestDependencyPreservation}\label{fig:dptest}
+\hrule
+\end{figure}
 
 \subsubsection{Find All Candidate Keys}
 The problem of finding all candidate keys is know to be NP-complete~\cite{p3}. 
-Our leaning environment uses an trivial algorithm for finding all the candidate keys,
-which is based on the \textit{Attribute Closure} algorithm. The algorithm test every possible
+Our learning environment uses a trivial algorithm for finding all candidate keys,
+which is based on the \textit{SLFD-Closure} algorithm. The algorithm test every possible
 subset of attributes of the relation for being a superkey. If a subset of the superkey
-is found which is also a superkey, then the first superkey is replace with the new one.   
+is found which is also a superkey, then the first superkey is replace with the new one.  
+Pseudocode for the algorithm in shown in Figure~\ref{alg:findkeys}. 
 
+\begin{figure}[htbp]
+\hrule
 \begin{alltt}
-INPUT 
-  \(R\) : a relation
-  \(F\) : a set of FDs which hold in \(R\)
-OUTPUT 
-  \(\mathcal{K}\) : a set of all candidate keys for \(R\)
-BEGIN
+
+Algorithm FindAllCandidateKeys(\(R\): relation,
+              \(F\): set of FDs which hold in \(R\)):
+            return: set of keys
+/* This an exponential-time algorithm finds all candidate keys for \(R\)*/             
   \(\mathcal{K} = \emptyset\)
   foreach subset \(\gamma\) of \(R\) do
-    compute \(\gamma+\)
-    if \(\gamma+ \) contains all attributes of \(R\) then
+    compute \(\gamma\sp{+}\)
+    if \(\gamma\sp{+} \) contains all attributes of \(R\) then
       remove all \(\kappa \in \mathcal{K}\) with  \(\gamma \subseteq \kappa\)
       if \(\gamma \nsubseteq \kappa\) for all \(\kappa \in \mathcal{K}\) then
-        \(\mathcal{K} \cup \gamma\)
+        \(\mathcal{K} = \mathcal{K} \cup \gamma\)
       end if
     end if
   end foreach
-return \(\mathcal{K}\)
+  return \(\mathcal{K}\)
 \end{alltt}
+\caption{Pseudocode for Algorithm FindAllCandidateKeys}\label{alg:findkeys}
+\hrule
+\end{figure}
 
 \subsubsection{Reduction By Resolution}
 Often is required to compute a cover for the projection of $F$ on a subschema $X$ of $R$, in 
-other words, to find find the FDs on $R$ which are induced by $F$. Altought the problem of
+other words, to find find the FDs on $R$ which are induced by $F$, thus:
+\[ 
+  F\sb{X}\sp{+} = \{\alpha\rightarrow\beta | \alpha \rightarrow \beta \in F\sp{+} \wedge \alpha \subseteq R \wedge \beta \subseteq R\}
+\]
+Although the problem of
 finding such embedded cover of FDs is
 known to be inherently exponential~\cite{p11}, it plays an important part of many of the algorithms
-used by LDBN. The traditional approach is to compute $F+$ and then project $F+$ over the subschema $X$,
+used by LDBN. The traditional approach is to compute $F\sp{+}$ and then project $F\sp{+}$ over the subschema $X$,
 however, the produced cover
 is always unnecessarily large~\cite{p4}. Still, for this difficult problem a simple 
 algorithm called \textit{Reduction by Resolution}
@@ -223,15 +407,15 @@ was found by Gottlob~\cite{p4}. The algorithm is much more practical than the st
 as it runs in polynomial time in a large number of cases, unlike the standard approach
 which is exponential for each input. 
 
+\begin{figure}[htbp]
+\hrule
 \begin{alltt}
-INPUT 
-  \(R\) : a relation
-  \(F\) : a set of FDs which hold in \(R\)
-  \(X\) : a subset of attributes of \(R\)
-OUTPUT 
-  \(F\sb{X}\) : a cover for \(F\sb{X}+\) with 
-           \(F\sb{X}+ = \{\alpha\rightarrow\beta | \alpha \rightarrow \beta \in F+ \wedge \alpha \subseteq R \wedge \beta \subseteq R\}\)
-BEGIN 
+
+Algorithm ReductionByResolution(\(R\): a relation,
+                  \(F\) : set of FDs which hold in \(R\),
+                  \(X\) : subset of attributes of \(R\)):
+             return: set of FDs
+/* This algorithm computes an embedded cover of FDs for \(F\sb{X}\sp{+}\) */
   \(G = F\)
   \(K = X - R\)
   while \(K \neq \emptyset\) do
@@ -252,14 +436,17 @@ BEGIN
   end while
   return \(G\)
 \end{alltt}
+\caption{Pseudocode for Algorithm ReductionByResolution}\label{alg:rbr}
+\hrule
+\end{figure}
 
-\subsubsection{BCNF Test}
+\subsubsection{Test BCNF}
 To check whether a non-trivial dependency $\alpha \rightarrow \beta$  causes a violation of BCNF,
 we must use the \textit{Attribute Closure} to test whether $\alpha$ is a superkey. 
 It suffices to check only the dependencies in the given set $F$ for violation of BCNF, 
-rather than checking all dependencies in $F+$~\cite{bdb4}.  
+rather than checking all dependencies in $F\sp{+}$~\cite{bdb4}.  
 If none of the dependencies in $F$ causes a violation of BCNF, 
-then none of the dependencies in $F+$ will cause a violation of BCNF either.
+then none of the dependencies in $F\sp{+}$ will cause a violation of BCNF either.
 However, using only $F$ is incorrect when testing a relation in a decomposition of $R$~\cite{bdb4}.
 Let us consider the following example:
 
@@ -272,39 +459,41 @@ Let us consider the following example:
 
 Neither of the dependencies in $F$ contain only attributes from
 $(A,C,D,E)$ so we might be mislead into thinking $R_2$ satisfies BCNF. In fact, 
-dependency $AC \rightarrow D$ in $F+$ shows $R_2$ is not in BCNF. To avoid this we can
+dependency $AC \rightarrow D$ in $F\sp{+}$ shows $R_2$ is not in BCNF. To avoid this we can
 use the \textit{Reduction by Resolution} algorithm to compute covers for $R_1$ and $R_2$. 
 
 The algorithm uses the \textit{Reduction by Resolution} algorithm which is know to be exponential
 in some bad cases, thus the \textit{BCNF Test} is also exponential. In fact, the test is know to 
 be co-NP-complete~\cite{p4}.
 
-\subsubsection{3NF Test}
-The \textit{3NF Test} is similar to the \textit{BCNF Test}. By using the \textit{Reduction by Resolution} algorithm
+\subsubsection{Test 3NF}
+The algorithm \textit{Test 3NF} is similar to the \textit{Test BCNF} one. 
+By using the \textit{Reduction By Resolution} algorithm
 we must first compute the
 embedded FD cover $F_i$ for each relation $R_i$ in a decomposition $R_1,...,R_n$ of $R$. Then we use 
-the \textit{Attribute Closure} to test each FD in $F_i$ of the form $\alpha \rightarrow \beta$ 
+the \textit{SLFD-Closure} algorithm to test each FD in $F_i$ of the form $\alpha \rightarrow \beta$ 
 whether $\alpha$ is a superkey in $R_i$. 
 If the $\alpha$ is not a superkey, we have to verify whether each attribute in the $\beta$ 
 is contained in a candidate key of $R$, i.e., it is prime. Testing attribute for being a prime
-attribute is know to be a NP-complete problem~\cite{p3}. For this part of the \textit{3NF Test} algorithm
+attribute is know to be an NP-complete problem~\cite{p3}. For this part of the \textit{Test 3NF} algorithm
 we can use our \textit{Find All Candidate Keys} algorithm in order
 to compute all the candidate keys in $R_i$ and then test whether the attributes in $\alpha$ are part of any 
 of them.
 
-\subsubsection{2NF Test}
-%Testing whether a a decomposition is in 2NF is even harder than the \textit{3NF Test}. 
+\subsubsection{Test 2NF}
+%Testing whether a a decomposition is in 2NF is even harder than the \textit{Test 3NF}. 
 Once again we compute the
 embedded FD cover for each relation $R_i$ in a decomposition $R_1,...,R_n$ of $R$. After that 
-we compute each candidate key for each for each a relation $R_i$, we refer to this set as $K_i$.
+we compute the set of all candidate keys for each relation $R_i$, we refer to this set as $K_i$.
  
 To test whether $R_i$ is in 2NF we have to ensure that each non-key attribute is fully
 functional dependent on every candidate key in $K_i$. To simply the problem we can test
 each FD in $F_i$ of the form $\alpha \rightarrow \beta$ whether $\alpha$ is a proper subset
-of a key candidate in $K_i$. If this is true and the attributes in $\beta$ are not prime then
-$R_i$ is not in 2NF.
+of any key candidate in $K_i$. If this is true and there is a non-key attribute in $\beta$ then
+$R_i$ is not in 2NF, otherwise the relation $R_i$ is in 2NF.
 
-The \textit{2NF Test} is NP-complete, since it involves finding all candidate keys.
+The problem of testing whether a relation is in 2NF is NP-complete, 
+since it involves finding all candidate keys.
 
 \subsection{Decomposition Algorithms}
 \label{sec:algdec}
@@ -313,57 +502,58 @@ a formal definition of the rules which we were following during this process.
 In this section we present algorithms for finding a minimal cover of a set of FDs and 
 for decomposing any proposed relation into 3NF and BCNF.  
 
-\subsubsection{Find Minimal Cover}
-With the help of the \textit{Attribute Closure} algorithm we can now define an algorithm 
-for computing a minimal (canonical) cover of a set $F$ of FDs. The algorithm comes form~\cite{bdb2}, Section~6.3.1.
+\subsubsection{Find Minimal Cover}  
+With the help of the \textit{SLFD-Closure} algorithm we can now define an algorithm 
+for computing a minimal cover of a set \textit{F} of FDs. 
+The algorithm comes form~\cite[Section 6.3.1]{bdb2}. First, it finds and eliminates 
+redundant attributes in the left-hand side (LHS) and right-hand side (RHS) 
+of each FD in \textit{F} by using the \textit{SLFD-Closure} algorithm. Then, it eliminates FDs with 
+empty LHS, which could. Pseudocode for the algorithm is shown in Figure~\ref{alg:mincov}.
 
+\begin{figure}[htbp]
+\hrule
 \begin{alltt}
-INPUT 
-  \(F\)  : a set of FDs
-OUTPUT 
-  \(F\sb{c}\) : a minimal (canonical) cover of \(F\)
-BEGIN
 
-\(F\sb{c} = F\)
-repeat
-  /* Find redundant attributes in the left-hand side of each FD */
-  foreach FD \(\alpha \rightarrow \beta\) in \(F\sb{c}\) do
-    foreach \(A \in \alpha\) do
-      /* Checks if A is redundant */
-      if \(\beta \subseteq AttributeClosure(F\sb{c}, \alpha-A)\) then
-        replace \(\alpha \rightarrow \beta\) with \((\alpha-A) \rightarrow \beta\)
-      end if
+Algorithm FindMinimalCover(\(F\): set of FDs):
+             return: set of FDs
+/* This algorithm computes a minimal cover of FDs of set \(F\) of FDs */
+  \(F\sb{c} = F\)
+  repeat
+    foreach FD \(\alpha \rightarrow \beta\) in \(F\sb{c}\) do
+      /* Find redundant attributes in the left-hand side of the FD */
+      foreach \(A \in \alpha\) do
+        /* Checks if A is redundant */
+        if \(\beta \subseteq\) SLFD-Closure(\(\alpha-A, F\sb{c}\)) then
+          replace \(\alpha \rightarrow \beta\) with \((\alpha-A) \rightarrow \beta\)
+        end if
+      end foreach
+      /* Find redundant attributes in the right-hand side of the FD */
+      foreach \(B \in \beta\) do
+        /* Checks if B is redundant */
+        if \(B \subseteq\) SLFD-Closure(\(\alpha, F\sb{c}-(\alpha \rightarrow \beta) \cup (\alpha \rightarrow (\beta - B))\)) then
+          replace \(\alpha \rightarrow \beta\) with \((\alpha \rightarrow (\beta-B)\)
+        end if
+      end foreach
     end foreach
-  end foreach
     
-  /* Find redundant attributes in the right-hand side of each FD */
-  foreach FD \(\alpha \rightarrow \beta\) in \(F\sb{c}\) do
-    foreach \(B \in \beta\) do
-      /* Checks if B is redundant */
-      if \(B \subseteq AttributeClosure(F\sb{c}-(\alpha \rightarrow \beta) \cup (\alpha \rightarrow (\beta - B)), \alpha)\) then
-        replace \(\alpha \rightarrow \beta\) with \((\alpha \rightarrow (\beta-B)\)
-      end if
-    end foreach
-  end foreach
-    
-  Delete all FDs FD of the form \(\alpha \rightarrow \emptyset\) form \(F\sb{c}\)
-    
-  Using the \(Union Rule\) combine all FDs of the form \(\alpha \rightarrow \beta,...,\alpha \rightarrow \gamma\)
-    into one FD \(\alpha \rightarrow (\beta \cup ... \cup \gamma)\)
-    
-until \(F\sb{c}\) does not change
-return \(F\sb{c}\)
+    Delete all FDs FD of the form \(\alpha \rightarrow \emptyset\) form \(F\sb{c}\)
+      
+    Using the \(Union Rule\) combine all FDs of the form \(\alpha \rightarrow \beta,...,\alpha \rightarrow \gamma\)
+      into one FD \(\alpha \rightarrow (\beta \cup ... \cup \gamma)\)
+      
+  until \(F\sb{c}\) does not change
+  return \(F\sb{c}\)
 \end{alltt}
+\caption{Pseudocode for Algorithm FindMinimalCover}\label{alg:mincov}
+\hrule
+\end{figure}
 
-For the sake of simplicity we iterate over all FDs in $F$ several times, in the actual implementation
-the number of iteration could be reduced. 
-
-\subsubsection{3NF Decomposition}
+\subsubsection{Decomposition 3NF}
 The following algorithm decomposes a relation schema in 3NF. The algorithm
 ensures that each new relation schema is in 3NF, thus the decomposition is in 3NF. 
 Furthermore, the decomposition is dependency preserving and lossless-join. 
-The algorithm comes form~\cite{bdb2}, Section~6.8. 
-First, we build new relations corresponding to each FD in in $F_{c}$ (the minimal cover of $F$). 
+The algorithm comes form~\cite[Section 6.8]{bdb2}. 
+First, we construct new relations corresponding to each FD in in $F_{c}$ (the minimal cover of $F$). 
 Then we need to eliminate relations, the attributes of
 which are subset of the attributes of another relation. 
 After that, we find all the candidate keys of
@@ -371,15 +561,16 @@ the initial relation, this is necessary in order to determine  whether one of th
 in the new set of relations, which is required by the algorithm to ensure
 dependency preservation. If this is not the case, the algorithm creates
 a new relation \(\mathcal{R}\sb{i}\) = any candidate key for \(R\).
-Here follows a pseudo code of the algorithm:
+Figure~\ref{alg:dec3nf} shows pseudocode for the algorithm.
 
+\begin{figure}[htbp]
+\hrule
 \begin{alltt}
-INPUT 
-  \(R\)  : a relation
-  \(F\sb{c}\) : a canonical cover of a set of FDs which hold in \(R\)
-OUTPUT 
-  \(\mathcal{R}\) : a set of relational schemas representing a decomposition in 3NF 
-BEGIN
+
+Algorithm Decomposition3NF(\(R\): set of FDs,
+             \(F\sb{c}\): minimal cover of a set of FDs which hold in \(R\)):
+          return: set of relational schemas  
+/* This algorithm decomposes a relation schema in 3NF */
   \(\mathcal{R} = \emptyset\)
   i = 0
   foreach FD \(\alpha \rightarrow \beta\) in \(F\sb{c}\) do
@@ -389,7 +580,7 @@ BEGIN
     \(\mathcal{R} = \mathcal{R} \cup \mathcal{R}\sb{i}\)
   end foreach
   
-  if none of the schemas \(\mathcal{R}\sb{j}, 1 \leq j \leq i\) contains a candidate key for \(R\) then
+  if none of the schemas \(\mathcal{R}\sb{j}, 1\leq{}j\leq{}i\) contains a candidate key for \(R\) then
     i = i + 1
     create a relation schema \(\mathcal{R}\sb{i}\) = any candidate key for \(R\)
     \(\mathcal{R} = \mathcal{R} \cup \mathcal{R}\sb{i}\)
@@ -398,37 +589,45 @@ BEGIN
   
   return \(\mathcal{R}\)
 \end{alltt}
+\caption{Pseudocode for Algorithm Decomposition3NF}\label{alg:dec3nf}
+\hrule
+\end{figure}
 
-\subsubsection{BCNF Decomposition}
+\subsubsection{Decomposition BCNF}
 There is a simple algorithm for decomposing a relational schema into BCNF.
-It is described in~\cite{bdb2}, Section~6.9:
-
-\begin{alltt}
-INPUT
-  \(R\) : a relation
-  \(F\) : a set of FDs which hold in \(R\)
-OUTPUT
-  \(Z\) : a set of relational schemas representing a decomposition in BCNF 
-BEGIN
-\(Z = R\)
-done = false
-
-while not done do
-  if there is a schema \(R\sb{i}\) in \(Z\)  that is not in BCNF then begin
-    let \(\alpha \rightarrow \beta\) be a nontrivial FD that holds on \(R\sb{i}\)
-      such that \(\alpha \nrightarrow R\sb{i}\) /* \(\alpha\) is not a superkey */
-      and  \(\alpha \cap \beta \neq \emptyset\) then  
-        decompose \(R\sb{i}\) in \(R\sb{i1} = \alpha \cup \beta\) and \(R\sb{i2} = R\sb{i} - \beta\)
-        remove \(R\sb{i}\) from \(Z\) 
-        \(Z = Z \cup R\sb{i1} \cup R\sb{i2}\)
-  else 
-    done = true
-  end if 
-return \(Z\)
-\end{alltt}
-
-The algorithm always 
-procures a lossless-join decomposition, however, we must run the \textit{Dependency Preservation Test} on
-the decomposition to check whether the decomposition is dependency preserving or not. As we mention in Section~\ref{sec:BCNF},
+It is described in~\cite[Section 6.9]{bdb2}. The algorithm always 
+procures a lossless-join decomposition, however, we must run the 
+\textit{TestDependencyPreservation} algorithm on
+the decomposition to check whether the decomposition is dependency preserving or not. 
+As we mentioned in Section~\ref{sec:BCNF},
 it is no always possible to find a dependency preserving BCNF decomposition.
+Figure~\ref{alg:decbcnf} shows pseudocode for the algorithm.
 
+\begin{figure}[htbp]
+\hrule
+\begin{alltt}
+
+Algorithm DecompositionBCNF(\(R\): a relation,
+             \(F\): a set of FDs which hold in \(R\)):
+          return: set of relational schemas
+/* This algorithm decomposes a relation schema in BCNF */
+  \(Z = R\)
+  done = false
+  while not done do
+    if there is a schema \(R\sb{i}\) in \(Z\)  that is not in BCNF then begin
+      let \(\alpha \rightarrow \beta\) be a nontrivial FD that holds on \(R\sb{i}\)
+        such that \(\alpha \nrightarrow R\sb{i}\) /* \(\alpha\) is not a superkey */
+        and  \(\alpha \cap \beta \neq \emptyset\) then  
+          decompose \(R\sb{i}\) in \(R\sb{i1} = \alpha \cup \beta\) and \(R\sb{i2} = R\sb{i} - \beta\)
+          remove \(R\sb{i}\) from \(Z\) 
+          \(Z = Z \cup R\sb{i1} \cup R\sb{i2}\)
+    else 
+      done = true
+    end if 
+  end while
+  return \(Z\)
+\end{alltt}
+\caption{Pseudocode for Algorithm DecompositionBCNF}
+\label{alg:decbcnf}
+\hrule
+\end{figure}
