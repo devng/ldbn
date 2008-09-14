@@ -13,6 +13,8 @@
 \usepackage{subfigure}
 \usepackage{longtable}
 \usepackage{array,ltxtable,ragged2e}
+\usepackage{rotating}
+\usepackage{cancel}
 
 
 \newcolumntype{C}{>{\Centering}X}
@@ -45,6 +47,12 @@
 \begin{spacing}{1.2}
 \tableofcontents%
 \cleardoublepage
+
+%List of figures and List of tables are not necessary
+\listoffigures%
+%\listoftables%
+\cleardoublepage
+
 \end{spacing}
 
 \pagenumbering{arabic} \setcounter{page}{1}

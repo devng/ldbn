@@ -46,7 +46,7 @@ so forth. This approach has a centralized architecture; thus all tasks and
 functions are performed on the server. After their completion a new HTML page is 
 sent back to the client. This approach has two major drawbacks. In the first place, 
 the browser must re-render the whole HTML page after each interaction with the server.
-Part of this could be avoided with the help of frames. Despite this, it would still 
+Although part of this could be avoided with the help of frames, it would still 
 require more data than actually needed to be sent back to the client, since most 
 parts of the page remain the same after each interaction. In the second place, 
 all of the computations must be done on the server-side, leaving the client with 
@@ -55,7 +55,8 @@ With the introduction of rich web-applications such as Google Maps, Facebook,
 Google Docs and others it has been shown in practice that the client is capable of 
 much more than simply rendering a web page. 
 
-Finally there is the client-server based solution, called AJAX, which could be
+Finally, there are client-server-based solutions, such as those
+which use packages such as AJAX, which could be
 seen as a mixture 
 of the first two solutions. As it is used by LDBN, we
 discuss AJAX more formally in the following section.
@@ -77,11 +78,11 @@ of the content of a web page. However, the
 real potential of AJAX lies within the client-server communication, an example
 of which is illustrated in Figure~\ref{fig:ajax01}. In this example we have an AJAX application
 which runs within a browser. JavaScript must be enabled in the browser, otherwise
-the application wont start.  
+the application will not start.  
 The XMLHttpRequest is an application programming interface (API) implemented by the browser,
 which can be accessed by the application using JavaScript. This API is 
 used to handle communication with the server in an asynchronous fashion using a
-simple HTTP connection. It is worth mentioning that other solutions also exists. 
+simple HTTP connection. It is worth mentioning that other solutions also exist. 
 For example, XML is often used to transfer data between the server and the client, 
 although XML is not required for data interchange and often other text-based
 formats are used as an alternative such as JSON or plain text~\cite{bajax1}. In our example we have 
@@ -97,8 +98,8 @@ the DBMS, where we store the data.
 \end{figure}
 
 Another advantage of AJAX is the so called \textit{Architectural Shift}~\cite{wgdd1}, 
-which is illustrated in Figure~\ref{fig:ajax02}. This figure 
-is an adaptation of Figure~3 of~\cite{wgdd1}. 
+which is illustrated in Figure~\ref{fig:ajax02}, which is
+an adaptation of~\cite[Figure 3]{wgdd1}. 
 It describes the ability of the client to handle events
 locally, without the need of a server. Such events can be for example the
 expansion of a tree. This has two advantages. On the one hand, it frees server 
@@ -121,7 +122,7 @@ For our learning environment we need to support every major browser to ensure ac
 However, this often requires writing a different code base for different browsers,
 and this means less scalability for the application and less productivity 
 for the developers~\cite{bgwt2}. Another major
-disadvantage is the lack good developer tools for JavaScript~\cite{bgwt2}, which also 
+disadvantage is the lack of good developer tools for JavaScript~\cite{bgwt2}, which also 
 has a negative impact on the scalability and productivity.
 A typical example here could be the debugging process of an AJAX project - 
 often bugs are caused by a simple typographical error (typo), which in the case 
@@ -157,16 +158,16 @@ Another very important
 aspect of the compiler is the fact that when the code is compiled into JavaScript,
 it results in 
 a single JavaScript file for each browser type and target locale. This is illustrated 
-in Figure~\ref{fig:gwt01}, which is an adaptation of Figure~7 of~\cite{wgio2}. 
+in Figure~\ref{fig:gwt01}, which is an adaptation of~\cite[Figure 7]{wgio2}. 
 Typically this means that a GWT application will be compiled into 
 a minimum of five separate JavaScript files. Each of these files is meant to run 
 on a specific browser type, version, and locale. A bootstrap script, initially 
 loaded by the browser, will 
 automatically pull the correct file when the
 application is loaded. The benefit of this is that the code loaded by the browser 
-will not contain code that it cannot use. The produced JavaScript code by the GWT 
+will not contain code that it cannot use. The JavaScript code produced by the GWT 
 compiler is highly optimized and it usually runs much faster than handwritten 
-JavaScript code~\cite{wgio1}. Moreover, the developer team must support only
+JavaScript code~\cite{wgio1}. Moreover, the development team must support only
 one code base, by which the the scalability of an application can be increased.  
 
 \begin{figure}[h]
@@ -260,7 +261,7 @@ completion the UI returns to its normal state.
 The same origin policy prevents AJAX applications from being used across domains,
 although the W3C has a draft that would enable this functionality~\cite{bajax1}.
 
-A browser independent AJAX application is not capable of making a connection 
+A browser-independent AJAX application is not capable of making a connection 
 to a database~\cite{bajax1}, thus it requires a web server to establish the 
 connection. Then the client-side communicate with the server-side using 
 predefined XML format.
@@ -279,7 +280,7 @@ Apache is the most popular HTTP server on the Web~\cite{w3} and PHP is the most 
 Apache module~\cite{w4}. In addition, MySQL is the most popular open source 
 database system~\cite{w5}.
  
-It is worth mentioning that even tough LDBN is implemented using Apache Web Server,
+It is worth mentioning that even though LDBN is implemented using Apache Web Server,
 PHP and MySQL, it is possible to use different tools and programming languages 
 on the server-side with almost no modifications to the client-side. However, 
 the predefined XML data exchange format must stay the same.
