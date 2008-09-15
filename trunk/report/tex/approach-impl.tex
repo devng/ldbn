@@ -109,12 +109,25 @@ we are interested only in candidate keys and primary keys of a relation, not in 
 Figure~\ref{fig:relexample} illustrates
 an (abstract) example of those data items and their structure in our system. 
 
+%\begin{figure}[h]
+%  \begin{center}
+%    \includegraphics[scale=0.4]{./img/relation-example01a.png}
+%    \caption{Example of a Relation}
+%    \label{fig:relexample}
+%  \end{center}
+%\end{figure}
+
 \begin{figure}[h]
-  \begin{center}
+  \centering
+  \subfigure[Standard Representation]{
     \includegraphics[scale=0.4]{./img/relation-example01a.png}
-    \caption{Example of a Relation}
     \label{fig:relexample}
-  \end{center}
+  }
+  \subfigure[Representaion with Respect to AttributeSet]{
+    \includegraphics[scale=0.4]{./img/relation-example02a.png}
+    \label{fig:relexample2}
+  }
+\caption{Example of a Relation Representation in LDBN}
 \end{figure}
 
 As can be seen, the most important data item is the relation, since
@@ -135,13 +148,13 @@ Figure~\ref{fig:relexample2} shows the same relation as in Figure~\ref{fig:relex
 respect to the instances of the \verb=AttributeSet= necessary to construct the different
 data items.
 
-\begin{figure}[h]
-  \begin{center}
-    \includegraphics[scale=0.4]{./img/relation-example02a.png}
-    \caption{Example of a Relation with respect to AttributeSet}
-    \label{fig:relexample2}
-  \end{center}
-\end{figure}
+%\begin{figure}[h]
+%  \begin{center}
+%    \includegraphics[scale=0.4]{./img/relation-example02a.png}
+%    \caption{Example of a Relation with respect to AttributeSet}
+%    \label{fig:relexample2}
+%  \end{center}
+%\end{figure}
 
 As can be seen a (primary) key is simply an instance of \verb=AttributeSet=. The candidate keys
 are represented as a list of instances of \verb=AttributeSet=. An FD is constructed from
@@ -330,7 +343,7 @@ in case of an error.
 
 \section{User Interface}
 The most important part of a system for end users and critical for system 
-success is the UI~\cite{p9}, as such we put most of
+success is the user interface (UI)~\cite{p9}, as such we put most of
 our efforts in developing a fast, intuitive and stable UI. Furthermore,
 it is possible to define two distinct user groups, warranting at least two different
 user interfaces for LDBN.  One group would include the lecturers, who will

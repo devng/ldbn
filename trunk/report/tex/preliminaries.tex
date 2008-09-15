@@ -126,7 +126,7 @@ $\beta \subseteq \alpha$.
 In a relation schema $R$ constrained by a set of FDs $F$ we define the closure of $F$ or simply $F\sp{+}$
 as a set of all possible FDs which can be derived from the original set of FDs $F$. In 
 other words, $F\sp{+}$ is the set of all FDs that must always hold in $R$. $F\sp{+}$ can be
-logically implied using inference rules called \textit{Armstrong's Axioms}. 
+computed using inference rules called \textit{Armstrong's Axioms}. 
 Repeated application of these rules will generate all functional dependencies in the closure $F\sp{+}$.
 
 Let $\alpha, \beta, \gamma$ and $\delta$ are subsets of the Attributes in $R$, then:
@@ -342,7 +342,7 @@ a professor from the student's department.
     To change its description to \textit{New Database Concepts} we have to change 
     it in all tuples. Indeed one of the purposes of normalization is to eliminate data 
     redundancy in the database.
-  \item[Deletion Anomaly] means deleting some data causes other information to be lost. 
+  \item[Deletion Anomaly] means deleting some data cause other information to be lost. 
     For example if student Eriksson is deleted from the relation we also lose the 
     information that we had a course \textit{Distributed Systems}.
 \end{description}
@@ -356,7 +356,7 @@ a set of values nor a relation. The following relation is not in 1NF:
 \begin{center}
 \begin{tabular}[h]{|l|l|l|l|}
   \hline
-  Matrl.Nr. & Surname & Data\_of\_Birth & Taken\_Courses \\ \hline
+  Matrl.Nr. & Surname & Date\_of\_Birth & Taken\_Courses \\ \hline
   100 & John & 1976-09-28 & \{Database Concepts, Operating Systems \} \\  
   200 & Schmidt & 1986-05-19 & \{Database Concepts, Operating Systems,  \\ 
       &         &            & Computer Networks \} \\
@@ -407,7 +407,7 @@ Figure~\ref{alg:relsc2nf} shows these three relations and their contents.
 
 \begin{figure}[h]
 \hrule
-\vspace{0.5cm}
+\vspace{0.25cm}
 \begin{center}
 \begin{tabular}[h]{|c|c|c|c|c|c|}
 \hline
@@ -485,21 +485,20 @@ at least one of the following holds:
 From the three previous relations only \textit{Students and Mentors} is not in 3NF, since 
 the FD \textit{Mentor~ID $\rightarrow$ Mentor~Surname, Mentor~Office} holds in the relation but 
 it violates the 3NF property. Therefore we need to further decompose the relation into two
-new relation: \textit{Students~= \{Matrl.Nr., Surname,Data~of~Birth, Mentor~ID\}} and
-\textit{Mentors~= \{Mentor~ID, Mentor Surname, Mentor Office\}}.
+new relation: \textit{Students~= \{Matrl.Nr., Surname, Date\_of\_Birth, Mentor\_ID\}} and
+\textit{Mentors~= \{Mentor\_ID, Mentor\_Surname, Mentor\_Office\}}.
 Figure~\ref{alg:relsc3nf} shows the two new relations and their content.
 
 \begin{figure}[h]
 \hrule
-\vspace{0.5cm}
-
+\vspace{0.25cm}
 \begin{minipage}[t]{0.5\linewidth}\centering
 \begin{tabular}{|c|c|c|c|}
 \hline
 \multicolumn{4}{|c|}{\textit{Students}} \\
 \hline
-\textbf{Matrl.Nr.} & Surname & Date of  & Mentor \\
-                   &         & Birth    & ID     \\
+\textbf{Matrl.Nr.} & Surname & Date\_of\_  & Mentor\_ \\
+                   &         & Birth    & ID\_     \\
 \hline \hline
 100 & John     & 1976-09-28 & 101 \\
 200 & Schmidt  & 1986-05-19 & 202 \\
@@ -512,8 +511,8 @@ Figure~\ref{alg:relsc3nf} shows the two new relations and their content.
 \begin{tabular}{|c|c|c|}
 \hline
 \multicolumn{3}{|c|}{\textit{Mentors}} \\ \hline
- \textbf{Mentor} & Mentor  & Mentor \\
- \textbf{ID}     & Surname & Office \\
+ \textbf{Mentor\_} & Mentor\_  & Mentor\_ \\
+ \textbf{ID}       & Surname   & Office \\
  \hline \hline
  101 & Codd   & B707 \\
  201 & Turing & A612 \\ \hline
@@ -544,8 +543,8 @@ More importantly, the decomposition does not suffer any data anomalies.
 Let us clarify this in more detail:
 \begin{description}
   \item[Insertion Anomaly:] Now new mentors and courses can be inserted to the relation \textit{Mentors}/\textit{Courses} without needing to add new students.
-  \item[Update anomaly:] Since redundancy of the data was eliminated no update anomaly can occur. For example, to change the \textit{Course Name} for 5DV001 only one change is needed in the relation \textit{Courses}.
-  \item[Deletion anomaly:]  The deletion of student Schmidt from the database is achieved by deleting Schmidt's records from both \textit{Students} and \textit{Grades} relations and this does not have any side effects on the different courses or mentors, since they stay untouched in their own relations.  
+  \item[Update Anomaly:] Since redundancy of the data was eliminated no update anomaly can occur. For example, to change the \textit{Course Name} for 5DV001 only one change is needed in the relation \textit{Courses}.
+  \item[Deletion Anomaly:]  The deletion of student Schmidt from the database is achieved by deleting Schmidt's records from both \textit{Students} and \textit{Grades} relations and this does not have any side effects on the different courses or mentors, since they stay untouched in their own relations.  
 \end{description}
 
 \subsection{Boyce-Codd Normal Form}
@@ -577,5 +576,5 @@ comes from~\cite[Section 6.5.3]{bdb2}.
 \end{center}
 
 The decomposition \textit{\{Streets, Cities\}} is lossless-join, but it is not dependency-preserving. 
-Indeed, some Schemata do not have dependency-preserving decompositions
-into BCNF. As such they are considered pathological by some.
+Indeed, some schemata do not have dependency-preserving decompositions
+into BCNF, as such they are considered pathological by some.
