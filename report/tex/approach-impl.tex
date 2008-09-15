@@ -4,7 +4,7 @@ In this chapter we give a formal overview of the system architecture,
 some of the core classes and the most important
 features of LDBN~- the different normalization algorithms and the user interface. 
 In addition, we give an overview
-of some key aspects of the server side implementation and communication
+of some key aspects of the server-side implementation and communication
 between server and client. At the end of the chapter we go over some
 security issues and how LDBN deals with those. 
 
@@ -20,7 +20,7 @@ which implies that the server can handle more users.
 \begin{figure}[h]
 	\begin{center}
 		\includegraphics[width=0.85\textwidth]{./img/architecture01a.png}
-		\caption{LDBN - System Architecture}
+		\caption{System Architecture of LDBN}
 		\label{fig:sysarch}
 	\end{center}
 \end{figure}
@@ -64,7 +64,7 @@ The functions \textit{Solve Assignment} and \textit{Check Solution} are definite
 important functions of LDBN, therefore we illustrate how they perform their tasks
 in more detail in Section~\ref{sec:keyfunctions}. 
 
-\subsubsection{The Server Side Functions}
+\subsubsection{The Server-Side Functions}
 Most of the functions on the server side are used as communication links (CL) for the
 functions on the client side to the database. This means they retrieve/store data from/in the 
 database, and then convert the data to an XML string and send it back to the client side
@@ -203,8 +203,8 @@ DIFFERENCE   & bit-vector$_1$ AND (NOT bit-vector$_2$) \\
 
 In the following we would like to present other key aspects of the Core package. For reference we 
 use Figure~\ref{fig:coreuml}, which shows an UML class diagram of the most important 
-classes and methods of the package. We already discussed most of the classes like the \verb=AttributeSet=,
-the \verb=Key=, the \verb=FD= and the \verb=Relation= classes. Now we are going to present the  
+classes and methods of the package. We already discussed indirectly most of the classes such as the \verb=AttributeSet=,
+the \verb=Key=, the \verb=FD= and the \verb=Relation= classes. Now we present the  
 \verb=AttributeNameTable= class. Every \verb=AttributeSet= object has an associated domain name space called 
 \verb=AttributeNameTable=. It contains a map, such that the string name of an attribute is mapped to its 
 integer representation. In this way, information is never lost. 
@@ -227,7 +227,7 @@ part of LDBN. We present them in detail in the next section.
   \begin{center}
 \hspace*{-0.5cm}\includegraphics[width=1.08\textwidth]{./img/uml-std.png}
 %\includegraphics[width=1.00\textwidth]{./img/uml-std.png}
-    \caption{LDBN - Core Classes}
+    \caption{UML Class Diagram of LDBN's Core Classes}
     \label{fig:coreuml}
   \end{center}
 \end{figure}
@@ -417,14 +417,14 @@ the \textit{Key Editor} (Figure~\ref{fig:keyedit}) and the \textit{FD Editor}
 All of those editors contain one or two text boxes, where users can input 
 different attribute names separated by commas
 in order to define respectively attributes of a relation, a key or a set of FDs. With
-the help of the editors the user can define relations like the one shown on 
+the help of the editors the user can define relations as the one shown on 
 Figure~\ref{fig:relui}. In this example we have a relation with attributes 
 \textit{\{A, B, C\}}, a key \textit{\{A, C\}} and only one FD in the set of FDs,
 namely \textit{\{A, B $\rightarrow$ C\}}.  Furthermore,
 each of the editors is wrapped in a draggable dialog window. 
 In this way, the editors do not require any space on any of the fields, 
 and can be opened only when they are needed. In addition to this, every attribute and every FD,
-like the ones shown in the relation on Figure~\ref{fig:relui}, can be dragged and
+as the ones shown in the relation on Figure~\ref{fig:relui}, can be dragged and
 dropped in the text box of each editor, as a result of which the attributes/FDs
 are automatically inserted in the text areas of the editor.
 This can help user define attributes, keys or
@@ -467,7 +467,7 @@ in the \textit{2NF, 3NF and BCNF Decomposition} fields. Those last three fields 
 work the same way, with the only difference that the alogotithms for checking the 
 correnctnes of the 
 decomposition are not the same.  
-In each decomposition field the user must define a set of relations, like the one shown 
+In each decomposition field the user must define a set of relations, as the one shown 
 in Figure~\ref{fig:relui}. All the relations
 within a field represent a decomposition. To check the decomposition the user must
 use the \textit{Check Solution} button, 
@@ -520,7 +520,7 @@ The POST method has two advantages over the GET method. First, it is more secure
 the GET method is defined as safe, which means it is intended only for information 
 retrieval and should not change the state of the server. Second, although the
 RFC 2616, "Hypertext Transfer Protocol -- HTTP/1.1"~\cite{w6} does not specify
-any requirement for URL length, many browsers like Internet Explorer limit
+any requirement for URL length, many browsers such as Internet Explorer limit
 the length of an URL to a maximum of 2048 characters. This length may not be 
 enough for LDBN, as it sometimes sends very large assignments back to the server.  
 
@@ -529,7 +529,7 @@ exchange format. The format has several types:
 
 \begin{description}
 	\item[Message] for sending string messages, which appear in an alert window on 
-	the client side. Such messages can be for instance an error messages returned
+	the client side. Such messages can be, for instance, an error messages returned
 	by the database. 
 	\item[Comments] for sending user comments. 
 	\item[Session] contains session data for logged in users such as a unique session 
@@ -577,7 +577,7 @@ For example, setting the $id$ argument as:
 
 In order to prevent SQL injection and cross-site 
 scripting attacks LDBN uses regular expressions for validating
-user input, and it escapes HTML special characters like \lt and~\gt.
+user input, and it escapes HTML special characters such as \lt and~\gt.
 To the best of our knowledge, it is not possible to perform such attacks on LDBN.
 
 Another issue with web-based applications is password protection. LDBN uses the 

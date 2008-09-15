@@ -49,7 +49,7 @@ the browser must re-render the whole HTML page after each interaction with the s
 Although part of this could be avoided with the help of frames, it would still 
 require more data than actually needed to be sent back to the client, since most 
 parts of the page remain the same after each interaction. In the second place, 
-all of the computations must be done on the server-side, leaving the client with 
+all of the computations must be done on the server side, leaving the client with 
 the only task of rendering a page. This may result in a poor allocation of computational tasks. 
 With the introduction of rich web-applications such as Google Maps, Facebook, 
 Google Docs and others it has been shown in practice that the client is capable of 
@@ -67,10 +67,10 @@ AJAX stands for Asynchronous JavaScript And XML. It should be noted
 that AJAX is not a new technology in itself but rather the integration of several 
 existing technologies, including HTML, CSS and JavaScript~\cite{w3}. Prior to AJAX browsers 
 were treated 
-like dumb terminals; thus the browser was unable to remember its state and every 
+as dumb terminals; thus the browser was unable to remember its state and every 
 user interaction caused a HTTP round trip over the network, requiring browsers 
 to re-render the whole web page after each request. With AJAX browsers became 
-more powerful. Traditional web techniques like HTML and CSS are still used to 
+more powerful. Traditional web techniques such as HTML and CSS are still used to 
 render the page. In spite of that, JavaScript can be used to access 
 and manipulate the Document Object Model (DOM) tree, i.e., 
 JavaScript is capable of changing only certain parts
@@ -181,7 +181,7 @@ one code base, by which the the scalability of an application can be increased.
 Another very important component is the hosted web browser. A GWT application can 
 be run in hosted mode, this means 
 the Java code is not compiled into JavaScript code but rather it is executed natively  
-in a special hosted web browser. This browser works like any other web
+in a special hosted web browser. This browser works as any other web
 browser, but it is specifically tailored for GWT development. It allows the developer
 to make changes to the Java code and immediately see the results, without the need
 of recompiling the source code. Furthermore, the hosted mode allows the use of 
@@ -193,7 +193,7 @@ already existing development tools such as such as the Eclipse IDE~\cite{weclips
 This can further increase the scalability of an application and the productivity 
 of developers. 
 In the case of LDBN, GWT helped scale the project to such extent that LDBN runs 
-almost entirely on the client-side. In addition, LDBN has grown fast to 
+almost entirely on the client side. In addition, LDBN has grown fast to 
 more than 60 classes/interfaces. Debugging such large application without the powerful 
 tools provided by GWT and Eclipse would have been nearly an impossible task for 
 a single developer.
@@ -263,7 +263,7 @@ although the W3C has a draft that would enable this functionality~\cite{bajax1}.
 
 A browser-independent AJAX application is not capable of making a connection 
 to a database~\cite{bajax1}, thus it requires a web server to establish the 
-connection. Then the client-side communicate with the server-side using 
+connection. Then the client side communicate with the server side using 
 predefined XML format.
 
 \section{Server-side Platform Choice}
@@ -282,7 +282,7 @@ database system~\cite{w5}.
  
 It is worth mentioning that even though LDBN is implemented using Apache Web Server,
 PHP and MySQL, it is possible to use different tools and programming languages 
-on the server-side with almost no modifications to the client-side. However, 
+on the server side with almost no modifications to the client side. However, 
 the predefined XML data exchange format must stay the same.
 
 \section{Other Design Issues}
