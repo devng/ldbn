@@ -37,8 +37,8 @@ Figure~\ref{fig:attclosure} shows  pseudocode for an algorithm which can compute
 
 \begin{figure}[htbp]
 \hrule
+\vspace{0.25cm}
 \begin{alltt}
-
 Algorithm Classical-AttributeClosure(\(\alpha\): set of attributes, 
               \(F\): set of FDs):
            return: set of attributes
@@ -70,8 +70,8 @@ called $SL_{FD}$-$Closure$~\cite{p10}, which is shown in Figure~\ref{alg:slfdclo
 
 \begin{figure}[htbp]
 \hrule
+\vspace{0.25cm}
 \begin{alltt}
-
 Algorithm SLFD-Closure(\(\alpha\): set of attributes, 
               \(F\): set of FDs):
            return: set of attributes
@@ -118,12 +118,10 @@ whether $\beta \subseteq \alpha\sp{+}$ holds~\cite[Section 7.4]{bdb4}.
   
 \begin{figure}[htbp]
 \hrule
+\vspace{0.25cm}
 \begin{alltt}
-
-Algorithm FDTest(\(f\): FD, \(F\): set of FDs):
-           return: boolean
-/* This is a polynomial-time algorithm, and 
-it checks whether \(f \in F\sp{+}\) holds */
+Algorithm FDTest(\(f\): FD, \(F\): set of FDs): return: boolean
+/*This is a polynomial-time algorithm for checking whether \(f \in F\sp{+}\) holds*/
   \(\alpha\sp{+}\) = SLFD-Closure(\(\alpha, F\))   
   if \(\beta \in \alpha\sp{+}\) then
     return true
@@ -145,8 +143,8 @@ versa. To achieve this we use the \textit{FDTest} algorithm.
 
 \begin{figure}[htbp]
 \hrule
+\vspace{0.25cm}
 \begin{alltt}
-
 Algorithm Equivalence(\(F\): set of FDs, \(G\): set of FDs):
             return: boolean
 /* This is a polynomial-time algorithm for checking whether \(F\sp{+} = G\sp{+}\), 
@@ -203,15 +201,15 @@ $D$ is a decomposition of $R$, then there is an ordering
 of the elements of $D$ with the property that for each $i$,
  $1{}\leq{}i{}\leq{}n$, the following holds.
  \[
-   (\bigcup_{j=1}^{i}) R_i \cup R_{i+1} \neq \emptyset
+   \left( \bigcup_{j=1}^{i} R_j \right) \cup R_{i+1} \neq \emptyset
  \]
  Call such a sequence \emph{monotone}.
 
 
 \begin{figure}[htbp]
 \hrule
+\vspace{0.25cm}
 \begin{alltt}
-
 Algorithm TestLosslessJoin(\(R\): relation,
               \(F\): set of FDs which hold in \(R\),
               \(\mathcal{R}\): monotone sequence of relations 
@@ -344,14 +342,16 @@ Figure~\ref{fig:dptest} shows pseudocode for the algorithm.
 
 \begin{figure}[htbp]
 \hrule
+\vspace{0.25cm}
 \begin{alltt}
-
 Algorithm TestDependencyPreservation(\(F\): set of FDs which hold in \(R\),
-           \((F_1,...,F_n)\): list of sets of FDs which holds in \(R_i\) for each \(i\)):
+           \((F\sb{1},...,F\sb{n})\): list of sets of FDs which holds in \(R\sb{i}\) for each \(i\)):
           return: boolean
 /* This is a polynomial-time algorithm for testing the 
 dependency-preservation property of a given decomposition */
-  \(G = F_1 \cup ... \cup F_n\)
+  for each \(F\sb{i}\) in \((F\sb{1},...,F\sb{n})\) do
+    \(G = G \cup F\sb{i}\)
+  end foreach
   return Equivalence(G,F)
 \end{alltt}
 \caption{Pseudocode for Algorithm TestDependencyPreservation}\label{fig:dptest}
@@ -368,16 +368,16 @@ Pseudocode for the algorithm in shown in Figure~\ref{alg:findkeys}.
 
 \begin{figure}[htbp]
 \hrule
+\vspace{0.25cm}
 \begin{alltt}
-
 Algorithm FindAllCandidateKeys(\(R\): relation,
               \(F\): set of FDs which hold in \(R\)):
             return: set of keys
 /* This an exponential-time algorithm finds all candidate keys for \(R\)*/             
   \(\mathcal{K} = \emptyset\)
   foreach subset \(\gamma\) of \(R\) do
-    compute \(\gamma\sp{+}\)
-    if \(\gamma\sp{+} \) contains all attributes of \(R\) then
+    \(\gamma\sp{+}\) = SLFD-Closure(\(\gamma, F\))
+    if \(\gamma\sp{+} \subseteq R\) then
       remove all \(\kappa \in \mathcal{K}\) with  \(\gamma \subseteq \kappa\)
       if \(\gamma \nsubseteq \kappa\) for all \(\kappa \in \mathcal{K}\) then
         \(\mathcal{K} = \mathcal{K} \cup \gamma\)
@@ -409,8 +409,8 @@ which is exponential for each input.
 
 \begin{figure}[htbp]
 \hrule
+\vspace{0.25cm}
 \begin{alltt}
-
 Algorithm ReductionByResolution(\(R\): a relation,
                   \(F\) : set of FDs which hold in \(R\),
                   \(X\) : subset of attributes of \(R\)):
@@ -512,8 +512,8 @@ empty LHS, which could. Pseudocode for the algorithm is shown in Figure~\ref{alg
 
 \begin{figure}[htbp]
 \hrule
+\vspace{0.25cm}
 \begin{alltt}
-
 Algorithm FindMinimalCover(\(F\): set of FDs):
              return: set of FDs
 /* This algorithm computes a minimal cover of FDs of set \(F\) of FDs */
@@ -566,7 +566,6 @@ Figure~\ref{alg:dec3nf} shows pseudocode for the algorithm.
 \begin{figure}[htbp]
 \hrule
 \begin{alltt}
-
 Algorithm Decomposition3NF(\(R\): set of FDs,
              \(F\sb{c}\): minimal cover of a set of FDs which hold in \(R\)):
           return: set of relational schemas  
@@ -605,8 +604,8 @@ Figure~\ref{alg:decbcnf} shows pseudocode for the algorithm.
 
 \begin{figure}[htbp]
 \hrule
+\vspace{0.25cm}
 \begin{alltt}
-
 Algorithm DecompositionBCNF(\(R\): a relation,
              \(F\): a set of FDs which hold in \(R\)):
           return: set of relational schemas
