@@ -75,7 +75,7 @@ available web-based database normalization tools, and provide the reader with sm
 %in order for him/her to better understand the need and the concepts of the algorithms described in 
 In Chapter~\ref{chap:preliminaries} we give definitions to
 relational-database normalization and to the different normal forms. 
-In Chapter~\ref{chap:design} we discuss some design issues regarding LDBN like 
+In Chapter~\ref{chap:design} we discuss some design issues regarding LDBN such as 
 platform choice and others. Chapter~\ref{chap:impl} provides a formal description
 of our reference implementation of the learning environment, and
 Chapter~\ref{chap:conclusion} shows our conclusions.
@@ -87,7 +87,7 @@ of the web-based learning environment, called LDBN.
 Figure~\ref{fig:screen01} shows the overview of the most important part of the user interface~(UI)~- 
 the \textit{Solve Assignment} view/tab. Here students can test their knowledge on 
 the subject of relational-database normalization. The first thing the reader 
-may notice is the fact that LDBN runs within a browser. The client-side 
+may notice is the fact that LDBN runs within a browser. The client side 
 of LDBN is written in JavaScript following the AJAX techniques 
 (more about this in Chapter~\ref{chap:design}). 
 Furthermore, LDBN is assignment driven. This means students have to first 
@@ -108,7 +108,7 @@ following steps in LDBN:
 \begin{figure}[h]
 	\begin{center}
 		\includegraphics[width=0.8\textwidth]{./img/screen01b.png}
-		\caption{LDBN - Solve Assignments Tab}
+		\caption{Solve Assignments Tab}
 		\label{fig:screen01}
 	\end{center}
 \end{figure}
@@ -116,7 +116,7 @@ following steps in LDBN:
 \begin{figure}[h]
 	\begin{center}
 		\includegraphics[width=0.6\textwidth]{./img/screen02.png}
-		\caption{LDBN - Load Assignments List}
+		\caption{Load Assignments List}
 		\label{fig:screen02}
 	\end{center}
 \end{figure}
@@ -127,18 +127,18 @@ solution can be submitted at any given time by pressing the \textit{Check Soluti
 After that the system analyzes the solution by performing the following checks:
 \begin{enumerate}
 	\item Correctness of the minimal cover of the given FDs. 
+	\item Correctness of the FDs associated with each relation $R$; that is, 
+    if the FDs are actually in the embedded closure of $F_{R}\sp{+}$ for this relation.
 	\item Losses-join properly for every schema in the decomposition.
 	\item Dependency preservation for every decomposition.
-	\item Correctness of the FDs associated with each relation $R$; that is, 
-	if the FDs are actually in the embedded closure of $F_{R}\sp{+}$ for this relation.
 	\item Correctness of the key of each relation.
 	\item Correctness of the decomposition, i.e., if the decomposition is really in 2NF, 3NF and BCNF.
 \end{enumerate}
 
 \begin{figure}[h]
 	\begin{center}
-		\includegraphics[width=0.6\textwidth]{./img/screen03.png}
-		\caption{LDBN - Check Solution Dialog}
+		\includegraphics[width=0.6\textwidth]{./img/screen03a.png}
+		\caption{Check Solution Dialog}
 		\label{fig:screen03}
 	\end{center}
 \end{figure}
@@ -199,7 +199,7 @@ to define or modify FDs, key attributes, etc. This ensures a really fast and eas
 usage of the tool without the need for keyboard input. It should be mentioned
 that inputting attributes the traditional way by typing them is also supported.
 
-Community features like posting comments are not present in the other two web-based 
+Community features such as posting comments are not present in the other two web-based 
 normalization tools, but we believe they are very important when it comes to educational
 software. 
 
