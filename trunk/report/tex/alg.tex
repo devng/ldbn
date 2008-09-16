@@ -12,8 +12,8 @@ This is done in Section~\ref{sec:keyfunctions}.
 We can divide the normalization algorithms used by LDBN into two different groups:
 
 \begin{enumerate}
-  \item \textit{Algorithms for Testing} are used to test whether a relation is satisfying a certain normal form criteria.
-  \item \textit{Decomposition Algorithms} are used to automatically decompose a relation into a certain normal form.
+  \item \textit{Algorithms for testing} are used to test whether a relation is satisfying a certain normal form criteria.
+  \item \textit{Decomposition algorithms} are used to automatically decompose a relation into a certain normal form.
 \end{enumerate}
 
 \subsection{Algorithms for Testing}
@@ -54,14 +54,14 @@ Algorithm Classical-AttributeClosure(\(\alpha\): set of attributes,
   end while
   return \(\alpha\sp{+}\)
 \end{alltt} 
-\caption{Pseudocode for Algorithm ClassicalAttributeClosure}\label{fig:attclosure}
+\caption{Pseudocode for Algorithm Classical-AttributeClosure}\label{fig:attclosure}
 \hrule
 \end{figure}
 
 Computing attribute closure is a very important part of every other normalization algorithm 
 in LDBN. Therefore every improvement 
 of the algorithm is significant. 
-The \textit{ClassicalAttributeClosure} algorithm is described in many textbooks including~\cite{bdb1, bdb2, bdb4}.
+The \textit{Classical-AttributeClosure} algorithm is described in many textbooks including~\cite{bdb1, bdb2, bdb4}.
 It has worst case behavior quadratic in the size of $F$ and
 it is not suitable for large application as LDBN. We presented it only because it is
 easy to follow. In our implementation of the learning environment we use a linear but more complicated 
@@ -104,7 +104,7 @@ all their attributes are in the temporal closure. In
 this way, the algorithms traverse the set of FDs
 only once~\cite{p10}.
 
-There are several direct uses of the attribute closure~\cite[Section 7.4]{bdb4}:
+There are several direct uses of attribute closure~\cite[Section 7.4]{bdb4}:
 \begin{description}
     \item[Superkey Test:] To test whether $\alpha$ is a superkey, we compute $\alpha\sp{+}$, and check whether $\alpha\sp{+}$ contains all attributes of $R$.
     \item[Computing $F\sp{+}$:] For each $\gamma \subseteq R$ we find the closure $\gamma\sp{+}$, and for each $S \subseteq \gamma\sp{+}$, we output an FD $\gamma \rightarrow S$.
@@ -175,36 +175,42 @@ has a lossless-join if one of the following FDs is in $F\sp{+}$
 However, the above test is not suitable for decompositions with more than two relation. 
 Figure~\ref{alg:lossless} describes an algorithm which can be used to test
 the lossless-join property of decompositions with more than two relations. The algorithm comes 
-from~\cite[Algorithm 11.1]{bdb1}.
+from~\cite[Section 3]{AhoBU79}, it is also described in \cite[Algorithm 11.1]{bdb1}.
 
 It should be noted that there are two types of decompositions, acyclic and cyclic.
 Roughly speaking, with acyclicity, the lossless-join property may be
 checked pairwise; that is, two relations at a time.  With cyclic
-decompositions, this is not possible.  Most decompositions of
-practical interest, and virtually all decompositions which are studied
-in introductory database courses, are acyclic.  The differences will
+decompositions, this is not possible.  
+%%Most decompositions of
+%%practical interest, and virtually all decompositions which are studied
+%%in introductory database courses, are acyclic.  
+The differences between acyclic and cyclic decompositions will
 not be elaborated here; for an example of a cyclic decomposition see
 \cite[Section 7]{AhoBU79}, while for a systematic presentation see
 \cite{BeeriFMY83}. The testing algorithm which is presented here,
-and which is used in the system, is guaranteed to provide the correct
-result only for acyclic decompositions. It may report failure for a
-cyclic decomposition, even if that decomposition is lossless.  It may
-furthermore fail if degenerate FDs of the form
- $\emptyset \rightarrow B$ are allowed; again, such dependency are
-rarely if ever considered in introductory courses. In short, neither
-of these restrictions is significant from a pedagogical point of view.
+and which is used in the system, provides the correct
+result for both acyclic and cyclic decompositions. 
 
-Acyclic decompositions admit so-called monotone join expressions
-\cite[Theorem 3.4]{BeeriFMY83}. This implies in particular that if
-$D$ is a decomposition of $R$, then there is an ordering
- $\langle R_1,R_2,..,R_n \rangle$
-of the elements of $D$ with the property that for each $i$,
- $1{}\leq{}i{}\leq{}n$, the following holds.
- \[
-   \left( \bigcup_{j=1}^{i} R_j \right) \cup R_{i+1} \neq \emptyset
- \]
- Call such a sequence \emph{monotone}.
+%It may report failure for a
+%cyclic decomposition, even if that decomposition is lossless.  It may
+%furthermore fail if degenerate FDs of the form
+% $\emptyset \rightarrow B$ are allowed; again, such dependencies are
+%rarely if ever considered in introductory courses. In short, neither
+%of these restrictions is significant from a pedagogical point of view.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This is not needed in the Elmasri's algorithm                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Acyclic decompositions admit so-called monotone join expressions
+%\cite[Theorem 3.4]{BeeriFMY83}. This implies in particular that if
+%$D$ is a decomposition of $R$, then there is an ordering
+% $\langle R_1,R_2,..,R_n \rangle$
+%of the elements of $D$ with the property that for each $i$,
+% $1{}\leq{}i{}\leq{}n$, the following holds.
+% \[
+%   \left( \bigcup_{j=1}^{i} R_j \right) \cup R_{i+1} \neq \emptyset
+% \]
+% Call such a sequence \emph{monotone}.
 
 \begin{figure}[htbp]
 \hrule
@@ -212,8 +218,7 @@ of the elements of $D$ with the property that for each $i$,
 \begin{alltt}
 Algorithm TestLosslessJoin(\(R\): relation,
               \(F\): set of FDs which hold in \(R\),
-              \(\mathcal{R}\): monotone sequence of relations 
-                  representing a decomposition of \(R\)):
+              \(\mathcal{R}\): set of relations representing a decomposition of \(R\)):
         return: boolean
 /* This algorithm tests whether the decomposition 
 \(\mathcal{R}\) has the lossless-join property */
@@ -256,6 +261,8 @@ has the lossless join property; otherwise it does not.
 \caption{Pseudocode for Algorithm TestLosslessJoin}\label{alg:lossless}
 \hrule
 \end{figure}
+
+\vspace{1.5cm}
 
 Here follows a short example which illustrates the \textit{TestLosslessJoin} algorithm. 
 The example comes from~\cite[Figure 11.1]{bdb1}:
@@ -359,12 +366,12 @@ dependency-preservation property of a given decomposition */
 \end{figure}
 
 \subsubsection{Find All Candidate Keys}
-The problem of finding all candidate keys is know to be NP-complete~\cite{p3}. 
+The problem of finding all candidate keys is known to be NP-complete~\cite{p3}. 
 Our learning environment uses a trivial algorithm for finding all candidate keys,
-which is based on the \textit{SLFD-Closure} algorithm. The algorithm test every possible
+which is based on the \textit{SLFD-Closure} algorithm. The algorithm tests every possible
 subset of attributes of the relation for being a superkey. If a subset of the superkey
 is found which is also a superkey, then the first superkey is replace with the new one.  
-Pseudocode for the algorithm in shown in Figure~\ref{alg:findkeys}. 
+Pseudocode for the algorithm is shown in Figure~\ref{alg:findkeys}. 
 
 \begin{figure}[htbp]
 \hrule
@@ -391,7 +398,7 @@ Algorithm FindAllCandidateKeys(\(R\): relation,
 \end{figure}
 
 \subsubsection{Reduction By Resolution}
-Often is required to compute a cover for the projection of $F$ on a subschema $X$ of $R$, in 
+Often it is required to compute a cover for the projection of $F$ on a subschema $X$ of $R$, in 
 other words, to find find the FDs on $R$ which are induced by $F$, thus:
 \[ 
   F\sb{X}\sp{+} = \{\alpha\rightarrow\beta | \alpha \rightarrow \beta \in F\sp{+} \wedge \alpha \subseteq R \wedge \beta \subseteq R\}
@@ -442,7 +449,7 @@ Algorithm ReductionByResolution(\(R\): a relation,
 
 \subsubsection{Test BCNF}
 To check whether a non-trivial dependency $\alpha \rightarrow \beta$  causes a violation of BCNF,
-we must use the \textit{Attribute Closure} to test whether $\alpha$ is a superkey. 
+we must use the algorithm \textit{SLFD-Closure} to test whether $\alpha$ is a superkey. 
 It suffices to check only the dependencies in the given set $F$ for violation of BCNF, 
 rather than checking all dependencies in $F\sp{+}$~\cite{bdb4}.  
 If none of the dependencies in $F$ causes a violation of BCNF, 
@@ -462,8 +469,8 @@ $(A,C,D,E)$ so we might be mislead into thinking $R_2$ satisfies BCNF. In fact,
 dependency $AC \rightarrow D$ in $F\sp{+}$ shows $R_2$ is not in BCNF. To avoid this we can
 use the \textit{Reduction by Resolution} algorithm to compute covers for $R_1$ and $R_2$. 
 
-The algorithm uses the \textit{Reduction by Resolution} algorithm which is know to be exponential
-in some bad cases, thus the \textit{BCNF Test} is also exponential. In fact, the test is know to 
+The algorithm uses the \textit{Reduction by Resolution} algorithm which is known to be exponential
+in some bad cases, thus the \textit{BCNF Test} is also exponential. In fact, the test is known to 
 be co-NP-complete~\cite{p4}.
 
 \subsubsection{Test 3NF}
@@ -475,7 +482,7 @@ the \textit{SLFD-Closure} algorithm to test each FD in $F_i$ of the form $\alpha
 whether $\alpha$ is a superkey in $R_i$. 
 If the $\alpha$ is not a superkey, we have to verify whether each attribute in the $\beta$ 
 is contained in a candidate key of $R$, i.e., it is prime. Testing attribute for being a prime
-attribute is know to be an NP-complete problem~\cite{p3}. For this part of the \textit{Test 3NF} algorithm
+attribute is known to be an NP-complete problem~\cite{p3}. For this part of the \textit{Test 3NF} algorithm
 we can use our \textit{Find All Candidate Keys} algorithm in order
 to compute all the candidate keys in $R_i$ and then test whether the attributes in $\alpha$ are part of any 
 of them.
@@ -549,7 +556,7 @@ Algorithm FindMinimalCover(\(F\): set of FDs):
 \end{figure}
 
 \subsubsection{Decomposition 3NF}
-The following algorithm decomposes a relation schema in 3NF. The algorithm
+The next algorithm decomposes a relation schema in 3NF. The algorithm
 ensures that each new relation schema is in 3NF, thus the decomposition is in 3NF. 
 Furthermore, the decomposition is dependency preserving and lossless-join. 
 The algorithm comes form~\cite[Section 6.8]{bdb2}. 
@@ -565,6 +572,7 @@ Figure~\ref{alg:dec3nf} shows pseudocode for the algorithm.
 
 \begin{figure}[htbp]
 \hrule
+\vspace{0.25cm}
 \begin{alltt}
 Algorithm Decomposition3NF(\(R\): set of FDs,
              \(F\sb{c}\): minimal cover of a set of FDs which hold in \(R\)):
@@ -599,7 +607,7 @@ procures a lossless-join decomposition, however, we must run the
 \textit{TestDependencyPreservation} algorithm on
 the decomposition to check whether the decomposition is dependency preserving or not. 
 As we mentioned in Section~\ref{sec:BCNF},
-it is no always possible to find a dependency preserving BCNF decomposition.
+it is no always possible to find a dependency-preserving BCNF decomposition.
 Figure~\ref{alg:decbcnf} shows pseudocode for the algorithm.
 
 \begin{figure}[htbp]

@@ -6,7 +6,7 @@ since discussing the relational data model and the relational-database normaliza
 in detail is beyond the scope of this report. For readers who would like to read
 more on the subject we recommend the textbook by Elmasri and Navathe~\cite{bdb1} or
 the textbook by Kemper and Eickler~\cite{bdb2} for German-speaking readers, both of which have 
-proven to be helpful guides throughout the development process of LDBN. There also
+proven to be helpful guides throughout the development process of LDBN. There are also
 many free on-line resources such as the article 
 \textit{A Simple Guide to Five Normal Forms in Relational Database Theory}
 by Kent~\cite{p7}.  
@@ -27,7 +27,7 @@ in a table for storing personal data of students such attributes could be
 name, date of birth and so forth. A row or a tuple contains all the data of a single 
 instance of the table such as a student named John Doe.
 In the relational model, every row must have a unique identification or 
-key based on the data. Figure~\ref{fig:rmodel} shows an example of a relation, in which 
+key based on the data. Figure~\ref{fig:rmodel} shows an example of a relation in which 
 the Attribute \textit{Matriculation Number} is the key that uniquely identifies each row/tuple in the relation.
 
 \begin{figure}[h]
@@ -55,7 +55,7 @@ We would like to give some more formal definitions as well:
   \item[Projection:] Projection is a unary operation written as $\Pi_{\mathbf{B}} (r)$ 
     where $\mathbf{B} \subseteq Attr(A)$  and $r$ is an instance of $R$. 
     $\Pi_{\mathbf{B}} (r) = \{t.\mathbf{B} | t \in r\}$. In words, it deletes attributes that are not in $\mathbf{B}$. 
-    Projection operator has to eliminate duplicates.
+    Note that duplicate tuples are automatically eliminated by definition.
   \item[Natural Join:] Natural join is a binary operator that is written as $(r \Join s)$ where $r$ and $s$ are relation instances. 
     The result of the natural join is the set of all combinations of tuples in $r$ and $s$ that are equal on their common attribute names.
 \end{description}
@@ -68,7 +68,7 @@ $\alpha$, $\beta$ and $\gamma$ to refer to subset of $Attr(A)$.
 \subsection{Key}
 As we mentioned a key is used to uniquely identify a tuple. Each table can contain
 more than one key. For example,
-in our \textit{Student Relation} we could also have an attribute \textit{Personal Number} 
+in our \textit{Student} relation we could also have an attribute \textit{Personal Number} 
 which could also be used
 as a key. Furthermore, each key may be composed from more than one attribute, for instance, 
 all the attributes of every relation always build a key. However, such a key can often be reduced
@@ -78,13 +78,13 @@ In addition, each relation has a primary key, which is a selected candidate key 
 
 \subsection{Functional Dependency}
 The concept of Functional Dependency (FD) is central to normalization theory. 
-FD is a semantic concept which describes particular semantic relationship 
+FD is a semantic concept which describes a particular semantic relationship 
 between the attributes of a relation. An FD is often represented as $\alpha$ $\rightarrow$ $\beta$, 
 where $\alpha$ and $\beta$ are subsets of the attributes of a given relation \textit{R}.
 We often refer to $\alpha$ as the left-hand side (LHS) of the FD and to $\beta$ as the 
 right-hand side (RHS) of the FD.
 The representation $\alpha$ $\rightarrow$ $\beta$ means that for $\beta$ is 
-functionally dependent on $\alpha$ if and only if 
+functionally dependent on $\alpha$; that is, for each
 for each value of $\alpha$ no more than one value of $\beta$ is associated. 
 More formally, if $t$ and $r$ are two tuples in the relation \textit{R}
 with $t.\alpha = r.\alpha$ then $t.\beta = r.\beta$. Here
@@ -93,7 +93,7 @@ $t.\alpha = r.\alpha$ is a short form for
 In other words, the values of the attributes  in $\alpha$ uniquely 
 determines the values of of the attributes in $\beta$ and 
 if there were several tuples that had the same value of $\alpha$ then all these 
-tuples will have an identical values for the attributes in $\beta$. 
+tuples will have identical values for the attributes in $\beta$. 
 
 We would like to illustrate this very important concept of FDs with an example. 
 Let us consider the following relation $R = \{A, B, C, D\}$. 
@@ -112,24 +112,26 @@ The example comes from~\cite[Section 6.1]{bdb2}.
 \end{tabular}
 \end{center}
 
+As all tuples that have the same $A$ value
+
 It this instance $A \rightarrow B$  is satisfied.
-As all $A$ tuples that have the same value have the same $B$ value. However,
+As all tuples that have the same A value have the same $B$ value. However,
 $B \rightarrow A$ is \textbf{not} satisfied, since the tuples $r$ and $s$ with $r.B = s.B$ have
 different $A$ values. Other FDs on the relation which are also satisfied are
 $A \rightarrow C$ and $CD \rightarrow B$.
 
-Functional dependency is \textit{trivial} if it satisfied by all tuples, i.e., $\alpha$ $\rightarrow$ $\alpha$.
+A functional dependency is \textit{trivial} if it satisfied by all tuples, i.e., $\alpha$ $\rightarrow$ $\alpha$.
 In general, a functional dependency of the form $\alpha$ $\rightarrow$ $\beta$ is trivial if 
 $\beta \subseteq \alpha$.
 
 \subsection{Closure of a Set of FDs}
-In a relation schema $R$ constrained by a set of FDs $F$ we define the closure of $F$ or simply $F\sp{+}$
+In a relation schema $R$ constrained by a set $F$ of FDs we define the closure of $F$, denoted $F\sp{+}$,
 as a set of all possible FDs which can be derived from the original set of FDs $F$. In 
 other words, $F\sp{+}$ is the set of all FDs that must always hold in $R$. $F\sp{+}$ can be
 computed using inference rules called \textit{Armstrong's Axioms}. 
 Repeated application of these rules will generate all functional dependencies in the closure $F\sp{+}$.
 
-Let $\alpha, \beta, \gamma$ and $\delta$ are subsets of the Attributes in $R$, then:
+Let $\alpha, \beta, \gamma$ and $\delta$ be subsets of the Attributes in $R$, then:
 
 \begin{description}
   \item[Reflexivity Rule] If $\beta \subseteq \alpha$ then $\alpha \rightarrow \beta$.
@@ -210,8 +212,10 @@ $ F = \{A \rightarrow BC, B \rightarrow C, A \rightarrow B, AB \rightarrow C\}$ 
 \subsection{Decomposition of Relations}
 \label{sec:decofrel}
 Relational-database normalization typically involves decomposing a relation $R$
-into two or more relations $R_1,...,R_n$, with $R_i \subseteq R$ for each $i$, i.e., the 
-new relations contain a subset of the original attributes. 
+into two or more relations $R_1,...,R_n$, with $R_i \subseteq R$ for each $i$ 
+and $(\bigcup_{i=1}^{n} R_i) = R$, i.e., the 
+new relations contain a subset of the original attributes and each attribute is present in at least one
+of the new relations. 
 In order for a decomposition to yield
 exactly the same information as the original relation the new relations have to be
 combined (joined). However, there are two major criteria that have to be considered when
@@ -230,7 +234,7 @@ r = r_1 \Join ... \Join r_n \mbox{, with } r_i \mbox{ is the short form of } \Pi
 \] 
 Thus the information contained in $r$ must be reconstructible by using the natural join~($\Join$) on the relations $R_1,...,R_n$. 
 
-We can also define criteria for the lossless-join property by using FDs. 
+We can also identify criteria for the lossless-join property by using FDs. 
 A decomposition of $R$ into $R_1$ and $R_2$ has lossless-join
 if at least one of the following FDs are in $F\sp{+}$:
 \begin{enumerate}
@@ -243,7 +247,7 @@ The above conditions ensure that the attributes involved in the natural join
 we can never get the situation where spurious tuples are generated, as for any 
 value on the join attributes there will be a unique tuple in one of the relations. 
 
-Figure~\ref{fig:lossy} is illustrating a decomposition of a relation $R = \{A, B, C \}$ with
+Figure~\ref{fig:lossy} illustrates a decomposition of a relation $R = \{A, B, C \}$ with
 a set of FDs $F = \{B \rightarrow C, C \rightarrow B\}$. As can be seen, the decomposition does
 not satisfy the lossless-join property. We can also prove this by showing that the FDs: 
 $A \rightarrow AC \notin F\sp{+}$ and $A \rightarrow AB \notin F\sp{+}$.
@@ -267,8 +271,8 @@ since $C \rightarrow BC \in F\sp{+}$.
 
 \subsubsection{Dependency-Preservation Property}
 Another desirable property in database design is dependency preservation. 
-Let $F$ be a set of FDs that hold in $R$, which is decomposed in relations $R_1 ,..., R_n$.
-Let $F_i$ denote the subset of $F$ consisting of those FDs whose LHS
+Let $F$ be a set of FDs that hold in $R$, which is decomposed into relations $R_1 ,..., R_n$.
+Let $F_i$ denote (a cover of) $F\sp{+}$ consisting of those FDs whose LHS
 and RHS both are contained in $R_i$. Then the decomposition is
 dependency preserving if the following condition is satisfied: 
 \begin{displaymath}
@@ -293,9 +297,9 @@ not present in $(F_1 \cup F_2)\sp{+}$.
 \label{sec:nfintro}
 In the previous section we discussed some aspects on how to decompose a relation correctly, 
 in this section we will continue this discussion by introducing some of the normal forms
-namely the Fist Normal Form (1NF), Second Normal Form (2NF), Third Normal Form (3NF) and
-Boyce-Codd Normal Form (BCNF). Normal forms are formal
-notations, which are used to avoid or eliminate the three types of data anomalies 
+namely the First Normal Form (1NF), Second Normal Form (2NF), Third Normal Form (3NF) and
+Boyce-Codd Normal Form (BCNF). Normal forms are employed to avoid or eliminate 
+the three types of data anomalies 
 (insertion, deletion and update anomalies) which a database may suffer from. 
 These concepts are clarified in the next section, after that we
 define the different normal forms.
@@ -304,7 +308,7 @@ define the different normal forms.
 A relation that is not sufficiently normalized can suffer from logical inconsistencies of various types
 called data anomalies. We illustrate the the different data anomalies by
 giving an example of a relation which suffers from all three anomalies: Insertion, Update and
-Delete Anomaly. Table~\ref{fig:relsc1nf}
+Delete Anomaly. Figure~\ref{fig:relsc1nf}
 shows the relation \textit{Student Courses}, which stores data about a student and the courses 
 that he/she has taken. In addition, each student is assigned a mentor, who is 
 a professor from the student's department. 
@@ -340,10 +344,10 @@ a professor from the student's department.
     database will contain incorrect data. For example in our database we have the course 
     \textit{Database Concepts} which appears in several tuples in our relation. 
     To change its description to \textit{New Database Concepts} we have to change 
-    it in all tuples. Indeed one of the purposes of normalization is to eliminate data 
+    it in all tuples. Indeed, one of the purposes of normalization is to eliminate data 
     redundancy in the database.
   \item[Deletion Anomaly] means deleting some data cause other information to be lost. 
-    For example if student Eriksson is deleted from the relation we also lose the 
+    For example, if the student Eriksson is deleted from the relation we also lose the 
     information that we had a course \textit{Distributed Systems}.
 \end{description}
 
@@ -364,7 +368,7 @@ a set of values nor a relation. The following relation is not in 1NF:
 \end{tabular}
 \end{center}
 
-The attribute \textit{Taken\_Courses} is violating the 1NF rule, since it is a set of 
+The attribute \textit{Taken\_Courses} violates the 1NF rule, since it is a set of 
 course names. To avoid this we can use a relation similar to the \textit{Student Courses} relation,
 which is in 1NF. However, it was shown in the previous section that the relation suffers
 from all three data anomalies, therefore we need further restrictions to the 1NF. We
@@ -377,8 +381,8 @@ Note that key attributes are those attributes which are parts of any
 candidate key, and non-key attributes do not participate in any candidate key. 
 
 The relation \textit{Student Courses} is not in 2NF. In order to prove this we must
-fist define a set of FDs on the relation. Figure~\ref{fig:fds01a} is a graphical representation 
-of the FDs between the primary key \textit{\{Matrl.Nr., Course ID\}} and the rest of the 
+first define a set of FDs on the relation. Figure~\ref{fig:fds01a} is a graphical representation 
+of the FDs between the primary key \textit{\{Matrl.Nr., Course\_ID\}} and the rest of the 
 attributes in the \textit{Student Courses} relation. 
 Note that the attribute to the right of the arrow is functionally dependent on the attribute 
 in the left of the arrow.  
@@ -393,12 +397,12 @@ in the left of the arrow.
 
 As can be seen only the \textit{Grade} attribute is fully functionally dependent on the primary key.
 On the other hand, the attributes \textit{Surname, Date\_of\_Birth, Mentor\_ID, Mentor\_Surname, Mentor\_Office, Course\_Name, ECTS\_Credits} 
-and \textit{Grade} are all non-key attributes because non of them is a component of a candidate key, therefore
+and \textit{Grade} are all non-key attributes because none of them is a component of a candidate key, therefore
 the relation is not in 2NF. 
 
 To convert \textit{Student Courses} to 2NF we have to make all non-primary attributes 
-to be fully functionally dependent on the primary key. 
-To do that we need to decompose the \textit{Student Courses} relation into the following three new relations:
+be fully functionally dependent on the primary key. 
+To do that we can decompose the \textit{Student Courses} relation into the following three new relations:
 \textit{Student and Mentors = \{Matrl.Nr., Surname, Date\_of\_Birth, Mentor\_ID, Mentor\_Office, Mentor\_Surname\}}, 
 \textit{Courses = \{Course\_ID, Course\_Name, ECTS\_Credits\}} and 
 \textit{Grades = \{Matrl.Nr., Course\_ID,  Grade\}}.
@@ -549,7 +553,7 @@ Let us clarify this in more detail:
 
 \subsection{Boyce-Codd Normal Form}
 \label{sec:BCNF}
-BCNF is a slightly stronger version of 3NF. A relation scheme $R$ is in BCNF 
+BCNF is a slightly stronger than 3NF. A relation scheme $R$ is in BCNF 
 with respect to a set $F$ of FDs if $R$ is in 3NF and for all functional dependencies in $F\sp{+}$ 
 of the form $\alpha \rightarrow \beta$, where $\alpha \subseteq R$ and $\beta \subseteq R$,
 at least one of the following holds:

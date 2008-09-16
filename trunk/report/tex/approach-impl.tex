@@ -241,7 +241,7 @@ part of LDBN. We present them in detail in the next section.
 \label{sec:keyfunctions}
 As we stated earlier, the two most important functions of LDBN are the \textit{Solve Assignment} and 
 the \textit{Check Solution} functions. They build the foundation of the system and
-without them UI will lose its purpose. Therefore, we
+without them the UI will lose its purpose. Therefore, we
 discuss the two function more formally in this section.
 
 \subsubsection{Solve Assignment}  
@@ -286,7 +286,7 @@ for the 3NF, even though BCNF decompositions are also in 3NF.
 The \textit{Check Solution} function of LDBN allows the system to test a solution 
 provided by the user and assess its correctness relative to many factors, which
 we present later in this section. As we mentioned earlier it is not possible
-to compare a solution produces by LDBN to the one of the user, since there may be many
+to compare a solution produced by LDBN to the one of the user, since there may be many
 possible solutions/decompositions to a given database schema. Therefore we need the
 algorithms for testing a decomposition described in Section~\ref{sec:algtest}. In this section
 we illustrate how we apply those algorithms in our implementation. 
@@ -295,7 +295,7 @@ First of all, a solution in LDBN is represented as a list of instances of the
 \verb=Relation= class. Those objects are built from the user input. The list is then
 passed to the static functions in the \verb=Algorithm= class, which 
 implement the all of the algorithms described in Section~\ref{sec:alg}. 
-The system analyzes the solution to the following factors:
+The system analyzes the solution according to the following factors:
 
 \begin{description}
   \item [Correctness of the FDs] of each relation, this means, testing whether the FDs associated by the user
@@ -309,7 +309,7 @@ The system analyzes the solution to the following factors:
     of the algorithm for future use, e.g., when the user needs to recheck his solution, which can happen
     quite often during the process of solving an assignment correctly. 
 
-	\item [The Losses Join] properly for every decomposition. This check is done by directly applying the 
+	\item [The Losses-Join Properly] properly for every decomposition. This check is done by directly applying the 
 		Algorithm \textit{TestLosslessJoin} of Figure~\ref{alg:lossless}, which is 
 		implemented by the \verb=isLossless()= method.
 		
@@ -324,12 +324,12 @@ The system analyzes the solution to the following factors:
 		by the \verb=findAllKeys()= method. The method returns a list of all possible candidate keys
 		for a given relation. Then the system searches if the key suggested by the user is 
 		present in that list. The algorithm is quite slow due to the fact that the problem of
-		finding all candidate keys is know to be NP-complete~\cite{p3}. To improve performance LDBN
+		finding all candidate keys is known to be NP-complete~\cite{p3}. To improve performance LDBN
 		caches every list found for each relation, so that whenever a user needs to rechecks his/her solution
 		the system computes only the lists of candidate keys for new, uncached relations.  
 		
 	\item [Correctness of the Decomposition] In this check we apply directly the 
-		\textit{Test2NF, Test3NF, Test BCNF}, which are implemented by the 
+		\textit{Test 2NF, Test 3NF, Test BCNF} algorithms, which are implemented by the 
 		\verb=test2NF()=, \verb=test3NF()=, \verb=testBCNF()= methods.
 \end{description}
 
@@ -363,8 +363,8 @@ we split the UI in four different views using tabs:
 	about the learning environment. It can be seen in Figure~\ref{fig:hv}.
 	\item[Solve Assignment] view is where students can load an assignment, give and
 	test their solutions. In case they have troubles finding a correct solution
-	LDBN could generate a sample one and present it. Figure~\ref{fig:sav} is showing
-	the view with a loaded assignment.
+	LDBN could generate a sample one and present it. Figure~\ref{fig:sav} shows
+	 the view with a loaded assignment.
 	\item[Create Assignment] view is used by lecturers to create, edit, export or import
 	assignments. It can be seen in Figure~\ref{fig:cav}.
 	\item[License] view displays a license information about LDBN.
