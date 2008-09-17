@@ -70,6 +70,9 @@ public abstract class AttributeTextArea extends TextArea
 		List<String> result = new ArrayList<String>();
 		for (int i = 0; i < r.length; i++) {
 			r[i] = r[i].trim();
+			if(r[i].length() == 0) {
+				continue;
+			}
 			if(r[i].matches(Common.NAME_REGEX)) {
 				result.add(r[i]);
 			} else {

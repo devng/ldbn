@@ -222,13 +222,13 @@ public final class Algorithms {
 	public static boolean equivalence(List<FD> fdsF, List<FD> fdsG) {
 		for (Iterator<FD> iter = fdsF.iterator(); iter.hasNext();) {
 			FD fd = iter.next();
-			if (!member(fd, fdsG))
+			if (!fdTest(fd, fdsG))
 				return false;
 		}
 
 		for (Iterator<FD> iter = fdsG.iterator(); iter.hasNext();) {
 			FD fd = iter.next();
-			if (!member(fd, fdsF))
+			if (!fdTest(fd, fdsF))
 				return false;
 		}
 		return true;
@@ -241,7 +241,7 @@ public final class Algorithms {
 	 * @param fds
 	 * @return
 	 */
-	public static boolean member(FD memberCandidate, List<FD> fds) {
+	public static boolean fdTest(FD memberCandidate, List<FD> fds) {
 		AttributeSet lhsClosure = attributeClosure(memberCandidate.getLHS(),
 				fds);
 		if (lhsClosure.containsAttSet(memberCandidate.getRHS())) {
@@ -274,7 +274,7 @@ public final class Algorithms {
 				AttributeSet key = new AttributeSet(atts.domain());
 				key.setMask(keyMask);
 
-				if (isKey(key, atts, fds)) {
+				if (isSuperKey(key, atts, fds)) {
 					boolean addKey = true;
 					for (Iterator<AttributeSet> i = keys.iterator(); i
 							.hasNext();) {
@@ -307,7 +307,7 @@ public final class Algorithms {
 	 * @param fds
 	 * @return
 	 */
-	public static boolean isKey(AttributeSet key, AttributeSet atts,
+	public static boolean isSuperKey(AttributeSet key, AttributeSet atts,
 			List<FD> fds) {
 		AttributeSet b = attributeClosure(key, fds);
 		return b.equals(atts);
@@ -468,13 +468,43 @@ public final class Algorithms {
 			}
 		}
 	}
+	
+//	public static boolean isLossless2(List<FD> initialFDs, AttributeSet atts,
+//	List<Relation> decomposition) {
+//ArrayList<Relation> z = new ArrayList<Relation>();
+//for (Relation relation : decomposition) {
+//	z.add(relation);
+//}
+//AttributeSet k = new AttributeSet(atts.domain());
+//if(z.size() >= 1) {
+//	k = z.get(0).getAttrbutes();
+//	z.remove(0);
+//}
+//AttributeSet oldK;
+//AttributeSet initialK = k.clone();
+//do{
+//	oldK = k.clone();
+//	for (Iterator<Relation> i = z.iterator(); i.hasNext();) {
+//		Relation r = i.next();
+//		AttributeSet lhs = k.clone();
+//		lhs.removeAttSet(r.getAttrbutes());
+//		FD fd1 = new FD(lhs, k.clone());
+//		FD fd2 = new FD(lhs.clone(), r.getAttrbutes().clone());
+//		if (fdTest(fd1, initialFDs) || fdTest(fd2, initialFDs)) {
+//			k.union(r.getAttrbutes());
+//			i.remove();
+//		}
+//	}
+//}while(!k.equals(oldK));
+//return k.equals(atts) && !initialK.equals(k);
+//}
 
 	public static Collection<Relation> synthese(Relation r, boolean areFDMinimalCoder) {
 		HashSet<Relation> result = new HashSet<Relation>();
 		List<FD> fds = r.getFds();
-		//if (!areFDMinimalCoder) {
+		if (!areFDMinimalCoder) {
 			minimalCover(fds);
-		//}
+		}
 		List<AttributeSet> allKeys = findAllKeyCandidates(fds, r.getAttrbutes());
 
 		//2. create new relations
@@ -537,7 +567,7 @@ public final class Algorithms {
 		for (Relation r3nf : result) {
 			List<FD> fds3nf = r3nf.getFds();
 			for (FD fd3nf : fds3nf) {
-				if (isKey(fd3nf.getLHS(), r3nf.getAttrbutes(), fds3nf)) {
+				if (isSuperKey(fd3nf.getLHS(), r3nf.getAttrbutes(), fds3nf)) {
 					r3nf.setPrimaryKey(fd3nf.getLHS());
 				}
 			}
