@@ -284,7 +284,9 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		CheckSolutionDialog dialog = CheckSolutionDialog.get();
 		dialog.clearMsgs();
 		dialog.msgTitle("Minimal Cover Check:");
-		if (!Algorithms.equivalence(fds, minCovFDs)) {
+		if(minCovFDs.size() == 0) {
+			dialog.msgWarn("There are no FDs specified.");
+		} else if (!Algorithms.equivalence(fds, minCovFDs)) {
 			dialog.msgErr("wrong - FDs are not equivalent to the given FDs");
 		} else if(minCoverF.size() != minCovFDs.size()) {
 			dialog.msgErr("wrong - too much FDs");
@@ -300,9 +302,9 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		dialog.msgTitle("2NF Decomposition Check:");
 		List<Relation> relations = decomposition2NF.getRelations();
 		updateCache(relations);
-		if(checkForLossless(relations)) {
-			if (checkDependencyPreservation(relations, false)) {
-				if (checkFDInput(relations)) {
+		if (checkFDInput(relations)) {
+			if(checkForLossless(relations)) {
+				if (checkDependencyPreservation(relations, false)) {
 					if (checkKeyInput(relations)) {
 						updateRelations(relations);
 						boolean isIn2NF = Algorithms.isIn2NF(relations);
@@ -319,9 +321,9 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		dialog.msgTitle("3NF Decomposition Check:");
 		relations = decomposition3NF.getRelations();
 		updateCache(relations);
-		if(checkForLossless(relations)) {
-			if (checkDependencyPreservation(relations, false)) {
-				if (checkFDInput(relations)) {
+		if (checkFDInput(relations)) {
+			if(checkForLossless(relations)) {
+				if (checkDependencyPreservation(relations, false)) {
 					if (checkKeyInput(relations)) {
 						updateRelations(relations);
 						boolean isIn3NF = Algorithms.isIn3NF(relations);
@@ -338,9 +340,9 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		dialog.msgTitle("BCNF Decomposition Check:");
 		relations = decompositionBCNF.getRelations();
 		updateCache(relations);
-		if(checkForLossless(relations)) {
-			checkDependencyPreservation(relations, true);
-			if (checkFDInput(relations)) {
+		if (checkFDInput(relations)) {
+			if(checkForLossless(relations)) {
+				checkDependencyPreservation(relations, true);
 				if (checkKeyInput(relations)) {
 					updateRelations(relations);
 					boolean isInBCNF = Algorithms.isInBCNF(relations);
@@ -358,18 +360,20 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	
 	//this is unnecessary it is done by checking dependency preservation
 	private boolean checkFDInput(List<Relation> rel) {
-		boolean resultFD = true;
 		CheckSolutionDialog dialog = CheckSolutionDialog.get();
+		if(rel == null || rel.size() == 0){
+			dialog.msgWarn("There are no relations specified.");
+			return false;
+		}
+		boolean resultFD = true;
+		
 		for (Relation r : rel) {
 			List<FD> fdsRBR = cacheFD.get(r.getAttrbutes().hashCode());
-			for (FD fd : r.getFds()) {
-				if (!Algorithms.member(fd, fdsRBR)) {
-					resultFD = false;
-					dialog.msgErr("The FD "+fd.toString()+" for \""+r.getName()+"\" are incorrect");
-					break;
-				}
-					
-			}
+			if(!Algorithms.equivalence(fdsRBR, r.getFds())) {
+				resultFD = false;
+				dialog.msgErr("The FDs for \""+r.getName()+"\" does not build a closure for this relation.");
+				break;
+			}		
 		}
 		if(resultFD) {
 			dialog.msgOK("The FDs are correct.");
@@ -397,6 +401,8 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		CheckSolutionDialog dialog = CheckSolutionDialog.get();
 		for (Relation r : rel) {
 			List<AttributeSet> keys = cacheKeys.get(r.getAttrbutes().hashCode());
+			AttributeSet pk = r.getPrimaryKey();
+			pk.andOperator(r.getAttrbutes());
 			boolean isKeyFound = false;
 			for (AttributeSet k : keys) {
 				if(k.equals(r.getPrimaryKey())) {
@@ -418,7 +424,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	
 	private boolean checkForLossless(List<Relation> relations) {
 		CheckSolutionDialog dialog = CheckSolutionDialog.get();
-		boolean isLossless = Algorithms.isLossless(minCoverF, domainAsAttSet, relations);
+		boolean isLossless = Algorithms.isLossless(fds, domainAsAttSet, relations);
 		if(isLossless) {
 			dialog.msgOK("Decomposition is lossless");
 		} else {
