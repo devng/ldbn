@@ -37,7 +37,7 @@ public class HomeWidget extends Composite implements LoginListener {
 		mainPanel.add(hw);
 		Frame viewer = new Frame("info/about.html"); 
 		viewer.setWidth("100%");
-		viewer.setHeight("400px");
+		viewer.setHeight("600px");
 		DisclosureWidget dw = new DisclosureWidget("About", viewer);
 		mainPanel.add(dw);
 		Login.get().addListener(this);

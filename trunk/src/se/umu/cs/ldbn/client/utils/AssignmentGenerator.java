@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import se.umu.cs.ldbn.client.core.Assignment;
 import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.FD;
+import se.umu.cs.ldbn.client.io.LdbnParser;
+import se.umu.cs.ldbn.client.io.LdbnParser.LDBN_TYPE;
 
 public final class AssignmentGenerator {
 	
@@ -92,37 +94,20 @@ public final class AssignmentGenerator {
 		fd.getRHS().addAtt("G");
 		fds.add(fd);
 		Assignment result = new Assignment(dom, fds);
-//		result.setLoadedFromDB(false);
+		//result.setLoadedFromDB(false);
+		
 		return result;
 	}
 	
 	
 	public static Assignment generate() {
 		return generateMinCoverTest();
-		/*
-		String[] atts = {"A", "B", "C", "D", "E", "F", "G"};
-		DomainTable dom = new DomainTable(atts);
-		ArrayList<FD> fds = new ArrayList<FD>(5);
-		{
-			String[] lhs = {"A", "B"}; 
-			String[] rhs = {"C", "D"};
-			FD  fd = new FD(dom, lhs, rhs);
-			fds.add(fd);
-		}
-		{
-			String[] lhs = {"C", "D"}; 
-			String[] rhs = {"E", "F"};
-			FD  fd = new FD(dom, lhs, rhs);
-			fds.add(fd);
-		}
-		{
-			String[] lhs = {"E", "F"}; 
-			String[] rhs = {"G"};
-			FD  fd = new FD(dom, lhs, rhs);
-			fds.add(fd);
-		}
-		
-		return new Assignment(dom, fds);
-		*/
+//		String str = "<ldbn type=\"assignment\"><att>MNr</att><att>Surname</att><att>DateOfBirth</att><att>CourseCode</att><att>CourseName</att><att>ECTS</att><att>Grade</att><fd><lhs><fdatt>MNr</fdatt></lhs><rhs><fdatt>Surname</fdatt><fdatt>DateOfBirth</fdatt></rhs></fd><fd><lhs><fdatt>CourseCode</fdatt></lhs><rhs><fdatt>CourseName</fdatt><fdatt>ECTS</fdatt></rhs></fd><fd><lhs><fdatt>MNr</fdatt><fdatt>CourseCode</fdatt></lhs><rhs><fdatt>Grade</fdatt></rhs></fd></ldbn>";
+//		LDBN_TYPE type = LdbnParser.get().parse(str);
+//		if(type == LDBN_TYPE.assignment) {
+//			return LdbnParser.get().getAssignment();
+//		} else {
+//			throw new IllegalArgumentException("XML is not an assignemtn");
+//		}
 	}
 }

@@ -11,6 +11,10 @@ INSERT INTO assignment (user_id, name, xml) VALUES
 INSERT INTO user (name, email, pass_md5, active) VALUES
 ('admin', 'admin@ldbnonline.com', '46cd73323a9b7c4df4ca30ccc4f60426', 1);
 
+//user hegner with password ldbn
+INSERT INTO user (name, email, pass_md5, active) VALUES
+('hegner', 'hegner@cs.umu.se', '46cd73323a9b7c4df4ca30ccc4f60426', 1);
+
 
 //alter assinment
 ALTER TABLE assignment 
