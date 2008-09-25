@@ -66,7 +66,8 @@ public abstract class AttributeTextArea extends TextArea
 	public List<String> parseAttributes() {
 		omitted = false;
 		String s = this.getText();
-		String[] r = s.split(",");
+		String[] r = s.split(",|\\s");
+		
 		List<String> result = new ArrayList<String>();
 		for (int i = 0; i < r.length; i++) {
 			r[i] = r[i].trim();

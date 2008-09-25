@@ -125,7 +125,7 @@ public final class CreateAssignmentWidget extends Composite
 		egas = new EditableGivenAttributesWidget();
 		vp.add(egas);
 		
-		dwGivenAttributes = new DisclosureWidget("Given attributes", vp);
+		dwGivenAttributes = new DisclosureWidget("Given Attributes", vp);
 		mainPanel.add(dwGivenAttributes);
 		//Given FDs
 		givenFDs = new FDHolderPanel();

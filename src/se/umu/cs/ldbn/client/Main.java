@@ -91,8 +91,8 @@ public final class Main implements EntryPoint, TabListener {
 		
 		tabs = new TabPanel();
 		tabs.add(HomeWidget.get(), "Home");
-		tabs.add(tabSA, "Solve assignments");
-		tabs.add(tabCA, "Create assignments");
+		tabs.add(tabSA, "Solve Assignments");
+		tabs.add(tabCA, "Create Assignments");
 		tabs.add(LicenceWidget.get(), "License");
 		tabs.addTabListener(this);
 		

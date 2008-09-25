@@ -79,7 +79,7 @@ public final class CommentsWidget extends Composite implements ClickListener {
 		mainPanel = new VerticalPanel();
 		HorizontalPanel hp = new HorizontalPanel();
 		hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-		addCommentBut = new Button("Add new comment");
+		addCommentBut = new Button("Add new Comment");
 		addCommentBut.setStyleName("min-cov-but");
 		addCommentBut.addClickListener(this);
 		hp.add(addCommentBut);

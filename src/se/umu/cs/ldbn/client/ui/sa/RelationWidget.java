@@ -102,7 +102,7 @@ public final class RelationWidget extends Composite implements ClickListener,
 		cf.setAlignment(0, 4, HasHorizontalAlignment.ALIGN_RIGHT,
 				HasVerticalAlignment.ALIGN_MIDDLE);
 		
-		Label attsTitle = new Label("Atributes:");
+		Label attsTitle = new Label("Attributes:");
 		Label fdTitle = new Label("FDs:");
 		fdTitle.addStyleName("relW-attLabel");
 		attsTitle.addStyleName("relW-attLabel");

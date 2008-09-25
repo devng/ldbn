@@ -4,32 +4,56 @@
 <title></title>
 </head>
 <body>
-<h2>Solve assignment tab<br>
+<h2>Solve Assignments tab<br>
 </h2>
-<p style="margin-bottom: 0cm;">This tab opens a widget, where students
-can give a solution to a given assignment. An assignment consists of
-attributes and FDs, which are representing a relationship. The user
-(the student) then have to find different decompositions of the
-relation. </p>
-<p style="margin-bottom: 0cm; font-weight: bold;">New assignment button<br>
+<p style="margin-bottom: 0cm;">This tab opens a widget where students
+can give a solution to a given assignment. 
+An assignment consists of a relational-database schema in
+universal-relation form (URF), i.e., all the attributes in a single relation and a set of
+FDs on the attributes. After an assignment has been loaded, we require the students to
+go through the following steps in LDBN:
+
+<OL>
+<li>Determine a minimal cover of the given FDs, also known as a canonical cover.</li>
+<li>Decompose the relational schema which is in URF into 2NF, 3NF and BCNF.</li>
+<li>Determine a primary key for each new relation/table.</li>
+</OL>
+
+<p style="margin-bottom: 0cm; font-weight: bold;">Load Assignment button<br>
 </p>
 <p style="margin-bottom: 0cm;">Loads a new assignment from a data
 base. A dialog window will prompt the user to choose an assignment
 from a list of predefined assignments.</p>
 <p style="margin-bottom: 0cm; font-weight: bold;">Check Solution button<br>
 </p>
-<p style="margin-bottom: 0cm;">Checks the solution of the user. A
-series of checks are being computed and the result is shown in a
-information window. The user are given small hints were the mistake
-might be. </p>
+<p>
+A partial or complete solution can be
+submitted at any given time by pressing the "Check Solution" button. After that the
+system analyzes the solution by performing the following checks:
+<OL>
+<li>Correctness of the minimal cover of the given FDs.</li>
+<li>Correctness of the FDs associated with each relation R; that is, if the FDs are
+actually in the embedded closure of F(r)+ for this relation.</li>
+<li>Losses-join properly for every schema in the decomposition.</li>
+<li>Dependency preservation for every decomposition.</li>
+<li>Correctness of the key of each relation.</li>
+<li>Correctness of the decomposition, i.e., if the decomposition is really in 2NF, 3NF and BCNF.</li>
+</OL>
+
+A dialog with the result is shown to the user. In case of an error the system offers
+feedback in form of small textual hints, indicating where the error might be.</p>
+<p>
+Furthermore, a given schema may have many 
+decompositions into a given normal form. Therefore,
+simply computing one such decomposition and comparing the student's solution to it is
+not satisfactory. Rather, what is needed are test algorithms which check a decomposition
+proposed by the student for correctness
+</p>
 <p style="margin-bottom: 0cm; font-weight: bold;">Show Solution button<br>
 </p>
-<p style="margin-bottom: 0cm;">Shows a solution of the assignments.
-Please note there can be various solutions, but the program is
-showing only one of them. Furthermore the “checking solution”
-algorithms work separately from the “show solution” algorithms,
-thus checking the solution is not based on the solution shown by the
-program.<br>
+<p style="margin-bottom: 0cm;">Shows a solution of an assignment.
+Please note there can be various solutions but the program is
+showing only one of them.
 <br>
 </p>
 </body>

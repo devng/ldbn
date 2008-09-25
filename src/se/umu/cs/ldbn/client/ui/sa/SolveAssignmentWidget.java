@@ -126,7 +126,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		hw.add(showSolution);
 		hw.add(info);
 		add(hw);
-		dwGivenAttributes = new DisclosureWidget("Given attributes", 
+		dwGivenAttributes = new DisclosureWidget("Given Attributes", 
 				givenAttributesWidget);
 		add(dwGivenAttributes);
 		//Given FDs
@@ -135,12 +135,12 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		add(dwFDs);
 		//Minimal Cover
 		minimalCoverWidget = new MinimalCoverWidget();
-		dwMinimalCover = new DisclosureWidget("Find minimal cover of FDs", 
+		dwMinimalCover = new DisclosureWidget("Find a Minimal Cover of FDs", 
 				minimalCoverWidget);
 		add(dwMinimalCover); 
 		//2NF
 		decomposition2NF = new DecompositionWidget();
-		dwDecomposition2NF = new DisclosureWidget("Decompose in 2NF", decomposition2NF);
+		dwDecomposition2NF = new DisclosureWidget("Decompose into 2NF", decomposition2NF);
 		add(dwDecomposition2NF);
 		//3NF
 		import2NF = new Image("img/import.png", 0, 0, 15, 15);
@@ -163,7 +163,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 			tmp[i] = decomposition3NF.getAdditionalControlls()[i-1];
 		}
 		tmp[0] = import2NF;
-		dwDecomposition3NF = new DisclosureWidget("Decompose in 3NF", decomposition3NF, tmp);
+		dwDecomposition3NF = new DisclosureWidget("Decompose into 3NF", decomposition3NF, tmp);
 		add(dwDecomposition3NF);
 		//BCNF
 		import3NF = new Image("img/import.png", 0, 0, 15, 15);
@@ -186,7 +186,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 			tmp[i] = decompositionBCNF.getAdditionalControlls()[i-1];
 		}
 		tmp[0] = import3NF;
-		dwDecompositionBCNF = new DisclosureWidget("Decompose in BCNF", decompositionBCNF, tmp);
+		dwDecompositionBCNF = new DisclosureWidget("Decompose into BCNF", decompositionBCNF, tmp);
 		add(dwDecompositionBCNF);
 		//comments
 		dwComments = new DisclosureWidget("User Comments", CommentsWidget.get());
