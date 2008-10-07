@@ -370,7 +370,7 @@ The problem of finding all candidate keys is known to be NP-complete~\cite{p3}.
 Our learning environment uses a trivial algorithm for finding all candidate keys,
 which is based on the \textit{SLFD-Closure} algorithm. The algorithm tests every possible
 subset of attributes of the relation for being a superkey. If a subset of the superkey
-is found which is also a superkey, then the first superkey is replace with the new one.  
+is found which is also a superkey, then the first superkey is replaced with the new one.  
 Pseudocode for the algorithm is shown in Figure~\ref{alg:findkeys}. 
 
 \begin{figure}[htbp]
@@ -515,7 +515,8 @@ for computing a minimal cover of a set \textit{F} of FDs.
 The algorithm comes form~\cite[Section 6.3.1]{bdb2}. First, it finds and eliminates 
 redundant attributes in the left-hand side (LHS) and right-hand side (RHS) 
 of each FD in \textit{F} by using the \textit{SLFD-Closure} algorithm. Then, it eliminates FDs with 
-empty LHS, which could. Pseudocode for the algorithm is shown in Figure~\ref{alg:mincov}.
+empty LHS, which could have been generated in the previous steps of the algorithm. 
+Pseudocode for the algorithm is shown in Figure~\ref{alg:mincov}.
 
 \begin{figure}[htbp]
 \hrule
@@ -559,7 +560,7 @@ Algorithm FindMinimalCover(\(F\): set of FDs):
 The next algorithm decomposes a relation schema in 3NF. The algorithm
 ensures that each new relation schema is in 3NF, thus the decomposition is in 3NF. 
 Furthermore, the decomposition is dependency preserving and lossless-join. 
-The algorithm comes form~\cite[Section 6.8]{bdb2}. 
+The algorithm comes from~\cite[Section 6.8]{bdb2}. 
 First, we construct new relations corresponding to each FD in in $F_{c}$ (the minimal cover of $F$). 
 Then we need to eliminate relations, the attributes of
 which are subset of the attributes of another relation. 
@@ -607,7 +608,7 @@ procures a lossless-join decomposition, however, we must run the
 \textit{TestDependencyPreservation} algorithm on
 the decomposition to check whether the decomposition is dependency preserving or not. 
 As we mentioned in Section~\ref{sec:BCNF},
-it is no always possible to find a dependency-preserving BCNF decomposition.
+it is not always possible to find a dependency-preserving BCNF decomposition.
 Figure~\ref{alg:decbcnf} shows pseudocode for the algorithm.
 
 \begin{figure}[htbp]
