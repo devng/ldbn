@@ -37,7 +37,7 @@ We can divide them into two different groups:
 	\item[Decomposition algorithms] are used for decomposing a normalized database 
 	schema into a certain normal form using functional dependencies (FDs).
 	\item[Test algorithms] for testing whether a given relational schema
-	violats certain normal form, the lossless-join property or other criteria.
+	violates certain normal form, the lossless-join property or other criteria.
 \end{description}
 
 A given schema may have many decompositions into a given normal form.
@@ -45,18 +45,6 @@ Therefore, simply computing one such decomposition and comparing the
 student's solution to it is not satisfactory.  Rather, what is needed
 are test algorithms which check a decomposition proposed by the student for
 correctness.
-
-%Stephen does not like this:
-%
-%It is very important to note that the \textit{Decomposition algorithms} are not enough for
-%our purposes, since they have the 
-%disadvantage that they could decompose a schema, which is already satisfying 
-%certain normal form, into a new set of relations/tables~\cite{p4}. Thus there can be many 
-%possible, distinct decomposition of the same schema, which all satisfy the same 
-%normal form~\cite{bdb4}. This is a key aspect of the relational-database normalization,
-%which does not allow us to simply compare the
-%students' solutions against solutions provided by the decomposition algorithms,
-%therefore we need the \textit{Test algorithms}.
 
 Here it is worth mentioning that the normalization algorithms often require 
 background in relational algebra that most IS/IT students lack~\cite{p8}. This
@@ -92,7 +80,7 @@ of LDBN is written in JavaScript following the AJAX techniques
 (more about this in Chapter~\ref{chap:design}). 
 Furthermore, LDBN is assignment driven. This means students have to first 
 choose an assignment 
-form a list with assignments, submitted by other users (lecturers). 
+from a list with assignments, submitted by other users (lecturers). 
 Such a list is shown in Figure~\ref{fig:screen02}. 
 An assignment consists of a relational-database schema in
 universal-relation form (URF), i.e., all the attributes in a single relation 
@@ -128,7 +116,8 @@ After that the system analyzes the solution by performing the following checks:
 \begin{enumerate}
 	\item Correctness of the minimal cover of the given FDs. 
 	\item Correctness of the FDs associated with each relation $R$; that is, 
-    if the FDs are actually in the embedded closure of $F_{R}\sp{+}$ for this relation.
+    if the FDs are actually in the embedded closure of $F_{R}\sp{+}$ for this relation. 
+    See Section~\ref{sec:closureF} for more details on a closure of a set of FDs.   
 	\item Losses-join properly for every schema in the decomposition.
 	\item Dependency preservation for every decomposition.
 	\item Correctness of the key of each relation.
@@ -193,7 +182,7 @@ have to input every FD the same way. This may take several minutes even for smal
 assignments. Furthermore, relational schemas cannot be saved for future use as 
 in LDBN, and users have to input them again next time. To overcome this slow input of user data, 
 LDBN supports drag and drop. A feature widely used in desktop
-applications, but relatively new to AJAX application such as LDBN. Every attribute
+applications, but relatively new to an AJAX application such as LDBN. Every attribute
 and every FD in LDBN can be dragged and dropped, in order 
 to define or modify FDs, key attributes, etc. This ensures a really fast and easy
 usage of the tool without the need for keyboard input. It should be mentioned

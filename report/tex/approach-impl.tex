@@ -348,7 +348,7 @@ our efforts in developing a fast, intuitive and stable UI. Furthermore,
 it is possible to define two distinct user groups, warranting at least two different
 user interfaces for LDBN.  One group would include the lecturers, who will
 focus their attention on creating assignments. The other group would be the 
-students, who will use the leaning environment mostly for solving 
+students, who will use the learning environment mostly for solving 
 the assignments provided by the lecturers. It should be noted that every registered
 user can create assignments, thus students can take the role of lecturers as well.
 We tried to provide both 
@@ -517,8 +517,8 @@ The server side is mainly used for persistent storage of assignments, user comme
 user and session data. The communication between the web server and the client
 is done using the POST method of the Hypertext Transfer Protocol - HTTP/1.1~\cite{w6}.
 The POST method has two advantages over the GET method. First, it is more secure, i.e., 
-the GET method is defined as safe, which means it is intended only for information 
-retrieval and should not change the state of the server. Second, although the
+the GET method should only be used for information retrieval and should not change 
+the state of the server. Second, although the
 RFC 2616, "Hypertext Transfer Protocol -- HTTP/1.1"~\cite{w6} does not specify
 any requirement for URL length, many browsers such as Internet Explorer limit
 the length of an URL to a maximum of 2048 characters. This length may not be 
@@ -551,7 +551,7 @@ inserting SQL statements into web-based input fields in
 order to manipulate the execution of the SQL queries. Cross Site Scripting 
 attacks work by embedding script tags into the web pages. 
 
-Here follows a short example of a SQL injection.
+Here follows a short example of an SQL injection.
 Assuming that we have a poorly implemented PHP script for loading an assignment,
 which has the following line of code in it:
 

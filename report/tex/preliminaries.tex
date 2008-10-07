@@ -112,9 +112,7 @@ The example comes from~\cite[Section 6.1]{bdb2}.
 \end{tabular}
 \end{center}
 
-As all tuples that have the same $A$ value
-
-It this instance $A \rightarrow B$  is satisfied.
+In this instance $A \rightarrow B$  is satisfied.
 As all tuples that have the same A value have the same $B$ value. However,
 $B \rightarrow A$ is \textbf{not} satisfied, since the tuples $r$ and $s$ with $r.B = s.B$ have
 different $A$ values. Other FDs on the relation which are also satisfied are
@@ -125,6 +123,7 @@ In general, a functional dependency of the form $\alpha$ $\rightarrow$ $\beta$ i
 $\beta \subseteq \alpha$.
 
 \subsection{Closure of a Set of FDs}
+\label{sec:closureF}
 In a relation schema $R$ constrained by a set $F$ of FDs we define the closure of $F$, denoted $F\sp{+}$,
 as a set of all possible FDs which can be derived from the original set of FDs $F$. In 
 other words, $F\sp{+}$ is the set of all FDs that must always hold in $R$. $F\sp{+}$ can be
@@ -306,7 +305,7 @@ define the different normal forms.
 
 \subsection{Data Anomalies}
 A relation that is not sufficiently normalized can suffer from logical inconsistencies of various types
-called data anomalies. We illustrate the the different data anomalies by
+called data anomalies. We illustrate the different data anomalies by
 giving an example of a relation which suffers from all three anomalies: Insertion, Update and
 Delete Anomaly. Figure~\ref{fig:relsc1nf}
 shows the relation \textit{Student Courses}, which stores data about a student and the courses 
