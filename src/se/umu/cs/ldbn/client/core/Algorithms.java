@@ -425,8 +425,9 @@ public final class Algorithms {
 			s[i] = decomposition.get(i).getAttrbutes().clone();
 			sMask[i] = decomposition.get(i).getAttrbutes().attMask();
 		}
+		List<FD> fdCan = canonicalForm(initialFDs); 
 		do {
-			for (FD fd : initialFDs) {
+			for (FD fd : fdCan) {
 				boolean containsLHSRHS =  false;
 				for (int i = 0; i < s.length; i++) {
 					if (s[i].containsAttSet(fd.getLHS()) && s[i].containsAttSet(fd.getRHS())) {
@@ -522,16 +523,18 @@ public final class Algorithms {
 		// Associate FDs for each relation , see Kemper's book p. 185
 		for (Relation r1 : result) {
 			AttributeSet atts = r1.getAttrbutes();
-			List<FD> r1_fds = new ArrayList<FD>();
-			for (FD fd : fds) {
-				AttributeSet lhs = fd.getLHS();
-				AttributeSet rhs = fd.getRHS();
-				if(atts.containsAttSet(lhs) && atts.containsAttSet(rhs)) {
-					if(!r1_fds.contains(fd)) {
-						r1_fds.add(fd);
-					}
-				}
-			}
+//			List<FD> r1_fds = new ArrayList<FD>();
+			List<FD> r1_fds = reductionByResolution(r.getAttrbutes(), r.getFds(), r1.getAttrbutes());
+			minimalCover(r1_fds);
+//			for (FD fd : fds) {
+//				AttributeSet lhs = fd.getLHS();
+//				AttributeSet rhs = fd.getRHS();
+//				if(atts.containsAttSet(lhs) && atts.containsAttSet(rhs)) {
+//					if(!r1_fds.contains(fd)) {
+//						r1_fds.add(fd);
+//					}
+//				}
+//			}
 			r1.setFDs(r1_fds);
 		}
 		
@@ -540,6 +543,7 @@ public final class Algorithms {
 			boolean containsKey = false;
 			for (Relation rr : result) {
 				for (AttributeSet k : allKeys) {
+					System.out.println(k);
 					if (rr.getAttrbutes().containsAttSet(k)) {
 						containsKey = true;
 						break;
