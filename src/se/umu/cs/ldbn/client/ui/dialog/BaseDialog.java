@@ -1,6 +1,7 @@
 package se.umu.cs.ldbn.client.ui.dialog;
 
 import se.umu.cs.ldbn.client.Main;
+import se.umu.cs.ldbn.client.i18n.I18N;
 import se.umu.cs.ldbn.client.utils.Common;
 
 import com.google.gwt.user.client.DOM;
@@ -37,8 +38,8 @@ abstract class BaseDialog extends DialogBox implements ClickListener {
 			dock.add(msgHTML, DockPanel.NORTH);
 		}
 		dock.add(getContentWidget(), DockPanel.CENTER);
-		okButton = new Button("OK", this);
-		closeButton = new Button("Close", this);
+		okButton = new Button(I18N.constants().okBut(), this);
+		closeButton = new Button(I18N.constants().closeBut(), this);
 		
 		Common.setCursorPointer(okButton);
 		Common.setCursorPointer(closeButton);

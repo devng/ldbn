@@ -1,0 +1,1 @@
+@java -cp "%~dp0\src;%~dp0\bin;C:/Developer/gwt-windows-1.5.0/gwt-user.jar;C:/Developer/gwt-windows-1.5.0/gwt-dev-windows.jar" com.google.gwt.i18n.tools.I18NSync -out "%~dp0\src" se.umu.cs.ldbn.client.i18n.LDBNConstants 

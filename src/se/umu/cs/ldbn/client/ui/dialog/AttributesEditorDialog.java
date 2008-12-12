@@ -1,6 +1,7 @@
 package se.umu.cs.ldbn.client.ui.dialog;
 
 import se.umu.cs.ldbn.client.core.AttributeSet;
+import se.umu.cs.ldbn.client.i18n.I18N;
 import se.umu.cs.ldbn.client.ui.sa.RelationAttributesWidget;
 
 public class AttributesEditorDialog extends KeyEditorDialog {
@@ -15,8 +16,8 @@ public class AttributesEditorDialog extends KeyEditorDialog {
 	}
 	
 	private AttributesEditorDialog() {
-		super("Add/Remove Attributes", "Separate the attributes by commas.<BR>" +
-				"You can also use Drag'n'Drop.");
+		super(I18N.constants().addRemoveAtt(), I18N.constants().separateAtt()+"<BR>" +
+				I18N.constants().useDND());
 		infoButton.setFileBase("addrematt");
 	}
 	

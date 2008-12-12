@@ -1,5 +1,7 @@
 package se.umu.cs.ldbn.client.ui.dialog;
 
+import se.umu.cs.ldbn.client.i18n.I18N;
+
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Grid;
@@ -20,7 +22,7 @@ public final class CheckSolutionDialog extends CloseDialog  {
 	private static CheckSolutionDialog inst;
 	
 	private CheckSolutionDialog() {
-		super("Check Solution Dialog", "", false);
+		super(I18N.constants().csdTitle(), "", false);
 	}
 	
 	public static CheckSolutionDialog get() {
