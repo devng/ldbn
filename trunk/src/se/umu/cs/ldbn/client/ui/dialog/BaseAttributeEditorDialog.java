@@ -1,5 +1,6 @@
 package se.umu.cs.ldbn.client.ui.dialog;
 
+import se.umu.cs.ldbn.client.i18n.I18N;
 import se.umu.cs.ldbn.client.ui.AttributeTextArea;
 import se.umu.cs.ldbn.client.ui.InfoButton;
 import se.umu.cs.ldbn.client.utils.Common;
@@ -43,12 +44,12 @@ abstract class BaseAttributeEditorDialog extends CloseDialog {
 		VerticalPanel vp = new VerticalPanel();
 		infoButton = new InfoButton("example");
 		vp.add(infoButton);
-		setButton = new Button("Set");
+		setButton = new Button(I18N.constants().setBut());
 		setButton.setStyleName("dew-btn");
 		setButton.addClickListener(this);
 		Common.setCursorPointer(setButton);
 		vp.add(setButton);
-		clearButton = new Button("Clear");
+		clearButton = new Button(I18N.constants().clearBut());
 		clearButton.setStyleName("dew-btn");
 		clearButton.addClickListener(this);
 		Common.setCursorPointer(clearButton);

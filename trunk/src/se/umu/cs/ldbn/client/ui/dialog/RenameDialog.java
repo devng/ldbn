@@ -2,6 +2,7 @@ package se.umu.cs.ldbn.client.ui.dialog;
 
 import java.util.Collection;
 
+import se.umu.cs.ldbn.client.i18n.I18N;
 import se.umu.cs.ldbn.client.utils.Common;
 
 import com.google.gwt.user.client.ui.HasName;
@@ -23,7 +24,8 @@ public final class RenameDialog extends OkCancelDialog {
 	private TextBox nameBox;
 	
 	private RenameDialog() {
-		super("Enter a name", "Use only <i>word</i> characters.<BR>Maximal 20 characters.", true);
+		super(I18N.constants().renameDialogTitle(), 
+				I18N.constants().renameDialogSubTitle(), true);
 		caller = null;
 	}
 	
@@ -59,7 +61,7 @@ public final class RenameDialog extends OkCancelDialog {
 					if (obj instanceof HasName) {
 						String name = ((HasName) obj).getName();
 						if(name.toLowerCase().equals(sLow)) {
-							setErrorMsg("Name is taken.");
+							setErrorMsg(I18N.constants().renameDialogNameTaken());
 							return;
 						}
 					}
@@ -71,7 +73,7 @@ public final class RenameDialog extends OkCancelDialog {
 			setErrorMsg("");
 			hide();
 		} else {
-			setErrorMsg("Invalid name.");
+			setErrorMsg(I18N.constants().invalidName());
 		}
 	}
 }

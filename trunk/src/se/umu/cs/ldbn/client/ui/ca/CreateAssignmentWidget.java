@@ -3,9 +3,11 @@ package se.umu.cs.ldbn.client.ui.ca;
 import java.util.Collection;
 import java.util.List;
 
+import se.umu.cs.ldbn.client.Main;
 import se.umu.cs.ldbn.client.core.Assignment;
 import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.FD;
+import se.umu.cs.ldbn.client.i18n.I18N;
 import se.umu.cs.ldbn.client.io.AssignmentListEntry;
 import se.umu.cs.ldbn.client.io.AssignmentLoader;
 import se.umu.cs.ldbn.client.io.AssignmentLoaderCallback;
@@ -26,6 +28,7 @@ import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialogFilter;
 import se.umu.cs.ldbn.client.ui.dialog.RenameDialog;
 import se.umu.cs.ldbn.client.ui.dialog.RenameDialogCallback;
 import se.umu.cs.ldbn.client.ui.dialog.UploadDialog;
+import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
 import se.umu.cs.ldbn.client.ui.user.UserData;
 import se.umu.cs.ldbn.client.utils.Common;
 
@@ -64,6 +67,7 @@ public final class CreateAssignmentWidget extends Composite
 	private Button editButton;
 	private Button exportButton;
 	private Button importButton;
+	private Button loadButton;
 	private Label editMode;
 	private Label loginFirst;
 	private DisclosureWidget dwGivenAttributes;
@@ -76,16 +80,18 @@ public final class CreateAssignmentWidget extends Composite
 		mainPanel.setWidth("100%");
 		
 		HeaderWidget hw = new HeaderWidget();
-		newButton = new Button("New");
+		newButton = new Button(I18N.constants().newBut());
 		newButton.addClickListener(this);
-		saveButton = new Button("Save");
+		saveButton = new Button(I18N.constants().saveBut());
 		saveButton.addClickListener(this);
-		editButton = new Button("Edit");
+		editButton = new Button(I18N.constants().editBut());
 		editButton.addClickListener(this);
-		exportButton = new Button("Export");
+		exportButton = new Button(I18N.constants().exportBut());
 		exportButton.addClickListener(this);
-		importButton = new Button("Import");
+		importButton = new Button(I18N.constants().importBut());
 		importButton.addClickListener(this);
+		loadButton = new Button(I18N.constants().loadInSABut());
+		loadButton.addClickListener(this);
 		newButton.setStyleName("att-but");
 		Common.setCursorPointer(newButton);
 		saveButton.setStyleName("att-but");
@@ -96,6 +102,9 @@ public final class CreateAssignmentWidget extends Composite
 		Common.setCursorPointer(importButton);
 		importButton.setStyleName("att-but");
 		Common.setCursorPointer(exportButton);
+		loadButton.setStyleName("att-but");
+		Common.setCursorPointer(loadButton);
+		
 		InfoButton info = new InfoButton("ca-tab");
 		info.setStyleName("att-img");
 		
@@ -104,16 +113,17 @@ public final class CreateAssignmentWidget extends Composite
 		hw.add(editButton);
 		hw.add(exportButton);
 		hw.add(importButton);
+		hw.add(loadButton);
 		hw.add(info);
-		editMode = new Label("Edit mode");
+		editMode = new Label(I18N.constants().editMode());
 		editMode.setVisible(false);
 		hw.add(editMode);
 		mainPanel.add(hw);
-		loginFirst = new Label("You have to login first.");
+		loginFirst = new Label(I18N.constants().loginFirst());
 		hw.add(loginFirst);
 		//given attributes
 		VerticalPanel vp = new VerticalPanel();
-		addAtts = new Button ("Add/Remove Attributes");
+		addAtts = new Button (I18N.constants().addRemoveAtt());
 		addAtts.setStyleName("min-cov-but");
 		addAtts.addClickListener(this);
 		Common.setCursorPointer(addAtts);
@@ -125,21 +135,21 @@ public final class CreateAssignmentWidget extends Composite
 		egas = new EditableGivenAttributesWidget();
 		vp.add(egas);
 		
-		dwGivenAttributes = new DisclosureWidget("Given Attributes", vp);
+		dwGivenAttributes = new DisclosureWidget(I18N.constants().givenAtt(), vp);
 		mainPanel.add(dwGivenAttributes);
 		//Given FDs
 		givenFDs = new FDHolderPanel();
 		egas.getDomain().addListener(givenFDs);
 		hp = new HorizontalPanel();
 		hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-		addFDs = new Button("Add FDs");
+		addFDs = new Button(I18N.constants().addFDs());
 		addFDs.setStyleName("min-cov-but");
 		addFDs.addClickListener(this);
 		Common.setCursorPointer(addFDs);
 		hp.add(addFDs);
 		hp.add(new InfoButton("givenfds-ca"));
 		givenFDs.add(hp);
-		dwGivenFDs = new DisclosureWidget("Given FDs", givenFDs);
+		dwGivenFDs = new DisclosureWidget(I18N.constants().givenFDs(), givenFDs);
 		mainPanel.add(dwGivenFDs);
 		
 		initWidget(mainPanel);
@@ -214,6 +224,12 @@ public final class CreateAssignmentWidget extends Composite
 			downloadForm.submit();
 		} else if (sender == importButton) {
 			UploadDialog.get().center();
+		} else if (sender == loadButton) {
+			Assignment tmp = getAssignemntFromUserInput();
+			if (tmp == null) return;
+			currentAssignment = tmp;
+			Main.get().loadSATab();
+			SolveAssignmentWidget.get().loadAssignment(tmp);
 		}
 		
 	}
@@ -221,12 +237,12 @@ public final class CreateAssignmentWidget extends Composite
 	private Assignment getAssignemntFromUserInput() {
 		DomainTable domain = egas.getDomain();
 		if(domain.size() < 1) {
-			Window.alert("You did not enter any attributes.");
+			Window.alert(I18N.constants().noAttWarn());
 			return null;
 		}
 		List<FD> fds = givenFDs.getFDs();
 		if(fds.size() < 1) {
-			Window.alert("You did not enter any FDs.");
+			Window.alert(I18N.constants().noFDsWarn());
 			return null;
 			
 		}
@@ -240,6 +256,7 @@ public final class CreateAssignmentWidget extends Composite
 		return "";
 	}
 	
+	//TODO
 	public Collection getTakenNames() {
 		return null;
 	}
@@ -288,7 +305,7 @@ public final class CreateAssignmentWidget extends Composite
 			loadedName = null;
 			//TODO Use callbacks and on success set values to null 
 		} else {
-			Log.warn("CurrentAsigment = null. Could not save assigment.");
+			Log.warn("CurrentAsigment = null. Could not save assignment.");
 		}
 	}
 	

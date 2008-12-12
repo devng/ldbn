@@ -12,6 +12,7 @@ import se.umu.cs.ldbn.client.core.AttributeSet;
 import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.core.Relation;
+import se.umu.cs.ldbn.client.i18n.I18N;
 import se.umu.cs.ldbn.client.io.AssignmentLoader;
 import se.umu.cs.ldbn.client.io.AssignmentLoaderCallback;
 import se.umu.cs.ldbn.client.io.AssignmentListEntry;
@@ -106,15 +107,15 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		
 		//Controls
 		givenAttributesWidget = new GivenAttributesWidget();
-		loadAssignment = new Button("Load Assignment");
+		loadAssignment = new Button(I18N.constants().sawLoadAssignmentBut());
 		loadAssignment.setStyleName("att-but");
 		Common.setCursorPointer(loadAssignment);
 		loadAssignment.addClickListener(this);
-		checkSolution = new Button("Check Solution");
+		checkSolution = new Button(I18N.constants().sawCheckSolutionBut());
 		checkSolution.setStyleName("att-but");
 		Common.setCursorPointer(checkSolution);
 		checkSolution.addClickListener(this);
-		showSolution = new Button("Show Solution");
+		showSolution = new Button(I18N.constants().sawShowSolutionBut());
 		showSolution.setStyleName("att-but");
 		Common.setCursorPointer(showSolution);
 		showSolution.addClickListener(this);
@@ -126,26 +127,26 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		hw.add(showSolution);
 		hw.add(info);
 		add(hw);
-		dwGivenAttributes = new DisclosureWidget("Given Attributes", 
+		dwGivenAttributes = new DisclosureWidget(I18N.constants().givenAtt(), 
 				givenAttributesWidget);
 		add(dwGivenAttributes);
 		//Given FDs
 		givenFDsWidget = new GivenFDsWidget();
-		dwFDs = new DisclosureWidget("Given FDs", givenFDsWidget);
+		dwFDs = new DisclosureWidget(I18N.constants().givenFDs(), givenFDsWidget);
 		add(dwFDs);
 		//Minimal Cover
 		minimalCoverWidget = new MinimalCoverWidget();
-		dwMinimalCover = new DisclosureWidget("Find a Minimal Cover of FDs", 
+		dwMinimalCover = new DisclosureWidget(I18N.constants().sawMinCoverTitle(), 
 				minimalCoverWidget);
 		add(dwMinimalCover); 
 		//2NF
 		decomposition2NF = new DecompositionWidget();
-		dwDecomposition2NF = new DisclosureWidget("Decompose into 2NF", decomposition2NF);
+		dwDecomposition2NF = new DisclosureWidget(I18N.messages().sawDecomposeInto("2NF"), decomposition2NF);
 		add(dwDecomposition2NF);
 		//3NF
 		import2NF = new Image("img/import.png", 0, 0, 15, 15);
 		import2NF.addClickListener(this);
-		import2NF.setTitle("Import relations");
+		import2NF.setTitle(I18N.constants().sawImportRelations());
 		Common.setCursorPointer(import2NF);
 		import2NF.addMouseListener(new MouseAdapter(){
 
@@ -163,12 +164,12 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 			tmp[i] = decomposition3NF.getAdditionalControlls()[i-1];
 		}
 		tmp[0] = import2NF;
-		dwDecomposition3NF = new DisclosureWidget("Decompose into 3NF", decomposition3NF, tmp);
+		dwDecomposition3NF = new DisclosureWidget(I18N.messages().sawDecomposeInto("3NF"), decomposition3NF, tmp);
 		add(dwDecomposition3NF);
 		//BCNF
 		import3NF = new Image("img/import.png", 0, 0, 15, 15);
 		import3NF.addClickListener(this);
-		import3NF.setTitle("Import relations");
+		import3NF.setTitle(I18N.constants().sawImportRelations());
 		Common.setCursorPointer(import3NF);
 		import3NF.addMouseListener(new MouseAdapter(){
 
@@ -186,10 +187,10 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 			tmp[i] = decompositionBCNF.getAdditionalControlls()[i-1];
 		}
 		tmp[0] = import3NF;
-		dwDecompositionBCNF = new DisclosureWidget("Decompose into BCNF", decompositionBCNF, tmp);
+		dwDecompositionBCNF = new DisclosureWidget(I18N.messages().sawDecomposeInto("BCNF"), decompositionBCNF, tmp);
 		add(dwDecompositionBCNF);
 		//comments
-		dwComments = new DisclosureWidget("User Comments", CommentsWidget.get());
+		dwComments = new DisclosureWidget(I18N.constants().sawUserCommentsTitle(), CommentsWidget.get());
 		add(dwComments);
 		//cache
 		cacheFD = new HashMap<Integer, List<FD>>();
@@ -234,13 +235,13 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 				}
 			});
 		} else if (sender == import2NF) {
-			boolean b = Window.confirm("Do you wish to import all relations from 2NF?");
+			boolean b = Window.confirm(I18N.messages().sawImportRelationsConfirm("2NF"));
 			if(b) {
 				decomposition3NF.addRelationList(Common.
 						deepCopyDecomposition(decomposition2NF.getRelations()));
 			}
 		} else if (sender == import3NF) {
-			boolean b = Window.confirm("Do you wish to import all relations from 3NF?");
+			boolean b = Window.confirm(I18N.messages().sawImportRelationsConfirm("3NF"));
 			if(b) {
 				decompositionBCNF.addRelationList(Common.
 						deepCopyDecomposition(decomposition3NF.getRelations()));
@@ -283,23 +284,23 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		Algorithms.minimalCover(minCoverF);
 		CheckSolutionDialog dialog = CheckSolutionDialog.get();
 		dialog.clearMsgs();
-		dialog.msgTitle("Minimal Cover Check:");
+		dialog.msgTitle(I18N.constants().sawMinCoverCheck());
 		if(minCovFDs.size() == 0) {
-			dialog.msgWarn("There are no FDs specified.");
+			dialog.msgWarn(I18N.constants().sawNoFDsWarn());
 		} else if (!Algorithms.equivalence(fds, minCovFDs)) {
-			dialog.msgErr("wrong - FDs are not equivalent to the given FDs");
+			dialog.msgErr(I18N.constants().sawFDsNotEquivalent());
 		} else if(minCoverF.size() != minCovFDs.size()) {
-			dialog.msgErr("wrong - too much FDs");
+			dialog.msgErr(I18N.constants().sawFDsTooMany());
 		} else if (!minCoverF.containsAll(minCovFDs)) { 
 			// compute the minimal cover over the user input and compare it with
 			// the user actual input, if it does not contain all FDs, then a 
 			// FD was not minimal and it was computed and added to the list. 
-			dialog.msgErr("wrong - some FDs are not reduced");
+			dialog.msgErr(I18N.constants().sawFDsNotReduced());
 		} else {
-			dialog.msgOK("right");
+			dialog.msgOK(I18N.constants().sawRight());
 		}
 		//2nf check
-		dialog.msgTitle("2NF Decomposition Check:");
+		dialog.msgTitle(I18N.messages().sawNFDecompositionCheck("2NF"));
 		List<Relation> relations = decomposition2NF.getRelations();
 		updateCache(relations);
 		if (checkFDInput(relations)) {
@@ -309,16 +310,16 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 						updateRelations(relations);
 						boolean isIn2NF = Algorithms.isIn2NF(relations);
 						if(isIn2NF) {
-							dialog.msgOK("Decomposition is in 2NF.");
+							dialog.msgOK(I18N.messages().sawDecompositionIsInNF("2NF"));
 						} else {
-							dialog.msgErr("Decomposition is NOT in 2NF.");
+							dialog.msgErr(I18N.messages().sawDecompositionIsNotInNF("2NF"));
 						}
 					}
 				}
 			}
 		}
 		//3nf check
-		dialog.msgTitle("3NF Decomposition Check:");
+		dialog.msgTitle(I18N.messages().sawNFDecompositionCheck("3NF"));
 		relations = decomposition3NF.getRelations();
 		updateCache(relations);
 		if (checkFDInput(relations)) {
@@ -328,16 +329,16 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 						updateRelations(relations);
 						boolean isIn3NF = Algorithms.isIn3NF(relations);
 						if(isIn3NF) {
-							dialog.msgOK("Decomposition is in 3NF.");
+							dialog.msgOK(I18N.messages().sawDecompositionIsInNF("3NF"));
 						} else {
-							dialog.msgErr("Decomposition is NOT in 3NF.");
+							dialog.msgErr(I18N.messages().sawDecompositionIsNotInNF("3NF"));
 						}
 					}
 				}
 			}
 		}
 		//bcnf check
-		dialog.msgTitle("BCNF Decomposition Check:");
+		dialog.msgTitle(I18N.messages().sawNFDecompositionCheck("BCNF"));
 		relations = decompositionBCNF.getRelations();
 		updateCache(relations);
 		if (checkFDInput(relations)) {
@@ -347,9 +348,9 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 					updateRelations(relations);
 					boolean isInBCNF = Algorithms.isInBCNF(relations);
 					if(isInBCNF) {
-						dialog.msgOK("Decomposition is in BCNF.");
+						dialog.msgOK(I18N.messages().sawDecompositionIsInNF("BCNF"));
 					} else {
-						dialog.msgErr("Decomposition is NOT in BCNF.");
+						dialog.msgErr(I18N.messages().sawDecompositionIsNotInNF("BCNF"));
 					}
 				}
 			}
@@ -362,7 +363,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	private boolean checkFDInput(List<Relation> rel) {
 		CheckSolutionDialog dialog = CheckSolutionDialog.get();
 		if(rel == null || rel.size() == 0){
-			dialog.msgWarn("There are no relations specified.");
+			dialog.msgWarn(I18N.constants().sawNoRelationWarn());
 			return false;
 		}
 		boolean resultFD = true;
@@ -371,12 +372,12 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 			List<FD> fdsRBR = cacheFD.get(r.getAttrbutes().hashCode());
 			if(!Algorithms.equivalence(fdsRBR, r.getFds())) {
 				resultFD = false;
-				dialog.msgErr("The FDs for \""+r.getName()+"\" does not build a closure for this relation.");
+				dialog.msgErr(I18N.messages().sawFDsNotClosure(r.getName()));
 				break;
 			}		
 		}
 		if(resultFD) {
-			dialog.msgOK("The FDs are correct.");
+			dialog.msgOK(I18N.constants().sawFDsCorrect());
 		}
 		return resultFD;
 	}
@@ -386,10 +387,10 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		CheckSolutionDialog dialog = CheckSolutionDialog.get();
 		isDependencyPreserving = Algorithms.isDependencyPreserving(fds, rel);
 		if(isDependencyPreserving) {
-			dialog.msgOK("Decomposition is dependency preserving");
+			dialog.msgOK(I18N.constants().sawDecompositionDP());
 		} else {
 			
-			dialog.msg("Decomposition is NOT dependency preserving", displayOnlyWarning ? MSG_TYPE.warn : MSG_TYPE.error);
+			dialog.msg(I18N.constants().sawDecompositionNDP(), displayOnlyWarning ? MSG_TYPE.warn : MSG_TYPE.error);
 		}
 		
 		
@@ -411,13 +412,13 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 				}
 			}
 			if(!isKeyFound) {
-				dialog.msgErr("The Key for \""+r.getName()+"\" is incorrect");
+				dialog.msgErr(I18N.messages().sawKeyWrong(r.getName()));
 				result = false;
 			}
 			
 		}
 		if(result) {
-			dialog.msgOK("The keys are correct.");
+			dialog.msgOK(I18N.constants().sawKeysCorrect());
 		}
 		return result;
 	}
@@ -426,9 +427,9 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		CheckSolutionDialog dialog = CheckSolutionDialog.get();
 		boolean isLossless = Algorithms.isLossless(fds, domainAsAttSet, relations);
 		if(isLossless) {
-			dialog.msgOK("Decomposition is lossless");
+			dialog.msgOK(I18N.constants().sawDecompositionLossless());
 		} else {
-			dialog.msgErr("Decomposition is NOT lossless");
+			dialog.msgErr(I18N.constants().sawDecompositionLossless());
 		}
 		return isLossless;
 	}
@@ -506,7 +507,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		CommentsWidget.get().clearData();
 	}
 	
-	private void loadAssignment(Assignment a) {
+	public void loadAssignment(Assignment a) {
 		clearData();
 		restoreDefaultSize();
 		this.domain = a.getDomain();

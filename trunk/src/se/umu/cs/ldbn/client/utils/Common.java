@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import se.umu.cs.ldbn.client.core.Relation;
+import se.umu.cs.ldbn.client.i18n.I18N;
 import se.umu.cs.ldbn.client.io.LdbnParser;
 import se.umu.cs.ldbn.client.io.LdbnParser.LDBN_TYPE;
 
@@ -71,8 +72,8 @@ public final class Common {
 	 */
 	public static boolean checkResponse(Response response) {
 		if(response.getStatusCode() != 200) {
-			Window.alert("The server returned a " + 
-					response.getStatusCode() + " error code.");
+			Window.alert(I18N.messages().serverErrorCode(String.
+					valueOf(response.getStatusCode())));
 			return false;
 		}
 		String responce = response.getText();
@@ -86,7 +87,7 @@ public final class Common {
 		LdbnParser p = LdbnParser.get();
 		LdbnParser.LDBN_TYPE type = p.parse(responce);
 		if (type == LDBN_TYPE.unknown) {
-			Window.alert("The server returned an unknown XML responce.");
+			Window.alert(I18N.constants().serverErrorUnknownXML());
 			return false;
 		}
 		if (type == LDBN_TYPE.msg && p.getMsgType() != LdbnParser.MSG_TYPE.ok) {
