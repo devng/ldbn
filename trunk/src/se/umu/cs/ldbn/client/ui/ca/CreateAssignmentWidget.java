@@ -283,8 +283,10 @@ public final class CreateAssignmentWidget extends Composite
 		return "";
 	}
 	
-	//TODO
+	
+	@SuppressWarnings("unchecked")
 	public Collection getTakenNames() {
+		//TODO
 		return null;
 	}
 	

@@ -522,7 +522,7 @@ public final class Algorithms {
 
 		// Associate FDs for each relation , see Kemper's book p. 185
 		for (Relation r1 : result) {
-			AttributeSet atts = r1.getAttrbutes();
+//			AttributeSet atts = r1.getAttrbutes();
 //			List<FD> r1_fds = new ArrayList<FD>();
 			List<FD> r1_fds = reductionByResolution(r.getAttrbutes(), r.getFds(), r1.getAttrbutes());
 			minimalCover(r1_fds);
