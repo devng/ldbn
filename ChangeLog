@@ -1,4 +1,7 @@
-2009-06-17_1815
+2009-06-08_0140
+* Clean the source code so that no warning messages occur. Use  of @SuppressWarnings("unchecked") for the RenameDialogCallback interface.
+
+2009-06-07_1815
 * New Release - version 1.1 
 * Visualization of FDs is now possible. All classes involved in this feature are in the visualization package. The package relies on the <canvas> tag, thus the visualization might not work in IE 6 and 7. 
 * New window package. Now it is possible to create resizible windows within the browser, with a close button in the upper right corner. The BaseDialog class now extends the WindowPanel class.

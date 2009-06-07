@@ -88,6 +88,7 @@ public final class EditableGivenAttributesWidget extends GivenAttributesWidget
 		currentSaw = null;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Collection getTakenNames() {
 		return map.values();
 	}

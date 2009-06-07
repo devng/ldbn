@@ -14,6 +14,7 @@ public abstract class AbstractRequestSender {
 	
 	protected abstract String getURL();
 	protected abstract String getData();
+	/* Always call this method after Common.checkResponse(response) */
 	protected abstract boolean handleResponce();
 	
 	protected Method getMethod() {

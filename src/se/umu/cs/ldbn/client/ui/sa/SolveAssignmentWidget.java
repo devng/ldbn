@@ -31,8 +31,10 @@ import se.umu.cs.ldbn.client.ui.dialog.CheckSolutionDialog.MSG_TYPE;
 import se.umu.cs.ldbn.client.utils.AssignmentGenerator;
 import se.umu.cs.ldbn.client.utils.Common;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
@@ -199,7 +201,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		add(dwDecompositionBCNF);
 		//comments
 		dwComments = new DisclosureWidget(I18N.constants().sawUserCommentsTitle(), CommentsWidget.get());
-		add(dwComments);
+		add(dwComments); 
 		//cache
 		cacheFD = new HashMap<Integer, List<FD>>();
 		cacheKeys = new HashMap<Integer, List<AttributeSet>>();
@@ -274,6 +276,12 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 
 	public void onCommentsReceived(List<CommentListEntry> comments,
 			String assignentID) {
+		if(comments == null ) {
+			Log.warn("Comments are null");
+		} else if (comments.isEmpty()) {
+			Log.warn("Comments are empty");
+		}
+		
 		CommentsWidget.get().addComments(comments);
 	}
 	
@@ -576,7 +584,12 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		givenFDsWidget.setFDs(fds);
 		DeferredCommand.addCommand(new Command() {
 			public void execute() {
-				Comment.get().send(SolveAssignmentWidget.this);
+				Timer t = new Timer(){
+					public void run() {
+						Comment.get().send(SolveAssignmentWidget.this);
+					}
+				};
+				t.schedule(1000);
 			}
 		});
 	}
