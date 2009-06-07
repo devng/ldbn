@@ -9,13 +9,8 @@ public abstract class CloseDialog extends BaseDialog {
 		this(title, false);
 	}
 	
-	
 	public CloseDialog(String title, boolean modal) {
-		this(title, null, modal);
-	}
-	
-	public CloseDialog(String title, String msg ,boolean modal) {
-		super(title, msg, modal);
+		super(title, modal);
 		okButton.removeClickListener(this);
 		okButton.removeFromParent();
 	}

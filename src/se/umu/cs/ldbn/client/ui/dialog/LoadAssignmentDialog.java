@@ -129,7 +129,7 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 	private int lastSelectedRow;
 	
 	private LoadAssignmentDialog() {
-		super("Load Assignment", "Choose an assignment from the list bellow", true);
+		super("Load Assignment", true);
 		lastSelectedRow = 0;
 		colHeaders = new ArrayList<ColumnHeader>();
 		colHeaders.add(new ColumnHeader(1));
@@ -183,7 +183,7 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 		lastSelectedRow = 0;
 	}
 	
-	protected Widget getContentWidget() {
+	protected Widget getDialogContentWidget() {
 		ScrollPanel sp = new ScrollPanel();
 		sp.setSize("100%", "160");
 		sp.setStyleName("nad-innerPanel");
@@ -205,6 +205,10 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 		}
 		caller.onLoaded(((MyLabel) (table.getWidget(lastSelectedRow, 0))).getEntry());
 		hide();
+	}
+	
+	protected String getHelpMessage() {
+		return "Choose an assignment from the list bellow";
 	}
 
 	

@@ -9,12 +9,12 @@ import com.google.gwt.user.client.ui.Label;
  * Class representing a relation attribute.
  * @author NGG
  */
-public final class SingleAttributeWidget extends Label  implements HasName {
+public class SingleAttributeWidget extends Label implements HasName {
 	
 	/**
 	 * name of the attribute.
 	 */
-	private String name;
+	protected String name;
 	
 	
 	public SingleAttributeWidget(String name) {

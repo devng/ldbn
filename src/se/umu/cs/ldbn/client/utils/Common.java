@@ -81,9 +81,9 @@ public final class Common {
 	}
 	
 	public static boolean checkResponceTextOnly(String responce) {
-		System.out.println("-----------------------Server response-----------------------------");
-		System.out.println(responce);
-		System.out.println("---------------------End server response---------------------------");
+//		System.out.println("-----------------------Server response-----------------------------");
+//		System.out.println(responce);
+//		System.out.println("---------------------End server response---------------------------");
 		LdbnParser p = LdbnParser.get();
 		LdbnParser.LDBN_TYPE type = p.parse(responce);
 		if (type == LDBN_TYPE.unknown) {

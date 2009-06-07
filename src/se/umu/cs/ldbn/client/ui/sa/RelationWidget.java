@@ -13,6 +13,7 @@ import se.umu.cs.ldbn.client.ui.FDWidget;
 import se.umu.cs.ldbn.client.ui.dialog.AttributesEditorDialog;
 import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
 import se.umu.cs.ldbn.client.ui.dialog.KeyEditorDialog;
+import se.umu.cs.ldbn.client.ui.visualization.VisualizationWindow;
 import se.umu.cs.ldbn.client.utils.Common;
 
 import com.google.gwt.user.client.ui.CheckBox;
@@ -56,7 +57,7 @@ public final class RelationWidget extends Composite implements ClickListener,
 		mainPanel = new VerticalPanel();
 		mainPanel.setStyleName("relW");
 		
-		header = new Grid(1, 5);
+		header = new Grid(1, 6);
 		header.setStyleName("relW-header");
 		collapseButton = new Image("img/dw-collapse-but.png", 0, 15, 15, 15);
 		collapseButton.addClickListener(this);
@@ -90,6 +91,20 @@ public final class RelationWidget extends Composite implements ClickListener,
 		addBut.setTitle("Add FDs");
 		header.setWidget(0, 3, addBut);
 		
+		Image visual = new Image("img/eye.png");
+		visual.setTitle("FD Visualization");
+		Common.setCursorPointer(visual);
+		visual.addClickListener(new ClickListener() {
+
+			public void onClick(Widget sender) {
+				VisualizationWindow vw = VisualizationWindow.get();
+				vw.setData(raw.getAttributes(), fdHP.getFDs());
+				vw.center();
+				
+			}
+		});
+		header.setWidget(0, 4, visual);
+		
 		fdHP = new FDHolderPanel();
 		HorizontalPanel headerControlsPanel = new HorizontalPanel();
 		for (int i = 0; i < fdHP.getCheckBoxControlls().length; i++) {
@@ -97,9 +112,9 @@ public final class RelationWidget extends Composite implements ClickListener,
 			fdHP.getCheckBoxControlls()[i].addStyleName("dw-heder-controls");
 			Common.setCursorPointer(fdHP.getCheckBoxControlls()[i]);
 		}
-		header.setWidget(0, 4, headerControlsPanel);
+		header.setWidget(0, 5, headerControlsPanel);
 		CellFormatter cf = header.getCellFormatter();
-		cf.setAlignment(0, 4, HasHorizontalAlignment.ALIGN_RIGHT,
+		cf.setAlignment(0, 5, HasHorizontalAlignment.ALIGN_RIGHT,
 				HasVerticalAlignment.ALIGN_MIDDLE);
 		
 		Label attsTitle = new Label("Attributes:");

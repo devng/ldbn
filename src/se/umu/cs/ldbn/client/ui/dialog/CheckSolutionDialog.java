@@ -22,7 +22,7 @@ public final class CheckSolutionDialog extends CloseDialog  {
 	private static CheckSolutionDialog inst;
 	
 	private CheckSolutionDialog() {
-		super(I18N.constants().csdTitle(), "", false);
+		super(I18N.constants().csdTitle(), false);
 	}
 	
 	public static CheckSolutionDialog get() {
@@ -87,7 +87,7 @@ public final class CheckSolutionDialog extends CloseDialog  {
 		this.msg(msg, MSG_TYPE.title);
 	}
 	
-	protected Widget getContentWidget() {
+	protected Widget getDialogContentWidget() {
 		ScrollPanel sp = new ScrollPanel();
 		mainPanel = new VerticalPanel();
 		sp.setSize("360px", "240px");

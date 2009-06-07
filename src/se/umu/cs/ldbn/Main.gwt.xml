@@ -4,13 +4,15 @@
 	<inherits name="com.google.gwt.user.User" />
 	<inherits name="com.google.gwt.xml.XML" />
 	<inherits name="com.google.gwt.http.HTTP" />
-	
 	<inherits name="com.google.gwt.i18n.I18N" />
-	
+	 
+	<!-- GWT Incubator stuff-->
+  <inherits name='com.google.gwt.widgetideas.GWTCanvas'/>
+  
+  <!-- D'n'D -->
 	<inherits name="com.allen_sauer.gwt.dnd.gwt-dnd" />
-	
 	<!-- Add gwt-log support                                  -->
-    <inherits name="com.allen_sauer.gwt.log.gwt-log" />
+  <inherits name="com.allen_sauer.gwt.log.gwt-log" />
     
     <!--
 	    Enable experimental WindowLogger, which logs messages to a separate

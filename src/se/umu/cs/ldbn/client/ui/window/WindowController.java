@@ -17,25 +17,26 @@ package se.umu.cs.ldbn.client.ui.window;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
 
-import com.allen_sauer.gwt.dnd.client.PickupDragController;
-
 public final class WindowController {
 
   private final AbsolutePanel boundaryPanel;
 
-  private PickupDragController pickupDragController;
+  private WindowDragController pickupDragController;
 
   private ResizeDragController resizeDragController;
 
   public WindowController(AbsolutePanel boundaryPanel) {
     this.boundaryPanel = boundaryPanel;
 
-    pickupDragController = new PickupDragController(boundaryPanel, true);
-    pickupDragController.setBehaviorConstrainedToBoundaryPanel(true);
+    pickupDragController = new WindowDragController();
+    pickupDragController.setBehaviorConstrainedToBoundaryPanel(false);
     pickupDragController.setBehaviorMultipleSelection(false);
+    pickupDragController.setConstrainWidgetToBoundaryPanel(false);
+    pickupDragController.setBehaviorBoundaryPanelDrop(true);
+    //pickupDragController.setBehaviorDragProxy(true);
 
     resizeDragController = new ResizeDragController(boundaryPanel);
-    resizeDragController.setBehaviorConstrainedToBoundaryPanel(true);
+    resizeDragController.setBehaviorConstrainedToBoundaryPanel(false);
     resizeDragController.setBehaviorMultipleSelection(false);
   }
 
@@ -43,7 +44,7 @@ public final class WindowController {
     return boundaryPanel;
   }
 
-  public PickupDragController getPickupDragController() {
+  public WindowDragController getPickupDragController() {
     return pickupDragController;
   }
 

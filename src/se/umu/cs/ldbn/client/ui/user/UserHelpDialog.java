@@ -33,7 +33,7 @@ public class UserHelpDialog extends OkCancelDialog{
 		super("User Account Help", true);
 	}
 	
-	protected Widget getContentWidget() {
+	protected Widget getDialogContentWidget() {
 		mainPanel = new VerticalPanel();
 		forgotPassword = new RadioButton("group0", "I forgot my password.");
 		resendEmail = new RadioButton("group0", "Resend my activation email.");

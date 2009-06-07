@@ -33,7 +33,7 @@ public class UploadDialog extends OkCancelDialog {
 		super("Upload LDBN XML");
 	}
 
-	protected Widget getContentWidget() {
+	protected Widget getDialogContentWidget() {
 	    upload = new FileUpload();
 	    upload.setName("clientfile");
 		form = new FormPanel();

@@ -17,8 +17,8 @@ abstract class BaseAttributeEditorDialog extends CloseDialog {
 	protected Button setButton;
 	protected InfoButton infoButton;
 	
-	protected BaseAttributeEditorDialog(String title, String msg) {
-		super(title, msg, false);
+	protected BaseAttributeEditorDialog(String title) {
+		super(title, false);
 	}
 	
 	public void onClick(Widget sender) {
@@ -30,7 +30,8 @@ abstract class BaseAttributeEditorDialog extends CloseDialog {
 		}
 	}
 	protected abstract AttributeTextArea getAttributeTextArea();
-	protected Widget getContentWidget() {
+	
+	protected Widget getDialogContentWidget() {
 		if(mainPanel != null) {
 			return mainPanel;
 		}

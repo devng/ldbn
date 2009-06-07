@@ -13,6 +13,8 @@ import com.google.gwt.user.client.ui.Frame;
 
 public class HomeWidget extends Composite implements LoginListener {
 	
+	private final static int VIEWER_PX_HEIGHT = 630;
+	
 	private static HomeWidget inst;
 	
 	public static HomeWidget get() {
@@ -37,7 +39,8 @@ public class HomeWidget extends Composite implements LoginListener {
 		mainPanel.add(hw);
 		Frame viewer = new Frame("info/about.html"); 
 		viewer.setWidth("100%");
-		viewer.setHeight("600px");
+		viewer.setHeight(VIEWER_PX_HEIGHT+"px");
+		//DOM.setStyleAttribute(viewer.getElement(), "overflow", "hidden");
 		DisclosureWidget dw = new DisclosureWidget("About", viewer);
 		mainPanel.add(dw);
 		Login.get().addListener(this);
