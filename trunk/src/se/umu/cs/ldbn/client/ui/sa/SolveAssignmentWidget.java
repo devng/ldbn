@@ -60,8 +60,9 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	private HashMap<Integer, List<AttributeSet>> cacheKeys;
 	//assignment variables  
 	private DomainTable domain;
-	private AttributeSet domainAsAttSet;
-	private List<FD> fds;
+	public AttributeSet domainAsAttSet;
+	public List<FD> fds;
+	private List<AttributeSet> originalKeys;
 	//given attributes
 	private Button checkSolution;
 	private Button loadAssignment;
@@ -69,6 +70,8 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	private GivenAttributesWidget givenAttributesWidget;
 	//given fds
 	private GivenFDsWidget givenFDsWidget;
+	//find key
+	private FindKeyWidget findKeyWidget;
 	//minimal cover
 	private MinimalCoverWidget minimalCoverWidget;
 	//2nf decomposition
@@ -79,6 +82,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	private DecompositionWidget decompositionBCNF;
 	//disclosure widgets
 	private DisclosureWidget dwGivenAttributes;
+	private DisclosureWidget dwFindKey;
 	private DisclosureWidget dwMinimalCover;
 	private DisclosureWidget dwDecomposition2NF;
 	private DisclosureWidget dwDecomposition3NF;
@@ -134,6 +138,10 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		givenFDsWidget = new GivenFDsWidget();
 		dwFDs = new DisclosureWidget(I18N.constants().givenFDs(), givenFDsWidget);
 		add(dwFDs);
+		//find key
+		findKeyWidget = new FindKeyWidget();
+		dwFindKey = new DisclosureWidget("Find a Key", findKeyWidget);
+		add(dwFindKey);
 		//Minimal Cover
 		minimalCoverWidget = new MinimalCoverWidget();
 		dwMinimalCover = new DisclosureWidget(I18N.constants().sawMinCoverTitle(), 
@@ -284,6 +292,47 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		Algorithms.minimalCover(minCoverF);
 		CheckSolutionDialog dialog = CheckSolutionDialog.get();
 		dialog.clearMsgs();
+		
+		AttributeSet key = findKeyWidget.getKey();
+		
+		//check key
+		dialog.msgTitle("Key Check:");
+		if(key.isEmpty()) {
+			dialog.msgWarn("You have not specified a key for the initial relation.");
+		} else {
+			//TODO Do it faster
+//			Relation tmp = new Relation();
+//			tmp.setAttributes(domainAsAttSet);
+//			tmp.setFDs(fds);
+//			tmp.setPrimaryKey(key);
+//			ArrayList<Relation> tmpList = new ArrayList<Relation>(1);
+//			tmpList.add(tmp);
+//			checkKeyInput(tmpList);
+			if(originalKeys == null) {
+				originalKeys = Algorithms.findAllKeyCandidates(fds, domainAsAttSet);
+			}
+			boolean keyFound = false;
+			boolean isSuperKey = false;
+			for (AttributeSet oKey : originalKeys) {
+				if(key.isSubSetOf(oKey)) {
+					isSuperKey = true;
+				}
+				if(oKey.equals(key)) {
+					keyFound = true;
+					break;
+				}
+			}
+			if(keyFound) {
+				dialog.msgOK("The provided key is correct.");
+			} else {
+				if(isSuperKey) {
+					dialog.msgWarn("The provided key is not minimal.");
+				} else {
+					dialog.msgErr("The provided key is incorrect.");
+				}
+			}
+		}
+		
 		dialog.msgTitle(I18N.constants().sawMinCoverCheck());
 		if(minCovFDs.size() == 0) {
 			dialog.msgWarn(I18N.constants().sawNoFDsWarn());
@@ -460,6 +509,14 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	
 	private void showSolution() {
 		clearUserInput();
+		//initial relation key
+		if(originalKeys == null) {
+			originalKeys = Algorithms.findAllKeyCandidates(fds, domainAsAttSet);
+		}
+		if(!originalKeys.isEmpty()) {
+			findKeyWidget.setKey(originalKeys.get(0));
+		}
+		
 		//minimal cover
 		List<FD> deepCopy = new ArrayList<FD>(fds.size());
 		for (FD fd : fds) {
@@ -495,6 +552,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		decomposition2NF.clearData();
 		decomposition3NF.clearData();
 		decompositionBCNF.clearData();
+		findKeyWidget.clearData();
 	}
 	
 	private void clearData() {
@@ -504,6 +562,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		domain.clearData();
 		givenFDsWidget.clearData();
 		fds.clear();
+		originalKeys = null;
 		CommentsWidget.get().clearData();
 	}
 	

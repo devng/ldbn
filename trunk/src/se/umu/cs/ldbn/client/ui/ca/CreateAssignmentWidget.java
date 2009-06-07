@@ -30,6 +30,7 @@ import se.umu.cs.ldbn.client.ui.dialog.RenameDialogCallback;
 import se.umu.cs.ldbn.client.ui.dialog.UploadDialog;
 import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
 import se.umu.cs.ldbn.client.ui.user.UserData;
+import se.umu.cs.ldbn.client.ui.visualization.VisualizationWindow;
 import se.umu.cs.ldbn.client.utils.Common;
 
 import com.allen_sauer.gwt.log.client.Log;
@@ -42,6 +43,7 @@ import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -149,7 +151,32 @@ public final class CreateAssignmentWidget extends Composite
 		hp.add(addFDs);
 		hp.add(new InfoButton("givenfds-ca"));
 		givenFDs.add(hp);
-		dwGivenFDs = new DisclosureWidget(I18N.constants().givenFDs(), givenFDs);
+		
+		/* additional controls */
+		Image visual = new Image("img/eye.png");
+		visual.setTitle("FD Visualization");
+		Common.setCursorPointer(visual);
+		visual.addClickListener(new ClickListener() {
+
+			public void onClick(Widget sender) {
+				VisualizationWindow vw = VisualizationWindow.get();
+				vw.setData(egas.getDomain().createAttributeSet(), 
+						givenFDs.getFDs());
+				vw.center();
+				
+			}
+		});
+		
+		Widget[] superAdditionalControl = givenFDs.getAdditionalControlls();
+		Widget[] additionalContorll = 
+			new Widget[superAdditionalControl.length+1];
+		additionalContorll[0] = visual;
+		for (int i = 0; i < superAdditionalControl.length; i++) {
+			Widget widget = superAdditionalControl[i];
+			additionalContorll[i+1] = widget;
+		}
+		/* END additional controls */
+		dwGivenFDs = new DisclosureWidget(I18N.constants().givenFDs(), givenFDs, additionalContorll);
 		mainPanel.add(dwGivenFDs);
 		
 		initWidget(mainPanel);

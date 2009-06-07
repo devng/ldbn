@@ -1,3 +1,24 @@
+2009-06-17_1815
+* New Release - version 1.1 
+* Visualization of FDs is now possible. All classes involved in this feature are in the visualization package. The package relies on the <canvas> tag, thus the visualization might not work in IE 6 and 7. 
+* New window package. Now it is possible to create resizible windows within the browser, with a close button in the upper right corner. The BaseDialog class now extends the WindowPanel class.
+* New Button in the Solve Assignment Tab, which allows the students to specify a key for the original relation.
+* Switched to gwt-dnd-2.5.6 library.
+* Minor bug fixes. 
+
+2008-12-12_0212
+* New Button in the Create Assignment Tab, which allows loading an assignment in the Solve Assignment Tab without the need to first store it in the DB.
+
+2008-12-02_1955
+* Bug Fix Test Lossless-Join Algorithm.
+* Bug Fix Build Covers embedded FDs.
+* Report changes
+
+2008-09-25_2140
+* Minor bug fixes.
+* Changes in the info files.
+* Report changes.
+
 2008-09-11_1020
 * Bug fix when importing decomposition (List of relation) only a reference was copied, not it is a hard copy.
 * Bug fix after dynamically loading the different tabs the Create Assignment tab check session was broken. 

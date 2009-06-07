@@ -2,12 +2,12 @@ package se.umu.cs.ldbn.client.ui.dialog;
 
 import se.umu.cs.ldbn.client.Main;
 import se.umu.cs.ldbn.client.i18n.I18N;
+import se.umu.cs.ldbn.client.ui.window.WindowPanel;
 import se.umu.cs.ldbn.client.utils.Common;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
@@ -17,27 +17,53 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
-abstract class BaseDialog extends DialogBox implements ClickListener {
+abstract public class BaseDialog extends WindowPanel implements ClickListener {
 	
 	protected Button okButton;
 	protected Button closeButton;
 	protected Label errorLabel;
 	protected boolean isModal;
-	
-	public BaseDialog(String title, String msg ,boolean modal) {
-		super(false, modal);
+
+	public BaseDialog(String title, boolean modal) {
+		super(title, modal, false);
 		isModal = modal;
+	}
+	
+	public void center() {
+		super.center();
+		if (isModal) {
+			Main.get().showGlassPanel();
+		}
 		
-		setText(title);
+		
+	}
+	
+	public void hide() {
+		super.hide();
+		setErrorMsg("");
+		if (isModal) {
+			Main.get().hideGlassPanel();
+		}
+	}
+	
+	public void setErrorMsg(String msg) {
+		errorLabel.setText(msg);
+	}
+
+	protected boolean useScrollPanel() {
+		return false;
+	}
+	
+	protected Widget getContentWidget() {
 		DockPanel dock = new DockPanel();
 		dock.setSpacing(4);
-		
+		String msg = getSubTitle();
 		if(msg != null) {
 			HTML msgHTML = new HTML(
 					"<center>"+msg+"</center>", true);
 			dock.add(msgHTML, DockPanel.NORTH);
 		}
-		dock.add(getContentWidget(), DockPanel.CENTER);
+		dock.add(getDialogContentWidget(), DockPanel.CENTER);
 		okButton = new Button(I18N.constants().okBut(), this);
 		closeButton = new Button(I18N.constants().closeBut(), this);
 		
@@ -60,27 +86,13 @@ abstract class BaseDialog extends DialogBox implements ClickListener {
 		dock.setWidth("100%");
 		
 		DOM.setStyleAttribute(errorLabel.getElement(), "color", "red");
-		setWidget(dock);
+		return dock;
 	}
 	
-	public void center() {
-		super.center();
-		if (isModal) {
-			Main.get().showGlassPanel();
-		}
+	protected abstract Widget getDialogContentWidget();
+	
+	protected String getSubTitle() {
+		return null;
 	}
 	
-	public void hide() {
-		super.hide();
-		setErrorMsg("");
-		if (isModal) {
-			Main.get().hideGlassPanel();
-		}
-	}
-	
-	public void setErrorMsg(String msg) {
-		errorLabel.setText(msg);
-	}
-	
-	protected abstract Widget getContentWidget();
 }

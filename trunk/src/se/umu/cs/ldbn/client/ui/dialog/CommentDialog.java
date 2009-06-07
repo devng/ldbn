@@ -29,7 +29,7 @@ public class CommentDialog extends OkCancelDialog implements CommentCallback {
 		super("Leave a comment", true);
 	}
 	
-	protected Widget getContentWidget() {
+	protected Widget getDialogContentWidget() {
 		textBox = new TextArea();
 		textBox.setSize("260", "120");
 		return textBox;

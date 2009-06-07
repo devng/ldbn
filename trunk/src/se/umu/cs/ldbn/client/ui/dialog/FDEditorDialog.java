@@ -7,6 +7,7 @@ import se.umu.cs.ldbn.client.ui.FDHolderPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public final class FDEditorDialog extends CloseDialog {
+	
 	private static FDEditorDialog inst;
 
 	public static FDEditorDialog get() {
@@ -19,8 +20,7 @@ public final class FDEditorDialog extends CloseDialog {
 	private FDEditorWidget fdew;
 	
 	private FDEditorDialog() {
-		super("FD Editor","Create a FD by giving the left-hand and right-hand side " +
-				"attributes.<BR>You can use Drag'n'Drop.", false);
+		super("FD Editor", false);
 	}
 	
 	public FDEditorWidget getFDEditorWidget() {
@@ -52,9 +52,14 @@ public final class FDEditorDialog extends CloseDialog {
 		Main.get().getDragController().registerDropController(fdew.getLeftTextArea());
 	}
 
-	protected Widget getContentWidget() {
+	protected Widget getDialogContentWidget() {
 		if (fdew == null)
 			fdew = new FDEditorWidget();
 		return fdew;
+	}
+	
+	protected String getHelpMessage() {
+		return "Create a FD by giving the left-hand and right-hand side " +
+		"attributes.<BR>You can use Drag'n'Drop.";
 	}
 }

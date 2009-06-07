@@ -24,8 +24,7 @@ public final class RenameDialog extends OkCancelDialog {
 	private TextBox nameBox;
 	
 	private RenameDialog() {
-		super(I18N.constants().renameDialogTitle(), 
-				I18N.constants().renameDialogSubTitle(), true);
+		super(I18N.constants().renameDialogTitle(), true);
 		caller = null;
 	}
 	
@@ -36,7 +35,7 @@ public final class RenameDialog extends OkCancelDialog {
 		center();
 	}
 
-	protected Widget getContentWidget() {
+	protected Widget getDialogContentWidget() {
 		if (nameBox == null) {
 			nameBox = new TextBox();
 			nameBox.setWidth("220px");;
@@ -75,5 +74,9 @@ public final class RenameDialog extends OkCancelDialog {
 		} else {
 			setErrorMsg(I18N.constants().invalidName());
 		}
+	}
+	
+	protected String getHelpMessage() {
+		return I18N.constants().renameDialogSubTitle();
 	}
 }

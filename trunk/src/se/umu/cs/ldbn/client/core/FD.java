@@ -39,6 +39,11 @@ public final class FD {
 		return rightHandSide;
 	}
 	
+	public boolean containsAtt(int attIndex) {
+		return leftHandSide.containsAtt(attIndex) 
+				&& rightHandSide.containsAtt(attIndex);
+	}
+	
 	public boolean equals(Object o) {
 		if (o instanceof FD) {
 			FD that = (FD) o;

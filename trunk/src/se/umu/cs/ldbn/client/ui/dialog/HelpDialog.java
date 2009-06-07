@@ -18,7 +18,7 @@ public final class HelpDialog extends CloseDialog {
 	private Frame viewer;
 	
 	private HelpDialog() {
-		super("Help Dialog", "", false);
+		super("Help Dialog", false);
 		DOM.setStyleAttribute(viewer.getElement(), "background", "white");
 	}
 	
@@ -32,7 +32,7 @@ public final class HelpDialog extends CloseDialog {
 		center();
 	}
 	
-	protected Widget getContentWidget() {
+	protected Widget getDialogContentWidget() {
 		viewer = new Frame();
 		viewer.setSize("420px", "250px");
 		return viewer;

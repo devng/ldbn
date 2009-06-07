@@ -1,4 +1,4 @@
-* Organise CSS 
+* Organize CSS 
 * use image bundle 
 * move configuration to Main.gwt.config 
 * There are some memory leaks, find them and fix them if possible 

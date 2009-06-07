@@ -8,7 +8,11 @@ import se.umu.cs.ldbn.client.ui.AlignmentButton;
 import se.umu.cs.ldbn.client.ui.AlignmentButtonListener;
 import se.umu.cs.ldbn.client.ui.FDWidget;
 import se.umu.cs.ldbn.client.ui.HasAdditionalControlls;
+import se.umu.cs.ldbn.client.ui.visualization.VisualizationWindow;
+import se.umu.cs.ldbn.client.utils.Common;
 
+import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -17,11 +21,12 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public final class GivenFDsWidget extends Composite 
-	implements AlignmentButtonListener, HasAdditionalControlls {
+	implements AlignmentButtonListener, HasAdditionalControlls, ClickListener {
 	
 	private Grid mainPanel;
 	private Panel mainPanelChild;
 	private AlignmentButton ab;
+	private Image visual;
 	private Widget[] additionalControlls;
 	private List<Widget> currentContent;
 	
@@ -33,9 +38,17 @@ public final class GivenFDsWidget extends Composite
 		
 		ab = new AlignmentButton(false);
 		ab.setTitle("Align horizontal/vertical");
-		additionalControlls = new Widget[1];
-		additionalControlls[0] = ab;
 		ab.addListener(this);
+		
+		visual = new Image("img/eye.png");
+		visual.setTitle("FD Visualization");
+		visual.addClickListener(this);
+		Common.setCursorPointer(visual);
+		
+		additionalControlls = new Widget[2];
+		additionalControlls[0] = visual;
+		additionalControlls[1] = ab;
+		
 		currentContent = new ArrayList<Widget>();
 	}
 	
@@ -67,5 +80,12 @@ public final class GivenFDsWidget extends Composite
 	
 	public Widget[] getAdditionalControlls() {
 		return additionalControlls;
+	}
+
+	public void onClick(Widget sender) {
+		VisualizationWindow vw = VisualizationWindow.get();
+		SolveAssignmentWidget sa = SolveAssignmentWidget.get();
+		vw.setData(sa.domainAsAttSet, sa.fds);
+		vw.center();
 	}
 }

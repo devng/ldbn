@@ -65,13 +65,12 @@ public class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 	protected MyTextArea kta;
 	
 	private KeyEditorDialog() {
-		super("Key Editor", "Give a valid candidate key for the relation.<BR>" +
-				"You can use Drag'n'Drop.");
+		super("Key Editor");
 		infoButton.setFileBase("keyeditor");
 	}
 	
-	protected KeyEditorDialog(String title, String msg) {
-		super(title, msg);
+	protected KeyEditorDialog(String title) {
+		super(title);
 	}
 	
 	public void hide() {
@@ -117,5 +116,10 @@ public class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 	
 	protected void handleAttributeSet(AttributeSet as) {
 		raw.setKey(as);
+	}
+	
+	protected String getHelpMessage() {
+		return "Give a valid candidate key for the relation.<BR>" +
+		 "You can use Drag'n'Drop.";
 	}
 }

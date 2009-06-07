@@ -1,1 +1,1 @@
-@java -Xmx128M -cp "%~dp0\src;%~dp0\bin;%~dp0\lib\gwt-dnd-2.0.7.jar;%~dp0\lib\gwt-log-1.5.6.jar;C:/Developer/gwt-windows-1.5.0/gwt-user.jar;C:/Developer/gwt-windows-1.5.0/gwt-dev-windows.jar" com.google.gwt.dev.GWTCompiler -out "C:\Developer\xampp\htdocs" %* se.umu.cs.ldbn.Main
+@java -Xmx128M -cp "%~dp0\src;%~dp0\bin;%~dp0\lib\gwt-dnd-2.5.2.jar;%~dp0\lib\gwt-log-2.5.0.jar;C:/Developer/gwt-windows-1.5.0/gwt-user.jar;C:/Developer/gwt-windows-1.5.0/gwt-dev-windows.jar" com.google.gwt.dev.GWTCompiler -out "C:\Developer\xampp\htdocs" %* se.umu.cs.ldbn.Main

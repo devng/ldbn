@@ -11,14 +11,9 @@ public abstract class OkCancelDialog extends BaseDialog {
 		this(title, false);
 	}
 	
-	
 	public OkCancelDialog(String title, boolean modal) {
-		this(title, null, modal);
-	}
-	
-	public OkCancelDialog(String title, String msg ,boolean modal) {
-		super(title, msg, modal);
-		setText(title);
+		super(title,  modal);
+		//setText(title);
 		closeButton.setText("Cancel");
 	}
 	
@@ -30,8 +25,6 @@ public abstract class OkCancelDialog extends BaseDialog {
 			onOkClick();
 		}
 	}
-	
-	protected abstract Widget getContentWidget();
 	
 	protected void onCancelClick() {
 		hide();

@@ -32,13 +32,17 @@ public class RegisterUserDialog extends OkCancelDialog implements UserManagement
 	
 	
 	protected RegisterUserDialog() {
-		super("New User", true);
+		this("New User");
+	}
+	
+	protected RegisterUserDialog(String title) {
+		super(title, true);
 		checkPassLenght = true;
 		useMD5 = true;
 		UserManagement.get().addListener(this);
 	}
 	
-	protected Widget getContentWidget() {
+	protected Widget getDialogContentWidget() {
 		mainGrid = new Grid(4, 2);
 		mainGrid.setWidget(0, 0, new Label("Username: "));
 		mainGrid.setWidget(0, 1, userTB = new TextBox());

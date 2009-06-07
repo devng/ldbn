@@ -18,8 +18,8 @@ public final class EditUserDialog extends RegisterUserDialog {
 	}
 	
 	private EditUserDialog() {
-		super();
-		setText("Change Account");
+		super("Change Account");
+		//setText("Change Account");
 		checkPassLenght = false;
 		useMD5 = false;
 	}

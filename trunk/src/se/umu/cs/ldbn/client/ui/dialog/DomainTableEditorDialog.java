@@ -32,7 +32,7 @@ public final class DomainTableEditorDialog extends BaseAttributeEditorDialog {
 	private EditTextArea eta;
 	
 	private DomainTableEditorDialog() {
-		super("Add/Remove Attributes","Separate the attributes by commas.");
+		super("Add/Remove Attributes");
 		infoButton.setFileBase("addrematt-ca");
 	}
 	
@@ -68,5 +68,9 @@ public final class DomainTableEditorDialog extends BaseAttributeEditorDialog {
 	
 	protected void onInfoButClicked() {
 		HelpDialog.get().showInfo("example.html");
+	}
+	
+	protected String getHelpMessage() {
+		return "Separate the attributes by commas.";
 	}
 }

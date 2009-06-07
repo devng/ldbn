@@ -8,6 +8,8 @@ public class AttributesEditorDialog extends KeyEditorDialog {
 	
 	private static AttributesEditorDialog inst;
 	
+	private boolean setAllAttributesToKeyAttributes;
+	
 	public static AttributesEditorDialog get() {
 		if(inst == null) {
 			inst = new AttributesEditorDialog();
@@ -16,18 +18,31 @@ public class AttributesEditorDialog extends KeyEditorDialog {
 	}
 	
 	private AttributesEditorDialog() {
-		super(I18N.constants().addRemoveAtt(), I18N.constants().separateAtt()+"<BR>" +
-				I18N.constants().useDND());
+		super(I18N.constants().addRemoveAtt());
 		infoButton.setFileBase("addrematt");
+		setAllAttributesToKeyAttributes = false;
 	}
 	
 	protected void handleAttributeSet(AttributeSet as) {
 		raw.setAttributes(as);
+		if(setAllAttributesToKeyAttributes) {
+			raw.setKey(as.clone());
+		}
 	}
 	
-	public void setCurrentRelationAttributesWidget(RelationAttributesWidget raw) {
+	public void setCurrentRelationAttributesWidget(RelationAttributesWidget raw, boolean setAllAttributesToKeyAttributes) {
 		this.raw = raw;
 		kta.setText("");
 		kta.setAttributeSet(raw.getAttributes());
+		this.setAllAttributesToKeyAttributes = setAllAttributesToKeyAttributes;
+	}
+	
+	public void setCurrentRelationAttributesWidget(RelationAttributesWidget raw) {
+		this.setCurrentRelationAttributesWidget(raw, false);
+	}
+	
+	protected String getHelpMessage() {
+		return I18N.constants().separateAtt()+"<BR>" +
+			I18N.constants().useDND();
 	}
 }

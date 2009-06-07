@@ -6,6 +6,7 @@ import se.umu.cs.ldbn.client.ui.ca.CreateAssignmentWidget;
 import se.umu.cs.ldbn.client.ui.home.HomeWidget;
 import se.umu.cs.ldbn.client.ui.licence.LicenceWidget;
 import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
+import se.umu.cs.ldbn.client.ui.window.WindowController;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.log.client.Log;
@@ -25,13 +26,14 @@ import com.google.gwt.user.client.ui.TabPanel;
  */
 public final class Main implements EntryPoint, TabListener {
 	
-	public static String VERSION = "1.081212"; 
+	public static String VERSION = "1.1.090607"; 
 	
 	public static int WIDTH_PX = 850;
 	
 	private static Main instance;
 
 	private PickupDragController dragControll;
+	private WindowController windowControll;
 
 	private AbsolutePanel mainPanel;
 
@@ -75,7 +77,7 @@ public final class Main implements EntryPoint, TabListener {
 		if (instance == null) {
 			instance = this;
 		}
-		if(instance != this) { // should not occur, but how knows?!
+		if(instance != this) { // should not occur, but who knows?!
 			Log.warn("Main.java : instance != this");
 		}
 		
@@ -87,6 +89,7 @@ public final class Main implements EntryPoint, TabListener {
 		dragControll = new PickupDragController(RootPanel.get(), false);
 		dragControll.setBehaviorDragProxy(true);
 		
+		windowControll = new WindowController(RootPanel.get());
 		
 		//tabs
 		tabSA = new AbsolutePanel();
@@ -107,7 +110,7 @@ public final class Main implements EntryPoint, TabListener {
 		glass = new GlassPanel(mainPanel);
 		DOM.setInnerHTML(RootPanel.get("loading").getElement(), 
 				"<table width=\""+WIDTH_PX+"px\" border=\"0\" style=\"color: gray; text-decoration:none;\"><tr>" +
-				"<td style=\"text-align:left; font-size:x-small\">Copyright &copy; 2008 " +
+				"<td style=\"text-align:left; font-size:x-small\">Copyright &copy; 2009 " +
 				"<a href=\"mailto:ens07ngv@cs.umu.se\" style=\"color: gray; text-decoration:none;\">" +
 				"Nikolay Georgiev</a></td>"+
 				"<td style=\"text-align: right; font-size:x-small\">Version: " + VERSION +"</td>"+
@@ -119,6 +122,10 @@ public final class Main implements EntryPoint, TabListener {
 	
 	public PickupDragController getDragController() {
 		return dragControll;
+	}
+	
+	public WindowController getWindowController() {
+		return windowControll;
 	}
 	
 	public void showGlassPanelLoading() {
