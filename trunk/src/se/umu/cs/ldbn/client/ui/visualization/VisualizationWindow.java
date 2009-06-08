@@ -2,6 +2,7 @@ package se.umu.cs.ldbn.client.ui.visualization;
 
 import java.util.List;
 
+import se.umu.cs.ldbn.client.Main;
 import se.umu.cs.ldbn.client.core.AttributeSet;
 import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.ui.visualization.color.BlackPalette;
@@ -72,6 +73,11 @@ public final class VisualizationWindow extends WindowPanel
 		curSet = attributes;
 	}
 	
+	public void reDrawCanvas() {
+		drawer.reDrawCanvas();
+	}
+	
+	@Override
 	public void center() {
 		if (isCentering) {
 			return;
@@ -98,6 +104,8 @@ public final class VisualizationWindow extends WindowPanel
 				setAnimationEnabled(true);
 				setVisible(true);
 				VisualizationWindow.super.center();
+				if(Main.isAgentIE())
+					reDrawCanvas();
 				isCentering = false;
 			}
 		});

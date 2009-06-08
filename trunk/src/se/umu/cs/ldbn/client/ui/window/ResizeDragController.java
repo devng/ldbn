@@ -1,18 +1,3 @@
-/*
- * Copyright 2008 Fred Sauer
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
 package se.umu.cs.ldbn.client.ui.window;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -27,7 +12,8 @@ import se.umu.cs.ldbn.client.ui.window.WindowPanel.DirectionConstant;
 
 public final class ResizeDragController extends AbstractDragController {
 
-  private static final int MIN_WIDGET_SIZE = 10;
+  private static final int MIN_WIDGET_WIDTH  = 200;
+  private static final int MIN_WIDGET_HEIGHT = 100;
 
   private HashMap<Widget, DirectionConstant> directionMap = new HashMap<Widget, DirectionConstant>();
 
@@ -43,7 +29,7 @@ public final class ResizeDragController extends AbstractDragController {
       int delta = context.draggable.getAbsoluteTop() - context.desiredDraggableY;
       if (delta != 0) {
         int contentHeight = windowPanel.getContentHeight();
-        int newHeight = Math.max(contentHeight + delta, MIN_WIDGET_SIZE);
+        int newHeight = Math.max(contentHeight + delta, MIN_WIDGET_HEIGHT);
         if (newHeight != contentHeight) {
           windowPanel.moveBy(0, contentHeight - newHeight);
         }
@@ -51,16 +37,16 @@ public final class ResizeDragController extends AbstractDragController {
       }
     } else if ((direction & WindowPanel.DIRECTION_SOUTH) != 0) {
       int delta = context.desiredDraggableY - context.draggable.getAbsoluteTop();
-      if (delta != 0) {
-        windowPanel.setContentSize(windowPanel.getContentWidth(), windowPanel.getContentHeight()
-            + delta);
+      int newHeight = windowPanel.getContentHeight() + delta;
+      if (delta != 0 && newHeight > MIN_WIDGET_HEIGHT) {
+        windowPanel.setContentSize(windowPanel.getContentWidth(), newHeight);
       }
     }
     if ((direction & WindowPanel.DIRECTION_WEST) != 0) {
       int delta = context.draggable.getAbsoluteLeft() - context.desiredDraggableX;
       if (delta != 0) {
         int contentWidth = windowPanel.getContentWidth();
-        int newWidth = Math.max(contentWidth + delta, MIN_WIDGET_SIZE);
+        int newWidth = Math.max(contentWidth + delta, MIN_WIDGET_WIDTH);
         if (newWidth != contentWidth) {
           windowPanel.moveBy(contentWidth - newWidth, 0);
         }
@@ -68,9 +54,9 @@ public final class ResizeDragController extends AbstractDragController {
       }
     } else if ((direction & WindowPanel.DIRECTION_EAST) != 0) {
       int delta = context.desiredDraggableX - context.draggable.getAbsoluteLeft();
-      if (delta != 0) {
-        windowPanel.setContentSize(windowPanel.getContentWidth() + delta,
-            windowPanel.getContentHeight());
+      int newWidth = windowPanel.getContentWidth() + delta;
+      if (delta != 0 && newWidth > MIN_WIDGET_WIDTH) {
+        windowPanel.setContentSize(newWidth, windowPanel.getContentHeight());
       }
     }
   }

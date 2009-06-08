@@ -26,7 +26,7 @@ import com.google.gwt.user.client.ui.TabPanel;
  */
 public final class Main implements EntryPoint, TabListener {
 	
-	public static String VERSION = "1.1.090607"; 
+	public static String VERSION = "1.1.090608"; 
 	
 	public static int WIDTH_PX = 850;
 	
@@ -45,6 +45,18 @@ public final class Main implements EntryPoint, TabListener {
 	private boolean isTabSALoaded;
 	private AbsolutePanel tabCA;
 	private boolean isTabCALoaded;
+	
+	/** 
+	 * I should use Deferred Binding
+	 * @see http://code.google.com/docreader/#p=google-web-toolkit-doc-1-5&s=google-web-toolkit-doc-1-5&t=DevGuideDeferredBindingReplacement  
+	 **/
+	public static native String getUserAgent() /*-{
+		return navigator.userAgent.toLowerCase();
+	}-*/;
+	
+	public static boolean isAgentIE() {
+		return getUserAgent().contains("msie");
+	}
 	
 	
 	public static Main get() {

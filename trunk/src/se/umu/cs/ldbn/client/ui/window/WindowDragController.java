@@ -15,16 +15,15 @@
  */
 package se.umu.cs.ldbn.client.ui.window;
 
+import se.umu.cs.ldbn.client.Main;
+import se.umu.cs.ldbn.client.ui.visualization.VisualizationWindow;
+
 import com.allen_sauer.gwt.dnd.client.AbstractDragController;
-import com.allen_sauer.gwt.dnd.client.DragContext;
-import com.allen_sauer.gwt.dnd.client.VetoDragException;
 import com.allen_sauer.gwt.dnd.client.drop.BoundaryDropController;
-import com.allen_sauer.gwt.dnd.client.drop.DropController;
 import com.allen_sauer.gwt.dnd.client.util.DOMUtil;
 import com.allen_sauer.gwt.dnd.client.util.Location;
 import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.Widget;
 
 /*
  * DragController used for drag-and-drop operations where a draggable widget or
@@ -47,33 +46,6 @@ public class WindowDragController extends AbstractDragController {
 
 	private int dropTargetClientWidth;
 
-	private MyDropController myDropController;
-
-	private class MyDropController implements DropController {
-
-		public Widget getDropTarget() {
-			return RootPanel.get();
-		}
-
-		public void onDrop(DragContext context) {
-			RootPanel.get().add(context.draggable, context.desiredDraggableX,
-					context.desiredDraggableY);
-		}
-
-		public void onEnter(DragContext context) {
-		}
-
-		public void onLeave(DragContext context) {
-		}
-
-		public void onMove(DragContext context) {
-		}
-
-		public void onPreviewDrop(DragContext context) throws VetoDragException {
-		}
-
-	}
-
 	/**
 	 * Create a new pickup-and-move style drag controller. Allows widgets or a
 	 * suitable proxy to be temporarily picked up and moved around the specified
@@ -91,33 +63,7 @@ public class WindowDragController extends AbstractDragController {
 	 */
 	public WindowDragController() {
 		super(RootPanel.get());
-//		AbsolutePanel boundaryPanel = RootPanel.get();
-//		boolean allowDroppingOnBoundaryPanel = true;
-//		boundaryDropController = newBoundaryDropController(boundaryPanel,
-//				allowDroppingOnBoundaryPanel);
-//		registerDropController(boundaryDropController);
-		myDropController = new MyDropController();
 	}
-
-//	@Override
-//	public void dragEnd() {
-//		assert context.finalDropController == null == (context.vetoException != null);
-//		if (context.vetoException != null) {
-////			if (!getBehaviorDragProxy()) {
-////				restoreSelectedWidgetsLocation();
-////			}
-//		} else {
-//			//context.dropController.onDrop(context);
-//		}
-//		//context.dropController.onLeave(context);
-//		context.dropController = null;
-//
-////		if (!getBehaviorDragProxy()) {
-////			restoreSelectedWidgetsStyle();
-////		}
-//		//movablePanel.removeFromParent();
-//		super.dragEnd();
-//	}
 
 	public void dragMove() {
 		int desiredLeft = context.desiredDraggableX - boundaryOffsetX;
@@ -139,12 +85,8 @@ public class WindowDragController extends AbstractDragController {
 	public void dragStart() {
 		super.dragStart();
 		context.draggable.removeStyleName("dragdrop-dragging");
-		context.dropController = myDropController;
 		context.draggable.getElement().getStyle()
 			.setProperty("overflow", "visible");
-		
-		//context.draggable.addStyleName(PRIVATE_CSS_MOVABLE_PANEL);
-
 		// one time calculation of boundary panel location for efficiency during
 		// dragging
 		Location widgetLocation = new WidgetLocation(context.boundaryPanel,
@@ -158,70 +100,12 @@ public class WindowDragController extends AbstractDragController {
 				.getElement());
 		dropTargetClientHeight = DOMUtil.getClientHeight(getBoundaryPanel()
 				.getElement());
-		
 		//force on top
 		int desiredLeft = context.desiredDraggableX - boundaryOffsetX;
 		int desiredTop = context.desiredDraggableY - boundaryOffsetY;
 		RootPanel.get().add(context.draggable, desiredLeft, desiredTop);
+		if(context.draggable instanceof VisualizationWindow && Main.isAgentIE()) {
+			((VisualizationWindow) context.draggable).reDrawCanvas();
+		}
 	}
-
-	/**
-	 * Whether or not dropping on the boundary panel is permitted.
-	 * 
-	 * @return <code>true</code> if dropping on the boundary panel is allowed
-	 */
-//	public boolean getBehaviorBoundaryPanelDrop() {
-//		return boundaryDropController.getBehaviorBoundaryPanelDrop();
-//	}
-
-	/**
-	 * Create a new BoundaryDropController to manage our boundary panel as a drop
-	 * target. To ensure that draggable widgets can only be dropped on registered
-	 * drop targets, set <code>allowDroppingOnBoundaryPanel</code> to <code>false</code>.
-	 *
-	 * @param boundaryPanel the panel to which our drag-and-drop operations are constrained
-	 * @param allowDroppingOnBoundaryPanel whether or not dropping is allowed on the boundary panel
-	 * @return the new BoundaryDropController
-	 */
-//	protected BoundaryDropController newBoundaryDropController(
-//			AbsolutePanel boundaryPanel, boolean allowDroppingOnBoundaryPanel) {
-//		return new BoundaryDropController(boundaryPanel,
-//				allowDroppingOnBoundaryPanel);
-//	}
-
-	/**
-	 * Register a new DropController, representing a new drop target, with this
-	 * drag controller.
-	 * 
-	 * @see #unregisterDropController(DropController)
-	 * 
-	 * @param dropController the controller to register
-	 */
-//	public void registerDropController(DropController dropController) {
-//		dropControllerList.add(dropController);
-//	}
-
-	/**
-	 * Set whether or not widgets may be dropped anywhere on the boundary panel.
-	 * Set to <code>false</code> when you only want explicitly registered drop
-	 * controllers to accept drops. Defaults to <code>true</code>.
-	 * 
-	 * @param allowDroppingOnBoundaryPanel <code>true</code> to allow dropping
-	 */
-//	public void setBehaviorBoundaryPanelDrop(
-//			boolean allowDroppingOnBoundaryPanel) {
-//		boundaryDropController
-//				.setBehaviorBoundaryPanelDrop(allowDroppingOnBoundaryPanel);
-//	}
-
-	/**
-	 * Unregister a DropController from this drag controller.
-	 * 
-	 * @see #registerDropController(DropController)
-	 * 
-	 * @param dropController the controller to register
-	 */
-//	public void unregisterDropController(DropController dropController) {
-//		dropControllerList.remove(dropController);
-//	}
 }

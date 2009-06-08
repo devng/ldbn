@@ -32,7 +32,6 @@ final class FDDrawer extends AbsolutePanel {
 	
 	public FDDrawer() {
 		super();
-		//setSize("1000px", "1000px");
 		DOM.setStyleAttribute(this.getElement(), "background", "white");
 	}
 
@@ -162,6 +161,16 @@ final class FDDrawer extends AbsolutePanel {
 			curH -= curFDHeight;
 			if (useForwardOrder) i--; else i++;
 		}
+	}
+	
+	public void reDrawCanvas() {
+		curPalette.reset();
+		for (VisualAttribute va : vatts) {
+			va.setHasIncommingArrow(false);
+			va.setHasOutgoingArrow(false);
+		}
+		canvas.clear();
+		drawCanvas();
 	}
 	
 	private void drawLine(double x1, double y1, double x2, double y2) {

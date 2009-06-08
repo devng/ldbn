@@ -34,7 +34,6 @@ import se.umu.cs.ldbn.client.utils.Common;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
@@ -584,12 +583,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		givenFDsWidget.setFDs(fds);
 		DeferredCommand.addCommand(new Command() {
 			public void execute() {
-				Timer t = new Timer(){
-					public void run() {
-						Comment.get().send(SolveAssignmentWidget.this);
-					}
-				};
-				t.schedule(1000);
+				Comment.get().send(SolveAssignmentWidget.this);
 			}
 		});
 	}

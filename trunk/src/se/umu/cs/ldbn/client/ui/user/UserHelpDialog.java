@@ -35,12 +35,12 @@ public class UserHelpDialog extends OkCancelDialog{
 	
 	protected Widget getDialogContentWidget() {
 		mainPanel = new VerticalPanel();
-		forgotPassword = new RadioButton("group0", "I forgot my password.");
+		forgotPassword = new RadioButton("group0", "I forgot my password. Send me a new one.");
 		resendEmail = new RadioButton("group0", "Resend my activation email.");
 		emaiTB = new TextBox();
-		label = new HTML("<center>This help dialog will help You in case <BR>" +
-				"You have not yet received an activation email, or<BR> " +
-				"You forgot Your password.<center><BR>");
+		label = new HTML("<P ALIGN=LEFT>This dialog will help you in case: <BR>" +
+				"1. You have NOT yet received an activation email.<BR> " +
+				"2. You forgot your password.<P>");
 		mainPanel.add(label);
 		mainPanel.add(resendEmail);
 		mainPanel.add(forgotPassword);
