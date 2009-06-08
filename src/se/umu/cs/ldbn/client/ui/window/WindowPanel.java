@@ -25,6 +25,7 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Image;
@@ -166,7 +167,8 @@ public abstract class WindowPanel extends PopupPanel {
 		cf.setAlignment(0, 0, HasHorizontalAlignment.ALIGN_LEFT,
 				HasVerticalAlignment.ALIGN_TOP);
 
-		Label nameLabel = new Label(title);
+		title = title.replaceAll(" ", "&nbsp;");
+		Label nameLabel = new HTML(title);
 		nameLabel.setStyleName("csd-title");
 		header.setWidget(0, 0, nameLabel);
 

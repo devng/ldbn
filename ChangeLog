@@ -1,3 +1,9 @@
+2009-06-08_0500
+* Bug fix when resizing a window to a very small size. Now there is a limit.
+* Bug fix when drawing with canvas in IE.
+* Major simplifications of the WindowDragController class.
+* Backup
+
 2009-06-08_0140
 * Clean the source code so that no warning messages occur. Use  of @SuppressWarnings("unchecked") for the RenameDialogCallback interface.
 
