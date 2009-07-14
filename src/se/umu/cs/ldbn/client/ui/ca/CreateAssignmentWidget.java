@@ -82,6 +82,8 @@ public final class CreateAssignmentWidget extends Composite
 		mainPanel.setWidth("100%");
 		
 		HeaderWidget hw = new HeaderWidget();
+		loadButton = new Button(I18N.constants().loadInSABut());
+		loadButton.addClickListener(this);
 		newButton = new Button(I18N.constants().newBut());
 		newButton.addClickListener(this);
 		saveButton = new Button(I18N.constants().saveBut());
@@ -92,8 +94,7 @@ public final class CreateAssignmentWidget extends Composite
 		exportButton.addClickListener(this);
 		importButton = new Button(I18N.constants().importBut());
 		importButton.addClickListener(this);
-		loadButton = new Button(I18N.constants().loadInSABut());
-		loadButton.addClickListener(this);
+		
 		newButton.setStyleName("att-but");
 		Common.setCursorPointer(newButton);
 		saveButton.setStyleName("att-but");
@@ -110,18 +111,24 @@ public final class CreateAssignmentWidget extends Composite
 		InfoButton info = new InfoButton("ca-tab");
 		info.setStyleName("att-img");
 		
+		hw.add(loadButton);
+		Image trenner = new Image("img/trenner.jpg");
+		trenner.setStyleName("att-but");
+		hw.add(trenner);
 		hw.add(newButton);
 		hw.add(saveButton);
 		hw.add(editButton);
 		hw.add(exportButton);
 		hw.add(importButton);
-		hw.add(loadButton);
+		
 		hw.add(info);
 		editMode = new Label(I18N.constants().editMode());
 		editMode.setVisible(false);
+		editMode.setStyleName("att-but");
 		hw.add(editMode);
 		mainPanel.add(hw);
 		loginFirst = new Label(I18N.constants().loginFirst());
+		loginFirst.setStyleName("att-but");
 		hw.add(loginFirst);
 		//given attributes
 		VerticalPanel vp = new VerticalPanel();
@@ -366,10 +373,21 @@ public final class CreateAssignmentWidget extends Composite
 	}
 	
 	public boolean filter(AssignmentListEntry entry) {
+		//Administrators can edit all assignments
+		boolean isAdmin = UserData.get().isAdmin();
+		if (isAdmin) {
+			return true;
+		}
+		
 		String userId = UserData.get().getId();
-		if(userId == null) {
+		if (userId == null) {
 			return false;
 		}
+		
 		return userId.equals(entry.getAuthorID());
+	}
+
+	public boolean checkUserRights() {
+		return true;
 	}
 }

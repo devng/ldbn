@@ -1,7 +1,8 @@
-package se.umu.cs.ldbn.client.ui.user;
+package se.umu.cs.ldbn.client.ui.home;
 
 import se.umu.cs.ldbn.client.io.Login;
 import se.umu.cs.ldbn.client.ui.InfoButton;
+import se.umu.cs.ldbn.client.ui.user.UserData;
 import se.umu.cs.ldbn.client.utils.Common;
 
 import com.google.gwt.user.client.ui.Button;

@@ -6,9 +6,16 @@ import java.util.List;
 
 import se.umu.cs.ldbn.client.io.AssignmentListEntry;
 import se.umu.cs.ldbn.client.io.AssignmentLoader;
+import se.umu.cs.ldbn.client.ui.sa.AssignmentFilter;
+import se.umu.cs.ldbn.client.ui.sa.AssignmentFilterAdmin;
+import se.umu.cs.ldbn.client.ui.sa.AssignmentFilterAll;
+import se.umu.cs.ldbn.client.ui.sa.AssignmentFilterYou;
+import se.umu.cs.ldbn.client.ui.user.UserData;
 import se.umu.cs.ldbn.client.utils.Common;
 
 import com.allen_sauer.gwt.log.client.Log;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -18,14 +25,16 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SourcesTableEvents;
 import com.google.gwt.user.client.ui.TableListener;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
 
 public final class LoadAssignmentDialog extends OkCancelDialog implements 
-	TableListener {
+	TableListener, ChangeListener {
 
 	private class MyLabel extends Label {
 		private AssignmentListEntry entry;
@@ -58,6 +67,11 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 			isSorting = false;
 			isDec = false;
 			sortingImg = new Image("img/column-sorting.png", 0, 0, 9, 7);
+			hp = new HorizontalPanel();
+			initWidget(hp);
+			hp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
+			hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+			hp.setSpacing(4);
 			switch (type) {
 			case 1:
 				name = new HTML("<B>Name</B>");
@@ -76,11 +90,7 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 				cAtt = AssignmentListEntry.compareAttribute.id;
 				break;
 			}
-			hp = new HorizontalPanel();
-			initWidget(hp);
-			hp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
-			hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-			hp.setSpacing(4);
+			
 			hp.add(name);
 			hp.add(sortingImg);
 			Common.setCursorPointer(name);
@@ -128,8 +138,12 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 	private List<AssignmentListEntry> data;
 	private int lastSelectedRow;
 	
+	private ListBox filterBox;
+	private AssignmentFilter[] filters;
+	private int currentFilterIndex;
+	
 	private LoadAssignmentDialog() {
-		super("Load Assignment", true);
+		super("Select an Assignment", true);
 		lastSelectedRow = 0;
 		colHeaders = new ArrayList<ColumnHeader>();
 		colHeaders.add(new ColumnHeader(1));
@@ -146,12 +160,26 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 	 */
 	public void load(LoadAssignmentDialogCallback caller) {
 		this.caller = caller;
+		filterBox.clear();
+		filterBox.addItem(filters[0].getName());
+		filterBox.addItem(filters[1].getName());
+		filterBox.addItem(filters[2].getName());
+		currentFilterIndex = 2;
+		filterBox.setSelectedIndex(2);
+		if (caller.checkUserRights()) {
+			if(!UserData.get().isAdmin()) {
+				filterBox.clear();
+				filterBox.addItem(filters[0].getName());
+			} 
+			currentFilterIndex = 0;
+			filterBox.setSelectedIndex(0);
+		}
 		AssignmentLoader.get().loadAssignmentList();
 	}
 	
 
 	public void onCellClicked(SourcesTableEvents sender, int row, int cell) {
-		if(row > 0) {
+		if (row > 0) {
 			RowFormatter rf = table.getRowFormatter();
 			if(lastSelectedRow > 0) {
 				rf.removeStyleName(lastSelectedRow, "nad-selected");
@@ -159,7 +187,6 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 			lastSelectedRow = row;
 			rf.addStyleName(lastSelectedRow, "nad-selected");
 		}
-		
 	}
 	
 	/**
@@ -168,12 +195,21 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 	 */
 	public void loadAssigmentList(List<AssignmentListEntry> list) {
 		data = list;
-		loadAssinmentListWithoutReCenter();
+		loadAssinmentListWithoutReCenter(data);
 		center();
 	}
 	
+	@Override
 	public void center() {
 		super.center();
+		try {
+			AssignmentFilter filter = filters[currentFilterIndex];
+			List<AssignmentListEntry> filteredData = filter.apply(data);
+			loadAssinmentListWithoutReCenter(filteredData);
+		} catch (IllegalStateException e) {
+			this.setErrorMsg(e.getMessage());
+			e.printStackTrace();
+		}
 		table.getRowFormatter().removeStyleName(lastSelectedRow, "nad-selected");
 		if(colHeaders != null) {
 			for (ColumnHeader ch : colHeaders) {
@@ -183,14 +219,57 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 		lastSelectedRow = 0;
 	}
 	
+	public void onChange(Widget sender) {
+		this.setErrorMsg("");
+		try {
+			if (sender == filterBox) {
+				currentFilterIndex = filterBox.getSelectedIndex();
+				AssignmentFilter filer = filters[currentFilterIndex];
+				List<AssignmentListEntry> filteredData = filer.apply(data);
+				loadAssinmentListWithoutReCenter(filteredData);
+			}
+		} catch (IllegalStateException e) {
+			this.setErrorMsg(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
 	protected Widget getDialogContentWidget() {
+		//START INIT FILTERS
+		filterBox = new ListBox(false);
+		filters = new AssignmentFilter[3];
+		filters[0] = new AssignmentFilterYou();
+		filters[1] = new AssignmentFilterAll();
+		filters[2] = new AssignmentFilterAdmin();
+		
+		filterBox.addItem(filters[0].getName());
+		filterBox.addItem(filters[1].getName());
+		filterBox.addItem(filters[2].getName());
+		filterBox.addChangeListener(this);
+		currentFilterIndex = 2;
+		filterBox.setSelectedIndex(currentFilterIndex);
+		HorizontalPanel hp = new HorizontalPanel();
+		hp.setSpacing(10);
+		hp.add(new Label ("Show : "));
+		hp.add(filterBox);
+		//END INIT FILTERS
+		
+		//START INIT TABLE
 		ScrollPanel sp = new ScrollPanel();
-		sp.setSize("100%", "160");
+		sp.setSize("100%", "200px");
 		sp.setStyleName("nad-innerPanel");
+		DOM.setStyleAttribute(sp.getElement(), "overflowY", "scroll");
+		DOM.setStyleAttribute(sp.getElement(), "overflowX", "hidden");
 		table = new FlexTable();
 		table.setWidth("100%");
 		sp.add(table);
-		return sp;
+		DOM.setStyleAttribute(table.getElement(), "padding-right", "20px");
+		//END INIT TABLE
+		
+		VerticalPanel vp = new VerticalPanel();
+		vp.add(sp);
+		vp.add(hp);
+		return vp;
 	}
 	
 	protected void onOkClick() {
@@ -217,14 +296,16 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 		AssignmentListEntry.setDecreasing(isDec);
 		table.getRowFormatter().removeStyleName(lastSelectedRow, "nad-selected");
 		lastSelectedRow = 0;
-		
 		Collections.sort(data);
-		loadAssinmentListWithoutReCenter();
+		
+		currentFilterIndex = filterBox.getSelectedIndex();
+		AssignmentFilter filer = filters[currentFilterIndex];
+		List<AssignmentListEntry> filteredData = filer.apply(data);
+		loadAssinmentListWithoutReCenter(filteredData);
 	}
 	
-	private void loadAssinmentListWithoutReCenter() {
+	private void loadAssinmentListWithoutReCenter(List<AssignmentListEntry> data) {
 		table.clear();
-		
 		
 		for (int i = 0; i < colHeaders.size(); i++) {
 			table.setWidget(0, i, colHeaders.get(i));
@@ -240,7 +321,8 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 			}
 			table.setWidget(row, 0, new MyLabel(entry));
 			table.setWidget(row, 1, Common.createCursorLabel(entry.getAuthor()));
-			table.setWidget(row, 2, Common.createCursorLabel(entry.getModifiedOn()));
+			table.setWidget(row, 2, Common.createCursorHTML("<nobr>" + 
+					entry.getModifiedOn() + "</nobr>"));
 			row++;
 		}
 	}

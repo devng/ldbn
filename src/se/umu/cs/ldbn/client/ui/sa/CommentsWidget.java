@@ -3,10 +3,16 @@ package se.umu.cs.ldbn.client.ui.sa;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.umu.cs.ldbn.client.io.CommentEdit;
+import se.umu.cs.ldbn.client.io.CommentEditCallback;
 import se.umu.cs.ldbn.client.io.CommentListEntry;
+import se.umu.cs.ldbn.client.io.Login;
+import se.umu.cs.ldbn.client.io.LoginListener;
 import se.umu.cs.ldbn.client.ui.InfoButton;
-import se.umu.cs.ldbn.client.ui.dialog.CommentDialog;
+import se.umu.cs.ldbn.client.ui.dialog.CommentAddDialog;
+import se.umu.cs.ldbn.client.ui.dialog.CommentEditDialog;
 import se.umu.cs.ldbn.client.ui.user.UserData;
+import se.umu.cs.ldbn.client.utils.Common;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -17,7 +23,9 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MouseListener;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
@@ -33,41 +41,160 @@ public final class CommentsWidget extends Composite implements ClickListener {
 		return inst;
 	}
 
-	private final class CommentEntry extends Composite {
+	private final class CommentEntry extends Composite implements MouseListener, 
+		ClickListener, LoginListener, CommentEditCallback {
 		
 		private VerticalPanel mainPanel;
 		private Grid header;
 		private HTML content;
 		private HTML userName;
 		private Label lastModified;
+		private Image editButton;
+		private Image deleteButton;
+		private CommentListEntry cle;
+		private boolean isToDelete;
+		private String possibleText;
 		
 		public CommentEntry(CommentListEntry cle) {
+			this.cle = cle;
+			isToDelete = false;
 			mainPanel = new VerticalPanel();
 			mainPanel.setStyleName("relW");
 			mainPanel.setWidth("100%");
 
+			header = new Grid(1, 5);
+			CellFormatter cf = header.getCellFormatter();
+			header.setStyleName("relW-header");
+			
 			
 			userName = new HTML("<B>"+cle.getAuthor()+"</B>");
-			lastModified = new Label(cle.getLastModified());
-			content = new HTML(cle.getCommentString());
-			
-			header = new Grid(1, 3);
-			header.setStyleName("relW-header");
 			header.setWidget(0, 0, userName);
-			header.setWidget(0, 2, lastModified);
-			CellFormatter cf = header.getCellFormatter();
 			cf.setWidth(0, 0, "20");
 			cf.setAlignment(0, 0, HasHorizontalAlignment.ALIGN_LEFT,
 					HasVerticalAlignment.ALIGN_MIDDLE);
 			
-			cf.setAlignment(0, 2, HasHorizontalAlignment.ALIGN_RIGHT,
+			editButton = new Image("img/edit-name.png", 0, 0, 15, 15);
+			editButton.addClickListener(this);
+			editButton.addMouseListener(this);
+			editButton.setTitle("Edit the comment.");
+			Common.setCursorPointer(editButton);
+			header.setWidget(0, 1, editButton);
+			cf.setWidth(0, 1, "20px");
+			cf.setAlignment(0, 1, HasHorizontalAlignment.ALIGN_LEFT,
+					HasVerticalAlignment.ALIGN_MIDDLE);
+			
+			deleteButton = new Image("img/bin.png", 0, 0, 15, 15);
+			deleteButton.addClickListener(this);
+			deleteButton.addMouseListener(this);
+			deleteButton.setTitle("Delete the comment.");
+			Common.setCursorPointer(deleteButton);
+			header.setWidget(0, 2, deleteButton);
+			cf.setWidth(0, 2, "20px");
+			cf.setAlignment(0, 2, HasHorizontalAlignment.ALIGN_LEFT,
+					HasVerticalAlignment.ALIGN_MIDDLE);
+
+			lastModified = new Label(cle.getLastModified());
+			header.setWidget(0, 4, lastModified);
+			cf.setAlignment(0, 4, HasHorizontalAlignment.ALIGN_RIGHT,
 					HasVerticalAlignment.ALIGN_MIDDLE);
 			
 			mainPanel.add(header);
+			
+			content = new HTML(cle.getCommentString());
 			mainPanel.add(content);
 			
 			this.initWidget(mainPanel);
 			setWidth("100%");
+			Login.get().addListener(this);
+			
+			editButton.setVisible(false);
+			deleteButton.setVisible(false);
+			
+			//display edit and delete buttons only if the user is logged in
+			if (UserData.get().isLoggedIn()) {
+				String id = UserData.get().getId();
+				boolean isAdmin = UserData.get().isAdmin();
+				if (isAdmin || id.equals(cle.getAuthorID())) {
+					editButton.setVisible(true);
+					deleteButton.setVisible(true);
+				}
+			}
+			
+		}
+		
+		public void onMouseEnter(Widget sender) {
+			if (sender == deleteButton) {
+				deleteButton.setVisibleRect(15, 0, 15, 15);
+			} else if (sender == editButton) {
+				editButton.setVisibleRect(15, 0, 15, 15);
+			}
+		}
+
+		public void onMouseLeave(Widget sender) {
+			if (sender == deleteButton) {
+				deleteButton.setVisibleRect(0, 0, 15, 15);
+			} else if (sender == editButton) {
+				editButton.setVisibleRect(0, 0, 15, 15);
+			}
+		}
+		
+		public void onMouseDown(Widget sender, int x, int y) {}
+
+		public void onMouseMove(Widget sender, int x, int y) {}
+
+		public void onMouseUp(Widget sender, int x, int y) {}
+
+		public void onClick(Widget sender) {
+			if (sender == deleteButton) {
+				if(Window.confirm("Are you sure you wan to delete the comment?")) {
+					CommentEdit ce = CommentEdit.get();
+					isToDelete = true;
+					ce.send(this, cle.getId(), "", true);
+				}
+				
+			} else if (sender == editButton) {
+				CommentEditDialog ced = CommentEditDialog.get(cle, this);
+				ced.center();
+			}
+		}
+
+		public void onLoginSuccess() {
+			String id = UserData.get().getId();
+			boolean isAdmin = UserData.get().isAdmin();
+			if (isAdmin || id.equals(cle.getAuthorID())) {
+				editButton.setVisible(true);
+				deleteButton.setVisible(true);
+			}
+			
+		}
+
+		public void onSessionKilled() {
+			editButton.setVisible(false);
+			deleteButton.setVisible(false);			
+		}
+
+		
+		public void onReseive(boolean isOK) {
+			if(isOK) {
+				if (isToDelete) {
+					removeFromParent();
+					//Login.get().removeListener(this);
+				} else if (possibleText != null) {
+					content.setHTML(Common.escapeHTMLCharacters(possibleText));
+				}
+			} else {
+				if (isToDelete) {
+					Window.alert("The comment could not be deleted.");
+				} else {
+					Window.alert("The comment could not be edited.");
+				}
+			}
+			possibleText = null;
+			isToDelete = false;
+		}
+		
+		public void setPossibleCommentText(String str) {
+			this.possibleText = str;
 		}
 	}
 	
@@ -107,8 +234,8 @@ public final class CommentsWidget extends Composite implements ClickListener {
 	}
 	
 	public void onClick(Widget sender) {
-		if(sender == addCommentBut) {
-			if(!UserData.get().isLoggedIn()) {
+		if (sender == addCommentBut) {
+			if (!UserData.get().isLoggedIn()) {
 				Window.alert("You have to login first.");
 				return;
 			}
@@ -118,7 +245,7 @@ public final class CommentsWidget extends Composite implements ClickListener {
 //						"and comments cannot be submited.");
 //				return;
 //			}
-			CommentDialog.get().center();
+			CommentAddDialog.get().center();
 		}
 	}
 }

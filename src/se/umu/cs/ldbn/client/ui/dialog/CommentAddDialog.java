@@ -11,13 +11,13 @@ import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 
-public class CommentDialog extends OkCancelDialog implements CommentCallback {
+public class CommentAddDialog extends OkCancelDialog implements CommentCallback {
 	
-	private static CommentDialog inst;
+	private static CommentAddDialog inst;
 	
-	public static CommentDialog get() {
+	public static CommentAddDialog get() {
 		if(inst == null) {
-			inst =  new CommentDialog();
+			inst =  new CommentAddDialog();
 		}
 		return inst;
 	}
@@ -25,7 +25,7 @@ public class CommentDialog extends OkCancelDialog implements CommentCallback {
 	private TextArea textBox;
 	
 	
-	private CommentDialog() {
+	private CommentAddDialog() {
 		super("Leave a comment", true);
 	}
 	
@@ -35,6 +35,7 @@ public class CommentDialog extends OkCancelDialog implements CommentCallback {
 		return textBox;
 	}
 	
+	@Override
 	public void center() {
 		super.center();
 		textBox.setText("");

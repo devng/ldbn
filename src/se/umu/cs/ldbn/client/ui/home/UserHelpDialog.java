@@ -1,4 +1,4 @@
-package se.umu.cs.ldbn.client.ui.user;
+package se.umu.cs.ldbn.client.ui.home;
 
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;

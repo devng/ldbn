@@ -1,3 +1,11 @@
+2009-07-14_2025
+* New Release - version 1.2
+* There are now 3 different user groups with different rights
+* Load assignment dialog has built-in filters
+* Users can now edit comments 
+* Bug Fixes
+* Backup
+
 2009-06-08_0500
 * Bug fix when resizing a window to a very small size. Now there is a limit.
 * Bug fix when drawing with canvas in IE.
@@ -52,7 +60,7 @@
 2008-07-28_2020
 * A final working version of the user management.
 * Leaving a comment for each assignemtn is now possible.
-* About and licence text added.
+* About and license text added.
 * Fixed bug with UserLogoutWidget, where a username didn't change after second login.
 * Minor UI changes.
 * Exporting and importing assignment is working
@@ -101,7 +109,7 @@
 2008-06-22_1220
 * Changing the core classes to use integer masks instead of long due to a performance issue. See DomainTable.java. 
 * TODO and ChangeLog moved to the root folder of the project.
-* Members are sorted, imports are organised. 
+* Members are sorted, imports are organized. 
 
 
 2008-06-22_0250

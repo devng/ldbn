@@ -4,14 +4,12 @@ import se.umu.cs.ldbn.client.io.Login;
 import se.umu.cs.ldbn.client.io.LoginListener;
 import se.umu.cs.ldbn.client.ui.DisclosureWidget;
 import se.umu.cs.ldbn.client.ui.HeaderWidget;
-import se.umu.cs.ldbn.client.ui.user.UserLoginWidget;
-import se.umu.cs.ldbn.client.ui.user.UserLogoutWidget;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Frame;
 
-public class HomeWidget extends Composite implements LoginListener {
+public class HomeWidget extends Composite implements LoginListener  {
 	
 	private final static int VIEWER_PX_HEIGHT = 630;
 	
@@ -59,5 +57,4 @@ public class HomeWidget extends Composite implements LoginListener {
 		logout.removeFromParent();
 		hw.add(login);
 	}
-	
 }

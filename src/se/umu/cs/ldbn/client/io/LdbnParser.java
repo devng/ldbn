@@ -19,7 +19,7 @@ import com.google.gwt.xml.client.impl.DOMParseException;
 public final class LdbnParser {
 	
 	public static enum LDBN_TYPE {assignment, msg, assignment_list, session, 
-		comment, unknown};
+		comment, user_list, unknown};
 	
 	public static enum MSG_TYPE {ok, warn, error, unknown};
 	
@@ -37,6 +37,7 @@ public final class LdbnParser {
 	private DomainTable currentDomain;
 	private List<FD> currentFDs;
 	private boolean isLHS;
+	private String assignmentName;
 	private Assignment assignment;
 	//vars used for parsing a ldbn xml string with type=msg
 	//note such xml string can only contain one message
@@ -45,10 +46,14 @@ public final class LdbnParser {
 	
 	//vars used for parsing a ldbn xml string with type assignment_list
 	//map format: assignment id in the DB -> name
-	private ArrayList<AssignmentListEntry> assignmentList;
+	private List<AssignmentListEntry> assignmentList;
+	
+	private List<UserListEntry> userList;
 	
 	//vars used for session
 	private String userid;
+	private boolean isAdmin;
+	private boolean isSuperUser;
 	private String sessionid;
 	private String email;
 	//vars used for comments
@@ -67,12 +72,16 @@ public final class LdbnParser {
 		lastMsgType = MSG_TYPE.unknown;
 		currentDomain = null;
 		currentFDs = null;
+		assignmentName = null;
 		isLHS = false;
 		assignment = null;
 		assignmentList = null;
+		userList = null;
 		lastMsg = null;
 		sessionid = null;
 		userid = null;
+		isAdmin = false;
+		isSuperUser = false;
 		email = null;
 		assignmentIDComent = null;
 		comments = null;
@@ -84,6 +93,10 @@ public final class LdbnParser {
 	
 	public List<AssignmentListEntry> getAssignmentList() {
 		return assignmentList;
+	}
+	
+	public List<UserListEntry> getUserList() {
+		return userList;
 	}
 	
 	public LDBN_TYPE getLastLdbnType() {
@@ -107,6 +120,14 @@ public final class LdbnParser {
 	
 	public String getUserId() {
 		return userid;
+	}
+	
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+	
+	public boolean isSuperUser() {
+		return isSuperUser;
 	}
 	
 	public String getEmail() {
@@ -138,6 +159,7 @@ public final class LdbnParser {
 		if (type == null) return LDBN_TYPE.unknown;
 		if (type.equals(LDBN_TYPE.assignment.toString())) {
 			lastLdbnType = LDBN_TYPE.assignment;
+			assignmentName = ((Element) ldbn).getAttribute("name");
 			assignment = parseAssignmentXML(ldbn);
 		} else if (type.equals(LDBN_TYPE.msg.toString())) {
 			lastLdbnType = LDBN_TYPE.msg;
@@ -145,6 +167,10 @@ public final class LdbnParser {
 		} else if (type.equals(LDBN_TYPE.assignment_list.toString())) {
 			lastLdbnType = LDBN_TYPE.assignment_list;
 			assignmentList = new ArrayList<AssignmentListEntry>() ;
+			visitElementNodes(ldbn);
+		} else if (type.equals(LDBN_TYPE.user_list.toString())) {
+			lastLdbnType = LDBN_TYPE.user_list;
+			userList = new ArrayList<UserListEntry>() ;
 			visitElementNodes(ldbn);
 		} else if (type.equals(LDBN_TYPE.session.toString())) {
 			lastLdbnType = LDBN_TYPE.session;
@@ -168,6 +194,7 @@ public final class LdbnParser {
 		currentFDs = new ArrayList<FD>();
 		visitElementNodes(ldbn);
 		Assignment a = new Assignment(currentDomain, currentFDs);
+		a.setName(assignmentName);
 		currentDomain = null;
 		currentFDs = null;
 		isLHS = false;
@@ -207,12 +234,41 @@ public final class LdbnParser {
 				String name = el.getAttribute("name");
 				String author_id  = el.getAttribute("author_id");
 				String author = el.getAttribute("author");
+				String isAdminString = el.getAttribute("is_admin");
+				boolean isAdmin = false;
+				if (isAdminString != null) {
+					isAdmin = isAdminString.toLowerCase().equals("1");
+				} else {
+					System.out.println("isAdmin is null.");
+				}
 				String last_modified = el.getAttribute("last_modified").replaceAll("\\s", "_");
 				AssignmentListEntry data = 
-					new AssignmentListEntry(id, name, author_id, author, 
+					new AssignmentListEntry(id, name, author_id, author, isAdmin,
 							last_modified);
 				if(name != null && id != null) {
 					assignmentList.add(data);
+				}
+			} else if (tag.equals("user_entry")) {
+				String id = el.getAttribute("id");
+				String name = el.getAttribute("name");
+				String isAdminString = el.getAttribute("is_admin");
+				boolean isAdmin = false;
+				if (isAdminString != null) {
+					isAdmin = isAdminString.toLowerCase().equals("1");
+				} else {
+					System.out.println("isAdmin is null.");
+				}
+				String isSUnString = el.getAttribute("is_su");
+				boolean isSU = false;
+				if (isSUnString != null) {
+					isSU = isSUnString.toLowerCase().equals("1");
+				} else {
+					System.out.println("isSU is null.");
+				}
+				UserListEntry data = 
+					new UserListEntry(id, name, isAdmin, isSU);
+				if(name != null && id != null) {
+					userList.add(data);
 				}
 			} else if (tag.equals("att")) { 
 				//TODO There can be a  null pointer exception, if the user
@@ -242,6 +298,8 @@ public final class LdbnParser {
 				sessionid = el.getAttribute("id");
 			} else if (tag.equals("user")) {
 				userid = el.getAttribute("id");
+				isAdmin = "1".equals(el.getAttribute("is_admin"));
+				isSuperUser = "1".equals(el.getAttribute("is_su"));
 			} else if (tag.equals("email")) {
 				email = el.getAttribute("val");
 			} else if (tag.equals("comment")) {

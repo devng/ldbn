@@ -22,10 +22,12 @@ public abstract class AbstractRequestSender {
 	}
 	
 	protected String addSessionData(String data) {
-		if(data != null && data.length() > 0 && 
-				data.charAt(data.length()-1) != '&' ) {
-			data = data+"&";
+		if (data == null) {
+			data = new String();
 		}
+		if(data.length() > 0 && data.charAt(data.length()-1) != '&' ) {
+			data = data+"&";
+		} 
 		UserData ud = UserData.get();
 		data += "id_user="+ud.getId()+"&id_session="+ud.getSession();
 		return data;

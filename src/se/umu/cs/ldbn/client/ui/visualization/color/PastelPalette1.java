@@ -11,8 +11,24 @@ public final class PastelPalette1 implements ColorPalette {
 	
 	public PastelPalette1() {
 		this.name = "Pastel Colors 1";
-		//colors taken from http://www.hitmill.com/html/pastels.html Table 3
+		
 		colors = new Color[] {
+				//Open Office Chart Colors
+				new Color("#004586"),
+				new Color("#FF420E"),
+				new Color("#FFD320"),
+				new Color("#579D1C"),
+				new Color("#7E0021"),
+				new Color("#83CAFF"),
+				new Color("#314004"),
+				new Color("#AECF00"),
+				new Color("#4B1F6F"),
+				new Color("#FF950E"),
+				new Color("#C5000B"),
+				new Color("#0084D1"),
+				
+				/*
+				 * //colors taken from http://www.hitmill.com/html/pastels.html Table 3
 				new Color("#5757FF"),
 				new Color("#62A9FF"),
 				new Color("#62D0FF"),
@@ -36,6 +52,7 @@ public final class PastelPalette1 implements ColorPalette {
 				//new Color("#92FEF9"),
 				new Color("#7DFDD7"),
 				new Color("#8BFEA8")
+				*/
 		};
 		curColor = 0;
 	}

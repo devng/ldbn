@@ -28,7 +28,7 @@ public class FindKeyWidget extends Composite implements ClickListener {
 		setKeyButton.setStyleName("min-cov-but");
 		setKeyButton.addClickListener(this);
 		hp.add(setKeyButton);
-		hp.add(new InfoButton("example"));
+		hp.add(new InfoButton("find-key"));
 		
 		mainPanel.add(hp);
 		key = new RelationAttributesWidget();

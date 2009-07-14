@@ -1,4 +1,4 @@
-package se.umu.cs.ldbn.client.ui.user;
+package se.umu.cs.ldbn.client.ui.home;
 
 import se.umu.cs.ldbn.client.io.UserManagement;
 import se.umu.cs.ldbn.client.io.UserManagementListener;
