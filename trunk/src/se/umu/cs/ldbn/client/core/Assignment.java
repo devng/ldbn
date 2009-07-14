@@ -6,6 +6,7 @@ public final class Assignment {
 	private DomainTable domain;
 	private List<FD> fds;
 	private String id;
+	private String name;
 //	private boolean isLoadedFromDB;
 	
 	public Assignment(DomainTable domain, List<FD> fds) {
@@ -28,6 +29,14 @@ public final class Assignment {
 	
 	public String getID() {
 		return id;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getName() {
+		return name;
 	}
 //	
 //	public boolean isLoadedFromDB() {

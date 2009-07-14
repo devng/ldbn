@@ -3,7 +3,7 @@ package se.umu.cs.ldbn.client.io;
 public class AssignmentListEntry 
 	implements Comparable<AssignmentListEntry> {
 	
-	public enum compareAttribute {id, name, author, modified}
+	public enum compareAttribute {id, name, author, isAdmin, modified}
 	
 	private static compareAttribute defaultComparationAtt = compareAttribute.id;
 	private static boolean isDec = false;
@@ -22,9 +22,10 @@ public class AssignmentListEntry
 	private String author;
 	private String authorID;
 	private String modifiedOn;
+	private boolean isAdmin;
 	
 	public AssignmentListEntry(String id, String name, String authorID, 
-			String author, String modifiedOn) {
+			String author, boolean isAdmin, String modifiedOn) {
 		if(id == null || name == null || author == null || authorID == null || 
 				modifiedOn == null) {
 			throw new IllegalArgumentException("Some arguments are null.");
@@ -34,6 +35,7 @@ public class AssignmentListEntry
 		this.author = author;
 		this.authorID = authorID;
 		this.modifiedOn = modifiedOn;
+		this.isAdmin = isAdmin;
 	}
 	
 	public int compareTo(AssignmentListEntry o) {
@@ -106,6 +108,14 @@ public class AssignmentListEntry
 
 	public void setModifiedOn(String modifiedOn) {
 		this.modifiedOn = modifiedOn;
+	}
+
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	} 
 
 }

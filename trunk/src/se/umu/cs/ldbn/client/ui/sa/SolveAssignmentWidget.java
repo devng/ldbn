@@ -31,13 +31,13 @@ import se.umu.cs.ldbn.client.ui.dialog.CheckSolutionDialog.MSG_TYPE;
 import se.umu.cs.ldbn.client.utils.AssignmentGenerator;
 import se.umu.cs.ldbn.client.utils.Common;
 
-import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -96,6 +96,8 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	//current assignment
 	private String curAssinmentId;
 	private List<FD> minCoverF;
+	//Label assignment name
+	private HTML assignmentName;
 	
 	private SolveAssignmentWidget() {
 		super();
@@ -126,12 +128,17 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		showSolution.addClickListener(this);
 		InfoButton info = new InfoButton("sa-tab");
 		info.setStyleName("att-img");
+		assignmentName = new HTML();
+		assignmentName.setStyleName("att-but");
+		
 		HeaderWidget hw = new HeaderWidget();
 		hw.add(loadAssignment);
 		hw.add(checkSolution);
 		hw.add(showSolution);
 		hw.add(info);
+		hw.add(assignmentName);
 		add(hw);
+		
 		dwGivenAttributes = new DisclosureWidget(I18N.constants().givenAtt(), 
 				givenAttributesWidget);
 		add(dwGivenAttributes);
@@ -275,12 +282,6 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 
 	public void onCommentsReceived(List<CommentListEntry> comments,
 			String assignentID) {
-		if(comments == null ) {
-			Log.warn("Comments are null");
-		} else if (comments.isEmpty()) {
-			Log.warn("Comments are empty");
-		}
-		
 		CommentsWidget.get().addComments(comments);
 	}
 	
@@ -581,6 +582,13 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		givenAttributesWidget.setDomain(domain);
 		this.fds = a.getFDs();
 		givenFDsWidget.setFDs(fds);
+		String name = a.getName();
+		if (name != null) {
+			this.assignmentName.setHTML("Assignment: <i>"+a.getName()+"</i>");
+		} else {
+			this.assignmentName.setText("");
+		}
+		
 		DeferredCommand.addCommand(new Command() {
 			public void execute() {
 				Comment.get().send(SolveAssignmentWidget.this);
@@ -595,5 +603,9 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		dwDecomposition2NF.resetHeightToDefault();
 		dwDecomposition3NF.resetHeightToDefault();
 		dwDecompositionBCNF.resetHeightToDefault();
+	}
+	
+	public boolean checkUserRights() {
+		return false;
 	}
 }

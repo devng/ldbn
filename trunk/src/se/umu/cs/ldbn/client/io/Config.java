@@ -16,7 +16,12 @@ public final class Config {
 		"php/sendnewpassword.php",          // 8
 		"php/download.php",                 // 9
 		"php/upload.php",                   // 10
-		"php/comment.php"                   // 11
+		"php/comment.php",                  // 11
+		"php/commentedit.php",              // 12
+		"php/add_user_to_admin_list.php",   // 13
+		"php/remove_user_from_admin_list.php", // 14
+		"php/delete_assignment.php",        // 15
+		"php/list_all_users.php"            // 16
 	};
 	
 	private static Config inst = null;
@@ -77,6 +82,26 @@ public final class Config {
 	
 	public String getCommentScriptURL() {
 		return GWT.getModuleBaseURL()+DEFAULT_VALUES[11];
+	}
+	
+	public String getCommentEditScriptURL() {
+		return GWT.getModuleBaseURL()+DEFAULT_VALUES[12];
+	}
+	
+	public String getAddUserToAdminListScriptURL() {
+		return GWT.getModuleBaseURL()+DEFAULT_VALUES[13];
+	}
+	
+	public String getRemoveUserFromAdminListScriptURL() {
+		return GWT.getModuleBaseURL()+DEFAULT_VALUES[14];
+	}
+	
+	public String getDeleteAssignmentScriptURL() {
+		return GWT.getModuleBaseURL()+DEFAULT_VALUES[15];
+	}
+	
+	public String getListAllUsersScriptURL() {
+		return GWT.getModuleBaseURL()+DEFAULT_VALUES[16];
 	}
 	
 }

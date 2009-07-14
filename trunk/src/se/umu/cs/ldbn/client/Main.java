@@ -1,11 +1,15 @@
 package se.umu.cs.ldbn.client;
 
 import se.umu.cs.ldbn.client.i18n.I18N;
+import se.umu.cs.ldbn.client.io.Login;
+import se.umu.cs.ldbn.client.io.LoginListener;
 import se.umu.cs.ldbn.client.ui.GlassPanel;
+import se.umu.cs.ldbn.client.ui.admin.AdministratorWidget;
 import se.umu.cs.ldbn.client.ui.ca.CreateAssignmentWidget;
 import se.umu.cs.ldbn.client.ui.home.HomeWidget;
 import se.umu.cs.ldbn.client.ui.licence.LicenceWidget;
 import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
+import se.umu.cs.ldbn.client.ui.user.UserData;
 import se.umu.cs.ldbn.client.ui.window.WindowController;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
@@ -24,9 +28,9 @@ import com.google.gwt.user.client.ui.TabPanel;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public final class Main implements EntryPoint, TabListener {
+public final class Main implements EntryPoint, TabListener, LoginListener {
 	
-	public static String VERSION = "1.1.090608"; 
+	public static String VERSION = "1.2.090714"; 
 	
 	public static int WIDTH_PX = 850;
 	
@@ -45,6 +49,7 @@ public final class Main implements EntryPoint, TabListener {
 	private boolean isTabSALoaded;
 	private AbsolutePanel tabCA;
 	private boolean isTabCALoaded;
+	private boolean isTabAdminLoaded;
 	
 	/** 
 	 * I should use Deferred Binding
@@ -95,6 +100,8 @@ public final class Main implements EntryPoint, TabListener {
 		
 		//init I18N
 		I18N.get();
+		AdministratorWidget.get();
+		Login.get().addListener(this);
 		
 		mainPanel = new AbsolutePanel();
 		mainPanel.setWidth(WIDTH_PX+"px");
@@ -108,6 +115,7 @@ public final class Main implements EntryPoint, TabListener {
 		isTabSALoaded = false;
 		tabCA = new AbsolutePanel();
 		isTabCALoaded = false;
+		isTabAdminLoaded = false;
 		
 		tabs = new TabPanel();
 		tabs.add(HomeWidget.get(), I18N.constants().homeTab());
@@ -170,6 +178,21 @@ public final class Main implements EntryPoint, TabListener {
 		if(!isTabSALoaded) {
 			tabSA.add(SolveAssignmentWidget.get());
 			isTabSALoaded = true;
+		}
+	}
+
+	public void onLoginSuccess() {
+		if (UserData.get().isAdmin()) {
+			tabs.insert(AdministratorWidget.get(), "Administrators", 3);
+			isTabAdminLoaded = true;
+		}
+		
+	}
+
+	public void onSessionKilled() {
+		if (isTabAdminLoaded) {
+			tabs.remove(3);
+			isTabAdminLoaded = false;
 		}
 	}
 }

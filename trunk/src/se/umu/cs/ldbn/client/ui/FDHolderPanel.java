@@ -17,6 +17,7 @@ import se.umu.cs.ldbn.client.utils.Common;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.log.client.Log;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -160,7 +161,9 @@ public final class FDHolderPanel extends VerticalPanel
 		} else if (sender.equals(checkControlls[1])) {
 			selectNone();
 		} else if (sender.equals(checkControlls[2])) {
-			deleteSelected();
+			if (Window.confirm("Are you sure you want to delete the selected FDs?")) {
+				deleteSelected();
+			}
 		} else if (sender instanceof EditButton){
 			EditButton but = (EditButton) sender;
 			CheckBox chBox = buttons.get(but);
@@ -207,7 +210,7 @@ public final class FDHolderPanel extends VerticalPanel
 	/**
 	 * Removes the check boxes and the widgets associated with them.
 	 */
-	public void deleteSelected() {
+	private void deleteSelected() {
 		Set<CheckBox> keys = checkBoxes.keySet();
 		for (Iterator<CheckBox> iter = keys.iterator(); iter.hasNext();) {
 			CheckBox chBox = iter.next();

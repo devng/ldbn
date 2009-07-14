@@ -16,6 +16,8 @@ public final class UserData {
 	private String pass;
 	private String session;
 	private String email;
+	private boolean isAdmin;
+	private boolean isSuperUser;
 	
 	private UserData() {
 	}
@@ -70,5 +72,21 @@ public final class UserData {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
+	public boolean isSuperUser() {
+		return isSuperUser;
+	}
+
+	public void setSuperUser(boolean isSuperUser) {
+		this.isSuperUser = isSuperUser;
 	}
 }

@@ -95,14 +95,13 @@ public final class AssignmentGenerator {
 		fds.add(fd);
 		Assignment result = new Assignment(dom, fds);
 		//result.setLoadedFromDB(false);
-		
 		return result;
 	}
 	
 	
 	public static Assignment generate() {
 //		return generateMinCoverTest();
-		String str = "<ldbn type=\"assignment\"><att>MNr</att><att>Surname</att><att>DateOfBirth</att><att>CourseCode</att><att>CourseName</att><att>ECTS</att><att>Grade</att><fd><lhs><fdatt>MNr</fdatt></lhs><rhs><fdatt>Surname</fdatt><fdatt>DateOfBirth</fdatt></rhs></fd><fd><lhs><fdatt>CourseCode</fdatt></lhs><rhs><fdatt>CourseName</fdatt><fdatt>ECTS</fdatt></rhs></fd><fd><lhs><fdatt>MNr</fdatt><fdatt>CourseCode</fdatt></lhs><rhs><fdatt>Grade</fdatt></rhs></fd></ldbn>";
+		String str = "<ldbn type=\"assignment\" name=\"Student_Courses\"><att>MNr</att><att>Surname</att><att>DateOfBirth</att><att>CourseCode</att><att>CourseName</att><att>ECTS</att><att>Grade</att><fd><lhs><fdatt>MNr</fdatt></lhs><rhs><fdatt>Surname</fdatt><fdatt>DateOfBirth</fdatt></rhs></fd><fd><lhs><fdatt>CourseCode</fdatt></lhs><rhs><fdatt>CourseName</fdatt><fdatt>ECTS</fdatt></rhs></fd><fd><lhs><fdatt>MNr</fdatt><fdatt>CourseCode</fdatt></lhs><rhs><fdatt>Grade</fdatt></rhs></fd></ldbn>";
 		LDBN_TYPE type = LdbnParser.get().parse(str);
 		if(type == LDBN_TYPE.assignment) {
 			return LdbnParser.get().getAssignment();

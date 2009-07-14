@@ -73,15 +73,15 @@ public final class Login extends AbstractRequestSender {
 	private boolean handleLoginResponce() {
 		LdbnParser p = LdbnParser.get();
 		if (p.getLastLdbnType() == LdbnParser.LDBN_TYPE.session) {
-			String userID = p.getUserId();
-			String sessionID = p.getSessionId();
-			String email = p.getEmail();
 			UserData ud = UserData.get();
-			ud.setId(userID);
-			ud.setSession(sessionID);
-			ud.setEmail(email);
+			ud.setId(p.getUserId());
+			ud.setSession(p.getSessionId());
+			ud.setEmail(p.getEmail());
+			ud.setAdmin(p.isAdmin());
+			ud.setSuperUser(p.isSuperUser());
 			for (LoginListener l : listeners) {
-				l.onLoginSuccess();
+				if (l != null)
+					l.onLoginSuccess();
 			}
 			return true;
 		}

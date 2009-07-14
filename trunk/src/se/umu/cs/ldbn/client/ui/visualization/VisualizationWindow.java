@@ -17,6 +17,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
@@ -145,7 +146,7 @@ public final class VisualizationWindow extends WindowPanel
 		
 		menuPanel = new Grid(2,4);
 		
-		menuPanel.setWidget(0, 0, new Label("Diagram Type"));
+		menuPanel.setWidget(0, 0, new HTML("<NOBR>Diagram Type</NOBR>"));
 		diagramBox = new ListBox(false);
 		for (int i = 0; i < diagramTypes.length; i++) {
 			diagramBox.addItem(diagramTypes[i]);
@@ -154,7 +155,7 @@ public final class VisualizationWindow extends WindowPanel
 		diagramBox.addChangeListener(this);
 		menuPanel.setWidget(1, 0, diagramBox);
 		
-		menuPanel.setWidget(0, 1, new Label("Color Palette"));
+		menuPanel.setWidget(0, 1, new HTML("<NOBR>Color Palette</NOBR>"));
 		colorBox = new ListBox(false);
 		for (int i = 0; i < palettes.length; i++) {
 			colorBox.addItem(palettes[i].getName());
@@ -172,7 +173,7 @@ public final class VisualizationWindow extends WindowPanel
 		zoomBox.addChangeListener(this);
 		menuPanel.setWidget(1, 2, zoomBox);
 		
-		menuPanel.setWidget(0, 3, new Label("FDs Order"));
+		menuPanel.setWidget(0, 3, new HTML("<NOBR>FDs Order</NOBR>"));
 		fdRenderBox = new ListBox(false);
 		for (int i = 0; i < fdRenderOrder.length; i++) {
 			fdRenderBox.addItem(fdRenderOrder[i]);

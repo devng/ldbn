@@ -11,6 +11,7 @@ import se.umu.cs.ldbn.client.io.LdbnParser.LDBN_TYPE;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -30,7 +31,7 @@ public final class Common {
 	 */
 	public final static String NAME_REGEX = "([\\w]|\\-){1,20}";
 	
-	public final static String EMAIL_REGEX = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}";
+	public final static String EMAIL_REGEX = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}"; 
 	
 	/**
 	 * Set the transparent background colour of a widget
@@ -53,6 +54,12 @@ public final class Common {
 	
 	public static Label createCursorLabel(String labelText) {
 		Label l = new Label(labelText);
+		setCursorPointer(l);
+		return l;
+	}
+	
+	public static HTML createCursorHTML(String html) {
+		HTML l = new HTML(html);
 		setCursorPointer(l);
 		return l;
 	}
@@ -81,9 +88,9 @@ public final class Common {
 	}
 	
 	public static boolean checkResponceTextOnly(String responce) {
-//		System.out.println("-----------------------Server response-----------------------------");
-//		System.out.println(responce);
-//		System.out.println("---------------------End server response---------------------------");
+		System.out.println("-----------------------Server response-----------------------------");
+		System.out.println(responce);
+		System.out.println("---------------------End server response---------------------------");
 		LdbnParser p = LdbnParser.get();
 		LdbnParser.LDBN_TYPE type = p.parse(responce);
 		if (type == LDBN_TYPE.unknown) {
@@ -144,6 +151,27 @@ public final class Common {
 			}
 		}
 		return result.toString();
+	}
+	
+	//TODO do it more efficiently 
+	public static String reconvertHTMLToChar(String str) {
+		//all HTML escaped characters should start with "&" 
+		if(!str.contains("&")) {
+			return str;
+		}
+		str = str.replaceAll("&lt;", "<");
+		str = str.replaceAll("&gt;", ">");
+		str = str.replaceAll("&amp;", "&");
+		str = str.replaceAll("&quot;", "\"");
+		str = str.replaceAll("&#039;", "\'");
+		str = str.replaceAll("&#040;", "(");
+		str = str.replaceAll("&#041;", ")");
+		str = str.replaceAll("&#035;", "#");
+		str = str.replaceAll("&#037;", "%");
+		str = str.replaceAll("&#059;", ";");
+		str = str.replaceAll("&#043;", "+");
+		str = str.replaceAll("&#045;", "-");
+		return str;
 	}
 	
 	public static native String base64decode(final String data) /*-{
