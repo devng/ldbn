@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Frame;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -62,7 +63,10 @@ public final class AdministratorWidget extends AbsolutePanel
 		InfoButton info = new InfoButton("admin-tab");
 		info.setStyleName("att-img");
 		hw.add(info);
-		this.add(hw);
+		
+		Image trenner = new Image("img/trenner.jpg");
+		trenner.setStyleName("att-but");
+		hw.add(trenner);
 			
 		admin = new Label("You have administrator rights");
 		admin.setVisible(false);
@@ -72,6 +76,8 @@ public final class AdministratorWidget extends AbsolutePanel
 		su.setStyleName("att-but");
 		hw.add(admin);
 		hw.add(su);
+		
+		this.add(hw);
 		
 		Frame viewer = new Frame("info/user_rights.html"); 
 		viewer.setWidth("100%");

@@ -27,6 +27,7 @@ public final class FDEditorDialog extends CloseDialog {
 		return fdew;
 	}
 	
+	@Override
 	public void hide() {
 		super.hide();
 		fdew.clearText();
@@ -46,6 +47,7 @@ public final class FDEditorDialog extends CloseDialog {
 		fdew.setCurrentFDHolderPanel(fdHP);
 	}
 	
+	@Override
 	public void show() {
 		super.show();
 		Main.get().getDragController().registerDropController(fdew.getRightTextArea());
@@ -58,6 +60,7 @@ public final class FDEditorDialog extends CloseDialog {
 		return fdew;
 	}
 	
+	@Override
 	protected String getHelpMessage() {
 		return "Create a FD by giving the left-hand and right-hand side " +
 		"attributes.<BR>You can use Drag'n'Drop.";

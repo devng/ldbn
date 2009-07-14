@@ -286,6 +286,7 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 		hide();
 	}
 	
+	@Override
 	protected String getHelpMessage() {
 		return "Choose an assignment from the list bellow";
 	}

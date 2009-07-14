@@ -140,8 +140,8 @@ public final class VisualizationWindow extends WindowPanel
 		zoomLevels = new int[]{1, 2, 3};
 		fdRenderOrder = new String[]{"Forward", "Reverse"};
 		
-		curPaletteIndex = 2;
-		curDiagramTypeIndex = 0;
+		curPaletteIndex = 3;
+		curDiagramTypeIndex = 1;
 		curZoomLevelIndex = 1;
 		
 		menuPanel = new Grid(2,4);

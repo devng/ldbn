@@ -57,7 +57,7 @@ abstract public class BaseDialog extends WindowPanel implements ClickListener {
 	protected Widget getContentWidget() {
 		DockPanel dock = new DockPanel();
 		dock.setSpacing(4);
-		String msg = getSubTitle();
+		String msg = getHelpMessage();
 		if(msg != null) {
 			HTML msgHTML = new HTML(
 					"<center>"+msg+"</center>", true);
@@ -91,7 +91,7 @@ abstract public class BaseDialog extends WindowPanel implements ClickListener {
 	
 	protected abstract Widget getDialogContentWidget();
 	
-	protected String getSubTitle() {
+	protected String getHelpMessage() {
 		return null;
 	}
 	
