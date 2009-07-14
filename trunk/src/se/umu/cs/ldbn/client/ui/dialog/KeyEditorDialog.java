@@ -73,6 +73,7 @@ public class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 		super(title);
 	}
 	
+	@Override
 	public void hide() {
 		super.hide();
 		Main.get().getDragController().unregisterDropController(getAttributeTextArea());
@@ -84,6 +85,7 @@ public class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 		kta.setAttributeSet(raw.getKey());
 	}
 	
+	@Override
 	public void show() {
 		super.show();
 		Main.get().getDragController().registerDropController(getAttributeTextArea());
@@ -118,6 +120,7 @@ public class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 		raw.setKey(as);
 	}
 	
+	@Override
 	protected String getHelpMessage() {
 		return "Give a valid candidate key for the relation.<BR>" +
 		 "You can use Drag'n'Drop.";

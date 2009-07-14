@@ -21,6 +21,7 @@ abstract class BaseAttributeEditorDialog extends CloseDialog {
 		super(title, false);
 	}
 	
+	@Override
 	public void onClick(Widget sender) {
 		super.onClick(sender);
 		if (sender == clearButton) {

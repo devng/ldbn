@@ -120,16 +120,18 @@ public final class CreateAssignmentWidget extends Composite
 		hw.add(editButton);
 		hw.add(exportButton);
 		hw.add(importButton);
-		
-		hw.add(info);
+		loginFirst = new Label(I18N.constants().loginFirst());
+		loginFirst.setStyleName("att-but");
+		hw.add(loginFirst);
+		trenner = new Image("img/trenner.jpg");
+		trenner.setStyleName("att-but");
 		editMode = new Label(I18N.constants().editMode());
 		editMode.setVisible(false);
 		editMode.setStyleName("att-but");
 		hw.add(editMode);
+		hw.add(trenner);
+		hw.add(info);
 		mainPanel.add(hw);
-		loginFirst = new Label(I18N.constants().loginFirst());
-		loginFirst.setStyleName("att-but");
-		hw.add(loginFirst);
 		//given attributes
 		VerticalPanel vp = new VerticalPanel();
 		addAtts = new Button (I18N.constants().addRemoveAtt());

@@ -36,6 +36,7 @@ public final class DomainTableEditorDialog extends BaseAttributeEditorDialog {
 		infoButton.setFileBase("addrematt-ca");
 	}
 	
+	@Override
 	public void center() {
 		super.center();
 		setErrorMsg("");
@@ -70,6 +71,7 @@ public final class DomainTableEditorDialog extends BaseAttributeEditorDialog {
 		HelpDialog.get().showInfo("example.html");
 	}
 	
+	@Override
 	protected String getHelpMessage() {
 		return "Separate the attributes by commas.";
 	}

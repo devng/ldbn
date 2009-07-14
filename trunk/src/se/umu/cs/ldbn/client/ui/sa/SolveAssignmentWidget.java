@@ -136,6 +136,9 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		hw.add(checkSolution);
 		hw.add(showSolution);
 		hw.add(info);
+		Image trenner = new Image("img/trenner.jpg");
+		trenner.setStyleName("att-but");
+		hw.add(trenner);
 		hw.add(assignmentName);
 		add(hw);
 		
@@ -244,12 +247,15 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		} else if (sender == loadAssignment) {
 			LoadAssignmentDialog.get().load(this);
 		} else if (sender == showSolution) {
-			Main.get().showGlassPanelLoading();
-			DeferredCommand.addCommand(new Command() {
-				public void execute() {
-					showSolution();
-				}
-			});
+			if (Window.confirm("Are you sure you want to see the solution?\n" +
+					"This will erase all of your input!")) {
+				Main.get().showGlassPanelLoading();
+				DeferredCommand.addCommand(new Command() {
+					public void execute() {
+						showSolution();
+					}
+				});
+			}
 		} else if (sender == import2NF) {
 			boolean b = Window.confirm(I18N.messages().sawImportRelationsConfirm("2NF"));
 			if(b) {

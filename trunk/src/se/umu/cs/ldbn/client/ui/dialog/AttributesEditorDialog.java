@@ -23,6 +23,7 @@ public class AttributesEditorDialog extends KeyEditorDialog {
 		setAllAttributesToKeyAttributes = false;
 	}
 	
+	@Override
 	protected void handleAttributeSet(AttributeSet as) {
 		raw.setAttributes(as);
 		if(setAllAttributesToKeyAttributes) {
@@ -37,10 +38,12 @@ public class AttributesEditorDialog extends KeyEditorDialog {
 		this.setAllAttributesToKeyAttributes = setAllAttributesToKeyAttributes;
 	}
 	
+	@Override
 	public void setCurrentRelationAttributesWidget(RelationAttributesWidget raw) {
 		this.setCurrentRelationAttributesWidget(raw, false);
 	}
 	
+	@Override
 	protected String getHelpMessage() {
 		return I18N.constants().separateAtt()+"<BR>" +
 			I18N.constants().useDND();

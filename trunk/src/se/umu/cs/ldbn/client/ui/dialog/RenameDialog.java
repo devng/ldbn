@@ -43,6 +43,7 @@ public final class RenameDialog extends OkCancelDialog {
 		return nameBox;
 	}
 	
+	@Override
 	protected void onCancelClick() {
 		super.onCancelClick();
 		if(caller != null) {
@@ -77,6 +78,7 @@ public final class RenameDialog extends OkCancelDialog {
 		}
 	}
 	
+	@Override
 	protected String getHelpMessage() {
 		return I18N.constants().renameDialogSubTitle();
 	}
