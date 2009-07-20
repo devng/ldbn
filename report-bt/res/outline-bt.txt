@@ -1,0 +1,20 @@
+
+1. Intorduction 
+- Organization of this report
+- Glossary
+
+2. Motivation
+?
+
+
+3. Approach
+-Ajax & GWT
+-Implementaion
+-Communication and Security
+
+4. Conclusions
+Limitations and future work
+
+5. Acknowledgements
+
+References
