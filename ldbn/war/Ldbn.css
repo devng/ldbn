@@ -1,0 +1,369 @@
+body {
+  background-color: white;
+  color: black;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 10pt;
+  margin: 0px 20px 20px 20px;
+}
+
+
+.glassPanel {
+   background: white;
+   opacity: 0.4;
+   filter: alpha(opacity=40);  
+}
+
+.att-but {
+	margin: 4px;
+	font-size: 10pt;
+}
+
+.att-img {
+	vertical-align: middle;
+	margin-left: 4px;
+	margin-right: 4px;
+}
+
+/* DisclosureWidget */
+.dw {
+	width: 100%;
+	border: 1px solid #DADADA;
+	color: #333;
+}
+
+.dw-header {
+	width: 100%;
+  background-image: url(img/dw-header-bg.png);
+}
+
+.dw-heder-controls {
+	margin-left: 2px;
+	margin-right: 2px;
+}
+
+.dw-content {
+	background: #F6F6F6;
+}
+
+.dw-resizer {
+	cursor: n-resize;
+}
+
+.dw-but {
+	cursor: pointer;
+}
+/* END DisclosureWidget */
+
+/* SingleAttributeWidget */
+.saw {
+	padding: 2px;
+	margin: 4px;
+	background-image: url(img/raw-bg.png);
+	background-repeat: repeat-x;
+	background-color: #B8C8D8;
+	border: 1px solid #7F9DB9;
+	color: #333;
+}
+/* END SingleAttributeWidget */
+
+/* FDWidget and RelationAttributesWidget */
+.fdw {
+	margin: 4px;
+	background-image: url(img/raw-bg.png);
+	background-repeat: repeat-x;
+	background-color: #B8C8D8;
+	border: 1px solid #7F9DB9;
+	color: #333;
+}
+/* END FDWidget */
+
+/* FDEditorWidget */
+.fdew-dc-on-enter { /* Drop Controller*/
+	background-color: #AEDAA5;
+}
+
+.fdew-btn { 
+	width: 80px;
+	margin-top: 6px;
+	font-size: 8pt;
+	
+}
+
+.fdew-label {
+	font-size: 8pt;
+}
+
+/* END FDEditorWidget */
+
+/* DecompositionEditorWidget */
+.dew-btn {
+	width: 80px;
+	margin-top: 6px;
+	font-size: 8pt;
+}
+
+.dew-label {
+	font-size: 8pt;
+}
+
+/* END DecompositionEditorWidget */
+
+/* Dialog */
+.gwt-DialogBox {
+	background: #F6F6F6;
+	border: 2px solid #DADADA;
+}
+
+.Caption {
+	background-image: url(img/dw-header-bg.png);
+	cursor: move;
+	font-weight: bold;
+	
+}
+
+/* END Dialog */
+
+/* Minimal Cover Button */
+.min-cov-but {
+	margin: 6px;
+}
+
+/* RelationWidget */
+
+.relW {
+	background-color: #FFFFFF;
+	border: 1px solid #CED4DA;
+	width: 100%;
+	padding: 4px;
+}
+
+.relW-header {
+	background-image: url(img/relation-bg.png);
+	background-repeat: repeat-x;
+	width: 100%;
+} 
+
+.relW-collapseBut {
+	margin-top: 0px;
+}
+
+.relW-collapsedName {
+	font-size: 10pt;
+}
+
+.relW-attLabel {
+	font-size: 10pt;
+	margin-left: 4px;
+	margin-right: 4px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+}
+
+/* End RelationWidget */
+
+/* CheckSolutionDialog */
+
+.csd-innerPanel {
+	background-color: #FFFFFF;
+	border: 1px solid #CED4DA;
+	width: 100%;
+}
+
+/* END CheckSolutionDialog */
+
+/* NewAssignmentDialog */
+.nad-innerPanel {
+	background-color: #FFFFFF;
+	border: 1px solid #CED4DA;
+}
+
+.nad-myLabel {
+	margin: 2px;
+}
+
+.nad-selected {
+	background-image: url(img/raw-bg.png);
+	background-repeat: repeat-x;
+	background-color: #B8C8D8;
+	border: 1px solid #7F9DB9;
+	color: #333;
+}
+
+.nad-column-header {
+	background-image: url(img/raw-bg.png);
+	background-repeat: repeat-x;
+	background-color: #B8C8D8;
+	border: 1px solid #7F9DB9;
+	color: #333;
+	width: 100%;
+}
+
+/* END NewAssignmentDialog */
+
+/* HeaderWidget */
+.hw {
+	background-color: #e8eef7;
+	margin-bottom: 6px;
+	width: 100%;
+	border-bottom: 1px solid #7F9DB9;
+}
+/* END HeaderWidget */
+
+.gwt-TabPanel {
+  margin-top: 4px;
+}
+
+.gwt-TabPanelBottom {
+
+}
+
+.gwt-TabBar {
+  padding-top: 2px;
+  border-bottom: 4px solid #e8eef7;
+  background-color: #fff;
+}
+
+.gwt-TabBar .gwt-TabBarFirst {
+}
+
+.gwt-TabBar .gwt-TabBarRest {
+}
+
+.gwt-TabBar .gwt-TabBarItem {
+  padding: 4px;
+  cursor: pointer;
+  cursor: hand;
+
+  background-color: #F6F6F6;
+  border-bottom: 2px solid white;
+  margin-right: 2px;
+}
+
+.gwt-TabBar .gwt-TabBarItem-selected {
+  padding: 4px;
+  font-weight: bold;
+  cursor: default;
+
+  background-image: url(img/2.png);
+  background-repeat: repeat-x;
+  background-color: #e8eef7;
+  border: 1px solid #7F9DB9;
+  border-bottom: 2px solid #e8eef7;
+  margin-right: 2px;
+}
+
+/* CheckSolutionDialog */
+.csd-title {
+	font-weight: bold;
+}
+
+/* Visualization package */
+.vaw-zoom-1 {
+  cursor: move;
+  border: solid 1px black;
+  color: black;
+  font-size: 12pt;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 4px;
+  padding-top: 4px;
+  margin: 4px;
+}
+
+.vaw-zoom-2 {
+  cursor: move;
+  font-size: 14pt;
+  border: solid 1px black;
+  color: black;
+  padding-left: 14px;
+  padding-right: 14px;
+  padding-bottom: 4px;
+  padding-top: 4px;
+  margin: 4px;
+}
+
+.vaw-zoom-3 {
+  cursor: move;
+  border: solid 2px black;
+  color: black;
+  font-size: 16pt;
+  padding-left: 18px;
+  padding-right: 18px;
+  padding-bottom: 4px;
+  padding-top: 4px;
+  margin: 4px;
+}
+
+.renderPanel {
+  background-color: #FFFFFF;
+}
+
+
+/* ------------ WindowExample ------------ */
+.demo-WindowExample .demo-WindowPanel {
+  background-color: #FFFFFF; /* prevent transparency */
+}
+
+.demo-WindowExample .demo-WindowPanel .demo-WindowPanel-header {
+  background-color: #666666;
+  color: #FFFFFF;
+  overflow: hidden;
+}
+
+.demo-WindowExample .demo-WindowPanel .demo-WindowPanel-iframe {
+  border: none;
+  display: block;
+}
+
+.demo-WindowExample .dragdrop-boundary {
+  background-color: #F8F8F8; /* light gray */
+  border: 1px solid black;
+}
+
+.demo-WindowExample .demo-resize-html {
+  background-color: #DDEEDD; /* light green */
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0px;
+}
+
+.demo-WindowExample .demo-resize-edge {
+  background-image: url(img/tmp1.png);
+  background-repeat: repeat;
+  line-height: 1px;
+  font-size: 1px;
+}
+
+.demo-WindowExample .demo-resize-nw .dragdrop-handle {
+  cursor: nw-resize;
+}
+
+.demo-WindowExample .demo-resize-n .dragdrop-handle {
+  cursor: n-resize;
+}
+
+.demo-WindowExample .demo-resize-ne .dragdrop-handle {
+  cursor: ne-resize;
+}
+
+.demo-WindowExample .demo-resize-w .dragdrop-handle {
+  cursor: w-resize;
+}
+
+.demo-WindowExample .demo-resize-e .dragdrop-handle {
+  cursor: e-resize;
+}
+
+.demo-WindowExample .demo-resize-sw .dragdrop-handle {
+  cursor: sw-resize;
+}
+
+.demo-WindowExample .demo-resize-s .dragdrop-handle {
+  cursor: s-resize;
+}
+
+.demo-WindowExample .demo-resize-se .dragdrop-handle {
+  cursor: se-resize;
+}
+

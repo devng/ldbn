@@ -1,0 +1,81 @@
+%
+%This Skeleton for Master's Thesis reports is written by
+%Jonas Birme during his work with his MT-report in 2004.
+%Jonas is a former student and Assistant at Computing Science, UmU.
+%Jonas is also the author of the documentclass thesis_report.cls
+%Both these files have been modified and extended by Per Lindström at Comp. Sc., UmU
+%in December 2004.
+%
+\documentclass[a4paper]{thesis_report}
+\usepackage{alltt} 
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{subfigure}
+\usepackage{longtable}
+\usepackage{array,ltxtable,ragged2e}
+\usepackage{rotating}
+\usepackage{cancel}
+
+
+\newcolumntype{C}{>{\Centering}X}
+
+\def\lt{{\sc <}}
+\def\gt{{\sc >}}
+
+\begin{document}
+\pagestyle{empty}
+
+\title{A Web-Based Environment for Learning Normalization of Relational Database Schemata}
+\author{Nikolay Georgiev}
+\credits{30} 
+\supervisor{Stephen J. Hegner}
+\examiner{Per Lindstr\"om} %Name of examiner (normally Per Lindström}
+
+\maketitle
+\cleardoublepage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   Abstract
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagenumbering{roman} \setcounter{page}{1}
+\pagestyle{fancy}
+\begin{abstract}
+\input{./tex/abstract}
+\end{abstract}
+
+\cleardoublepage
+\begin{spacing}{1.2}
+\tableofcontents%
+\cleardoublepage
+
+%List of figures and List of tables are not necessary
+\listoffigures%
+%\listoftables%
+\cleardoublepage
+
+\end{spacing}
+
+\pagenumbering{arabic} \setcounter{page}{1}
+
+\input{./tex/introduction}
+\input{./tex/preliminaries}
+\input{./tex/approach-design}
+\input{./tex/approach-impl}
+\input{./tex/conclusions}
+\input{./tex/acknowledgements}
+
+%
+%In order to use the bibliography{base}-command you have to prepare a "database"
+%base.bib in a certain format and then run the bibtex-command (a Unix-command) to create
+%a file base.bbl which LaTeX uses to create References
+%
+\cleardoublepage
+\addcontentsline{toc}{chapter}{References}
+\renewcommand{\bibname}{References}
+\bibliographystyle{plain}
+\bibliography{./tex/base}
+
+%\appendix
+%\input{./tex/tutorial}
+
+\end{document}
