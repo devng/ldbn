@@ -2,12 +2,19 @@
 
 = Introduction =
 
-Add your content here.
+Here you will find information on howto checkout the LDBN project, how to compile it and what tools you need to do so.
 
+In this guide we will use Eclipse IDE (version 3.5 Galileo) for Java EE Developers on Windows XP, but the installation should be similar for other Eclipse versions and OS (a Linux installation guide will follow soon).  
 
-= Details =
+It is assumed that we use GWT ver. 1.7.1.
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+= Installing the Necessary Software =
+
+# Download and install Eclipse IDE for Java EE Developers and create a new workspace. More information on Eclipse and installation notes can be found here
+http://www.eclipse.org/ .
+
+# Install the Subclipse Eclipse Pluging for accessing the SVN server. More information on Subclipse and installation notes can be found here http://subclipse.tigris.org/ .
+
+# Install the Google Plugin for Eclipse 3.5 (Galileo) as described here http://code.google.com/eclipse/docs/install-eclipse-3.5.html . This will install GWT ver. 1.7.1 . Install all other componets of the plugin, although we do not need an App Engine support for the time being. 
+
+= Checking out the LDBN Project from the Repository =
