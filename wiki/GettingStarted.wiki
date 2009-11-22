@@ -29,7 +29,7 @@ It is assumed that we use GWT ver. 1.7.1.
 
     http://ldbnonline.com/wiki/ldbn-checkout3.jpg
 
- * Select the whole trunk and click *_Finish_* and not Next, this will check out the whole LDBN project to your work space.
+ * Select the top-level _ldbn_ folder, click _Next_. Use the default project name _ldbn_ and click *_Finish_*
 
     http://ldbnonline.com/wiki/ldbn-checkout4.jpg
 
