@@ -95,4 +95,4 @@ We need to create a new Eclipse run configuration for the project. Do the follow
 
  * Click on _Apply_ and then click _Run_
 
-Now GWT will start again the development shell in hosted mode and hosted mode browser itself. You can compile the application by pressing the _Compile/Browse_ button in the hosted mode browser. The compiled JavaScript code is then saved to the _war/ldbn_ folder. Please note that GWT might open two hosted mode browsers just ignore the first one, it is a GWT bug.  
+Now GWT will start again the development shell in hosted mode and hosted mode browser itself. You can compile the application by pressing the _Compile/Browse_ button in the hosted mode browser. The compiled java script code is saved to the _war/ldbn_ folder. Please note that GWT might open two hosted mode browsers just ignore the first one, it is a GWT bug.  
