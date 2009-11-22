@@ -2,7 +2,7 @@ package se.umu.cs.ldbn.client.i18n;
 
 import com.google.gwt.i18n.client.Messages;
 
-public interface LDBNMessages extends Messages{
+public interface LDBNMessages extends Messages {
 	
 	String serverErrorCode(String errorCode);
 	
@@ -14,3 +14,4 @@ public interface LDBNMessages extends Messages{
 	String sawFDsNotClosure(String relationName);
 	String sawKeyWrong(String relationName);
 }
+
