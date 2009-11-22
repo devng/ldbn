@@ -1,12 +1,12 @@
-#Information about howto checkout the LDBN project and how to compile it 
+#summary Information about howto checkout the LDBN project, how to compile it and run it localy
 
-= Introduction =
+= Getting Started with LDBN =
 
 In this guide we will use Eclipse IDE (version 3.5 Galileo) for Java EE Developers on Windows XP, but the installation should be similar for other Eclipse versions and OS (a Linux installation guide will follow soon).  
 
 It is assumed that we use GWT ver. 1.7.1.
 
-= Installing the Necessary Software =
+== Installing the Necessary Software ==
 
  * Download and install Eclipse IDE for Java EE Developers and create a new workspace. More information on Eclipse and installation notes can be found [http://www.eclipse.org/ here].
 
@@ -14,4 +14,56 @@ It is assumed that we use GWT ver. 1.7.1.
 
  * Install the Google Plugin for Eclipse 3.5 (Galileo) as described [http://code.google.com/eclipse/docs/install-eclipse-3.5.html here]. This will install GWT ver. 1.7.1 . Install all other componets of the plugin, although we do not need an App Engine support for the time being. 
 
-= Checking out the LDBN Project from the Repository =
+== Checking out the LDBN Project from the Repository ==
+
+ * In Eclipse go to _File->New->Other..._. From the Dialog choose _SVN->Checkout Projects from SVN_
+
+ * Select _Create new repository location_ and click _Next_
+
+ * Enter the following URL _http://ldbn.googlecode.com/svn/trunk/_ and click _Next_
+
+ * Select the whole trunk and click *_Finish_* and not Next, this will check out the whole LDBN project to your work space.
+
+Pleace note that you only have read rights for the project. If you would like to commit code pleace contact me.
+
+== Starting LDBN Locally ==
+
+Before starting LDBN locally you have to install an Apache web server with PHP and a MySQL Database. However, installing and configuring  a web server and a database could be quite complicated. Therefore, for testing poupuses We recommend to use [http://www.apachefriends.org/de/xampp.html XAMPP]. XAMPP will install all for the LDBN Project neccesaty components. 
+
+Please note that you should use XAMPP only for testing purposes!
+
+=== Configuration of the Apache Server ===
+
+After you have installed XAMPP your Apache server is configured and ready to use. However, since we are not going to use the GWT's built-in Tomcat server we need to do some additional configuration of our apache server.
+
+ * Open the _http.conf_ file of your Apache server with a text editor. Usually the file is locaded in _<xampp installation folder>/apache/conf_ 
+
+ * Add the following at the end of the file:
+{{{
+# Alias for LDBN
+Alias /ldbn "<Eclipse Workspace Folder>/ldbn/war"
+<Directory "<Eclipse Workspace Folder>/ldbn/war">
+       Options Indexes FollowSymLinks MultiViews ExecCGI
+       AllowOverride All
+       Order allow,deny
+       Allow from all
+</Directory>
+}}}
+
+ * Note that you have to change _<Eclipse Workspace Folder>_ with the actual path to your Eclipse Workspace, e.g. _C:/workspace_
+
+ * Restart the server
+
+=== Configuration of the MySQL Database ===
+
+The default configuration for the database is sored in the _config.php_ file, which is located in the _war/php_ folder of the LDBN project. Thus if you should use other database configurations then you should edit this file. For the default DB configuration you should do the following:
+
+ * You can use phpMyAdmin http://localhost/phpmyadmin/ for the MySQL database manipulation. The tool is installed by default from XAMPP. 
+
+ * Create new database called _ldbn_
+
+ * Crate the necessary database tables and sample data by using the _ldbn.sql_ and _example.sql_ files, both of which are located in the _recources/DB_ folder.  
+
+ * Create new database user for the _ldbn_ data base called _ldbn_ with a password _1234_. The new database user should have the following rights: _SELECT, INSERT, UPDATE, DELETE_
+
+=== Change the Run Configuration for the Eclipse Project ===
