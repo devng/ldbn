@@ -1,4 +1,4 @@
-#summary Information about how-to checkout the LDBN project, how to compile it and run it locally
+#summary Information about how to checkout the LDBN project, how to compile it and run it locally
 
 = Getting Started with LDBN =
 
