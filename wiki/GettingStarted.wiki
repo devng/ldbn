@@ -18,11 +18,19 @@ It is assumed that we use GWT ver. 1.7.1.
 
  * In Eclipse go to _File->New->Other..._. From the Dialog choose _SVN->Checkout Projects from SVN_
 
+    http://ldbnonline.com/wiki/ldbn-checkout1.jpg
+
  * Select _Create new repository location_ and click _Next_
+
+    http://ldbnonline.com/wiki/ldbn-checkout2.jpg
 
  * Enter the following URL _http://ldbn.googlecode.com/svn/trunk/_ and click _Next_
 
+    http://ldbnonline.com/wiki/ldbn-checkout3.jpg
+
  * Select the whole trunk and click *_Finish_* and not Next, this will check out the whole LDBN project to your work space.
+
+    http://ldbnonline.com/wiki/ldbn-checkout4.jpg
 
 Please note that you only have read rights for the project. If you would like to commit code please contact me.
 
@@ -67,3 +75,23 @@ The default configuration for the database is sored in the _config.php_ file, wh
  * Create new database user for the _ldbn_ data base called _ldbn_ with a password _1234_. The new database user should have the following rights: _SELECT, INSERT, UPDATE, DELETE_
 
 === Change the Run Configuration for the Eclipse Project ===
+
+We need to create a new Eclipse run configuration for the project. Do the following:
+
+ * In Eclipse do a right mouse click on the file _Ldbn.html_ located in the _war_ folder. Then go to _Run As -> Web Application_. This will open the development shell in hosted mode and hosted mode browser itself and launch the LDBN application. However, since we are not using the standard Tomcat server we need to do some additional work to make our application run properly.
+
+    http://ldbnonline.com/wiki/ldbn-run1.jpg
+
+ * Close the development shell and hosted mode browser. In Eclipse go to _Run -> Run Configurations_.
+
+    http://ldbnonline.com/wiki/ldbn-run2.jpg
+
+ * In the _Run Configurations_ dialog go to _Web Applications_ and select _Ldbn.html_. Then select the _Arguments tab_. 
+  * Under _Program arguments_ enter the following line: {{{-noserver -port 80 -startupUrl ldbn/Ldbn.html se.umu.cs.ldbn.Ldbn}}} 
+  * Under _VM arguments_ enter the following line: {{{-Xmx256M}}}
+
+    http://ldbnonline.com/wiki/ldbn-run3.jpg
+
+ * Click on _Apply_ and then click _Run_
+
+Now GWT will start again the development shell in hosted mode and hosted mode browser itself. You can compile the application by pressing the _Compile/Browse_ button in the hosted mode browser. The compiled JavaScript code is then saved to the _war/ldbn_ folder. Please note that GWT might open two hosted mode browsers just ignore the first one, it is a GWT bug.  
