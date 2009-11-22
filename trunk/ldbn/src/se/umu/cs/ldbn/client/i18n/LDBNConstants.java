@@ -11,7 +11,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Given Attributes".
    * 
    * @return translated "Given Attributes"
-   * @gwt.key givenAtt
    */
   String givenAtt();
 
@@ -19,7 +18,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Check Solution".
    * 
    * @return translated "Check Solution"
-   * @gwt.key sawCheckSolutionBut
    */
   String sawCheckSolutionBut();
 
@@ -27,7 +25,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Decomposition is NOT lossless.".
    * 
    * @return translated "Decomposition is NOT lossless."
-   * @gwt.key sawDecompositionNotLossless
    */
   String sawDecompositionNotLossless();
 
@@ -35,7 +32,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Solve Assignments".
    * 
    * @return translated "Solve Assignments"
-   * @gwt.key solveTab
    */
   String solveTab();
 
@@ -43,7 +39,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Import relations".
    * 
    * @return translated "Import relations"
-   * @gwt.key sawImportRelations
    */
   String sawImportRelations();
 
@@ -51,7 +46,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "You have to login first.".
    * 
    * @return translated "You have to login first."
-   * @gwt.key loginFirst
    */
   String loginFirst();
 
@@ -59,7 +53,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "You did not enter any attributes.".
    * 
    * @return translated "You did not enter any attributes."
-   * @gwt.key noAttWarn
    */
   String noAttWarn();
 
@@ -67,7 +60,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Import".
    * 
    * @return translated "Import"
-   * @gwt.key importBut
    */
   String importBut();
 
@@ -75,7 +67,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "New".
    * 
    * @return translated "New"
-   * @gwt.key newBut
    */
   String newBut();
 
@@ -83,7 +74,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Decomposition is lossless.".
    * 
    * @return translated "Decomposition is lossless."
-   * @gwt.key sawDecompositionLossless
    */
   String sawDecompositionLossless();
 
@@ -91,7 +81,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Edit".
    * 
    * @return translated "Edit"
-   * @gwt.key editBut
    */
   String editBut();
 
@@ -99,7 +88,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Decomposition is NOT dependency preserving.".
    * 
    * @return translated "Decomposition is NOT dependency preserving."
-   * @gwt.key sawDecompositionNDP
    */
   String sawDecompositionNDP();
 
@@ -107,7 +95,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Save".
    * 
    * @return translated "Save"
-   * @gwt.key saveBut
    */
   String saveBut();
 
@@ -115,7 +102,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "LDBNConstants".
    * 
    * @return translated "LDBNConstants"
-   * @gwt.key ClassName
    */
   String ClassName();
 
@@ -123,7 +109,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Separate the attributes by commas.".
    * 
    * @return translated "Separate the attributes by commas."
-   * @gwt.key separateAtt
    */
   String separateAtt();
 
@@ -131,7 +116,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Show Solution".
    * 
    * @return translated "Show Solution"
-   * @gwt.key sawShowSolutionBut
    */
   String sawShowSolutionBut();
 
@@ -139,7 +123,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "The FDs are correct.".
    * 
    * @return translated "The FDs are correct."
-   * @gwt.key sawFDsCorrect
    */
   String sawFDsCorrect();
 
@@ -147,7 +130,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Right.".
    * 
    * @return translated "Right."
-   * @gwt.key sawRight
    */
   String sawRight();
 
@@ -155,7 +137,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Given FDs".
    * 
    * @return translated "Given FDs"
-   * @gwt.key givenFDs
    */
   String givenFDs();
 
@@ -163,7 +144,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Wrong - too many FDs. The LHS of each FD must be unique!".
    * 
    * @return translated "Wrong - too many FDs. The LHS of each FD must be unique!"
-   * @gwt.key sawFDsTooMany
    */
   String sawFDsTooMany();
 
@@ -171,7 +151,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "OK".
    * 
    * @return translated "OK"
-   * @gwt.key okBut
    */
   String okBut();
 
@@ -179,7 +158,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "You did not enter any FDs.".
    * 
    * @return translated "You did not enter any FDs."
-   * @gwt.key noFDsWarn
    */
   String noFDsWarn();
 
@@ -187,7 +165,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Edit mode".
    * 
    * @return translated "Edit mode"
-   * @gwt.key editMode
    */
   String editMode();
 
@@ -195,7 +172,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Use only <i>word</i> characters.<BR>Maximal 20 characters.".
    * 
    * @return translated "Use only <i>word</i> characters.<BR>Maximal 20 characters."
-   * @gwt.key renameDialogSubTitle
    */
   String renameDialogSubTitle();
 
@@ -203,7 +179,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Home".
    * 
    * @return translated "Home"
-   * @gwt.key homeTab
    */
   String homeTab();
 
@@ -211,7 +186,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Create Assignments".
    * 
    * @return translated "Create Assignments"
-   * @gwt.key createTab
    */
   String createTab();
 
@@ -219,7 +193,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Decomposition is dependency preserving.".
    * 
    * @return translated "Decomposition is dependency preserving."
-   * @gwt.key sawDecompositionDP
    */
   String sawDecompositionDP();
 
@@ -227,7 +200,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "You can also use Drag'n'Drop.".
    * 
    * @return translated "You can also use Drag'n'Drop."
-   * @gwt.key useDND
    */
   String useDND();
 
@@ -235,7 +207,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Close".
    * 
    * @return translated "Close"
-   * @gwt.key closeBut
    */
   String closeBut();
 
@@ -243,7 +214,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "User Comments".
    * 
    * @return translated "User Comments"
-   * @gwt.key sawUserCommentsTitle
    */
   String sawUserCommentsTitle();
 
@@ -251,7 +221,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Add FDs".
    * 
    * @return translated "Add FDs"
-   * @gwt.key addFDs
    */
   String addFDs();
 
@@ -259,7 +228,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Enter a name".
    * 
    * @return translated "Enter a name"
-   * @gwt.key renameDialogTitle
    */
   String renameDialogTitle();
 
@@ -267,7 +235,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Export".
    * 
    * @return translated "Export"
-   * @gwt.key exportBut
    */
   String exportBut();
 
@@ -275,7 +242,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "There are no relations specified.".
    * 
    * @return translated "There are no relations specified."
-   * @gwt.key sawNoRelationWarn
    */
   String sawNoRelationWarn();
 
@@ -283,7 +249,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "The server returned an unknown XML response.".
    * 
    * @return translated "The server returned an unknown XML response."
-   * @gwt.key serverErrorUnknownXML
    */
   String serverErrorUnknownXML();
 
@@ -291,7 +256,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Clear".
    * 
    * @return translated "Clear"
-   * @gwt.key clearBut
    */
   String clearBut();
 
@@ -299,7 +263,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Load Assignment".
    * 
    * @return translated "Load Assignment"
-   * @gwt.key sawLoadAssignmentBut
    */
   String sawLoadAssignmentBut();
 
@@ -307,7 +270,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "There are no FDs specified.".
    * 
    * @return translated "There are no FDs specified."
-   * @gwt.key sawNoFDsWarn
    */
   String sawNoFDsWarn();
 
@@ -315,7 +277,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Add/Remove Attributes".
    * 
    * @return translated "Add/Remove Attributes"
-   * @gwt.key addRemoveAtt
    */
   String addRemoveAtt();
 
@@ -323,7 +284,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Find a Minimal Cover of FDs. The LHS of each FD must be unique.".
    * 
    * @return translated "Find a Minimal Cover of FDs. The LHS of each FD must be unique."
-   * @gwt.key sawMinCoverTitle
    */
   String sawMinCoverTitle();
 
@@ -331,7 +291,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Minimal Cover Check:".
    * 
    * @return translated "Minimal Cover Check:"
-   * @gwt.key sawMinCoverCheck
    */
   String sawMinCoverCheck();
 
@@ -339,7 +298,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "License".
    * 
    * @return translated "License"
-   * @gwt.key licenseTab
    */
   String licenseTab();
 
@@ -347,7 +305,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Invalid name.".
    * 
    * @return translated "Invalid name."
-   * @gwt.key invalidName
    */
   String invalidName();
 
@@ -355,7 +312,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Name is taken.".
    * 
    * @return translated "Name is taken."
-   * @gwt.key renameDialogNameTaken
    */
   String renameDialogNameTaken();
 
@@ -363,7 +319,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Wrong - FDs are not equivalent to the given FDs.".
    * 
    * @return translated "Wrong - FDs are not equivalent to the given FDs."
-   * @gwt.key sawFDsNotEquivalent
    */
   String sawFDsNotEquivalent();
 
@@ -371,7 +326,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "The keys are correct.".
    * 
    * @return translated "The keys are correct."
-   * @gwt.key sawKeysCorrect
    */
   String sawKeysCorrect();
 
@@ -379,7 +333,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Set".
    * 
    * @return translated "Set"
-   * @gwt.key setBut
    */
   String setBut();
 
@@ -387,7 +340,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Wrong - Some FDs might not be reduced.".
    * 
    * @return translated "Wrong - Some FDs might not be reduced."
-   * @gwt.key sawFDsNotReduced
    */
   String sawFDsNotReduced();
 
@@ -395,7 +347,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Load in SA Tab".
    * 
    * @return translated "Load in SA Tab"
-   * @gwt.key loadInSABut
    */
   String loadInSABut();
 
@@ -403,7 +354,6 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * Translated "Check Solution Dialog".
    * 
    * @return translated "Check Solution Dialog"
-   * @gwt.key csdTitle
    */
   String csdTitle();
 }

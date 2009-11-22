@@ -86,6 +86,8 @@ public final class DisclosureWidget extends Composite implements ClickHandler,
 		}
 
 		public void onBrowserEvent(Event event) {
+			super.onBrowserEvent(event);
+			
 			switch (DOM.eventGetType(event)) {
 
 			case Event.ONMOUSEDOWN: {
