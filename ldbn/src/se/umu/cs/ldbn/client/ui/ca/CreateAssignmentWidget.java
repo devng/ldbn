@@ -70,7 +70,7 @@ public final class CreateAssignmentWidget extends Composite
 	private Button editButton;
 	private Button exportButton;
 	private Button importButton;
-	private Button loadButton;
+	private Button loadInSATabButton;
 	private Label editMode;
 	private Label loginFirst;
 	private DisclosureWidget dwGivenAttributes;
@@ -83,8 +83,8 @@ public final class CreateAssignmentWidget extends Composite
 		mainPanel.setWidth("100%");
 		
 		HeaderWidget hw = new HeaderWidget();
-		loadButton = new Button(I18N.constants().loadInSABut());
-		loadButton.addClickHandler(this);
+		loadInSATabButton = new Button(I18N.constants().loadInSABut());
+		loadInSATabButton.addClickHandler(this);
 		newButton = new Button(I18N.constants().newBut());
 		newButton.addClickHandler(this);
 		saveButton = new Button(I18N.constants().saveBut());
@@ -106,13 +106,13 @@ public final class CreateAssignmentWidget extends Composite
 		Common.setCursorPointer(importButton);
 		importButton.setStyleName("att-but");
 		Common.setCursorPointer(exportButton);
-		loadButton.setStyleName("att-but");
-		Common.setCursorPointer(loadButton);
+		loadInSATabButton.setStyleName("att-but");
+		Common.setCursorPointer(loadInSATabButton);
 		
 		InfoButton info = new InfoButton("ca-tab");
 		info.setStyleName("att-img");
 		
-		hw.add(loadButton);
+		hw.add(loadInSATabButton);
 		Image trenner = new Image("img/trenner.jpg");
 		trenner.setStyleName("att-but");
 		hw.add(trenner);
@@ -264,7 +264,7 @@ public final class CreateAssignmentWidget extends Composite
 			downloadForm.submit();
 		} else if (sender == importButton) {
 			UploadDialog.get().center();
-		} else if (sender == loadButton) {
+		} else if (sender == loadInSATabButton) {
 			Assignment tmp = getAssignemntFromUserInput();
 			if (tmp == null) return;
 			currentAssignment = tmp;

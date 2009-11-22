@@ -1,3 +1,8 @@
+2009-11-23_0007
+* Bug fix, which caused the Create Assignment tab to get empty
+* Changes in the reports structure
+* Other small changes
+
 2009-11-20_1500
 * Initial import for GWT 1.7.
 * Refactoring for the new GWT 1.7 API

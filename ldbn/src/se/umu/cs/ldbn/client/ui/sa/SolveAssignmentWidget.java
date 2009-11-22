@@ -583,7 +583,10 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		clearUserInput();
 		cacheFD.clear();
 		cacheKeys.clear();
-		domain.clearData();
+		//TODO domain.clearData() causes a bug, if we use the same 
+		//domain table in the create assignment tab -> we have to 
+		//implement clone for this class in the future. 
+		//domain.clearData();
 		givenFDsWidget.clearData();
 		fds.clear();
 		originalKeys = null;
