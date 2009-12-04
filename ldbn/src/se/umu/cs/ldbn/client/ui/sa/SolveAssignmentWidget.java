@@ -376,69 +376,144 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		dialog.msgTitle(I18N.messages().sawNFDecompositionCheck("2NF"));
 		List<Relation> relations = decomposition2NF.getRelations();
 		updateCache(relations);
-		if (checkFDInput(relations)) {
-			if(checkForLossless(relations)) {
-				if (checkDependencyPreservation(relations, false)) {
-					if (checkKeyInput(relations)) {
-						updateRelations(relations);
-						boolean isIn2NF = Algorithms.isIn2NF(relations);
-						if(isIn2NF) {
-							dialog.msgOK(I18N.messages().sawDecompositionIsInNF("2NF"));
-						} else {
-							dialog.msgErr(I18N.messages().sawDecompositionIsNotInNF("2NF"));
-						}
-					}
+//		if (checkFDInput(relations)) {
+//			if(checkForLossless(relations)) {
+//				if (checkDependencyPreservation(relations, false)) {
+//					if (checkKeyInput(relations)) {
+//						updateRelations(relations);
+//						boolean isIn2NF = Algorithms.isIn2NF(relations);
+//						if(isIn2NF) {
+//							dialog.msgOK(I18N.messages().sawDecompositionIsInNF("2NF"));
+//						} else {
+//							dialog.msgErr(I18N.messages().sawDecompositionIsNotInNF("2NF"));
+//						}
+//					}
+//				}
+//			}
+//		}
+		if (!isRelationsListEmpry(relations)) {
+			boolean checkFDs = checkFDInput(relations);
+			boolean checkLossless = checkForLossless(relations);
+			boolean checkDP = checkDependencyPreservation(relations, false);
+			boolean checkKey = checkKeyInput(relations);
+			if (checkKey) {
+				updateRelations(relations);
+			}	
+			//BCNF must not be dependency preserving 
+			boolean errorFree = checkFDs && checkLossless && checkDP && checkKey;
+			if (!errorFree) {
+				dialog.msgErr(I18N.messages().sawDecompositionIsNotInNF("2NF") + " See previous error messages.");
+			} else {
+				boolean isIn2NF = Algorithms.isIn2NF(relations);
+				if(isIn2NF) {
+					dialog.msgOK(I18N.messages().sawDecompositionIsInNF("2NF"));
+				} else {
+					dialog.msgErr(I18N.messages().sawDecompositionIsNotInNF("2NF"));
 				}
 			}
 		}
+
 		//3nf check
 		dialog.msgTitle(I18N.messages().sawNFDecompositionCheck("3NF"));
 		relations = decomposition3NF.getRelations();
 		updateCache(relations);
-		if (checkFDInput(relations)) {
-			if(checkForLossless(relations)) {
-				if (checkDependencyPreservation(relations, false)) {
-					if (checkKeyInput(relations)) {
-						updateRelations(relations);
-						boolean isIn3NF = Algorithms.isIn3NF(relations);
-						if(isIn3NF) {
-							dialog.msgOK(I18N.messages().sawDecompositionIsInNF("3NF"));
-						} else {
-							dialog.msgErr(I18N.messages().sawDecompositionIsNotInNF("3NF"));
-						}
-					}
+//		if (checkFDInput(relations)) {
+//			if(checkForLossless(relations)) {
+//				if (checkDependencyPreservation(relations, false)) {
+//					if (checkKeyInput(relations)) {
+//						updateRelations(relations);
+//						boolean isIn3NF = Algorithms.isIn3NF(relations);
+//						if(isIn3NF) {
+//							dialog.msgOK(I18N.messages().sawDecompositionIsInNF("3NF"));
+//						} else {
+//							dialog.msgErr(I18N.messages().sawDecompositionIsNotInNF("3NF"));
+//						}
+//					}
+//				}
+//			}
+//		}
+		if (!isRelationsListEmpry(relations)) { 
+			boolean checkFDs = checkFDInput(relations);
+			boolean checkLossless = checkForLossless(relations);
+			boolean checkDP = checkDependencyPreservation(relations, false);
+			boolean checkKey = checkKeyInput(relations);
+			if (checkKey) {
+				updateRelations(relations);
+			}	
+			//BCNF must not be dependency preserving 
+			boolean errorFree = checkFDs && checkLossless && checkDP && checkKey;
+			if (!errorFree) {
+				dialog.msgErr(I18N.messages().sawDecompositionIsNotInNF("3NF") + " See previous error messages.");
+			} else {
+				boolean isIn3NF = Algorithms.isIn3NF(relations);
+				if(isIn3NF) {
+					dialog.msgOK(I18N.messages().sawDecompositionIsInNF("3NF"));
+				} else {
+					dialog.msgErr(I18N.messages().sawDecompositionIsNotInNF("3NF"));
 				}
 			}
+			
 		}
+		
+		
 		//bcnf check
 		dialog.msgTitle(I18N.messages().sawNFDecompositionCheck("BCNF"));
 		relations = decompositionBCNF.getRelations();
 		updateCache(relations);
-		if (checkFDInput(relations)) {
-			if(checkForLossless(relations)) {
-				checkDependencyPreservation(relations, true);
-				if (checkKeyInput(relations)) {
-					updateRelations(relations);
-					boolean isInBCNF = Algorithms.isInBCNF(relations);
-					if(isInBCNF) {
-						dialog.msgOK(I18N.messages().sawDecompositionIsInNF("BCNF"));
-					} else {
-						dialog.msgErr(I18N.messages().sawDecompositionIsNotInNF("BCNF"));
-					}
+//		if (checkFDInput(relations)) {
+//			if(checkForLossless(relations)) {
+//				checkDependencyPreservation(relations, true);
+//				if (checkKeyInput(relations)) {
+//					updateRelations(relations);
+//					boolean isInBCNF = Algorithms.isInBCNF(relations);
+//					if(isInBCNF) {
+//						dialog.msgOK(I18N.messages().sawDecompositionIsInNF("BCNF"));
+//					} else {
+//						dialog.msgErr(I18N.messages().sawDecompositionIsNotInNF("BCNF"));
+//					}
+//				}
+//			}
+//		}
+		
+		if (!isRelationsListEmpry(relations)) { 
+			boolean checkFDs = checkFDInput(relations);
+			boolean checkLossless = checkForLossless(relations);
+			checkDependencyPreservation(relations, true);
+			boolean checkKey = checkKeyInput(relations);
+			if (checkKey) {
+				updateRelations(relations);
+			}	
+			//BCNF must not be dependency preserving 
+			boolean errorFree = checkFDs && checkLossless && checkKey;
+			if (!errorFree) {
+				dialog.msgErr(I18N.messages().sawDecompositionIsNotInNF("BCNF") + " See previous error messages.");
+			} else {
+				boolean isInBCNF = Algorithms.isInBCNF(relations);
+				if(isInBCNF) {
+					dialog.msgOK(I18N.messages().sawDecompositionIsInNF("BCNF"));
+				} else {
+					dialog.msgErr(I18N.messages().sawDecompositionIsNotInNF("BCNF"));
 				}
 			}
 		}
+		
 		Main.get().hideGlassPanel();
 		dialog.center();
+	}
+	
+	private boolean isRelationsListEmpry(List<Relation> rel) {
+		CheckSolutionDialog dialog = CheckSolutionDialog.get();
+		if(rel == null || rel.size() == 0){
+			dialog.msgWarn(I18N.constants().sawNoRelationWarn());
+			return true;
+		}
+		return false;
 	}
 	
 	//this is unnecessary it is done by checking dependency preservation
 	private boolean checkFDInput(List<Relation> rel) {
 		CheckSolutionDialog dialog = CheckSolutionDialog.get();
-		if(rel == null || rel.size() == 0){
-			dialog.msgWarn(I18N.constants().sawNoRelationWarn());
-			return false;
-		}
+		
 		boolean resultFD = true;
 		
 		for (Relation r : rel) {
@@ -479,7 +554,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 			pk.andOperator(r.getAttrbutes());
 			boolean isKeyFound = false;
 			for (AttributeSet k : keys) {
-				if(k.equals(r.getPrimaryKey())) {
+				if(!k.isEmpty() && k.equals(r.getPrimaryKey())) {
 					isKeyFound = true;
 					break;
 				}
@@ -502,7 +577,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		if(isLossless) {
 			dialog.msgOK(I18N.constants().sawDecompositionLossless());
 		} else {
-			dialog.msgErr(I18N.constants().sawDecompositionLossless());
+			dialog.msgErr(I18N.constants().sawDecompositionNotLossless());
 		}
 		return isLossless;
 	}

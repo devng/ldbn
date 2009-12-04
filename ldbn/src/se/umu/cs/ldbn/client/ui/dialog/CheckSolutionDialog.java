@@ -90,7 +90,7 @@ public final class CheckSolutionDialog extends CloseDialog  {
 	protected Widget getDialogContentWidget() {
 		ScrollPanel sp = new ScrollPanel();
 		mainPanel = new VerticalPanel();
-		sp.setSize("360px", "240px");
+		sp.setSize("400px", "300px");
 		Grid grid = new Grid(1,1);
 		grid.setSize("100%", "100%");
 		DOM.setStyleAttribute(grid.getElement(), "background", "white");

@@ -17,6 +17,7 @@ package se.umu.cs.ldbn.client.ui.window;
 
 import se.umu.cs.ldbn.client.Main;
 import se.umu.cs.ldbn.client.ui.visualization.VisualizationWindow;
+import se.umu.cs.ldbn.client.utils.Common;
 
 import com.allen_sauer.gwt.dnd.client.AbstractDragController;
 import com.allen_sauer.gwt.dnd.client.drop.BoundaryDropController;
@@ -104,7 +105,7 @@ public class WindowDragController extends AbstractDragController {
 		int desiredLeft = context.desiredDraggableX - boundaryOffsetX;
 		int desiredTop = context.desiredDraggableY - boundaryOffsetY;
 		RootPanel.get().add(context.draggable, desiredLeft, desiredTop);
-		if(context.draggable instanceof VisualizationWindow && Main.isAgentIE()) {
+		if(context.draggable instanceof VisualizationWindow && Common.isAgentIE()) {
 			((VisualizationWindow) context.draggable).reDrawCanvas();
 		}
 	}

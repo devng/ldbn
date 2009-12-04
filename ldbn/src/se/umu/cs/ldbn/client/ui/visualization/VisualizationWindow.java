@@ -12,11 +12,13 @@ import se.umu.cs.ldbn.client.ui.visualization.color.PastelPalette1;
 import se.umu.cs.ldbn.client.ui.visualization.color.PastelPalette2;
 import se.umu.cs.ldbn.client.ui.visualization.color.StandardPalette;
 import se.umu.cs.ldbn.client.ui.window.WindowPanel;
+import se.umu.cs.ldbn.client.utils.Common;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
+import com.google.gwt.user.client.IncrementalCommand;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
@@ -66,8 +68,11 @@ public final class VisualizationWindow extends WindowPanel
 
 	private SimplePanel menuWrapper;
 	
+	private int ieCanvasPasses;
+	
 	private VisualizationWindow() {
 		super("FD Visualization");
+		ieCanvasPasses = 0;
 	}
 	
 	public void setData(AttributeSet attributes, List<FD> fds) {
@@ -89,25 +94,32 @@ public final class VisualizationWindow extends WindowPanel
 			throw new IllegalArgumentException(
 					"VisualizationWindow: Attributes or FDs are null.");
 		}
-		setAnimationEnabled(false);
-		setVisible(false);
-		show();
+		//setAnimationEnabled(false);
+		//setVisible(false);
 		palettes[curPaletteIndex].reset();
 		drawer.drawFDs(curSet, curFDs, palettes[curPaletteIndex],
 				zoomLevels[curZoomLevelIndex], 
 				curDiagramTypeIndex == 0 ? false : true,
 				curFDRenderIndex == 0 ? true : false);
+		show();
 		DeferredCommand.addCommand(new Command() {
 			public void execute() {
 				int w = Math.max(drawer.getOffsetWidth(), 
 						menuWrapper.getOffsetWidth() + 8);
 				setContentSize(w, drawer.getOffsetHeight() + MENU_PX_HEIGHT);
-				hide();
-				setAnimationEnabled(true);
-				setVisible(true);
-				VisualizationWindow.super.center();
-				if(Main.isAgentIE())
-					reDrawCanvas();
+				//hide();
+				//setAnimationEnabled(true);
+				//setVisible(true);
+				//VisualizationWindow.super.center();
+				//IE BUG canvas must be drawn twice 
+				if(Common.isAgentIE()) {
+					DeferredCommand.addCommand(new Command() {
+						public void execute() {
+							setVisible(false);
+							setVisible(true);
+						}
+					});
+				}
 				isCentering = false;
 			}
 		});

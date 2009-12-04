@@ -8,9 +8,11 @@ body {
 
 
 .glassPanel {
-   background: white;
-   opacity: 0.4;
-   filter: alpha(opacity=40);  
+   background: white; 
+   opacity: 0.5;                    /* Firefox, Safari(WebKit), Opera */
+   -ms-filter: "alpha(opacity=50)"; /* IE 8 */
+   filter: alpha(opacity=50);       /* IE 4-7 */
+   zoom: 1;       /* set "zoom", "width" or "height" to trigger "hasLayout" in IE 7 and lower */ 
 }
 
 .att-but {

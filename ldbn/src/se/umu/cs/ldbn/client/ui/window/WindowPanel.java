@@ -20,9 +20,14 @@ import se.umu.cs.ldbn.client.utils.Common;
 
 import com.allen_sauer.gwt.dnd.client.util.Location;
 import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.DeferredCommand;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Grid;
@@ -32,12 +37,14 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
 
-public abstract class WindowPanel extends PopupPanel {
+public abstract class WindowPanel extends SimplePanel /*PopupPanel*/ {
 
 	/**
 	 * WindowPanel direction constant, used in
@@ -150,10 +157,11 @@ public abstract class WindowPanel extends PopupPanel {
 	protected boolean resizable;
 	
 	public WindowPanel(String title) {
-		this(title, false, true);
+		this(title, true);
 	}
 
-	public WindowPanel(String title, boolean modal, boolean resizable) {
+	public WindowPanel(String title, boolean resizable) {
+		super();
 		Widget contentWidget = getContentWidget();
 		boolean wrapContentInScrollPanel = useScrollPanel();
 		this.windowController = Main.get().getWindowController();
@@ -174,6 +182,7 @@ public abstract class WindowPanel extends PopupPanel {
 		header.setWidget(0, 0, nameLabel);
 
 		closeButton = new Image("img/window-button-close.png");
+		header.setWidget(0, 1, closeButton);
 		Common.setCursorPointer(closeButton);
 		closeButton.addClickHandler(new ClickHandler() {
 			@Override
@@ -181,7 +190,6 @@ public abstract class WindowPanel extends PopupPanel {
 				hide();
 			}
 		});
-		header.setWidget(0, 1, closeButton);
 		cf.setAlignment(0, 1, HasHorizontalAlignment.ALIGN_RIGHT,
 				HasVerticalAlignment.ALIGN_TOP);
 		com.google.gwt.user.client.Element e = cf.getElement(0, 1);
@@ -221,7 +229,9 @@ public abstract class WindowPanel extends PopupPanel {
 		setupCell(2, 2, SOUTH_EAST);
 		
 		DOM.setStyleAttribute(this.getElement(), "background", "#F6F6F6");
-		setAnimationEnabled(true);
+		//setAnimationEnabled(false);
+		this.setVisible(false);
+		RootPanel.get().add(this, 0, 0);
 	}
 
 	public int getContentHeight() {
@@ -237,6 +247,7 @@ public abstract class WindowPanel extends PopupPanel {
 		Location location = new WidgetLocation(this, parent);
 		int left = location.getLeft() + right;
 		int top = location.getTop() + down;
+		//setPopupPosition(left, top);
 		parent.setWidgetPosition(this, left, top);
 	}
 
@@ -295,4 +306,37 @@ public abstract class WindowPanel extends PopupPanel {
 		
 		return widget;
 	}
+	
+	
+	//methods from the PopupPanel
+	public void hide() {
+		setVisible(false);
+	}
+	
+	public void show() {
+		//this method is implemented very badly, we should find a better solution
+		setVisible(true);
+		DeferredCommand.addCommand(new Command() {
+			public void execute() {
+				//offset size is only available after the Widget is attached to the DOM
+				int ow = getOffsetWidth();
+				int oh = getOffsetHeight();
+				int sl = Window.getScrollLeft();
+				int st = Window.getScrollTop();
+				int wcw = Window.getClientWidth();
+				int wch = Window.getClientHeight();
+				int left = (wcw - ow) >> 1;
+			    int top = (wch - oh) >> 1;
+			    left -= Document.get().getBodyOffsetLeft();
+			    top -= Document.get().getBodyOffsetTop();
+			    AbsolutePanel parent = (AbsolutePanel) getParent();
+			    parent.setWidgetPosition(WindowPanel.this, sl + left, st + top);
+			}
+		});
+	}
+	
+	public void center() {
+		show();
+	}
+	
 }

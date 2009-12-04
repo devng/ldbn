@@ -33,6 +33,18 @@ public final class Common {
 	
 	public final static String EMAIL_REGEX = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}"; 
 	
+	/** 
+	 * I should use Deferred Binding
+	 * @see http://code.google.com/docreader/#p=google-web-toolkit-doc-1-5&s=google-web-toolkit-doc-1-5&t=DevGuideDeferredBindingReplacement  
+	 **/
+	public static native String getUserAgent() /*-{
+		return navigator.userAgent.toLowerCase();
+	}-*/;
+	
+	public static boolean isAgentIE() {
+		return getUserAgent().contains("msie");
+	}
+	
 	/**
 	 * Set the transparent background colour of a widget
 	 * 
@@ -173,6 +185,10 @@ public final class Common {
 		str = str.replaceAll("&#045;", "-");
 		return str;
 	}
+	
+	public static native int getScreenWidth () /*-{
+		return screen.width;
+	}-*/;
 	
 	public static native String base64decode(final String data) /*-{
 

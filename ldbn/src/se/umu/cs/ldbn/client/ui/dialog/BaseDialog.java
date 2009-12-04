@@ -25,7 +25,7 @@ abstract public class BaseDialog extends WindowPanel implements ClickHandler {
 	protected boolean isModal;
 
 	public BaseDialog(String title, boolean modal) {
-		super(title, modal, false);
+		super(title, false);
 		isModal = modal;
 	}
 	
