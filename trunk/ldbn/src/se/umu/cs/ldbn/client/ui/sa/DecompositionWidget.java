@@ -11,6 +11,7 @@ import se.umu.cs.ldbn.client.ui.FDHolderPanel;
 import se.umu.cs.ldbn.client.ui.FDWidget;
 import se.umu.cs.ldbn.client.ui.HasAdditionalControlls;
 import se.umu.cs.ldbn.client.ui.InfoButton;
+import se.umu.cs.ldbn.client.ui.dialog.AttributesEditorDialog;
 import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
 import se.umu.cs.ldbn.client.ui.visualization.VisualizationWindow;
 import se.umu.cs.ldbn.client.utils.Common;
@@ -99,9 +100,12 @@ public final class DecompositionWidget extends Composite
 			rCounter++;
 			relations.add(r);
 			relationsPanel.add(r);
-			FDEditorDialog.get().center(); //always center first
-			FDEditorDialog.get().setCurrentFDHolderPanel(r.getFDHolderPanel());
-			FDEditorDialog.get().setCurrentDomain(SolveAssignmentWidget.get().getDomainTable());
+//			FDEditorDialog.get().center(); //always center first
+//			FDEditorDialog.get().setCurrentFDHolderPanel(r.getFDHolderPanel());
+//			FDEditorDialog.get().setCurrentDomain(SolveAssignmentWidget.get().getDomainTable());
+			AttributesEditorDialog dialog = AttributesEditorDialog.get();
+			dialog.center();
+			dialog.setCurrentRelationAttributesWidget(r.getRelationAttributesWidget());
 		} else if (sender == checkControlls[1]) {
 			//select all
 			for (RelationWidget rw : relations) {

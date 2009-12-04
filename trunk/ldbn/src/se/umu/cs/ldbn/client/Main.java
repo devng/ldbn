@@ -11,6 +11,7 @@ import se.umu.cs.ldbn.client.ui.licence.LicenceWidget;
 import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
 import se.umu.cs.ldbn.client.ui.user.UserData;
 import se.umu.cs.ldbn.client.ui.window.WindowController;
+import se.umu.cs.ldbn.client.utils.Common;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.log.client.Log;
@@ -31,16 +32,29 @@ import com.google.gwt.user.client.ui.TabPanel;
 public final class Main implements EntryPoint, 
 	SelectionHandler<Integer>, LoginListener {
 	
-	public static String VERSION = "1.3.091118"; 
+	public static String VERSION = "1.4.091204";
 	
-	public static int WIDTH_PX = 850;
+	public static final int WIDTH_PX;
+	
+	static {
+		int screenWidth = Common.getScreenWidth();
+		screenWidth -= 60; 
+		int min = 1024-60;
+		int max = 1920-60;
+		if (screenWidth < min) {
+			screenWidth = min;
+		} else if (screenWidth > max) {
+			screenWidth = max;
+		}
+		WIDTH_PX = screenWidth;
+	}
 	
 	private static Main instance;
 
 	private PickupDragController dragControll;
 	private WindowController windowControll;
 
-	private AbsolutePanel mainPanel;
+	public AbsolutePanel mainPanel;
 
 	private GlassPanel glass;
 
@@ -52,19 +66,6 @@ public final class Main implements EntryPoint,
 	private boolean isTabCALoaded;
 	private boolean isTabAdminLoaded;
 	
-	/** 
-	 * I should use Deferred Binding
-	 * @see http://code.google.com/docreader/#p=google-web-toolkit-doc-1-5&s=google-web-toolkit-doc-1-5&t=DevGuideDeferredBindingReplacement  
-	 **/
-	public static native String getUserAgent() /*-{
-		return navigator.userAgent.toLowerCase();
-	}-*/;
-	
-	public static boolean isAgentIE() {
-		return getUserAgent().contains("msie");
-	}
-	
-	
 	public static Main get() {
 		if (instance == null) {
 			throw new IllegalArgumentException("onModuleLoad method must be " +
@@ -73,7 +74,9 @@ public final class Main implements EntryPoint,
 		return instance;
 	}
 	
-	private Main() {}
+	private Main() {
+		super();
+	}
 	
 	/**
 	 * This is the entry point method.

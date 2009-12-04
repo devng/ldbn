@@ -1,3 +1,9 @@
+2009-12-04_2240
+* Bug fix when moving a window , after that the window cannot be closed. However, now we don't have animations when the window is opening and closing.
+* The application resolution is now adjusted to the screen resolution.
+* When adding a new relation, we now open the Attribute Editor Dialog rather than FD Editor.
+* Other small bug fixes.
+
 2009-11-23_0007
 * Bug fix, which caused the Create Assignment tab to get empty
 * Changes in the reports structure
@@ -32,7 +38,7 @@
 2009-06-07_1815
 * New Release - version 1.1 
 * Visualization of FDs is now possible. All classes involved in this feature are in the visualization package. The package relies on the <canvas> tag, thus the visualization might not work in IE 6 and 7. 
-* New window package. Now it is possible to create resizible windows within the browser, with a close button in the upper right corner. The BaseDialog class now extends the WindowPanel class.
+* New window package. Now it is possible to create resizable windows within the browser, with a close button in the upper right corner. The BaseDialog class now extends the WindowPanel class.
 * New Button in the Solve Assignment Tab, which allows the students to specify a key for the original relation.
 * Switched to gwt-dnd-2.5.6 library.
 * Minor bug fixes. 
@@ -73,7 +79,7 @@
 
 2008-07-28_2020
 * A final working version of the user management.
-* Leaving a comment for each assignemtn is now possible.
+* Leaving a comment for each assignment is now possible.
 * About and license text added.
 * Fixed bug with UserLogoutWidget, where a username didn't change after second login.
 * Minor UI changes.
