@@ -1,0 +1,26 @@
+Tutorial 
+
+This guide will show you how to check out the LDBN project with Eclipse IDE. 
+And run it locally on your system. The tutorial it focused on installing LDBN on 
+Windows XP operating system, but you can install it practically with a similar
+approach on every system, on which you can run GWT, MySQL and Apache Web Server 
+with PHP5. This tutorial will not include a guide on how to install MySQL or 
+Apache Web Server, but if you have troubles with that part, I suggest you to 
+install XAMPP, which is a free and open source cross-platform web server 
+package, which will install and configure automatically among others also the 
+Apache Web Server and MySQL, and also useful tools like PHPMyAdmin, which is 
+an administration tool for MySQL over the Internet. XAMPP is available for 
+download at http://www.apachefriends.org . 
+A Getting Started guide with GWT (Google Web Toolkit) is available at:
+http://code.google.com/webtoolkit/gettingstarted.html . You need the GWT, in 
+order to compile LDBN from Java source code into JavaScript, and thus run it 
+on a web server.
+
+
+1. Checking out LDBN from SVN repository
+I assume You have already installed GWT, and continue. You need to create a new
+project with GWT. You can do that after checking out the project from the 
+repository, but doing it before that is easier. 
+Follow the steps in the "Getting Started guide with GWT (Google Web Toolkit)"
+under the "Creating an Application from Scratch (with Eclipse)". Name your 
+project ldbn , with lower case letters only. 

@@ -1,0 +1,115 @@
+\chapter{Introduction}
+\label{chap:introduction}
+One of the fundamental concepts to teach in a database design course is the concept of
+relation decomposition, which consists of dividing relations (or data tables) into smaller
+tables in order to reduce redundancy, eliminate wasted storage and more importantly reduce
+anomalies or inconsistencies due to data updates. The central tool in producing these
+decompositions and refinement of the database in what is called normal forms, is the theory
+of functional dependencies, often called normalization theory. 
+Unfortunately, theory is not yet understood well by practitioners~\cite{p1}.
+One of the reasons for this is the lack of good tools which could aid the students 
+during the learning process of relational-database normalization~\cite{p8}. 
+Thus our learning environment was developed in order to give students the ability to 
+easily and efficiently test
+their knowledge of the different normal forms in practice. The environment assists the students by 
+providing them the following functionalities:
+
+\begin{enumerate}
+	\item Allow the student to specify a candidate decomposition of a given relation.
+	\item Assess the correctness of the student's proposed decomposition relative to many factors; including:
+		\begin{itemize}
+			\item Lossless-join property.
+			\item Dependency preservation.
+			\item Specification of keys.
+			\item Correctness of the Second Normal Form (2NF), Third Normal Form (3NF) and
+			 Boyce-Codd Normal Form (BCNF) decompositions.
+		\end{itemize}
+	\item Provide students with sample decompositions when needed. 
+	\item Allow users to communicate with each other via comments/posts.
+\end{enumerate}
+
+
+
+\section{Organization of This Report}
+\label{sec:organization}
+In the remaining sections of this chapter we introduce informally 
+the key features and concepts of our web-based learning environment, 
+called LDBN (Learn DataBase Normalization)~\cite{wldbn}; 
+compare it to a couple of other 
+available web-based database normalization tools, and provide the reader with small glossary.  
+%The introduction to LDBN in Section~\ref{sec:introldbn} is important for the reader
+%in order for him/her to better understand the need and the concepts of the algorithms described in 
+In Chapter~\ref{chap:preliminaries} we give definitions to
+relational-database normalization and to the different normal forms. 
+In Chapter~\ref{chap:design} we discuss some design issues regarding LDBN such as 
+platform choice and others. Chapter~\ref{chap:impl} provides a formal description
+of our reference implementation of the learning environment, and
+Chapter~\ref{chap:conclusion} shows our conclusions.
+
+\section{Learning Database Normalization with LDBN}
+\label{sec:introldbn}
+In this section we briefly introduce our reference implementation
+of the web-based learning environment, called LDBN.    
+Figure~\ref{fig:screen01} shows the overview of the most important part of the 
+user interface~(UI)~- 
+the \textit{Solve Assignment} view/tab. Here students can test their knowledge on 
+the subject of relational-database normalization. The first thing the reader 
+may notice is the fact that LDBN runs within a browser. The client side 
+of LDBN is written in JavaScript following the AJAX techniques 
+(more about this in Chapter~BLA). 
+Furthermore, LDBN is assignment driven. This means students have to first 
+choose an assignment 
+from a list with assignments, submitted by other users (lecturers). 
+Such a list is shown in Figure~\ref{fig:screen02}. 
+An assignment consists of a relational-database schema in
+universal-relation form (URF), i.e., all the attributes in a single relation 
+and a set of FDs on the attributes. 
+After an assignment has been loaded, we require the students to go through the 
+following steps in LDBN:
+\begin{enumerate}
+	\item Determine a minimal cover of the given FDs, also known as a canonical cover.
+	\item Decompose the relational schema which is in URF into 2NF, 3NF and BCNF. 
+	\item Determine a primary key for each new relation/table. 
+\end{enumerate}
+
+The task of checking a potential solution
+involves many subtasks, which may be performed in any order. In addition to this,  
+a partial or complete 
+solution can be submitted at any given time by pressing the \textit{Check Solution} button. 
+After that the system analyzes the solution by performing series of tests, which are not
+discussed here since implementing those test was not part of this thesis. 
+
+A dialog with the result is shown to the user. In case of an error the system offers
+feedback in form of small textual hints, indicating
+where the error might be. Such a dialog is shown in Figure~\ref{fig:screen03}. 
+
+Additional features of LDBN include creating an assignment, which can be done 
+only by registered users. At this point it should be mentioned that
+there are different types of users in the systems and only the assignments
+submitted by administrators (lecturers) are visible by default, but a user can
+choose to see all assignments. This restriction is necessary in order users to be able 
+to distinct assignments provided by trusted users, e.g. the database course
+lecturers. Registered users have also the ability to leave textual comments 
+for every assignment. On the one hand, such
+comments ensure that user can easily communicate and share ideas
+with each other, and one the other hand, comments could also decrease the amount of workload
+for the lecturers in terms of giving an explanation to difficult decomposition.
+
+More detailed and formal description of the features of LDBN will be given in
+Chapter~BLA. 
+
+\section{Glossary}
+\begin{description}
+	\item[2NF, 3NF, BCNF] \emph{Second Normal Form, Third Normal Form, Boyce-Codd Normal Form}. See Section~\ref{sec:nfintro} for more details.
+	\item[AJAX] \emph{Asynchronous JavaScript And XML} Asynchronous JavaScript And XML is a group of interrelated web development techniques used for creating interactive web applications, for more details see Section~\ref{sec:ajax}.
+	\item[API] An \emph{Application Programming Interface} is a set of functions, procedures or classes that an operating system, library or service provides to support requests made by computer programs~\cite{wapi}.
+	\item[CSS] \emph{Cascading Style Sheets} is a stylesheet language used to describe the presentation of a document written in HTML.
+	\item[DBMS] A \emph{Database Management System} is a complex set of software programs that controls the organization, storage, management, and retrieval of data in a database.
+	\item[GWT] \emph{Google Web Toolkit} is an open source Java software development framework that allows web developers to create AJAX applications in Java. More details in Section~\ref{sec:gwt}.
+	\item[LDBN] \emph{Learn Database Normalization} is our reference implementation of the web-based environment for
+    learning normalization of relational database schemata. We often refer to LDBN as \emph{our learning environment} or \emph{our implementation}.
+	\item[ODBC] \emph{Open Database Connectivity} provides a standard software API method for using database management systems.
+	\item[RPC] \emph{Remote Procedure Call} is an inter-process communication technology that allows a computer program to cause a subroutine or procedure to execute in another address space.
+	\item[SQL] \emph{Structured Query Language} is a computer language designed for the retrieval and management of data in relational database management systems, database schema creation and modification, and database object access control management.
+	\item[XMLHttpRequest] is an API that can be used by JavaScript and other web browser scripting languages to transfer asynchronously XML and other text data between a web server and a browser.
+\end{description}
