@@ -58,14 +58,15 @@ which is an adaption of~\cite[Figure 3.1]{mt1}.
 
 It should be noted that AJAX has several shortcomings as well. First of all, 
 JavaScript must be enabled in the browser, otherwise the application will not start.
-However, the developer can indicate this in the \emph{<noscript>} HTML-tag. 
+However, the developer can indicate this in the \verb=<noscript>= HTML-tag. 
 Nevertheless, the biggest issue with AJAX remains the fact that it is not a
 standard. This often requires writing a different code base for different
 browsers, and this means less scalability for the application and less productivity for
-the developers~[BLA-22]. In the latter case we could avoid some of the issues by using 
+the developers~\cite{bgwt2}. In the latter case we could avoid some of the issues by using 
 Google Web Toolkit (GWT).
 
 \subsection{GWT}
+\label{sec:gwt}
 
 GWT is an open source project
 and it is developed by Google. It is a set of tools and libraries that allows web developers to
@@ -74,6 +75,7 @@ create AJAX applications in Java.
 Some more comments on GWT ....
 
 \subsection{Bitmap Rendering with JavaScript}
+\label{sec:renderingJS}
 When it comes to visualization and graphics in general we need a 
 to have a more low level pixel control over a certain area of the screen. 
 When using JavaScript, however, simple tasks such as drawing a straight
@@ -84,38 +86,45 @@ to the client as a image, but for the same reasons as described in the previous
 section we decided to use the AJAX approach. This way we can also
 adopt a lot of the source code from the previous version of LDBN. 
 One way to achieve bitmap rendering with JavaScript is by
-using the \emph{<canvas>} element. 
-It is part of the HTML 5 standard and it is supported by
+using the \verb=<canvas>= HTML-element. 
+It is part of the HTML5~\cite{html5} standard, which is the next major revision of HTML, and it is supported by
 most of the modern web browsers. It provides an image-like 
 graphics context which can be accessed via a set of JavaScript calls, 
 similar to a 2D subset of OpenGL. 
 It was originally introduced by Apple in their Safari browser, but it is now 
 supported by other modern browser including Mozilla Firefox, Opera and Google Chrome.
-It also have  better rendering speed than the older Scalable Vector Graphics (SVG) standard.
-[cite http://www.borismus.com/canvas-vs-svg-performance/]. Internet Explorer (IE) does not 
-provide support for 
-neither SVG nor canvas, though [cite ]. In spite of that, IE does 
+It also have  better rendering speed than the older Scalable Vector Graphics (SVG) standard~\cite{w8}. 
+Internet Explorer (IE) does not 
+provide native support for 
+neither SVG nor canvas, though~\cite{w9}. In spite of that, IE does 
 implements its own XML-based language for producing vector graphics 
 called Vector Markup Language (VML). With the help of VML canvas specific JavaScript 
-calls can be emulated in IE. In LDBN we use the GWT-Incubator project[cite BLA], which provides
+calls can be emulated in IE. In LDBN we use the GWT-Incubator project~\cite{gwtincubator}, which provides
 browser independent canvas implementation for GWT projects, thus 
-it provides support for all major browsers including IE. It should be noted that by doing this
-we loose some rendering speed in IE that generally comes in other browsers with a 
-native canvas implementation, on the other hand in our implementation of the 
-visualization of FDs we use only static scenes, i.e., no animation or any other intensive 
-graphical operations, therefore in our opinion VML is sufficient for the project. 
+it provides support for all major browsers including IE. 
+It should be noted that by doing this
+we loose some rendering speed in IE that generally comes in other browsers
+with a native canvas implementation, on the other hand in our implementation of the visualization of FDs we use only static scenes, i.e., 
+no animation or any other intensive 
+graphical operations, therefore in our opinion VML is sufficient 
+for the project. 
 
 \section{Implementation}
+\label{sec:implementation}
 As mentioned earlier the implementation could be divided into two parts: 
 (1) Visualization of FDs and 
 (2) improving the existing capabilities of the system.
 
 \subsection{Visualization of FDs}
-On the one hand the visualization of FDs is the most significant part of the thesis, 
+\label{sec:visualization}
+On the one hand the visualization of FDs is the most significant 
+part of the thesis, 
 on the other hand this extension should not compromise the existing 
 user interface of LDBN. Therefore we decided to
-make the visualization available in a separate window in the browser. The initial idea
-was to implement it as a separate web application, which can then be opened in its own 
+make the visualization available in a separate window in the browser. 
+The initial idea
+was to implement it as a separate web application, which can then be 
+opened in its own 
 browser pop-up window. However there are two problems with this approach. The fist one is
 the fact that most of the modern browsers have a pop-up blocker and it is activated by default.
 This could have a major negative impact on the usability of the system because there
@@ -149,29 +158,54 @@ the graphical representation of the window, this way for example we can add a cl
 in the upper right corner, which is a more intuitive way to interact with the UI.
 
 At implementation level the visualization consists of two components. 
-There are illustrated in Figure~BLA.
+There are illustrated in Figure~\ref{fig:impl-fds01}-1.
 The fist component is a simple GWT panel where all the attributes are displayed. Internally 
 the attributes are represented as GWT widgets, thus the rendering of those attributes is
 handled by the browser. In fact, these are the same widget classes used for representing
-attributes in the \emph{Given Attributes} field, which is shown in Figure~BLA. The only 
+attributes in the \emph{Given Attributes} field, which is shown in Figure~\ref{fig:givenFds}. The only 
 difference between the two attribute representations is 
 that we apply different CSS style for each of them. By using the already implemented LDBN 
 widget classes we get advanced functionality such as drag and drop for free. Thus the users
 can drag any attribute in the visualization window and drop 
 dropped in the text box of the different editors in LDBN
-such as the \emph{Attribute Editor} or the \emph{FD Editor}, both of them are shown in Figure~BLA. 
+such as the \emph{Attribute Editor} or the \emph{FD Editor}, the latter is 
+shown in Figure~\ref{fig:fdeditor}. 
 As a result of which the
 attributes are automatically inserted in the text areas of the editor and users do not have
 to type them by hand, which for long attribute names could become inconvenient and error-prone. 
 We believe the drag and drop functionality can help
 users define attributes, keys or FDs much more quickly, which on the other hand can
-help improve the usability of the learning environment. 
+help improve the usability of the learning environment.
 
-The second component of the visualization is the \emph{canvas} element, it is shown in Figure~BLA.
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{./img/givenFds.png}
+		\caption{Given FDs Widget}
+		\label{fig:givenFds}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{./img/impl-fds01.png}
+		\caption{Visualization Components}
+		\label{fig:impl-fds01}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.6\textwidth]{./img/fdeditor.png}
+		\caption{FD Editor Dialog in LDBN}
+		\label{fig:fdeditor}
+	\end{center}
+\end{figure}
+
+The second component of the visualization is the \emph{canvas} element, it is shown in Figure~\ref{fig:impl-fds01}-2.
 The canvas elements is placed bellow he attributes, and there the actual drawing 
 of the FDs takes place. In LDBN we support two types of visualization, each of them can be selected
 from the \emph{Diagram Type} drop dawn menu in the visualization window. The fist type is called 
-\emph{Elmasty}, since it is common in~[cite]. The main difference between this approach and
+\emph{Elmasty}, since it is common in~\cite{bdb1}. The main difference between this approach and
 the traditional representation of FDs is the fact the we display each attribute in the set of 
 FDs only once. 
 Similar to the purely text-based representation we can visualize the set
@@ -181,5 +215,8 @@ are shown in the fist row. Then every FD is displayed in a separate row by a out
 arrow from an attribute for the left-hand side (LHS) of the FD 
 and as an incoming arrow for the right-hand side (RHS).
 
-\section{Test2}
-\label{sec:test2}
+\section{Improving the existing capabilities of LDBN}
+\label{sec:improving}
+
+
+
