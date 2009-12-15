@@ -1,0 +1,47 @@
+Visualization of Functional Dependencies in a Web Environment
+
+BT OUTLINE
+--------------------------------------------------------------------------------
+
+1. Introduction 
+- Organization of this report
+- Short Introduction to LDBN 
+- Glossary
+
+2. Motivation
+- Visualization a better way to make decompositions
+- There were much assignments which are not essential for the students (flood) 
+- The lecturers had no control over the users, assignments nor comments
+
+3. Approach
+- Choice of Platform
+-- AJAX & GWT
+- Implementation
+-- Visualization
+--- Different types of Visualization (presenting the visualization dialog)
+-- Extending LDBN
+--- Different Types of Users
+---- Administrator Rights
+--- Editable user comments
+--- Different Load Assignment Dialog (Assignment Filters)
+--- Ability to load assignments in the Solve Assignment tab without the need to
+store them in the DB first
+- Communication and Security
+
+4. Conclusions
+- Limitations and future work
+-- Still no internationalization
+-- Ability to see where user have difficulties in the process of solving 
+assignments. 
+
+5. Acknowledgments
+
+References
+
+%Optional Tutorial, if I have the time I will write it and include it in 
+%the thesis
+Tutorial for Using LDBN
+- Home Tab
+- Solve Assignment Tab
+- Create Assignment Tab
+- Administrators Tab

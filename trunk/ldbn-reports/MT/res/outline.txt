@@ -1,0 +1,134 @@
+0. Abstract
+
+1. Introduction
+
+1.1. Brief introduction to LDBN (first encounter with LDBN with screenshots and scenarios)
+- Philosophy of the learning environment.
+- Outlining the benefits of the learning evrionment.
+- What is an assignment?
+- How are the users tested?
+1.2. Organization of this report
+1.3. Glossary
+
+
+2. Preliminaries
+- What is a database normalization? 
+- Why do we need this?
+
+2.1. Brief introduction to the normal forms
+- Which are the different normal forms? 
+- Some examples.
+
+
+2.3. Algorithms
+
+2.3.1 For Automatic decomposition
+- Synthese algorithm.
+- Algorithm for BCNF.
+
+2.3.2 For validating user input
+- Why are the above algorithms not enough?
+- Attribute closure.
+- Member.
+- Equivalence.
+- Minimal cover.
+- Reduction by resolution.
+- Finding all key candidates.
+- Testing for lossless/nonaditive join property.
+- Testing for dependency preservation. 
+- Testing for 2NF, 3NF, BCNF properly.
+- And putting all the algorithms together -> interaction with each other.
+
+3. Approach
+
+3.1 Platform choice
+- Comparing different environments:
+-- Web-based vs. standalone application. 
+-- Java applets vs. Flash vs. AJAX.
+
+3.2 AJAX
+- Advantages of AJAX.
+
+3.2.1 AJAX Philosophy
+- What is an asynchronous communication with the server (+ diagram).
+
+3.2.2 Simple examples with AJAX 
+
+3.2.3 Problems with AJAX 
+- Different browser often requires different code.
+- Code management problems.
+- Not very good tools for developing with JavaScript.
+
+3.2.4 GWT Philosophy
+- What is GWT (Google Web Toolkit)?
+- Why is GWT better than pure JavaScript.
+- Debugger.
+
+3.2.5. Simple exmles with GWT
+
+3.2.6 Limitations of JavaScript and GWT
+- Single thread environment.
+- No database nor file system connectivity.
+- Cross site scripting.
+
+3.2.7 Server communication and server-side scripting
+- How is the communication with the server done -> asynchronous, with XML as data exchange format
+- Choice for programming language for server-side scripting -> PHP - why?
+- Choice for database system -> MySQL - why?
+- Outlining that the client side is server independent and other implementations of the server side scripting and database schemas are possible, without the need of changing the client program.
+
+4. Implementation
+
+4.1. Initial implementation approaches.
+- Generating assignments and other suggestions which were not implemented.
+
+4.2. Final implementation design
+- Environment where user can create assignments and solve them and have a way to communicate with each other.
+
+4.3. Program stack
+- Diagram with the program stack (Client side, server side, database side and communication with each side).
+
+4.3.1 Client side
+- Algorithms and data structures
+-- algorithms and caching results.
+-- efficient data structure with bitwise operations (32 bits).
+-- Why not to use long (64 bits) variables in a JavaScript environment.
+- User interface
+-- Easy and fast to use interface -> benefits
+-- Drag and Drop and traditional approach of inputing data.
+-- Solving Assignments.
+-- Creating Assignments.
+- Interaction with the server
+-- Saving, loading assignments.
+-- Exporting and importing -> benefits (limitations of JavaScript - could not set/read headers, thus require the use of PHP). 
+-- User management.
+-- Posting comments -> benefits.
+
+4.3.2 Server side and database
+- brief introduction to PHP and MySQL interaction and to the responses to the client side.
+- Handling errors and warning with PHP and sending them back to the client -> use of the "die" command with a proper XML response.
+
+4.4. Security issues in a Web environment
+- Validating user input.
+- Code injections.
+- SQL injections.
+- Password management.
+- others...
+
+//eventually: (Is it a good idea or is it too specific?)
+(4.5. Problems during development)
+- GWT not really browser independent code -> bug fixes of GWT during the development process.
+- GWT moving from Java 1.4 syntax to Java 1.5 syntax.
+- Tip for developing large systems -> use singletons -> benefits
+
+5. Conclusions
+
+5.1 Limitations and future work
+- Empirical study with students using the tool and not using the tool.
+- No 4NF support.
+- Ability lecturers to create courses (list of selected assignments).
+- Internationalisation.
+
+6. Acknowledgements
+
+7. References

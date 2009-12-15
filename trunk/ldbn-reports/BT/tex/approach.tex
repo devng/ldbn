@@ -1,0 +1,185 @@
+\chapter{Approach}
+\label{chap:approach}
+In this chapter we discuss some design decisions of our solution such as 
+platform choice, as well as a formal overview of our implementation. 
+
+In the following the term client is used to refer to a web browser.
+
+
+\section{Choice of Platform}
+\label{sec:platform}
+There are many different techniques to implement a web-based application. 
+The problem specifies that the solution must be able  on the one hand to 
+communicate with LDBN 
+and on the other hand to extend some of its capabilities, 
+thus a basic HTML solution will not be able to achieve our goal, 
+since all pages in that case are static. 
+
+The remaining options can be divided into 3 groups, client-side, server-side and
+a client-server based. 
+
+The client-side solutions consist of a Java applet or a Flash
+application which are downloaded to the browser and then run on the user's computer
+using a browser plugin. However, this approach has the disadvantage
+of requiring a plug-in, which is not always available by default on all web browsers...
+
+Server-side includes solutions built in PHP, ASP, ASP.NET, C/C++ or
+Perl, all which is ran on the server and then sent to the user's browser as
+a static HTML page. With this approach the client is unable to remember its state and 
+every user interaction caused an HTTP round trip over the network, 
+requiring browsers to re-render the whole web page after each request...
+
+The third one is
+a client-server based idea called Asynchronous JavaScript and XML (AJAX),
+which is also used by the initial version of LDBN. 
+It works almost the same as the server-side solutions but acts more interactively. The
+reason for this is that some parts of the program logic are moved form the server
+to the client, thus not every user interaction causes neccasaryly a whole new page
+to be rendered. Instead with AJAX the client can request 
+data from the server in the background, i.e. without the need to freeze the user interface. 
+This is usually done by XMLHttpRequest API, which is implemented
+by the browser. The API can be accessed by the application using JavaScript, it can be
+used to handle communication with the server in an asynchronous fashion over a
+simple HTTP connection.
+This way after the data is received the client can change only the affected parts of the web page. 
+This on the other hand is once again done by JavaScript, which 
+can be used to access and manipulate the Document Object Model (DOM) of the web page.
+An example of an AJAX architecture is illustrated in Figure~\ref{fig:ajax01}, 
+which is an adaption of~\cite[Figure 3.1]{mt1}.
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{./img/ajax01a.png}
+		\caption{Example of an AJAX Architecture}
+		\label{fig:ajax01}
+	\end{center}
+\end{figure}
+
+
+It should be noted that AJAX has several shortcomings as well. First of all, 
+JavaScript must be enabled in the browser, otherwise the application will not start.
+However, the developer can indicate this in the \emph{<noscript>} HTML-tag. 
+Nevertheless, the biggest issue with AJAX remains the fact that it is not a
+standard. This often requires writing a different code base for different
+browsers, and this means less scalability for the application and less productivity for
+the developers~[BLA-22]. In the latter case we could avoid some of the issues by using 
+Google Web Toolkit (GWT).
+
+\subsection{GWT}
+
+GWT is an open source project
+and it is developed by Google. It is a set of tools and libraries that allows web developers to
+create AJAX applications in Java. 
+
+Some more comments on GWT ....
+
+\subsection{Bitmap Rendering with JavaScript}
+When it comes to visualization and graphics in general we need a 
+to have a more low level pixel control over a certain area of the screen. 
+When using JavaScript, however, simple tasks such as drawing a straight
+line can become quite challenging in a web browser environment.
+Of course for this purpose we could use client-side solutions, e.g., using Flash, or 
+server-side solution, e.g., rendering everything on the server and sending it back
+to the client as a image, but for the same reasons as described in the previous
+section we decided to use the AJAX approach. This way we can also
+adopt a lot of the source code from the previous version of LDBN. 
+One way to achieve bitmap rendering with JavaScript is by
+using the \emph{<canvas>} element. 
+It is part of the HTML 5 standard and it is supported by
+most of the modern web browsers. It provides an image-like 
+graphics context which can be accessed via a set of JavaScript calls, 
+similar to a 2D subset of OpenGL. 
+It was originally introduced by Apple in their Safari browser, but it is now 
+supported by other modern browser including Mozilla Firefox, Opera and Google Chrome.
+It also have  better rendering speed than the older Scalable Vector Graphics (SVG) standard.
+[cite http://www.borismus.com/canvas-vs-svg-performance/]. Internet Explorer (IE) does not 
+provide support for 
+neither SVG nor canvas, though [cite ]. In spite of that, IE does 
+implements its own XML-based language for producing vector graphics 
+called Vector Markup Language (VML). With the help of VML canvas specific JavaScript 
+calls can be emulated in IE. In LDBN we use the GWT-Incubator project[cite BLA], which provides
+browser independent canvas implementation for GWT projects, thus 
+it provides support for all major browsers including IE. It should be noted that by doing this
+we loose some rendering speed in IE that generally comes in other browsers with a 
+native canvas implementation, on the other hand in our implementation of the 
+visualization of FDs we use only static scenes, i.e., no animation or any other intensive 
+graphical operations, therefore in our opinion VML is sufficient for the project. 
+
+\section{Implementation}
+As mentioned earlier the implementation could be divided into two parts: 
+(1) Visualization of FDs and 
+(2) improving the existing capabilities of the system.
+
+\subsection{Visualization of FDs}
+On the one hand the visualization of FDs is the most significant part of the thesis, 
+on the other hand this extension should not compromise the existing 
+user interface of LDBN. Therefore we decided to
+make the visualization available in a separate window in the browser. The initial idea
+was to implement it as a separate web application, which can then be opened in its own 
+browser pop-up window. However there are two problems with this approach. The fist one is
+the fact that most of the modern browsers have a pop-up blocker and it is activated by default.
+This could have a major negative impact on the usability of the system because there
+is always a risk that the user might not notice the pop-up 
+warning at all and hence the visualization. The second problem with this approach is 
+the fact that we want the visualization to use the existing 
+advanced capabilities of LDBN such as drag and drop. This is nearly impossible, thought, since
+the two application will run in different JavaScript virtual machines in each
+browser window. The a way around this issue could be the use of a server
+which communicates with both applications. However, this will make the drag and drop too 
+slow for a proper usage. 
+
+In our implementation we use a different approach. We have implemented our own 
+JavaScript-based window package.
+With it we can create pop-up windows which exists within a browser window. 
+This approach eliminates the previously described problems. First,
+the window is part of our JavaScript application and as such it does not 
+trigger any bowser pop-up
+blockers. Second, the visualization and the LDBN system can directly share any 
+JavaScript objects, since they run in the same virtual machine, 
+this way they can interact in a very fast and efficient way. 
+This is very similar to the pop-up dialogs in the initial version of LDBN. 
+These dialogs are provided in the standard widget library of GWT. 
+However, they prove to be inconvenient for our needs, since once created and attached 
+to the DOM they cannot be resized. We on the other hand
+need this kind of resize-window functionality since we want to offer to the user
+different zoom levels for the visualization, as well as the ability the user to resize the
+visualization window, since they could become quite large and hide important parts of the user 
+interface. Furthermore, with our implementation we have more powerful control over
+the graphical representation of the window, this way for example we can add a close button (image)
+in the upper right corner, which is a more intuitive way to interact with the UI.
+
+At implementation level the visualization consists of two components. 
+There are illustrated in Figure~BLA.
+The fist component is a simple GWT panel where all the attributes are displayed. Internally 
+the attributes are represented as GWT widgets, thus the rendering of those attributes is
+handled by the browser. In fact, these are the same widget classes used for representing
+attributes in the \emph{Given Attributes} field, which is shown in Figure~BLA. The only 
+difference between the two attribute representations is 
+that we apply different CSS style for each of them. By using the already implemented LDBN 
+widget classes we get advanced functionality such as drag and drop for free. Thus the users
+can drag any attribute in the visualization window and drop 
+dropped in the text box of the different editors in LDBN
+such as the \emph{Attribute Editor} or the \emph{FD Editor}, both of them are shown in Figure~BLA. 
+As a result of which the
+attributes are automatically inserted in the text areas of the editor and users do not have
+to type them by hand, which for long attribute names could become inconvenient and error-prone. 
+We believe the drag and drop functionality can help
+users define attributes, keys or FDs much more quickly, which on the other hand can
+help improve the usability of the learning environment. 
+
+The second component of the visualization is the \emph{canvas} element, it is shown in Figure~BLA.
+The canvas elements is placed bellow he attributes, and there the actual drawing 
+of the FDs takes place. In LDBN we support two types of visualization, each of them can be selected
+from the \emph{Diagram Type} drop dawn menu in the visualization window. The fist type is called 
+\emph{Elmasty}, since it is common in~[cite]. The main difference between this approach and
+the traditional representation of FDs is the fact the we display each attribute in the set of 
+FDs only once. 
+Similar to the purely text-based representation we can visualize the set
+of FDs as a set of rows. Each row representing one FD of the set. 
+However, in this visualization all attributes that occur in the set of FDs
+are shown in the fist row. Then every FD is displayed in a separate row by a outgoing 
+arrow from an attribute for the left-hand side (LHS) of the FD 
+and as an incoming arrow for the right-hand side (RHS).
+
+\section{Test2}
+\label{sec:test2}
