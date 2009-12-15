@@ -11,7 +11,7 @@ and extended in order for all users to make a more extensive and productive use
 of the system, and in order for the students to be assisted even better 
 in the process of understanding the concepts of FDs and 
 relational-database normalization by providing new tools to them such as the 
-FD visualization tool, which is described in detail in Section~BLA.  
+FD visualization tool, which is described in detail in Section~\cite{sec:visualization}.  
 
 \section{Problem Statement}
 \label{sec:problem_statement}
@@ -22,11 +22,12 @@ representation is shown in Figure~\ref{fig:exampleFds01} .
 
 \begin{figure}[h]
 	\begin{center}
-		\includegraphics[width=0.8\textwidth]{./img/example_fds_01.png}
-		\caption{Typical Representation of FDs}
+		\includegraphics[width=0.7\textwidth]{./img/example_fds_01.png}
+		\caption{Example of a Typical Textual Representation of FDs}
 		\label{fig:exampleFds01}
 	\end{center}
 \end{figure}
+
 
 As it can be seen, some attributes 
 may occur more than once in a single FD and there could be many different FDs in a single 
@@ -35,7 +36,15 @@ it could lead to a confusion among students and negatively affect the overall
 usability of the system. Thus we extended LDBN by providing a visualization for
 FDs. In order the visualization to be intuitive for 
 both students and lecturers we have decided to use templates found in popular 
-popular database textbooks such as~\cite{bdb2} and~\cite{bdb1}.
+popular database textbooks such as~\cite{bdb2} and~\cite{bdb1}. Example of a such visualization can be observed in Figure~\ref{fig:viz-fds-ex01}.
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.95\textwidth]{./img/viz-fds-ex01.png}
+		\caption{Example of a Graphical Representation of FDs}
+		\label{fig:viz-fds-ex01}
+	\end{center}
+\end{figure}
 
 Another major problem with the system at the moment is the fact that all 
 registered users have the same rights. Thus all users can create assignments, which
