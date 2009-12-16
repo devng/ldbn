@@ -122,10 +122,13 @@ part of the thesis,
 on the other hand this extension should not compromise the existing 
 user interface of LDBN. Therefore we decided to
 make the visualization available in a separate window in the browser. 
+The visualization is then available for every field in LDBN which 
+contains a set of FDs. These fields contain an eye icon (\includegraphics[scale=0.6]{./img/eye.png}) in the upper right
+corner by clicking it we can open the visualization.
 The initial idea
 was to implement it as a separate web application, which can then be 
 opened in its own 
-browser pop-up window. However there are two problems with this approach. The fist one is
+browser pop-up window. However, there are two problems with this approach. The fist one is
 the fact that most of the modern browsers have a pop-up blocker and it is activated by default.
 This could have a major negative impact on the usability of the system because there
 is always a risk that the user might not notice the pop-up 
@@ -134,13 +137,16 @@ the fact that we want the visualization to use the existing
 advanced capabilities of LDBN such as drag and drop. This is nearly impossible, thought, since
 the two application will run in different JavaScript virtual machines in each
 browser window. The a way around this issue could be the use of a server
-which communicates with both applications. However, this will make the drag and drop too 
-slow for a proper usage. 
+which communicates with both applications. However, 
+this will make the drag and drop too slow for a proper usage. 
+
+
 
 In our implementation we use a different approach. We have implemented our own 
 JavaScript-based window package.
 With it we can create pop-up windows which exists within a browser window. 
-This approach eliminates the previously described problems. First,
+An example of such a window is presented in Figure~\ref{fig:fd-visual-win}. 
+Our approach eliminates the previously described problems. First,
 the window is part of our JavaScript application and as such it does not 
 trigger any bowser pop-up
 blockers. Second, the visualization and the LDBN system can directly share any 
@@ -157,14 +163,22 @@ interface. Furthermore, with our implementation we have more powerful control ov
 the graphical representation of the window, this way for example we can add a close button (image)
 in the upper right corner, which is a more intuitive way to interact with the UI.
 
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{./img/fd-visual-win.png}
+		\caption{FD Visualization Window}
+		\label{fig:fd-visual-win}
+	\end{center}
+\end{figure}
+
 At implementation level the visualization consists of two components. 
-There are illustrated in Figure~\ref{fig:impl-fds01}-1.
+Both of them are illustrated in Figure~\ref{fig:impl-fds01}.
 The fist component is a simple GWT panel where all the attributes are displayed. Internally 
 the attributes are represented as GWT widgets, thus the rendering of those attributes is
 handled by the browser. In fact, these are the same widget classes used for representing
-attributes in the \emph{Given Attributes} field, which is shown in Figure~\ref{fig:givenFds}. The only 
+attributes in the \emph{Given Attributes} field, which is shown in Figure~\ref{fig:given-atts}. The only 
 difference between the two attribute representations is 
-that we apply different CSS style for each of them. By using the already implemented LDBN 
+that we apply a different CSS style for each of them. By using the already implemented LDBN 
 widget classes we get advanced functionality such as drag and drop for free. Thus the users
 can drag any attribute in the visualization window and drop 
 dropped in the text box of the different editors in LDBN
@@ -179,9 +193,9 @@ help improve the usability of the learning environment.
 
 \begin{figure}[h]
 	\begin{center}
-		\includegraphics[width=0.8\textwidth]{./img/givenFds.png}
-		\caption{Given FDs Widget}
-		\label{fig:givenFds}
+		\includegraphics[width=0.8\textwidth]{./img/given-atts.png}
+		\caption{Given Attributes Widget}
+		\label{fig:given-atts}
 	\end{center}
 \end{figure}
 
@@ -201,8 +215,8 @@ help improve the usability of the learning environment.
 	\end{center}
 \end{figure}
 
-The second component of the visualization is the \emph{canvas} element, it is shown in Figure~\ref{fig:impl-fds01}-2.
-The canvas elements is placed bellow he attributes, and there the actual drawing 
+The second component of the visualization consists of a \verb=<canvas>= element, it is shown in Figure~\ref{fig:impl-fds01}-2.
+The canvas element is placed bellow the attributes, and there the actual drawing 
 of the FDs takes place. In LDBN we support two types of visualization, each of them can be selected
 from the \emph{Diagram Type} drop dawn menu in the visualization window. The fist type is called 
 \emph{Elmasty}, since it is common in~\cite{bdb1}. The main difference between this approach and
@@ -212,11 +226,85 @@ Similar to the purely text-based representation we can visualize the set
 of FDs as a set of rows. Each row representing one FD of the set. 
 However, in this visualization all attributes that occur in the set of FDs
 are shown in the fist row. Then every FD is displayed in a separate row by a outgoing 
-arrow from an attribute for the left-hand side (LHS) of the FD 
-and as an incoming arrow for the right-hand side (RHS).
+arrow for each attribute from the left-hand side (LHS) of the FD 
+and as an incoming arrow for the attributes of the right-hand side (RHS).
 
-\section{Improving the existing capabilities of LDBN}
+This approach is quite intuitive and we believe it will be well received by
+students, since during their Database courses at the university most of 
+them get familiar with~\cite{bdb1}, from which
+the visualization is inspired. However, the approach has some disadvantages
+as well. Not the least of which is the fact that it does not make use
+of all the available white space in the diagram. To address this issue
+we offer a option where the user can change the order in which
+the FDs are rendered. In addition to this, we also offer another type of
+visualization where the arrows of each FD always start/reach the 
+attributes at the top of the diagram. 
+Both types of visualization can be observed in 
+Figure~\ref{fig:dia_example_elmasry} and~\ref{fig:dia_example_ldbn}.
+
+\begin{figure}[h]
+  \centering
+  \subfigure[Type: Elmasry]{
+    \includegraphics[scale=0.44]{./img/dia-elmasri-ex-fds-01.png}
+    \label{fig:dia_example_elmasry}
+  }
+  \subfigure[Type: LDBN]{
+    \includegraphics[scale=0.41]{./img/dia-ldbn-ex-fds-01.png}
+    \label{fig:dia_example_ldbn}
+  }
+\caption{Diagram Types in LDBN}
+\end{figure}
+
+Another important aspect in visualization in general are certainly colors.
+In our visualization we offer five different color palettes. The user can 
+choose between:
+\begin{enumerate}
+	\item \emph{Black Only} - All FDs appear black. This is useful for printing
+	purposes.
+	\item \emph{Gray Shades} - Each FD appear in several tones of gray. 
+	At this point is should be noted that the human eye can detect 
+	about 30 shades of gray on a modern LCD screen, 
+	which is more than shades of other 
+	colors~\cite[Chapter 2]{bimg1} . 
+	\item \emph{Pastel Colors} - Here we use less saturated colors which appear pastel. 
+	Colors codes are taken from~\cite{wpastel}.
+	\item \emph{Standard Colors} - The standard color palette consists of predefined
+	HTML colors such as reg, green, blue, etc. These colors often aper vivid 
+	(highly saturated colors).
+	\item \emph{OpenOffice Style} - With this  palette we use colors which
+	can be found in charts created with OpenOffice.org. 
+\end{enumerate}
+ 
+% Color Contrast 
+% see http://snook.ca/technical/colour_contrast/colour.html
+% http://www.w3.org/WAI/WCAG20/quickref/#qr-visual-audio-contrast-contrast
+% http://www.w3.org/TR/2008/NOTE-WCAG20-TECHS-20081211/G18
+
+Another important issue when using colors is contrast. 
+According to the W3C guidelines a web application should use such
+foreground and a background colors that provide enough of a
+contrast "when viewed by someone having color deficits or when viewed on a black and white screen"~\cite{w3c1}.
+To ensure these property we use WCAG 2.0 contrast ratio formula~\cite{w3c2}.
+Our color palettes are WCAG 2 AA Compliant for text larger than 18pt.
+
+As can be seen on Figure~\ref{fig:fd-visual-win}, 
+the visualization offers a magnification function as well. 
+Thus the user can zoom in and out on a diagram.
+This is practical especially when a
+diagram contains a lot of attributes and the user 
+wants to get a general idea of the FDs, then she/he can
+simply zoom out.  
+The zoom functionality
+is achieved by applying different CSS with different font 
+size for the attributes and by redrawing the canvas element accordingly. 
+
+\subsection{Improving LDBN}
 \label{sec:improving}
 
-
+Another major part of this thesis is the improvement of the
+existing functionality of the learning environment. 
+During the Fall term of 2008,
+LDBN was used in conjunction with the course Principles of Database Systems at the
+Department of Computing Science at Umeå University, and some important observations
+were made. Some of the issues we have 
 
