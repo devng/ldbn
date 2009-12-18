@@ -53,12 +53,23 @@ can be viewed in the \emph{Solve Assignment Tab} only if they have been previous
 stored in the system by a registered user. In the original version of LDBN,
 it was believed that both of these facts would increase the number and the diversity of
 assignments stored in the systems, and thus attract more students and increase usability. 
-This collaborative approach has been inspired by the Wikipedia project.
-However, during the testing period the system has been flooded with assignments, 
-which occurred more than once under different names, which were usually submitted 
+This collaborative approach has been inspired by the Wikipedia project, where everyone
+can be a content contributor and a reader at the same time. 
+However, during the testing period the system has been flooded with unsuitable assignments
+mainly for two reasons. First, 
+identical assignments occurred more than once under different names. They were usually submitted 
 by students in the same class trying to
 solve a homework assignment, or just trying the system with examples from textbooks.
-
+Second, users were unable to load an assignment in the \emph{Solve Assignment Tab}
+without first storing it in the database of the system, this led to the fact that
+users who just wanted to test the system with a simple assignment, were in fact
+flooding LDBN with even more unsuitable assignments, which consist of just a 
+few arguments and even less FDs and were of no interest to other users. Both of these
+facts led to a major decrease in the usability of the system, 
+since students were no longer able to distinguish 
+between interesting and well-thought-out assignments submitted by lecturers 
+and other assignments.
+ 
 To solve the above problem a more sophisticated user system was introduced. In the 
 current version of LDBN users are basically dividend into regular users (students) and 
 administrators (lecturers).
@@ -66,7 +77,7 @@ First, administrators
 have more rights than regular users. Second, only assignments submitted by administrators
 will be visible by default.  
 In addition, lecturers have much more rights in the system than students.
-This is discussed in detail in Section~BLA. 
+This is discussed in detail in Section~\ref{sec:improving}. 
  
 
 \section{Purpose}
