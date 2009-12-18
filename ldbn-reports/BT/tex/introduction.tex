@@ -39,11 +39,10 @@ compare it to a couple of other
 available web-based database normalization tools, and provide the reader with small glossary.  
 %The introduction to LDBN in Section~\ref{sec:introldbn} is important for the reader
 %in order for him/her to better understand the need and the concepts of the algorithms described in 
-In Chapter~\ref{chap:preliminaries} we give definitions to
-relational-database normalization and to the different normal forms. 
-In Chapter~\ref{chap:design} we discuss some design issues regarding LDBN such as 
-platform choice and others. Chapter~\ref{chap:impl} provides a formal description
-of our reference implementation of the learning environment, and
+In Chapter~\ref{chap:motivation} we present some of the issues we encountered during the testing period
+of the system. 
+In Chapter~\ref{chap:approach} we discuss some design issues regarding LDBN such as 
+platform choice and others and present our implementation.  
 Chapter~\ref{chap:conclusion} shows our conclusions.
 
 \section{Learning Database Normalization with LDBN}
@@ -60,7 +59,6 @@ of LDBN is written in JavaScript following the AJAX techniques
 Furthermore, LDBN is assignment driven. This means students have to first 
 choose an assignment 
 from a list with assignments, submitted by other users (lecturers). 
-Such a list is shown in Figure~\ref{fig:screen02}. 
 An assignment consists of a relational-database schema in
 universal-relation form (URF), i.e., all the attributes in a single relation 
 and a set of FDs on the attributes. 
@@ -81,7 +79,15 @@ discussed here since implementing those test was not part of this thesis.
 
 A dialog with the result is shown to the user. In case of an error the system offers
 feedback in form of small textual hints, indicating
-where the error might be. Such a dialog is shown in Figure~\ref{fig:screen03}. 
+where the error might be. 
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{./img/screen01b.png}
+		\caption{Solve Assignments Tab}
+		\label{fig:screen01}
+	\end{center}
+\end{figure}
 
 Additional features of LDBN include creating an assignment, which can be done 
 only by registered users. At this point it should be mentioned that

@@ -255,24 +255,23 @@ Figure~\ref{fig:dia_example_elmasry} and~\ref{fig:dia_example_ldbn}.
 \caption{Diagram Types in LDBN}
 \end{figure}
 
-Another important aspect in visualization in general are certainly colors.
+Certainly another important aspect in visualization in general are colors.
 In our visualization we offer five different color palettes. The user can 
 choose between:
 \begin{enumerate}
 	\item \emph{Black Only} - All FDs appear black. This is useful for printing
 	purposes.
-	\item \emph{Gray Shades} - Each FD appear in several tones of gray. 
-	At this point is should be noted that the human eye can detect 
-	about 30 shades of gray on a modern LCD screen, 
-	which is more than shades of other 
-	colors~\cite[Chapter 2]{bimg1} . 
+	\item \emph{Gray Shades} - Each FD appear in a different color tone of gray. 
+	At this point is should be noted that when compared with other colors 
+	the human eye can detect best shades of gray, and on a modern LCD screen it can
+	distinguish between 30 shades of gray~\cite[Chapter 2]{bimg1} . 
 	\item \emph{Pastel Colors} - Here we use less saturated colors which appear pastel. 
 	Colors codes are taken from~\cite{wpastel}.
 	\item \emph{Standard Colors} - The standard color palette consists of predefined
 	HTML colors such as reg, green, blue, etc. These colors often aper vivid 
 	(highly saturated colors).
-	\item \emph{OpenOffice Style} - With this  palette we use colors which
-	can be found in charts created with OpenOffice.org. 
+	\item \emph{OpenOffice Style} - In this  palette we use colors which
+	can be found in charts created with the help of OpenOffice.org. 
 \end{enumerate}
  
 % Color Contrast 
@@ -298,13 +297,130 @@ The zoom functionality
 is achieved by applying different CSS with different font 
 size for the attributes and by redrawing the canvas element accordingly. 
 
-\subsection{Improving LDBN}
+\subsection{Improving the Usability of LDBN}
 \label{sec:improving}
 
 Another major part of this thesis is the improvement of the
 existing functionality of the learning environment. 
-During the Fall term of 2008,
-LDBN was used in conjunction with the course Principles of Database Systems at the
-Department of Computing Science at Umeå University, and some important observations
-were made. Some of the issues we have 
+To address some of the issues described in 
+Section~\ref{sec:problem_statement} we introduced a more sophisticated user system in 
+LDBN. In the previous version of the system all user had the same rights. 
+In the current version we introduce following three groups of user:
+\begin{enumerate}
+	\item \emph{Regular Users}
+	\item \emph{Administrators}
+	\item \emph{Super Users}
+\end{enumerate}
 
+Furthermore, each user group has different rights in the system. 
+The following table shows the different user rights in LDBN for each user group: 
+
+\begin{center}
+\begin{tabular}[h]{| m{2.5cm} || m{2.5cm} | m{3.2cm} | m{3.3cm} |}
+\hline
+ & \textbf{Regular Users} & \textbf{Administrators} & \textbf{Super Users} \\
+\hline
+\hline
+\emph{Create \mbox{Assignments}} & Yes & Yes & Yes \\
+\hline
+\emph{Edit \mbox{Assignments}}  & Only their own & Their own and assignments submitted by regular users & Their own and assignments submitted by regular users or administrators \\
+\hline
+\emph{Delete \mbox{Assignments}} & No & Their own and assignments submitted by regular users & Their own and assignments submitted by regular users or administrators \\
+\hline
+\emph{Leave \mbox{Comments}}    & Yes & Yes & Yes \\
+\hline
+\emph{Edit \mbox{Comments}}     & Only their own & Their own and comments submitted by regular users & Their own and comments submitted by regular users or administrators\\
+\hline
+\emph{Delete \mbox{Comments}}   & Only their own & Their own and comments submitted by regular users & Their own and comments submitted by regular users or administrators \\
+\hline
+\emph{Add Users to the Group of \mbox{Administrators}} & No & Yes & Yes \\
+\hline
+\emph{Remove Users from the Group of \mbox{Administrators}} & No & No & Yes \\
+\hline
+\end{tabular}
+\end{center}
+
+
+Under the hood LDBN manages the user data in a MySQL database. 
+We realize the different user groups by simply altering the already existing table \verb=users=. 
+and adding two more attributes 
+of type boolean - \verb=isAdministrator= and \verb=isSuperUser=. 
+These attributes are set to \verb=true= when a user has administrator respectively  super
+user rights in the system. 
+
+Furthermore, in order to make it easier for administrators and super user to manage the system
+we develop an extra UI in LDBN called \emph{Administrators}, which is accessible via a
+separate tab. It can be seen in Figure~\ref{fig:admin-ui}. 
+The \emph{Administrators} UI offers three buttons which open 
+different dialogs for adding/removing users to/from the administrator group and for
+deleting assignments. Creating and editing assignments can still be done in the 
+\emph{Create Assignments} tab. Furthermore, super users rights can be only achieved by making
+a correspondingly SQL statement for a specific user. However, this is not an issue, since 
+we do not expect the system to have more than one or two super users. 
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.9\textwidth]{./img/admin-ui.png}
+		\caption{Administrators Tab}
+		\label{fig:admin-ui}
+	\end{center}
+\end{figure}
+
+With the new separation of users into groups we can easily overcome most of 
+the issues described in the Section~\ref{sec:problem_statement}.
+Most importantly, we implement different filters for the \emph{Load Assignment} dialog,
+which can be seen in Figure~\ref{fig:load-assg}. The user can choose form 
+a drop-down menu to show only assignments submitted by: administrators 
+(or super users); the user himself; or to show all assignments stored in the system. 
+In addition, it should be noted that only assignments submitted
+by administrators/super users are visible by default, since administrators are
+
+In order to view other assignments, which are present in the system, 
+one should a different filter form the drop-down menu. 
+We implement the filters on the client-side, thus when a new filter is
+applied we do not cause a new server interaction, rather we apply them
+on the initially received dataset which holds all the meta data for each assignment.
+This on the other hand makes the UI very responsive to user input. 
+In order to further increase the usability of the \emph{Load Assignment} dialog
+we implement a column soring function for it. As a result of which users can click on
+the different headers such as \emph{Name, Author and Last modified} and sort the 
+assignments correspondingly. 
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.6\textwidth]{./img/load-assg.png}
+		\caption{Load Assignment Dialog with Filters}
+		\label{fig:load-assg}
+	\end{center}
+\end{figure}
+
+
+To decrease the number of assignments submitted to the system we added a new button
+in the \emph{Create Assignments} tab called \emph{Load in SA Tab}, which can be observe in Figure~\ref{fig:load-in-sa}.
+With its help it is now possible to create an assignment ad load it in the \emph{Solve Assignments} tab without
+the need to first sore it in the database. Moreover, users do not have to register nor to log-in to use this
+functionality. This new feature in LDBN in especially useful for users who 
+just want to get a general overview of the system and
+do not want to become contributors, 
+or for testing purposes for users who are currently creating an assignment. 
+
+
+Another useful feature in LDBN are comments, which user can give for each assignment. These comments
+are then shown in the \emph{Solve Assignments} tab when the assignment is loaded. On the one
+hand, such comments ensure that user can easily communicate and share ideas with each
+other, and one the other hand, comments could also decrease the amount of workload
+for the lecturers in terms of giving an explanation to a difficult decomposition. However, in the 
+previous version of LDBN once submitted comments could not be altered. The only way to edit or to delete a
+comment was to make the corresponding change directly in the database of the system 
+In the new version of LDBN user can edit and delete comments directly  via the UI. When a user has
+the rights to make a change on a comment or to delete it a corresponding icon is shown 
+(\includegraphics[scale=0.7]{./img/edit.png} or \includegraphics[scale=0.7]{./img/del.png})
+next to the comment entry.
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.75\textwidth]{./img/load-in-sa.png}
+		\caption{Load in SA Tab Button}
+		\label{fig:load-in-sa}
+	\end{center}
+\end{figure}
