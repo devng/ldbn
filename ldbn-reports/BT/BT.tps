@@ -3,8 +3,8 @@ Type=TeXnicCenterProjectSessionInformation
 Version=2
 
 [SessionInfo]
-ActiveTab=3
-FrameCount=6
+ActiveTab=0
+FrameCount=4
 ActiveFrame=2
 
 [Frame0]
@@ -18,23 +18,23 @@ MaxPos.x=-8
 MaxPos.y=-30
 NormalPos.left=50
 NormalPos.top=50
-NormalPos.right=956
-NormalPos.bottom=321
+NormalPos.right=920
+NormalPos.bottom=292
 Class=CLatexEdit
-Document=BTSkeleton.tex
+Document=tex\base.bib
 
 [Frame0_Row0]
-cyCur=212
+cyCur=183
 cyMin=10
 
 [Frame0_Col0]
-cxCur=869
+cxCur=833
 cxMin=10
 
 [Frame0_View0,0]
-Cursor.row=35
+Cursor.row=233
 Cursor.column=0
-TopSubLine=35
+TopSubLine=233
 
 [Frame1]
 Columns=1
@@ -45,25 +45,25 @@ MinPos.x=-1
 MinPos.y=-1
 MaxPos.x=-8
 MaxPos.y=-30
-NormalPos.left=75
-NormalPos.top=75
-NormalPos.right=985
-NormalPos.bottom=350
+NormalPos.left=100
+NormalPos.top=100
+NormalPos.right=1057
+NormalPos.bottom=342
 Class=CLatexEdit
-Document=tex\abstract.tex
+Document=tex\conclusions.tex
 
 [Frame1_Row0]
-cyCur=216
+cyCur=183
 cyMin=10
 
 [Frame1_Col0]
-cxCur=873
+cxCur=920
 cxMin=10
 
 [Frame1_View0,0]
-Cursor.row=9
-Cursor.column=49
-TopSubLine=0
+Cursor.row=32
+Cursor.column=73
+TopSubLine=22
 
 [Frame2]
 Columns=1
@@ -74,25 +74,25 @@ MinPos.x=-1
 MinPos.y=-1
 MaxPos.x=-8
 MaxPos.y=-30
-NormalPos.left=100
-NormalPos.top=100
-NormalPos.right=1010
-NormalPos.bottom=375
+NormalPos.left=50
+NormalPos.top=50
+NormalPos.right=1007
+NormalPos.bottom=292
 Class=CLatexEdit
 Document=tex\introduction.tex
 
 [Frame2_Row0]
-cyCur=545
+cyCur=321
 cyMin=10
 
 [Frame2_Col0]
-cxCur=945
+cxCur=1036
 cxMin=10
 
 [Frame2_View0,0]
-Cursor.row=89
-Cursor.column=12
-TopSubLine=59
+Cursor.row=98
+Cursor.column=43
+TopSubLine=119
 
 [Frame3]
 Columns=1
@@ -103,81 +103,23 @@ MinPos.x=-1
 MinPos.y=-1
 MaxPos.x=-8
 MaxPos.y=-30
-NormalPos.left=125
-NormalPos.top=125
-NormalPos.right=1035
-NormalPos.bottom=400
-Class=CLatexEdit
-Document=tex\motivation.tex
-
-[Frame3_Row0]
-cyCur=216
-cyMin=10
-
-[Frame3_Col0]
-cxCur=873
-cxMin=10
-
-[Frame3_View0,0]
-Cursor.row=1
-Cursor.column=22
-TopSubLine=0
-
-[Frame4]
-Columns=1
-Rows=1
-Flags=0
-ShowCmd=1
-MinPos.x=-1
-MinPos.y=-1
-MaxPos.x=-8
-MaxPos.y=-30
-NormalPos.left=0
-NormalPos.top=0
-NormalPos.right=910
-NormalPos.bottom=275
+NormalPos.left=75
+NormalPos.top=75
+NormalPos.right=1032
+NormalPos.bottom=317
 Class=CLatexEdit
 Document=tex\approach.tex
 
-[Frame4_Row0]
-cyCur=216
+[Frame3_Row0]
+cyCur=183
 cyMin=10
 
-[Frame4_Col0]
-cxCur=873
+[Frame3_Col0]
+cxCur=920
 cxMin=10
 
-[Frame4_View0,0]
-Cursor.row=9
+[Frame3_View0,0]
+Cursor.row=8
 Cursor.column=7
 TopSubLine=0
-
-[Frame5]
-Columns=1
-Rows=1
-Flags=0
-ShowCmd=1
-MinPos.x=-1
-MinPos.y=-1
-MaxPos.x=-8
-MaxPos.y=-30
-NormalPos.left=125
-NormalPos.top=125
-NormalPos.right=1007
-NormalPos.bottom=516
-Class=CLatexEdit
-Document=tex\conclusions.tex
-
-[Frame5_Row0]
-cyCur=332
-cyMin=10
-
-[Frame5_Col0]
-cxCur=845
-cxMin=10
-
-[Frame5_View0,0]
-Cursor.row=54
-Cursor.column=0
-TopSubLine=39
 
