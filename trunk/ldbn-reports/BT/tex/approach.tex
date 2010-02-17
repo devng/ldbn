@@ -5,12 +5,11 @@ platform choice, as well as a formal overview of our implementation.
 
 In the following the term client is used to refer to a web browser.
 
-
 \section{Choice of Platform}
 \label{sec:platform}
 There are many different techniques to implement a web-based application. 
-The problem specifies that the solution must be able  on the one hand to 
-communicate with LDBN 
+The problem specifies that the solution must be able on the one hand to 
+quickly communicate with LDBN 
 and on the other hand to extend some of its capabilities, 
 thus a basic HTML solution will not be able to achieve our goal, 
 since all pages in that case are static. 
@@ -19,24 +18,32 @@ The remaining options can be divided into 3 groups, client-side, server-side and
 a client-server based. 
 
 The client-side solutions consist of a Java applet or a Flash
-application which are downloaded to the browser and then run on the user's computer
-using a browser plugin. However, this approach has the disadvantage
-of requiring a plug-in, which is not always available by default on all web browsers...
+application which are downloaded by the browser and then run locally on the computer of the user.
+This is achieved by installing a separate browser plug-in. However, this approach has the disadvantage
+of requiring a plug-in, which is not always available by default on all web browsers, and sometimes
+installing such plug-ins can only be done by system administrators. This could have a major negative
+impact on the usability of the system. 
 
-Server-side includes solutions built in PHP, ASP, ASP.NET, C/C++ or
-Perl, all which is ran on the server and then sent to the user's browser as
-a static HTML page. With this approach the client is unable to remember its state and 
-every user interaction caused an HTTP round trip over the network, 
-requiring browsers to re-render the whole web page after each request...
+Server-side includes solutions built in PHP, Perl, ASP, Java, C/C++ or other languages.
+This approach
+has a centralized architecture, thus all tasks and functions are performed on the server.
+After their completion a new static HTML page is sent back to the client.
+With this approach the client is unable to remember its state and 
+every user interaction causes an HTTP round trip over the network, 
+requiring browsers to re-render the whole web page after each request. With this approach
+advanced task such as drag and drop, which is heavily used in the initial and current
+version of LDBN, become almost impossible to implement due to the high latency time after each
+HTTP request. 
 
-The third one is
+
+The third approach is
 a client-server based idea called Asynchronous JavaScript and XML (AJAX),
 which is also used by the initial version of LDBN. 
 It works almost the same as the server-side solutions but acts more interactively. The
-reason for this is that some parts of the program logic are moved form the server
-to the client, thus not every user interaction causes neccasaryly a whole new page
+reason for this is the fact that some parts of the program logic are moved form the server
+to the client, thus not every user interaction causes necessarily a whole new page
 to be rendered. Instead with AJAX the client can request 
-data from the server in the background, i.e. without the need to freeze the user interface. 
+data from the server in the background, i.e. without the need to freeze the whole user interface. 
 This is usually done by XMLHttpRequest API, which is implemented
 by the browser. The API can be accessed by the application using JavaScript, it can be
 used to handle communication with the server in an asynchronous fashion over a
@@ -72,17 +79,41 @@ GWT is an open source project
 and it is developed by Google. It is a set of tools and libraries that allows web developers to
 create AJAX applications in Java. 
 
-Some more comments on GWT ....
+The most important component of GWT is the Java-to-JavaScript compiler. It enables the
+translation of Java code into highly optimized, browser independent
+\footnote{As of GWT version 2.0, GWT supports: 
+Firefox 1,~2,~3; Internet Explorer 6,~7,~8; Safari 2,~3,~4; Opera~9,~10, Chrome 1,~2,~3,~4, including mobile browsers for Android and the iPhone} 
+JavaScript code.
+In addition to this, it provides developers with compile-time error checking. Another
+very important aspect of the compiler is the fact that when the code is compiled into
+JavaScript, it results in a single JavaScript file for each browser type and target locale.
+This is illustrated in Figure~\ref{fig:gwt01}, which is an adaptation of~\cite[Figure 7]{wgio2}. 
+Thus the client downloads and executes only the code that it is specifically designed for that platform.  
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{./img/gwt01a.png}
+		\caption{GWT Java-to-JavaScript Compiler}
+		\label{fig:gwt01}
+	\end{center}
+\end{figure}
+
+For additional literature on the subject of GWT, we recommend the book of 
+Ryan Dewsbury \textit{Google Web Toolkit Applications}~\cite{bgwt2}. It has
+proven to be very useful information source throughout the development process 
+of LDBN. 
 
 \subsection{Bitmap Rendering with JavaScript}
 \label{sec:renderingJS}
-When it comes to visualization and graphics in general we need a 
-to have a more low level pixel control over a certain area of the screen. 
+When it comes to visualization and graphics in general a more low level 
+pixel control over a certain area of the screen is desired. 
 When using JavaScript, however, simple tasks such as drawing a straight
 line can become quite challenging in a web browser environment.
-Of course for this purpose we could use client-side solutions, e.g., using Flash, or 
-server-side solution, e.g., rendering everything on the server and sending it back
-to the client as a image, but for the same reasons as described in the previous
+Of course for this purpose we could use client-side solutions, e.g., 
+using Flash, or server-side solution, e.g., 
+rendering everything on the server as a static image 
+and sending it back
+to the client, but for the same reasons as described in the previous
 section we decided to use the AJAX approach. This way we can also
 adopt a lot of the source code from the previous version of LDBN. 
 One way to achieve bitmap rendering with JavaScript is by
@@ -104,10 +135,11 @@ browser independent canvas implementation for GWT projects, thus
 it provides support for all major browsers including IE. 
 It should be noted that by doing this
 we loose some rendering speed in IE that generally comes in other browsers
-with a native canvas implementation, on the other hand in our implementation of the visualization of FDs we use only static scenes, i.e., 
-no animation or any other intensive 
+with a native canvas implementation, 
+on the other hand in our implementation of the visualization of FDs we use only static scenes, i.e., 
+no animation nor any other intensive 
 graphical operations, therefore in our opinion VML is sufficient 
-for the project. 
+for our project. 
 
 \section{Implementation}
 \label{sec:implementation}
@@ -123,8 +155,9 @@ on the other hand this extension should not compromise the existing
 user interface of LDBN. Therefore we decided to
 make the visualization available in a separate window in the browser. 
 The visualization is then available for every field in LDBN which 
-contains a set of FDs. These fields contain an eye icon (\includegraphics[scale=0.6]{./img/eye.png}) in the upper right
-corner by clicking it we can open the visualization.
+holds a set of FDs. In these fields there is an 
+icon (\includegraphics[scale=0.6]{./img/eye.png}) in the upper right
+corner, by clicking it we can open the visualization window.
 The initial idea
 was to implement it as a separate web application, which can then be 
 opened in its own 
@@ -134,29 +167,27 @@ This could have a major negative impact on the usability of the system because t
 is always a risk that the user might not notice the pop-up 
 warning at all and hence the visualization. The second problem with this approach is 
 the fact that we want the visualization to use the existing 
-advanced capabilities of LDBN such as drag and drop. This is nearly impossible, thought, since
-the two application will run in different JavaScript virtual machines in each
-browser window. The a way around this issue could be the use of a server
+advanced capabilities of LDBN such as drag and drop. This would have been nearly impossible, thought, since
+the two application would run in different JavaScript virtual machines for each
+browser window. The way around this issue could be the use of a server
 which communicates with both applications. However, 
-this will make the drag and drop too slow for a proper usage. 
+this would make the drag and drop too slow for a proper usage. 
 
-
-
-In our implementation we use a different approach. We have implemented our own 
-JavaScript-based window package.
+In our implementation we use a different approach. We implement our own 
+JavaScript-based window package, since GWT does not offer one in its standard library.
 With it we can create pop-up windows which exists within a browser window. 
 An example of such a window is presented in Figure~\ref{fig:fd-visual-win}. 
 Our approach eliminates the previously described problems. First,
 the window is part of our JavaScript application and as such it does not 
-trigger any bowser pop-up
-blockers. Second, the visualization and the LDBN system can directly share any 
+trigger any bowser pop-up blockers. 
+Second, the visualization and the LDBN system can directly share any 
 JavaScript objects, since they run in the same virtual machine, 
 this way they can interact in a very fast and efficient way. 
-This is very similar to the pop-up dialogs in the initial version of LDBN. 
+This is very similar to the pop-up dialogs used in the initial version of LDBN. 
 These dialogs are provided in the standard widget library of GWT. 
 However, they prove to be inconvenient for our needs, since once created and attached 
 to the DOM they cannot be resized. We on the other hand
-need this kind of resize-window functionality since we want to offer to the user
+need this kind of resize-window functionality since we want to offer the user
 different zoom levels for the visualization, as well as the ability the user to resize the
 visualization window, since they could become quite large and hide important parts of the user 
 interface. Furthermore, with our implementation we have more powerful control over
@@ -173,13 +204,13 @@ in the upper right corner, which is a more intuitive way to interact with the UI
 
 At implementation level the visualization consists of two components. 
 Both of them are illustrated in Figure~\ref{fig:impl-fds01}.
-The fist component is a simple GWT panel where all the attributes are displayed. Internally 
-the attributes are represented as GWT widgets, thus the rendering of those attributes is
+The fist component is a simple GWT panel where all the attributes of an FD are displayed. 
+Internally the attributes are represented as GWT widgets, thus the rendering of those attributes is
 handled by the browser. In fact, these are the same widget classes used for representing
-attributes in the \emph{Given Attributes} field, which is shown in Figure~\ref{fig:given-atts}. The only 
-difference between the two attribute representations is 
+attributes in the \emph{Given Attributes} field, which is shown in Figure~\ref{fig:given-atts}. 
+The only difference between the two kinds of attribute representations is 
 that we apply a different CSS style for each of them. By using the already implemented LDBN 
-widget classes we get advanced functionality such as drag and drop for free. Thus the users
+widget classes we get advanced functionality such as drag and drop for free. Thus the user
 can drag any attribute in the visualization window and drop 
 dropped in the text box of the different editors in LDBN
 such as the \emph{Attribute Editor} or the \emph{FD Editor}, the latter is 
@@ -215,7 +246,8 @@ help improve the usability of the learning environment.
 	\end{center}
 \end{figure}
 
-The second component of the visualization consists of a \verb=<canvas>= element, it is shown in Figure~\ref{fig:impl-fds01}-2.
+The second component of the visualization consists of a \verb=<canvas>= element, 
+it is shown in Figure~\ref{fig:impl-fds01}-2.
 The canvas element is placed bellow the attributes, and there the actual drawing 
 of the FDs takes place. In LDBN we support two types of visualization, each of them can be selected
 from the \emph{Diagram Type} drop dawn menu in the visualization window. The fist type is called 
@@ -226,7 +258,7 @@ Similar to the purely text-based representation we can visualize the set
 of FDs as a set of rows. Each row representing one FD of the set. 
 However, in this visualization all attributes that occur in the set of FDs
 are shown in the fist row. Then every FD is displayed in a separate row by a outgoing 
-arrow for each attribute from the left-hand side (LHS) of the FD 
+arrow for each attribute from the left-hand side (LHS) of the FD,
 and as an incoming arrow for the attributes of the right-hand side (RHS).
 
 This approach is quite intuitive and we believe it will be well received by
@@ -282,7 +314,8 @@ choose between:
 Another important issue when using colors is contrast. 
 According to the W3C guidelines a web application should use such
 foreground and a background colors that provide enough of a
-contrast "when viewed by someone having color deficits or when viewed on a black and white screen"~\cite{w3c1}.
+contrast \emph{"when viewed by someone having color deficits or when 
+viewed on a black and white screen"}~\cite{w3c1}.
 To ensure these property we use WCAG 2.0 contrast ratio formula~\cite{w3c2}.
 Our color palettes are WCAG 2 AA Compliant for text larger than 18pt.
 
@@ -291,8 +324,9 @@ the visualization offers a magnification function as well.
 Thus the user can zoom in and out on a diagram.
 This is practical especially when a
 diagram contains a lot of attributes and the user 
-wants to get a general idea of the FDs, then she/he can
-simply zoom out.  
+wants to get a general idea of the FDs, then 
+he\footnote{''He'' should be read as ''he or she'' throughout this thesis.} can
+simply zoom out. 
 The zoom functionality
 is achieved by applying different CSS with different font 
 size for the attributes and by redrawing the canvas element accordingly. 
@@ -345,7 +379,7 @@ Under the hood LDBN manages the user data in a MySQL database.
 We realize the different user groups by simply altering the already existing table \verb=users=. 
 and adding two more attributes 
 of type boolean - \verb=isAdministrator= and \verb=isSuperUser=. 
-These attributes are set to \verb=true= when a user has administrator respectively  super
+These attributes are set to \verb=true= when a user has administrator and respectively super
 user rights in the system. 
 
 Furthermore, in order to make it easier for administrators and super user to manage the system
@@ -354,7 +388,7 @@ separate tab. It can be seen in Figure~\ref{fig:admin-ui}.
 The \emph{Administrators} UI offers three buttons which open 
 different dialogs for adding/removing users to/from the administrator group and for
 deleting assignments. Creating and editing assignments can still be done in the 
-\emph{Create Assignments} tab. Furthermore, super users rights can be only achieved by making
+\emph{Create Assignments} tab. Furthermore, super users rights can only be realized by making
 a correspondingly SQL statement for a specific user. However, this is not an issue, since 
 we do not expect the system to have more than one or two super users. 
 
@@ -373,18 +407,21 @@ which can be seen in Figure~\ref{fig:load-assg}. The user can choose form
 a drop-down menu to show only assignments submitted by: administrators 
 (or super users); the user himself; or to show all assignments stored in the system. 
 In addition, it should be noted that only assignments submitted
-by administrators/super users are visible by default, since administrators are
+by administrators/super users are visible by default, since administrators are in most
+cases database course lecturers and they provide more sophisticated and 
+well-thought-out assignments. 
 
 In order to view other assignments, which are present in the system, 
-one should a different filter form the drop-down menu. 
-We implement the filters on the client-side, thus when a new filter is
+one should choose a different filter form the drop-down menu. 
+On the one hand, we implement the filters on the client-side, thus when a new filter is
 applied we do not cause a new server interaction, rather we apply them
-on the initially received dataset which holds all the meta data for each assignment.
-This on the other hand makes the UI very responsive to user input. 
+on the initially received dataset, which holds all the meta data for each assignment.
+On the other hand, this makes the UI very responsive to user input. 
 In order to further increase the usability of the \emph{Load Assignment} dialog
 we implement a column soring function for it. As a result of which users can click on
-the different headers such as \emph{Name, Author and Last modified} and sort the 
-assignments correspondingly. 
+the different headers such as \emph{Name, Author and Last Modified} and sort the 
+assignments correspondingly in an increasing or in a decreasing order. This is once
+again done on the client side. 
 
 \begin{figure}[h]
 	\begin{center}
@@ -396,14 +433,16 @@ assignments correspondingly.
 
 
 To decrease the number of assignments submitted to the system we added a new button
-in the \emph{Create Assignments} tab called \emph{Load in SA Tab}, which can be observe in Figure~\ref{fig:load-in-sa}.
-With its help it is now possible to create an assignment ad load it in the \emph{Solve Assignments} tab without
-the need to first sore it in the database. Moreover, users do not have to register nor to log-in to use this
-functionality. This new feature in LDBN in especially useful for users who 
+in the \emph{Create Assignments} tab called \emph{Load in SA Tab}, 
+which can be observe in Figure~\ref{fig:load-in-sa}.
+With of which it is now possible to create an assignment and load it 
+in the \emph{Solve Assignments} tab without
+the need to first sore it in the database. Moreover, users do not have to register nor 
+they have to log-in in order to use this
+functionality. This new feature in LDBN is especially useful for users who 
 just want to get a general overview of the system and
 do not want to become contributors, 
 or for testing purposes for users who are currently creating an assignment. 
-
 
 Another useful feature in LDBN are comments, which user can give for each assignment. These comments
 are then shown in the \emph{Solve Assignments} tab when the assignment is loaded. On the one
@@ -413,7 +452,7 @@ for the lecturers in terms of giving an explanation to a difficult decomposition
 previous version of LDBN once submitted comments could not be altered. The only way to edit or to delete a
 comment was to make the corresponding change directly in the database of the system 
 In the new version of LDBN user can edit and delete comments directly  via the UI. When a user has
-the rights to make a change on a comment or to delete it a corresponding icon is shown 
+the rights to make a change on a comment or to delete it then a corresponding icon is shown 
 (\includegraphics[scale=0.7]{./img/edit.png} or \includegraphics[scale=0.7]{./img/del.png})
 next to the comment entry.
 

@@ -55,7 +55,7 @@ the \textit{Solve Assignment} view/tab. Here students can test their knowledge o
 the subject of relational-database normalization. The first thing the reader 
 may notice is the fact that LDBN runs within a browser. The client side 
 of LDBN is written in JavaScript following the AJAX techniques 
-(more about this in Section~\cite{sec:platform}). 
+(more about this in Section~\ref{sec:platform}). 
 Furthermore, LDBN is assignment driven. This means students have to first 
 choose an assignment 
 from a list with assignments, submitted by other users (lecturers). 
@@ -101,21 +101,50 @@ comments ensure that user can easily communicate and share ideas
 with each other, and one the other hand, comments could also decrease the amount of workload
 for the lecturers in terms of giving an explanation to difficult decomposition.
 
-More detailed and formal description of the features of LDBN will be given in
-Chapter~\cite{chap:motivation}. 
+%More detailed and formal description of the features of LDBN will be given in
+%Chapter~\ref{chap:motivation}. 
 
 \section{Glossary}
 \begin{description}
-	\item[2NF, 3NF, BCNF] \emph{Second Normal Form, Third Normal Form, Boyce-Codd Normal Form}. See Section~\ref{sec:nfintro} for more details.
-	\item[AJAX] \emph{Asynchronous JavaScript And XML} Asynchronous JavaScript And XML is a group of interrelated web development techniques used for creating interactive web applications, for more details see Section~\ref{sec:ajax}.
-	\item[API] An \emph{Application Programming Interface} is a set of functions, procedures or classes that an operating system, library or service provides to support requests made by computer programs~\cite{wapi}.
-	\item[CSS] \emph{Cascading Style Sheets} is a stylesheet language used to describe the presentation of a document written in HTML.
-	\item[DBMS] A \emph{Database Management System} is a complex set of software programs that controls the organization, storage, management, and retrieval of data in a database.
-	\item[GWT] \emph{Google Web Toolkit} is an open source Java software development framework that allows web developers to create AJAX applications in Java. More details in Section~\ref{sec:gwt}.
-	\item[LDBN] \emph{Learn Database Normalization} is our reference implementation of the web-based environment for
-    learning normalization of relational database schemata. We often refer to LDBN as \emph{our learning environment} or \emph{our implementation}.
-	\item[ODBC] \emph{Open Database Connectivity} provides a standard software API method for using database management systems.
-	\item[RPC] \emph{Remote Procedure Call} is an inter-process communication technology that allows a computer program to cause a subroutine or procedure to execute in another address space.
-	\item[SQL] \emph{Structured Query Language} is a computer language designed for the retrieval and management of data in relational database management systems, database schema creation and modification, and database object access control management.
-	\item[XMLHttpRequest] is an API that can be used by JavaScript and other web browser scripting languages to transfer asynchronously XML and other text data between a web server and a browser.
+	\item[2NF, 3NF, BCNF] \emph{Second Normal Form, Third Normal Form, Boyce-Codd Normal Form}. 
+	  Discussing the different normal forms, the relational  data model and the relational-database normalization
+    is beyond the scope of this report. 
+	  For readers who are unfamiliar with subject of normal forms and relational-database
+    normalization we recommend the textbook by Elmasri and Navathe~\cite{bdb1} or
+    the textbook by Kemper and Eickler~\cite{bdb2} for German-speaking readers, both of which have 
+    proven to be helpful guides throughout the development process of LDBN. 
+    In addition to those, there are many free on-line resources such as the article 
+    \emph{A Simple Guide to Five Normal Forms in Relational Database Theory} by Kent~\cite{p7}. 
+    There is also a brief introduction to relational-database normalization in ~\cite[Chapter~2]{mt1}.
+	\item[AJAX] \emph{Asynchronous JavaScript And XML} 
+	  Asynchronous JavaScript And XML is a group of interrelated web development techniques 
+	  used for creating interactive web applications, for more details see Section~\ref{sec:platform}.
+	\item[API] An \emph{Application Programming Interface} is a set of functions, procedures or classes 
+	  that an operating system, library or service provides to support requests
+	  made by computer programs~\cite{wapi}.
+	\item[CSS] \emph{Cascading Style Sheets} is a stylesheet language used to describe the 
+	  presentation of a document written in HTML.
+	\item[DBMS] A \emph{Database Management System} is a complex set of software programs that
+	  controls the organization, storage, management, and retrieval of data in a database.
+	\item[GWT] \emph{Google Web Toolkit} is an open source Java software development 
+	  framework that allows web developers to create AJAX applications in Java. 
+	  More details in Section~\ref{sec:gwt}.
+	\item[LDBN] \emph{Learn Database Normalization} is our reference implementation 
+	  of the web-based environment for
+    learning normalization of relational database schemata. We often refer to LDBN 
+    as \emph{our learning environment} or \emph{our implementation}. 
+    We distinguish between two versions of LDBN - 
+    the initial or original version described in~\cite{mt1}; and the improved version
+    discussed in this report. 
+	\item[ODBC] \emph{Open Database Connectivity} provides a standard 
+	  software API method for using database management systems.
+%	\item[RPC] \emph{Remote Procedure Call} is an inter-process communication 
+%	  technology that allows a computer program to cause a subroutine or 
+%	  procedure to execute in another address space.
+	\item[SQL] \emph{Structured Query Language} is a computer language designed for 
+	  the retrieval and management of data in relational database management systems, 
+	  database schema creation and modification, and database object access control management.
+	\item[XMLHttpRequest] is an API that can be used by JavaScript and other web browser 
+	  scripting languages to transfer asynchronously XML and other 
+	  text data between a web server and a browser.
 \end{description}

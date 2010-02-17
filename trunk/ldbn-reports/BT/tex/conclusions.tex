@@ -4,10 +4,9 @@ As the core of a previous thesis~\cite{mt1}
 a web-based environment for learning normalization of relational database schemata
 called LDBN (Learn DataBase Normalization) has been developed to
 enhance teaching and learning of relational-database normalization. 
-In this thesis we developed some
-crucial extensions to LDBN.
+In this thesis we developed some crucial extensions to LDBN.
 
-The main design goal of the project was to develop a extension of the system which is capable of 
+The main design goal of the project was to develop an extension of the system which is capable of 
 visualizing FDs. The visualization approach is based
 upon templates found in popular textbooks such as~\cite{bdb1} and~\cite{bdb2}. Secondary goals of the
 thesis was to increase the usability of the system by: 
@@ -30,8 +29,8 @@ Furthermore, we hope that advanced features such as drag and drop will
 increase the usability of the environment.
 
 It should be mentioned that LDBN is developed as an open source project 
-under the Apache License, Version 2.0~\cite{walv2}. 
-Source code and documentation are available at the project web-page~\cite{wldbnp}. 
+under the Apache License, Version 2.0~\cite{walv20}. 
+Source code and documentation are available at the project web-page~\cite{wldbnpp}. 
 The development of LDBN will continue, and we
 hope that soon a community will be
 built around the project, and that it will attract other developers as well. Possible directions for 
@@ -45,10 +44,11 @@ However, this was not a requirement for the thesis and we believe the provided
 visualization is sufficient at the moment. 
 
 Another possible direction for future development is a support for printing the visualization output.
-However this is not possible at the moment as it wold require to render the visualization on the server side as
-a image file and send it back to the client. On the other hand our visualization relies heavily on
+However, this is not possible at the moment as it wold require to render the visualization on the server side as
+a static image file and then we have to send it back to the client. 
+On the other hand our visualization relies heavily on
 the \verb=<canvas>= element which is only available on the client. A rendering on the server side would
 require a totally different approach. Support for printing was more of a desire than a requirement and
 was therefore not implemented in the final version of LDBN, 
 on the other hand, the user can still print the visualization output
-by using a screen capture.
+by using screen capture.
