@@ -8,8 +8,8 @@ import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.ui.visualization.color.BlackPalette;
 import se.umu.cs.ldbn.client.ui.visualization.color.ColorPalette;
 import se.umu.cs.ldbn.client.ui.visualization.color.GrayPalette;
-import se.umu.cs.ldbn.client.ui.visualization.color.PastelPalette1;
-import se.umu.cs.ldbn.client.ui.visualization.color.PastelPalette2;
+import se.umu.cs.ldbn.client.ui.visualization.color.OpenOfficePalette;
+import se.umu.cs.ldbn.client.ui.visualization.color.PastelPalette;
 import se.umu.cs.ldbn.client.ui.visualization.color.StandardPalette;
 import se.umu.cs.ldbn.client.ui.window.WindowPanel;
 import se.umu.cs.ldbn.client.utils.Common;
@@ -149,7 +149,7 @@ public final class VisualizationWindow extends WindowPanel
 		diagramTypes = new String[]{"Type 1: LDBN", "Type 2: Elmasry"};
 		palettes = new ColorPalette[]{ 
 				new BlackPalette(), new GrayPalette(), new StandardPalette(),
-				new PastelPalette1(), new PastelPalette2()};
+				new OpenOfficePalette(), new PastelPalette()};
 		zoomLevels = new int[]{1, 2, 3};
 		fdRenderOrder = new String[]{"Forward", "Reverse"};
 		

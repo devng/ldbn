@@ -2,14 +2,14 @@ package se.umu.cs.ldbn.client.ui.visualization.color;
 
 import com.google.gwt.widgetideas.graphics.client.Color;
 
-public class PastelPalette2 implements ColorPalette {
+public class PastelPalette implements ColorPalette {
 	
 	private final String name;
 	private final Color[] colors;
 	private int curColor; 
 	
-	public PastelPalette2() {
-		this.name = "Pastel Colors 2";
+	public PastelPalette() {
+		this.name = "Pastel Colors";
 		//colors taken from http://www.hitmill.com/html/rgbcolorvalues.html
 		this.colors = new Color[]{new Color("#F70000"),
 				new Color("#74138C"),
