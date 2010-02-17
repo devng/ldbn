@@ -3,14 +3,14 @@ package se.umu.cs.ldbn.client.ui.visualization.color;
 import com.google.gwt.widgetideas.graphics.client.Color;
 
 
-public final class PastelPalette1 implements ColorPalette {
+public final class OpenOfficePalette implements ColorPalette {
 	
 	private final String name;
 	private final Color[] colors;
 	private int curColor; 
 	
-	public PastelPalette1() {
-		this.name = "Pastel Colors 1";
+	public OpenOfficePalette() {
+		this.name = "OpenOffice Style";
 		
 		colors = new Color[] {
 				//Open Office Chart Colors
