@@ -7,7 +7,7 @@ import se.umu.cs.ldbn.client.io.AssignmentListEntry;
 
 public final class AssignmentFilterAdmin implements AssignmentFilter {
 
-	public static final String name = "Assignments Submitted by Administrators";
+	public static final String name = "Assignments Submitted by Instructional Users";
 	
 	public String getName() {
 		return name;
