@@ -43,12 +43,12 @@ public final class AdministratorWidget extends AbsolutePanel
 	
 	private AdministratorWidget() {
 		HeaderWidget hw = new HeaderWidget();
-		addToAdmin = new Button("Add Administrators");
+		addToAdmin = new Button("Add Instructional Users");
 		addToAdmin.setStyleName("att-but");
 		addToAdmin.addClickHandler(this);
 		hw.add(addToAdmin);
 		
-		removeFromAdmin = new Button("Remove Administrators");
+		removeFromAdmin = new Button("Remove Instructional Users");
 		removeFromAdmin.addClickHandler(this);
 		removeFromAdmin.setStyleName("att-but");
 		removeFromAdmin.setEnabled(false);

@@ -21,6 +21,7 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
+import com.google.gwt.user.client.Window.Location;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -32,11 +33,12 @@ import com.google.gwt.user.client.ui.TabPanel;
 public final class Main implements EntryPoint, 
 	SelectionHandler<Integer>, LoginListener {
 	
-	public static String VERSION = "1.4.091204";
+	public static String VERSION = "1.1.03252010";
 	
 	public static final int WIDTH_PX;
 	
 	static {
+		//set the application width in pixels to fit to the screen
 		int screenWidth = Common.getScreenWidth();
 		screenWidth -= 60; 
 		int min = 1024-60;
@@ -46,6 +48,18 @@ public final class Main implements EntryPoint,
 		} else if (screenWidth > max) {
 			screenWidth = max;
 		}
+		
+		//see if the user has not defined a different screen width
+		String w = Location.getParameter("w");
+		if (w != null && !"".equals(w.trim())) {
+			try {
+				int tmp = Integer.parseInt(w);
+				if (tmp >= 640 && tmp <= 4000) {
+					screenWidth = tmp;
+				}
+			} catch (Exception e) {}
+		}
+		
 		WIDTH_PX = screenWidth;
 	}
 	
@@ -134,7 +148,7 @@ public final class Main implements EntryPoint,
 		glass = new GlassPanel(mainPanel);
 		DOM.setInnerHTML(RootPanel.get("loading").getElement(), 
 				"<table width=\""+WIDTH_PX+"px\" border=\"0\" style=\"color: gray; text-decoration:none;\"><tr>" +
-				"<td style=\"text-align:left; font-size:x-small\">Copyright &copy; 2009 " +
+				"<td style=\"text-align:left; font-size:x-small\">Copyright &copy; 2008 - 2010 " +
 				"<a href=\"mailto:ens07ngv@cs.umu.se\" style=\"color: gray; text-decoration:none;\">" +
 				"Nikolay Georgiev</a></td>"+
 				"<td style=\"text-align: right; font-size:x-small\">Version: " + VERSION +"</td>"+
