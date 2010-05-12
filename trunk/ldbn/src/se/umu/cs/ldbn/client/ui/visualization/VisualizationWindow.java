@@ -146,7 +146,7 @@ public final class VisualizationWindow extends WindowPanel
 	}
 	
 	protected Widget getContentWidget() {
-		diagramTypes = new String[]{"Type 1: LDBN", "Type 2: Elmasry"};
+		diagramTypes = new String[]{"Type 1: LDBN", "Type 2: Elmasri"};
 		palettes = new ColorPalette[]{ 
 				new BlackPalette(), new GrayPalette(), new StandardPalette(),
 				new OpenOfficePalette(), new PastelPalette()};

@@ -33,7 +33,7 @@ import com.google.gwt.user.client.ui.TabPanel;
 public final class Main implements EntryPoint, 
 	SelectionHandler<Integer>, LoginListener {
 	
-	public static String VERSION = "1.1.03252010";
+	public static String VERSION = "1.1.05122010";
 	
 	public static final int WIDTH_PX;
 	
