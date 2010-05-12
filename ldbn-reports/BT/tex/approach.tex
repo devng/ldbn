@@ -9,7 +9,7 @@ In the following the term client is used to refer to a Web browser.
 \label{sec:platform}
 This section is, for the most part, a summary of \cite[Section~3.1 and Section~3.2]{mt1}.
 
-There are many different techniques to implement a Web-based application. 
+There are many different techniques for implementing a Web-based application. 
 The problem specifies that the solution must be able on the one hand to 
 quickly communicate with LDBN 
 and on the other hand to extend some of its capabilities, 
@@ -20,7 +20,7 @@ The remaining options can be divided into 3 groups, client-side, server-side and
 a client-server based. 
 
 The client-side solutions consist of a Java applet or a Flash
-application which are downloaded by the browser and then run locally on the computer of the user.
+application are downloaded by the browser and then run locally on the computer of the user.
 This is achieved by installing a separate browser plug-in. However, this approach has the disadvantage
 of requiring a plug-in, which is not always available by default on all Web browsers, and sometimes
 installing such plug-ins can only be done by system administrators. This could have a major negative
@@ -33,16 +33,15 @@ After their completion a new static HTML page is sent back to the client.
 With this approach the client is unable to remember its state and 
 every user interaction causes an HTTP round trip over the network, 
 requiring browsers to re-render the whole Web page after each request. With this approach
-advanced task such as drag and drop, which is heavily used in the initial and current
+advanced tasks such as drag and drop, which are heavily used in the initial and current
 version of LDBN, become almost impossible to implement due to the high latency time after each
 HTTP request. 
-
 
 The third approach is
 a client-server based idea called Asynchronous JavaScript and XML (AJAX),
 which is also used by the initial version of LDBN. 
 It works almost the same as the server-side solutions but acts more interactively. The
-reason for this is the fact that some parts of the program logic are moved form the server
+reason for this is the fact that some parts of the program logic are moved from the server
 to the client, thus not every user interaction causes necessarily a whole new page
 to be rendered. Instead with AJAX the client can request 
 data from the server in the background, i.e., without the need to freeze the whole user interface. 
@@ -52,7 +51,7 @@ used to handle communication with the server in an asynchronous fashion over a
 simple HTTP connection.
 This way after the data is received the client can change only the affected parts of the Web page. 
 This on the other hand is once again done by JavaScript, which 
-can be used to access and manipulate the Document Object Model (DOM) of the Web page.
+can be used to access and manipulate the DOM of the Web page.
 An example of an AJAX architecture is illustrated in Figure~\ref{fig:ajax01}, 
 which is an adaptation of~\cite[Figure 3.1]{mt1}.
 
@@ -90,7 +89,7 @@ In addition to this, it provides developers with compile-time error checking. An
 very important aspect of the compiler is the fact that when the code is compiled into
 JavaScript, it results in a single JavaScript file for each browser type and target locale.
 This is illustrated in Figure~\ref{fig:gwt01}, which is an adaptation of~\cite[Figure 7]{wgio2}. 
-Thus the client downloads and executes only the code that it is specifically designed for that platform.  
+Thus the client downloads and executes only the code that is specifically designed for that platform.  
 
 \begin{figure}[h]
 	\begin{center}
@@ -100,14 +99,14 @@ Thus the client downloads and executes only the code that it is specifically des
 	\end{center}
 \end{figure}
 
-For additional literature on the subject of GWT, we recommend the book of 
-Ryan Dewsbury \textit{Google Web Toolkit Applications}~\cite{bgwt2}. It has
+For additional literature on the subject of GWT, we recommend the book~\cite{bgwt2}. 
+It has
 proven to be very useful information source throughout the development process 
 of LDBN. 
 
 \subsection{Bitmap Rendering with JavaScript}
 \label{sec:renderingJS}
-When it comes to visualization and graphics in general a more low level 
+When it comes to visualization and graphics in general a more low-level 
 pixel control over a certain area of the screen is desired. 
 When using JavaScript, however, simple tasks such as drawing a straight
 line can become quite challenging in a Web browser environment.
@@ -130,16 +129,16 @@ It also has better rendering speed than the older Scalable Vector Graphics (SVG)
 Unfortunately, Internet Explorer (IE) provides native support for 
 neither SVG nor canvas feature of HTML~\cite{w9}. In spite of that, IE does 
 implements its own XML-based language for producing vector graphics 
-called Vector Markup Language (VML). With the help of VML canvas specific JavaScript 
+called Vector Markup Language (VML). With the help of VML canvas-specific JavaScript 
 calls can be emulated in IE. In LDBN we use the GWT-Incubator project~\cite{gwtincubator}, which provides
-browser independent canvas implementation for GWT projects, thus 
+browser-independent canvas implementation for GWT projects, thus 
 it provides support for all major browsers including IE. 
 It should be noted that by doing this
 we lose some rendering speed in IE that generally comes in other browsers
 with a native canvas implementation. 
 On the other hand in our implementation of the visualization of FDs we use only static scenes, i.e., 
-no animation nor any other intensive 
-graphical operations. Therefore in our opinion VML is sufficient for our project. 
+no animation or any other intensive 
+graphical operations. Therefore, in our opinion, VML is sufficient for our project. 
 
 \section{Implementation}
 \label{sec:implementation}
@@ -149,9 +148,9 @@ As mentioned earlier the implementation is divided into two parts:
 
 \subsection{Visualization of FDs}
 \label{sec:visualization}
-On the one hand the visualization of FDs is the most significant 
-part of the thesis, 
-on the other hand this extension should not compromise the existing 
+On the one hand the visualization of FDs is to be the most significant 
+part of the thesis. 
+On the other hand this extension should not compromise the existing 
 user interface of LDBN 1.0. Therefore we decided to
 make the visualization available in a separate window in the browser. 
 The visualization is then available for every field in LDBN 1.1 which 
@@ -172,11 +171,11 @@ This would have been nearly impossible, though, since
 the two application would run in different JavaScript virtual machines for each
 browser window. The way around this issue could be the use of a server
 which communicates with both applications. However, 
-this would make the drag and drop too slow for a proper usage. 
+this would make the drag and drop too slow for effective usage. 
 
 In our implementation we use a different approach. We implement our own 
 JavaScript-based window package, since GWT does not offer one in its standard library.
-With it we can create pop-up windows which exists within a browser window. 
+With it we can create pop-up windows which exist within a browser window. 
 An example of such a window is presented in Figure~\ref{fig:fd-visual-win}. 
 Our approach eliminates the previously described problems. First,
 the window is part of our JavaScript application and as such it does not 
@@ -205,7 +204,7 @@ in the upper right corner, which is a more intuitive way to interact with the UI
 
 At the implementation level the visualization consists of two components. 
 Both of them are illustrated in Figure~\ref{fig:impl-fds01}.
-The fist component is a simple GWT panel where all the attributes of an FD are displayed. 
+The first component is a simple GWT panel where all the attributes of an FD are displayed. 
 Internally the attributes are represented as GWT widgets, thus the rendering of those attributes is
 handled by the browser. In fact, these are the same widget classes used for representing
 attributes in the \emph{Given Attributes} field, which is shown in Figure~\ref{fig:given-atts}. 
@@ -218,9 +217,9 @@ such as the \emph{Attribute Editor} or the \emph{FD Editor}, the latter is
 shown in Figure~\ref{fig:fdeditor}. 
 As a result the
 attributes are automatically inserted in the text areas of the editor and users do not have
-to type them by hand, which for long attribute names could become inconvenient and error-prone. 
+to type them by hand, which for long attribute names could become inconvenient and error prone. 
 We believe the drag and drop functionality can help
-users define attributes, keys or FDs much more quickly, which on the other hand can
+users define attributes, keys or FDs much more quickly, which can
 help improve the usability of the learning environment.
 
 \begin{figure}[h]
@@ -248,17 +247,18 @@ help improve the usability of the learning environment.
 \end{figure}
 
 The second component of the visualization consists of a \verb=<canvas>= HTML5-element. 
-It is shown in Figure~\ref{fig:impl-fds01}-2.
+It is shown in Figure~\ref{fig:impl-fds01}.
 The canvas element is placed bellow the attributes, and there the actual drawing 
 of the FDs takes place. In LDBN we support two types of visualization, each of them can be selected
-from the \emph{Diagram Type} drop dawn menu in the visualization window. The fist type is called 
-\emph{Elmasty}, since it is common in~\cite{bdb1}. The main difference between this approach and
+from the \emph{Diagram Type} drop down menu in the visualization window. The first type is called 
+\emph{Elmasti}, since it is the form of representation used in~\cite{bdb1}. 
+The main difference between this approach and
 the traditional representation of FDs is the fact the we display each attribute in the set of 
 FDs only once. 
 Similar to the purely text-based representation we can visualize the set
 of FDs as a set of rows. Each row representing one FD of the set. 
 However, in this visualization all attributes that occur in the set of FDs
-are shown in the fist row. Then every FD is displayed in a separate row by an outgoing 
+are shown in the first row. Then every FD is displayed in a separate row by an outgoing 
 arrow for each attribute from the left-hand side (LHS) of the FD,
 and as an incoming arrow for the attributes of the right-hand side (RHS).
 
@@ -266,7 +266,7 @@ This approach is quite intuitive and we believe it will be well received by
 students, since during their database courses at the university most of 
 them get familiar with~\cite{bdb1}, from which
 the visualization is inspired. However, the approach has some disadvantages
-as well. Not the least of which is the fact that it does not make use
+as well, not the least of which is the fact that it does not make use
 of all the available white space in the diagram. To address this issue
 we offer a option where the user can change the order in which
 the FDs are rendered. In addition to this, we also offer another type of
@@ -277,7 +277,7 @@ Figure~\ref{fig:dia_example_elmasry} and~\ref{fig:dia_example_ldbn}.
 
 \begin{figure}[h]
   \centering
-  \subfigure[Type: Elmasry]{
+  \subfigure[Type: Elmasri]{
     \includegraphics[scale=0.5]{./img/dia-elmasri-ex-fds-01.png}
     \label{fig:dia_example_elmasry}
   }
@@ -341,7 +341,7 @@ To address some of the issues described in
 Section~\ref{sec:problem_statement} we introduced a more sophisticated user system in 
 LDBN 1.1. In the previous version of the system all user had the same rights. 
 In the current version we introduce following three groups of user:
-(1) \emph{Regular Users}, (2) \emph{Instructional Users}, and (3) \emph{Super Users}.
+(1) \emph{Regular Users}, (2) \emph{Instructional Users}, and (3) \emph{Superusers}.
 
 Furthermore, each user group has different rights in the system. 
 Table \ref{tab:user-rights} shows the different user rights in LDBN 1.1 for each user group. 
@@ -350,7 +350,7 @@ Table \ref{tab:user-rights} shows the different user rights in LDBN 1.1 for each
 \begin{table}
 \begin{tabular}[h]{| m{2.8cm} || m{2.2cm} | m{3.2cm} | m{3.3cm} |}
 \hline
- & \textbf{Regular Users} & \textbf{Instructional Users} & \textbf{Super Users} \\
+ & \textbf{Regular Users} & \textbf{Instructional Users} & \textbf{Superusers} \\
 \hline
 \hline
 \emph{Create \mbox{Assignments}} & Yes & Yes & Yes \\
@@ -379,19 +379,19 @@ Table \ref{tab:user-rights} shows the different user rights in LDBN 1.1 for each
 Under the hood LDBN manages the user data in a MySQL database. 
 We realize the different user groups by simply altering the already existing table \verb=users=. 
 and adding two more attributes 
-of type boolean - \verb=isInstructionalUser= and \verb=isSuperUser=. 
-These attributes are set to \verb=true= when a user has instructional users and respectively super
-user rights in the system. 
+of type boolean - \verb=isInstructionalUser= and \verb=isSuperuser=. 
+These attributes are set to \verb=true= when a user has instructional users and respectively superuser 
+rights in the system. 
 
-Furthermore, in order to make it easier for instructional and super user to manage the system
-we develop an extra UI in LDBN called \emph{Administrators}, which is accessible via a
+Furthermore, in order to make it easier for instructional and superuser to manage the system
+we develop an extra user interface (UI) in LDBN called \emph{Administrators}, which is accessible via a
 separate tab. It can be seen in Figure~\ref{fig:admin-ui}. 
 The \emph{Administrators} UI offers three buttons which open 
 different dialogs for adding/removing users to/from the instructional user group and for
 deleting assignments. Creating and editing assignments can still be done in the 
-\emph{Create Assignments} tab. Furthermore, super users rights can only be realized by making
+\emph{Create Assignments} tab. Furthermore, superusers rights can only be realized by making
 a corresponding SQL statement for a specific user. However, this is not an issue, since 
-we do not expect the system to have more than one or two super users. 
+we do not expect the system to have more than one or two superusers. 
 
 \begin{figure}[h]
 	\begin{center}
@@ -406,14 +406,14 @@ the issues surrounding user privileges described in the Section~\ref{sec:problem
 Most importantly, we implement different filters for the \emph{Load Assignment} dialog,
 which can be seen in Figure~\ref{fig:load-assg}. The user can choose from 
 a drop-down menu to show only assignments submitted by instructional users 
-(or super users), the user himself or to show all assignments stored in the system. 
+(or superusers), the user himself or to show all assignments stored in the system. 
 In addition, it should be noted that only assignments submitted
-by instructional and super users are visible by default, since instructional are in most
+by instructional and superusers are visible by default, since instructional are in most
 cases course lecturers and they provide more sophisticated and 
 well-thought-out assignments. 
 
 In order to view other assignments, which are present in the system, 
-one should choose a different filter form the drop-down menu. 
+one should choose a different filter from the drop-down menu. 
 On the one hand, we implement the filters on the client-side, thus when a new filter is
 applied we do not cause a new server interaction. Rather we apply them
 on the initially received dataset, which holds all the meta data for each assignment.
@@ -435,7 +435,7 @@ again done on the client side.
 To decrease the number of assignments submitted to the system we added a new button
 in the \emph{Create Assignments} tab called \emph{Load in SA Tab}, 
 which can be observed in Figure~\ref{fig:load-in-sa}. 
-In this case \emph{SA Tab} means \emph{``Solve Assignments Tab``},
+In this case \emph{SA Tab} means \emph{``Solve Assignments Tab"},
 which is the tab/view in the system, where students can test their knowledge by solving assignments. 
 With the addition of this feature it is now possible to create an assignment and load it 
 in the \emph{Solve Assignments} tab without
@@ -449,14 +449,14 @@ or for testing purposes for users who are currently creating an assignment.
 Another useful feature in LDBN 1.0 is support for user comments, 
 which users can give for each assignment. These comments
 are then shown in the \emph{Solve Assignments} tab when the assignment is loaded. On the one
-hand, such comments ensure that user can easily communicate and share ideas with each
+hand, such comments ensure that users can easily communicate and share ideas with each
 other, and comments could also decrease the amount of workload
 for the lecturers in terms of giving an explanation to a difficult decomposition. However, in LDBN 1.0  
 once submitted comments could not be altered. The only way to edit or to delete a
 comment was to make the corresponding change directly in the database of the system. 
 In the new version of our implementation (LDBN 1.1) 
 users can edit and delete comments directly via the UI. When a user has
-the rights to make a change on a comment or to delete it then a corresponding icon is shown 
+the rights to make a change on a comment or to delete it a corresponding icon is shown 
 (\includegraphics[scale=0.7]{./img/edit.png} or \includegraphics[scale=0.7]{./img/del.png})
 next to the comment entry.
 
