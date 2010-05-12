@@ -13,14 +13,14 @@ There are many different techniques for implementing a Web-based application.
 The problem specifies that the solution must be able on the one hand to 
 quickly communicate with LDBN 
 and on the other hand to extend some of its capabilities, 
-thus a basic HTML solution will not be able to achieve our goal, 
+thus a basic HTML solution cannot achieve our goal, 
 since all pages in that case are static. 
 
 The remaining options can be divided into 3 groups, client-side, server-side and
-a client-server based. 
+a client-server based approach. %don't like this sentance%
 
-The client-side solutions consist of a Java applet or a Flash
-application are downloaded by the browser and then run locally on the computer of the user.
+The client-side solutions consist of a Java applet or a Flash application 
+which are downloaded by the browser and then run locally on the computer of the user.
 This is achieved by installing a separate browser plug-in. However, this approach has the disadvantage
 of requiring a plug-in, which is not always available by default on all Web browsers, and sometimes
 installing such plug-ins can only be done by system administrators. This could have a major negative
@@ -55,7 +55,7 @@ can be used to access and manipulate the DOM of the Web page.
 An example of an AJAX architecture is illustrated in Figure~\ref{fig:ajax01}, 
 which is an adaptation of~\cite[Figure 3.1]{mt1}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\begin{center}
 		\includegraphics[width=0.8\textwidth]{./img/ajax01a.png}
 		\caption{Example of an AJAX Architecture}
@@ -91,7 +91,7 @@ JavaScript, it results in a single JavaScript file for each browser type and tar
 This is illustrated in Figure~\ref{fig:gwt01}, which is an adaptation of~\cite[Figure 7]{wgio2}. 
 Thus the client downloads and executes only the code that is specifically designed for that platform.  
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\begin{center}
 		\includegraphics[width=0.8\textwidth]{./img/gwt01a.png}
 		\caption{GWT Java-to-JavaScript Compiler}
@@ -136,7 +136,7 @@ it provides support for all major browsers including IE.
 It should be noted that by doing this
 we lose some rendering speed in IE that generally comes in other browsers
 with a native canvas implementation. 
-On the other hand in our implementation of the visualization of FDs we use only static scenes, i.e., 
+On the other hand, in our implementation of the visualization of FDs we use only static scenes, i.e., 
 no animation or any other intensive 
 graphical operations. Therefore, in our opinion, VML is sufficient for our project. 
 
@@ -173,7 +173,7 @@ browser window. The way around this issue could be the use of a server
 which communicates with both applications. However, 
 this would make the drag and drop too slow for effective usage. 
 
-In our implementation we use a different approach. We implement our own 
+In LDBN 1.1 we use a different approach. We implement our own 
 JavaScript-based window package, since GWT does not offer one in its standard library.
 With it we can create pop-up windows which exist within a browser window. 
 An example of such a window is presented in Figure~\ref{fig:fd-visual-win}. 
@@ -194,7 +194,7 @@ interface. Furthermore, with our implementation we have more powerful control ov
 the graphical representation of the window. This way for example we can add a close button (image)
 in the upper right corner, which is a more intuitive way to interact with the UI.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\begin{center}
 		\includegraphics[width=0.9\textwidth]{./img/fd-visual-win.png}
 		\caption{FD Visualization Window}
@@ -222,7 +222,7 @@ We believe the drag and drop functionality can help
 users define attributes, keys or FDs much more quickly, which can
 help improve the usability of the learning environment.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\begin{center}
 		\includegraphics[width=0.9\textwidth]{./img/impl-fds01.png}
 		\caption{Visualization Components}
@@ -230,7 +230,7 @@ help improve the usability of the learning environment.
 	\end{center}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\begin{center}
 		\includegraphics[width=0.9\textwidth]{./img/given-atts.png}
 		\caption{Given Attributes Widget}
@@ -238,7 +238,7 @@ help improve the usability of the learning environment.
 	\end{center}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\begin{center}
 		\includegraphics[width=0.6\textwidth]{./img/fdeditor.png}
 		\caption{FD Editor Dialog in LDBN}
@@ -251,7 +251,7 @@ It is shown in Figure~\ref{fig:impl-fds01}.
 The canvas element is placed bellow the attributes, and there the actual drawing 
 of the FDs takes place. In LDBN we support two types of visualization, each of them can be selected
 from the \emph{Diagram Type} drop down menu in the visualization window. The first type is called 
-\emph{Elmasti}, since it is the form of representation used in~\cite{bdb1}. 
+\emph{Elmasri}, since it is the form of representation used in~\cite{bdb1}. 
 The main difference between this approach and
 the traditional representation of FDs is the fact the we display each attribute in the set of 
 FDs only once. 
@@ -268,14 +268,14 @@ them get familiar with~\cite{bdb1}, from which
 the visualization is inspired. However, the approach has some disadvantages
 as well, not the least of which is the fact that it does not make use
 of all the available white space in the diagram. To address this issue
-we offer a option where the user can change the order in which
+we offer an option where the user can change the order in which
 the FDs are rendered. In addition to this, we also offer another type of
 visualization where the arrows of each FD always start/reach the 
 attributes at the top of the diagram. 
 Both types of visualization can be observed in 
 Figure~\ref{fig:dia_example_elmasry} and~\ref{fig:dia_example_ldbn}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \centering
   \subfigure[Type: Elmasri]{
     \includegraphics[scale=0.5]{./img/dia-elmasri-ex-fds-01.png}
@@ -380,10 +380,10 @@ Under the hood LDBN manages the user data in a MySQL database.
 We realize the different user groups by simply altering the already existing table \verb=users=. 
 and adding two more attributes 
 of type boolean - \verb=isInstructionalUser= and \verb=isSuperuser=. 
-These attributes are set to \verb=true= when a user has instructional users and respectively superuser 
+These attributes are set to \verb=true= when a user has instructional user and respectively superuser 
 rights in the system. 
 
-Furthermore, in order to make it easier for instructional and superuser to manage the system
+Furthermore, in order to make it easier for instructional users and superusers to manage the system
 we develop an extra user interface (UI) in LDBN called \emph{Administrators}, which is accessible via a
 separate tab. It can be seen in Figure~\ref{fig:admin-ui}. 
 The \emph{Administrators} UI offers three buttons which open 
@@ -393,7 +393,7 @@ deleting assignments. Creating and editing assignments can still be done in the
 a corresponding SQL statement for a specific user. However, this is not an issue, since 
 we do not expect the system to have more than one or two superusers. 
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\begin{center}
 		\includegraphics[width=0.9\textwidth]{./img/admin-ui.png}
 		\caption{Administrators Tab}
@@ -404,27 +404,27 @@ we do not expect the system to have more than one or two superusers.
 With the new separation of users into groups we can easily overcome most of 
 the issues surrounding user privileges described in the Section~\ref{sec:problem_statement}.
 Most importantly, we implement different filters for the \emph{Load Assignment} dialog,
-which can be seen in Figure~\ref{fig:load-assg}. The user can choose from 
+which can be seen in Figure~\ref{fig:load-assg}. Thus the user can choose from 
 a drop-down menu to show only assignments submitted by instructional users 
 (or superusers), the user himself or to show all assignments stored in the system. 
 In addition, it should be noted that only assignments submitted
-by instructional and superusers are visible by default, since instructional are in most
+by instructional and superusers are visible by default, since instructional users are in most
 cases course lecturers and they provide more sophisticated and 
 well-thought-out assignments. 
 
 In order to view other assignments, which are present in the system, 
 one should choose a different filter from the drop-down menu. 
-On the one hand, we implement the filters on the client-side, thus when a new filter is
+We implement the filters on the client-side, thus when a new filter is
 applied we do not cause a new server interaction. Rather we apply them
 on the initially received dataset, which holds all the meta data for each assignment.
-On the other hand, this makes the UI very responsive to user input. 
+As a result, the UI is very responsive to user input. 
 In order to further increase the usability of the \emph{Load Assignment} dialog
 we implement a column-soring function for it. As a result, users can click on
 the different headers such as \emph{Name, Author and Last Modified} and sort the 
 assignments correspondingly in an increasing or in a decreasing order. This is once
 again done on the client side. 
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\begin{center}
 		\includegraphics[width=0.6\textwidth]{./img/load-assg.png}
 		\caption{Load Assignment Dialog with Filters}
@@ -446,11 +446,11 @@ just want to get a general overview of the system and
 do not want to become contributors, 
 or for testing purposes for users who are currently creating an assignment. 
 
-Another useful feature in LDBN 1.0 is support for user comments, 
+Another useful feature in LDBN 1.0 is the support for user comments, 
 which users can give for each assignment. These comments
 are then shown in the \emph{Solve Assignments} tab when the assignment is loaded. On the one
 hand, such comments ensure that users can easily communicate and share ideas with each
-other, and comments could also decrease the amount of workload
+other. On the other hand, comments could also decrease the amount of workload
 for the lecturers in terms of giving an explanation to a difficult decomposition. However, in LDBN 1.0  
 once submitted comments could not be altered. The only way to edit or to delete a
 comment was to make the corresponding change directly in the database of the system. 
@@ -460,7 +460,7 @@ the rights to make a change on a comment or to delete it a corresponding icon is
 (\includegraphics[scale=0.7]{./img/edit.png} or \includegraphics[scale=0.7]{./img/del.png})
 next to the comment entry.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\begin{center}
 		\includegraphics[width=0.75\textwidth]{./img/load-in-sa.png}
 		\caption{Load in SA Tab Button}
