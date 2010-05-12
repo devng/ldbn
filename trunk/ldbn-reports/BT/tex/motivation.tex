@@ -5,7 +5,8 @@ conjunction with the course \emph{Principles of Database Systems} at the
 Department of Computing Science at the Umeå University, and some important 
 observations were made. In this chapter we present the problems with the 
 LDBN 1.0, which were observed during this testing period. 
-Some of the problems led to the realization that the learning environment needs to be further developed 
+Some of the problems led to the realization that the learning environment 
+needed to be further developed 
 %ne mi haresva
 and extended in order to allow a more extensive and productive use 
 of the system, and in order for the students to be assisted even better 
@@ -13,7 +14,7 @@ in the process of understanding the concepts of FDs and
 relational-database normalization by providing new tools to them such as the 
 FD visualization tool, which is described in detail in Section~\ref{sec:visualization}.  
 
-\section{Problem Statement}
+\section{Shortcomings of LDBN 1.0}
 \label{sec:problem_statement}
 At the moment, students, who are trying to solve an assignment with LDBN, often have
 to deal with a large number of attributes and FDs based on those attributes. 
@@ -95,36 +96,30 @@ Second, users were unable to load an assignment in the \emph{Solve Assignment Ta
 without first storing it in the database of the system, this led to the fact that
 users who just wanted to test the system with a simple assignment were in fact
 flooding LDBN 1.0 with even more unsuitable assignments, which consist of just a 
-few attributes and even less FDs, and were of no interest to other users. Both of these
+few attributes and even fewer FDs, and were of no interest to other users. Both of these
 facts led to a major decrease in the usability of the system, 
 since students were no longer able to distinguish 
 between interesting and well-thought-out assignments submitted by lecturers 
-and other assignments.
+and other assignments. A solution to this problem 
+is discussed in detail in Section~\ref{sec:improving}. 
  
-To solve the above problem a more sophisticated user system was introduced. In the 
-current version of the learning environment (LDBN 1.1) users are basically dividend into two groups - 
-regular users (students) and instructional users (lecturers).
-First, instructional users
-have more rights than regular users. Second, only assignments submitted by instructional users
-are visible by default.  
-In addition, lecturers have many more rights in the system than students.
-This is discussed in detail in Section~\ref{sec:improving}. 
- 
-
-\section{Purpose}
+\section{Goals}
 \label{sec:purpose}
-The purpose of this thesis can be divided into two parts:
+As discussed in the previous section visualization takes a central part in this
+thesis. Thus most of the efforts during the implementation period of the project 
+were concentrated in delivering a clean and user-friendly visualization of FDs. 
+Furthermore, the goals of this thesis can be divided into two parts:
 
 \begin{enumerate}
 
-  \item Implementing different types of visualization for FDs based 
+  \item Implement different types of visualization for FDs based 
   on templates found in popular textbooks such as~\cite{bdb2} and~\cite{bdb1}. 
   Furthermore, the visualization should support different colors schemata and 
   zoom levels for a better presentation. Furthermore, the visualization
   should be available in all fields of the UI which hold a set of FDs. 
   In addition to this, it should not interfere with existing representation of the FDs.
 
-  \item Improving the existing system in several ways including:
+  \item Improve the existing system in several ways including:
   
   \begin{enumerate}
     \item Dividing the user into at least two groups: 

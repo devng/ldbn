@@ -5,11 +5,11 @@ relation decomposition, which consists of dividing relations (or data tables) in
 tables in order to reduce redundancy, eliminate wasted storage, and more importantly reduce
 anomalies or inconsistencies due to data updates. The central tool in producing these
 decompositions and refinement of the database into what is called normal forms 
-is the normalization theory. 
-Unfortunately, theory is not yet understood well by practitioners~\cite{p1}.
+is normalization theory. 
+Unfortunately, the theory is not yet understood well by practitioners~\cite{p1}.
 One of the reasons for this is the lack of good tools which could aid the students 
 during the learning process of relational-database normalization~\cite{p8}. 
-Thus our learning environment was developed at the Umeå University 
+To address this need, a learning environment was developed at the Umeå University 
 as the core of a previous thesis~\cite{mt1}. 
 It gives students the ability to easily and efficiently test
 their knowledge of the different normal forms in practice. The environment assists the students by 
@@ -29,7 +29,9 @@ providing them with the following functionalities:
 	\item Allow users to communicate with each other via comments/posts.
 \end{enumerate}
 
-
+The purpose of this thesis it to improve the existing learning environment by adding
+new features to it such as visualization, and improving the existing ones in order to
+increase the overall usability of the system.
 
 \section{Organization of this Report}
 \label{sec:organization}
@@ -97,10 +99,10 @@ Additional features of LDBN include creating an assignment, which can be done
 only by registered users, i.e., users who have filled out a registration form and their email
 has been confirmed by the system. These users can log-in into the system with their user name and password 
 and use additional features of the system.  At this point it should be mentioned that
-there are different types of registered users with different rights and privileges in the systems 
+there are different types of registered users with different rights and privileges in the system 
 and only the assignments submitted by instructional users (lecturers) are visible by default, but a user can
 choose to see all assignments. This restriction is necessary in order users to be able 
-to distinct assignments provided by trusted users, e.g., the database course
+to identify assignments provided by trusted users, e.g., the database course
 lecturers. Registered users have also the ability to leave textual comments 
 for every assignment. On the one hand, such
 comments ensure that user can easily communicate and share ideas
@@ -132,6 +134,9 @@ for the lecturers in terms of giving an explanation to difficult decomposition.
 	  presentation of a document written in HTML.
 	\item[DBMS] A \emph{Database Management System} is a complex set of software programs that
 	  controls the organization, storage, management, and retrieval of data in a database.
+	\item[DOM] The \emph{Document Object Model} is a platform- and language-neutral interface that 
+	  allows programs and scripts to dynamically access and update the content, structure and 
+	  style of documents~\cite{w3-dom}.
 	\item[FD] A \emph{functional dependency (FD)} is a constraint between two sets of 
 	  attributes in a relational database. Additional details may be found in~\cite{bdb1}, 
 	  \cite{bdb2}, \cite{p7}, or \cite[Chapter~2]{mt1}.  
