@@ -21,7 +21,7 @@ to deal with a large number of attributes and FDs based on those attributes.
 However, LDBN 1.0 offers only textual representation of FDs, an example of such
 representation is shown in Figure~\ref{fig:exampleFds01} . 
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\begin{center}
 		\includegraphics[width=0.7\textwidth]{./img/example_fds_01.png}
 		\caption{Example of a Typical Textual Representation of FDs in LDBN 1.0}
@@ -33,7 +33,7 @@ representation is shown in Figure~\ref{fig:exampleFds01} .
 As can be seen, some attributes 
 may occur more than once in a single FD and there may be many different FDs in a single 
 assignment. Although this is a standard representation of FDs, 
-it may lead to a confusion among students and negatively affect the overall
+it may lead to confusion among students and negatively affect the overall
 usability of the system. Thus we extended LDBN 1.0 by providing a visualization for
 FDs. In order the visualization to be intuitive for 
 both students and lecturers we have decided to use templates found in popular 
@@ -41,7 +41,7 @@ popular database textbooks such as~\cite{bdb2} and~\cite{bdb1}.
 An example of a such visualization can be observed in Figure~\ref{fig:viz-fds-ex01}, which
 was generated with LDBN 1.1. 
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\begin{center}
 		\includegraphics[width=0.95\textwidth]{./img/example_fds_02.png}
 		\caption{Example of a Graphical Representation of FDs in LDBN 1.1}
@@ -59,11 +59,11 @@ visualization one can clearly see that some FDs are redundant, such as $A \right
 In fact for relatively small sets of FDs, which are typical for LDBN, by using the visualization functionality 
 one can easily apply Algorithm~4.12 in~\cite{mt1}, which is used for computing a minimal cover of an FD set -~$F_c$.
 In this case a minimal cover may be defined as  
-$F_c = A \rightarrow B; E \rightarrow A; F \rightarrow C D; C \rightarrow B E F$. 
+$F_c = A \rightarrow C; E \rightarrow A; F \rightarrow C D; C \rightarrow B E F$. 
 Thus all other FDs are redundant, as they may be inferred from $F_c$. 
 Readers unfamiliar with the term \emph{Minimal Cover of an FD Set} may refer to~\cite[Section~2.1.6]{mt1}. 
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \centering
   \subfigure[Textual Representation]{
     \includegraphics[scale=0.7]{./img/ldbn-viz-ex-fc00.jpg}
@@ -115,14 +115,14 @@ Furthermore, the goals of this thesis can be divided into two parts:
   \item Implement different types of visualization for FDs based 
   on templates found in popular textbooks such as~\cite{bdb2} and~\cite{bdb1}. 
   Furthermore, the visualization should support different colors schemata and 
-  zoom levels for a better presentation. Furthermore, the visualization
+  zoom levels for a better presentation. In addition to this, the visualization
   should be available in all fields of the UI which hold a set of FDs. 
-  In addition to this, it should not interfere with existing representation of the FDs.
+  Moreover, it should not interfere with existing representation of the FDs.
 
   \item Improve the existing system in several ways including:
   
   \begin{enumerate}
-    \item Dividing the user into at least two groups: 
+    \item Dividing users into at least two groups: 
     (1) instructional users and (2) regular registered users. This is done without
     affecting the existing users, thus all already registered users will keep
     their rights in the system. 
