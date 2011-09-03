@@ -1,35 +1,35 @@
 package se.umu.cs.ldbn.client.ui.visualization.color;
 
-import com.google.gwt.widgetideas.graphics.client.Color;
+import com.google.gwt.canvas.dom.client.CssColor;
 
 //Gray Shades
 public class GrayPalette implements ColorPalette {
 
 	private final String name;
-	private final Color[] colors;
+	private final CssColor[] colors;
 	private int curColor; 
 	
 	public GrayPalette() {
 		this.name = "Gray Shades";
 		//http://www.w3schools.com/Html/html_colors.asp
-		this.colors = new Color[]{new Color("#D0D0D0"),
-				new Color("#C0C0C0"),
-				new Color("#B0B0B0"),
-				new Color("#A0A0A0"),
-				new Color("#909090"),
-				new Color("#888888"),
-				new Color("#808080"),
-				new Color("#787878"),
-				new Color("#707070"),
-				new Color("#606060"),
-				new Color("#505050"),
-				new Color("#404040"),
-				new Color("#303030"),
-				new Color("#202020"),
-				new Color("#101010")};
+		this.colors = new CssColor[]{CssColor.make("#D0D0D0"),
+				CssColor.make("#C0C0C0"),
+				CssColor.make("#B0B0B0"),
+				CssColor.make("#A0A0A0"),
+				CssColor.make("#909090"),
+				CssColor.make("#888888"),
+				CssColor.make("#808080"),
+				CssColor.make("#787878"),
+				CssColor.make("#707070"),
+				CssColor.make("#606060"),
+				CssColor.make("#505050"),
+				CssColor.make("#404040"),
+				CssColor.make("#303030"),
+				CssColor.make("#202020"),
+				CssColor.make("#101010")};
 	}
 	
-	public Color[] getAllColors() {
+	public CssColor[] getAllColors() {
 		
 		return colors;
 	}
@@ -38,9 +38,9 @@ public class GrayPalette implements ColorPalette {
 		return name;
 	}
 
-	public Color nextColor() {
+	public CssColor nextColor() {
 		curColor %= colors.length;
-		Color r = colors[curColor];
+		CssColor r = colors[curColor];
 		curColor++;
 		return r;
 	}

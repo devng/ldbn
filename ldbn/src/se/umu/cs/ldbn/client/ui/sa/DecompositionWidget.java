@@ -12,7 +12,6 @@ import se.umu.cs.ldbn.client.ui.FDWidget;
 import se.umu.cs.ldbn.client.ui.HasAdditionalControlls;
 import se.umu.cs.ldbn.client.ui.InfoButton;
 import se.umu.cs.ldbn.client.ui.dialog.AttributesEditorDialog;
-import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
 import se.umu.cs.ldbn.client.ui.visualization.VisualizationWindow;
 import se.umu.cs.ldbn.client.utils.Common;
 

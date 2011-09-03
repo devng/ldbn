@@ -51,7 +51,7 @@ public final class RenameDialog extends OkCancelDialog {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	protected void onOkClick() {
 		String s = nameBox.getText();
 		if(s.matches(Common.NAME_REGEX)) {

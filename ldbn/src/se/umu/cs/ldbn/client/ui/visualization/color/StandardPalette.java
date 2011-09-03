@@ -1,33 +1,32 @@
 package se.umu.cs.ldbn.client.ui.visualization.color;
 
-import com.google.gwt.widgetideas.graphics.client.Color;
+import com.google.gwt.canvas.dom.client.CssColor;
 
 public class StandardPalette implements ColorPalette {
 
 	private final String name;
-	private final Color[] colors;
+	private final CssColor[] colors;
 	private int curColor; 
 	
 	public StandardPalette() {
 		this.name = "Standard Colors";
-		this.colors = new Color[]{Color.BLUE,
-				Color.RED,
-				Color.GREEN,
-				Color.YELLOW,
-				Color.SKY_BLUE,
-				Color.PINK,
-				Color.ORANGE,
-				Color.DARK_BLUE,
-				Color.DARK_ORANGE,
-				Color.GREY,
-				Color.CYAN,
-				Color.PEACH,
-				Color.BLUEVIOLET,
-				Color.BLACK};
+		this.colors = new CssColor[]{CommonColors.BLUE,
+			CommonColors.RED, 
+			CommonColors.GREEN, 
+			CommonColors.YELLOW, 
+			CommonColors.SKY_BLUE, 
+			CommonColors.PINK,
+			CommonColors.ORANGE, 
+			CommonColors.DARK_BLUE, 
+			CommonColors.DARK_ORANGE, 
+			CommonColors.GREY,
+			CommonColors.CYAN, 
+			CommonColors.PEACH, 
+			CommonColors.BLUEVIOLET, 
+			CommonColors.BLACK};
 	}
 	
-	public Color[] getAllColors() {
-		
+	public CssColor[] getAllColors() {
 		return colors;
 	}
 
@@ -35,9 +34,9 @@ public class StandardPalette implements ColorPalette {
 		return name;
 	}
 
-	public Color nextColor() {
+	public CssColor nextColor() {
 		curColor %= colors.length;
-		Color r = colors[curColor];
+		CssColor r = colors[curColor];
 		curColor++;
 		return r;
 	}

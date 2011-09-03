@@ -1,5 +1,9 @@
 package se.umu.cs.ldbn.client.ui.home;
 
+import se.umu.cs.ldbn.client.io.UserHelpSender;
+import se.umu.cs.ldbn.client.ui.dialog.OkCancelDialog;
+import se.umu.cs.ldbn.client.utils.Common;
+
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -7,10 +11,6 @@ import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-
-import se.umu.cs.ldbn.client.io.UserHelpSender;
-import se.umu.cs.ldbn.client.ui.dialog.OkCancelDialog;
-import se.umu.cs.ldbn.client.utils.Common;
 
 public class UserHelpDialog extends OkCancelDialog{
 	

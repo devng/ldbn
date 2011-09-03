@@ -33,9 +33,9 @@ import se.umu.cs.ldbn.client.ui.user.UserData;
 import se.umu.cs.ldbn.client.ui.visualization.VisualizationWindow;
 import se.umu.cs.ldbn.client.utils.Common;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
@@ -297,7 +297,7 @@ public final class CreateAssignmentWidget extends Composite
 	}
 	
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Collection getTakenNames() {
 		//TODO
 		return null;

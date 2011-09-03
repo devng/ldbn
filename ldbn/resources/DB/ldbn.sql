@@ -21,9 +21,6 @@ CREATE TABLE user (
 	PRIMARY KEY (user_id)
 );
 
-ALTER TABLE `user` ADD `is_admin` TINYINT( 1 ) NOT NULL DEFAULT '0',
-ADD `is_su` TINYINT( 1 ) NOT NULL DEFAULT '0';
-
 DROP TABLE IF EXISTS session;
 CREATE TABLE session (
 	session_string VARCHAR(32) NOT NULL ,

@@ -6,9 +6,9 @@ import se.umu.cs.ldbn.client.utils.Common;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestBuilder.Method;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
-import com.google.gwt.http.client.RequestBuilder.Method;
 
 public abstract class AbstractRequestSender {
 	

@@ -78,10 +78,6 @@ public final class AttributeSet {
 		if(domain == null) {
 			throw new IllegalArgumentException("DomainTable cannot be null");
 		}
-		
-		if(domain == null) {
-			throw new IllegalArgumentException("String[] att - cannot be null");
-		}
 		this.domain = domain;
 		for (String str : att) {
 			addAtt(str);

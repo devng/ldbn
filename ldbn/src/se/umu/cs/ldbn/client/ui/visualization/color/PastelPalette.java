@@ -1,40 +1,40 @@
 package se.umu.cs.ldbn.client.ui.visualization.color;
 
-import com.google.gwt.widgetideas.graphics.client.Color;
+import com.google.gwt.canvas.dom.client.CssColor;
 
 public class PastelPalette implements ColorPalette {
 	
 	private final String name;
-	private final Color[] colors;
+	private final CssColor[] colors;
 	private int curColor; 
 	
 	public PastelPalette() {
 		this.name = "Pastel Colors";
 		//colors taken from http://www.hitmill.com/html/rgbcolorvalues.html
-		this.colors = new Color[]{new Color("#F70000"),
-				new Color("#74138C"),
-				new Color("#0000CE"),
-				new Color("#1F88A7"),
-				new Color("#4A9586"),
-				new Color("#D1D17A"),
-				new Color("#C27E3A"),
-				new Color("#B05F3C"),
-				new Color("#B96F6F"),
-				new Color("#DFA800"),
-				new Color("#3DE4FC"),
-				new Color("#FFB428"),
-				new Color("#FF800D"),
-				new Color("#F7DE00"),
-				new Color("#B9264F"),
-				new Color("#3923D6"),
-				new Color("#2966B8"),
-				new Color("#23819C"),
-				new Color("#03EBA6"),
-				new Color("#2DC800"),
-				new Color("#66FF00")};
+		this.colors = new CssColor[]{CssColor.make("#F70000"),
+				CssColor.make("#74138C"),
+				CssColor.make("#0000CE"),
+				CssColor.make("#1F88A7"),
+				CssColor.make("#4A9586"),
+				CssColor.make("#D1D17A"),
+				CssColor.make("#C27E3A"),
+				CssColor.make("#B05F3C"),
+				CssColor.make("#B96F6F"),
+				CssColor.make("#DFA800"),
+				CssColor.make("#3DE4FC"),
+				CssColor.make("#FFB428"),
+				CssColor.make("#FF800D"),
+				CssColor.make("#F7DE00"),
+				CssColor.make("#B9264F"),
+				CssColor.make("#3923D6"),
+				CssColor.make("#2966B8"),
+				CssColor.make("#23819C"),
+				CssColor.make("#03EBA6"),
+				CssColor.make("#2DC800"),
+				CssColor.make("#66FF00")};
 	}
 	
-	public Color[] getAllColors() {
+	public CssColor[] getAllColors() {
 		
 		return colors;
 	}
@@ -43,9 +43,9 @@ public class PastelPalette implements ColorPalette {
 		return name;
 	}
 
-	public Color nextColor() {
+	public CssColor nextColor() {
 		curColor %= colors.length;
-		Color r = colors[curColor];
+		CssColor r = colors[curColor];
 		curColor++;
 		return r;
 	}

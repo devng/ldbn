@@ -15,7 +15,6 @@
  */
 package se.umu.cs.ldbn.client.ui.window;
 
-import se.umu.cs.ldbn.client.Main;
 import se.umu.cs.ldbn.client.ui.visualization.VisualizationWindow;
 import se.umu.cs.ldbn.client.utils.Common;
 
