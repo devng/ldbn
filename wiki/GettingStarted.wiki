@@ -74,7 +74,6 @@ The default configuration for the database is sored in the _config.php_ file, wh
  * Crate the necessary database tables and sample data by using the _ldbn.sql_ and _example.sql_ files, both of which are located in the _recourses/DB_ folder.  
 
  * Create new database user for the _ldbn_ data base called _ldbn_ with a password _1234_. The new database user should have the following rights: _SELECT, INSERT, UPDATE, DELETE_
-
   * You can use a different database user and password, but then you have to change the PHP configuration of LDBN, which is located in _war/php/config.php_
 
 === Change the Run Configuration for the Eclipse Project ===
@@ -92,6 +91,7 @@ We need to create a new Eclipse run configuration for the project. Do the follow
  * In the _Run Configurations_ dialog go to _Web Applications_ and select _Ldbn.html_. Then select the _Arguments tab_. 
   * Under _Program arguments_ enter the following line: {{{-noserver -port 80 -startupUrl ldbn/Ldbn.html se.umu.cs.ldbn.Ldbn}}} 
   * Under _VM arguments_ enter the following line: {{{-Xmx256M}}}
+  * Change the working directory to _Other_ and enter: {{{/ldbn/war}}}
 
     http://ldbnonline.com/wiki/ldbn-run3.jpg
 
