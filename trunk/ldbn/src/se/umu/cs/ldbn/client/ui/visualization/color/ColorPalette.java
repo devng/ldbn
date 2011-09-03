@@ -1,14 +1,14 @@
 package se.umu.cs.ldbn.client.ui.visualization.color;
 
-import com.google.gwt.widgetideas.graphics.client.Color;
+import com.google.gwt.canvas.dom.client.CssColor;
 
 public interface ColorPalette {
 
 	public String getName();
 	
-	public Color nextColor();
+	public CssColor nextColor();
 	public void reset();
 	
-	public Color[] getAllColors();
+	public CssColor[] getAllColors();
 	
 }

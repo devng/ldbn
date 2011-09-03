@@ -1,14 +1,13 @@
 package se.umu.cs.ldbn.client.ui.window;
 
-import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Widget;
-
-import com.allen_sauer.gwt.dnd.client.AbstractDragController;
-import com.allen_sauer.gwt.dnd.client.drop.BoundaryDropController;
-
 import java.util.HashMap;
 
 import se.umu.cs.ldbn.client.ui.window.WindowPanel.DirectionConstant;
+
+import com.allen_sauer.gwt.dnd.client.AbstractDragController;
+import com.allen_sauer.gwt.dnd.client.drop.BoundaryDropController;
+import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Widget;
 
 public final class ResizeDragController extends AbstractDragController {
 

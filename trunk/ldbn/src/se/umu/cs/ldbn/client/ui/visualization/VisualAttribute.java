@@ -1,8 +1,9 @@
 package se.umu.cs.ldbn.client.ui.visualization;
 
 import se.umu.cs.ldbn.client.ui.SingleAttributeWidget;
+import se.umu.cs.ldbn.client.ui.visualization.color.CommonColors;
 
-import com.google.gwt.widgetideas.graphics.client.Color;
+import com.google.gwt.canvas.dom.client.CssColor;
 
 final class VisualAttribute extends SingleAttributeWidget {
 
@@ -18,15 +19,15 @@ final class VisualAttribute extends SingleAttributeWidget {
 	
 	private String name;
 	
-	private Color lastIncommingColor;
+	private CssColor lastIncommingColor;
 	
-	private Color lastOutcommingColor;
+	private CssColor lastOutcommingColor;
 
 	public VisualAttribute(String name, int attIndex) {
-		this(name, attIndex, Color.BLACK);
+		this(name, attIndex, CommonColors.BLACK);
 	}
 	
-	public VisualAttribute(String name, int attIndex, Color c) {
+	public VisualAttribute(String name, int attIndex, CssColor c) {
 		super(name);
 		positionArrowIn  = 0;
 		positionArrowOut = 0;
@@ -88,19 +89,19 @@ final class VisualAttribute extends SingleAttributeWidget {
 		return name;
 	}
 
-	public Color getLastIncommingColor() {
+	public CssColor getLastIncommingColor() {
 		return lastIncommingColor;
 	}
 
-	public void setLastIncommingColor(Color lastIncommingColor) {
+	public void setLastIncommingColor(CssColor lastIncommingColor) {
 		this.lastIncommingColor = lastIncommingColor;
 	}
 
-	public Color getLastOutcommingColor() {
+	public CssColor getLastOutcommingColor() {
 		return lastOutcommingColor;
 	}
 
-	public void setLastOutcommingColor(Color lastOutcommingColor) {
+	public void setLastOutcommingColor(CssColor lastOutcommingColor) {
 		this.lastOutcommingColor = lastOutcommingColor;
 	}
 }

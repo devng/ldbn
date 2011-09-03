@@ -1,18 +1,18 @@
 package se.umu.cs.ldbn.client.ui.visualization.color;
 
-import com.google.gwt.widgetideas.graphics.client.Color;
+import com.google.gwt.canvas.dom.client.CssColor;
 
 public class BlackPalette implements ColorPalette {
 	
 	private final String name;
-	private final Color[] colors;
+	private final CssColor[] colors;
 	
 	public BlackPalette() {
 		this.name = "Black Only";
-		colors = new Color[] {Color.BLACK};
+		colors = new CssColor[] {CssColor.make("#000000")};
 	}
 
-	public Color[] getAllColors() {
+	public CssColor[] getAllColors() {
 		return colors;
 	}
 
@@ -20,8 +20,8 @@ public class BlackPalette implements ColorPalette {
 		return name;
 	}
 	
-	public Color nextColor() {
-		return Color.BLACK;
+	public CssColor nextColor() {
+		return colors[0];
 	}
 	
 	public void reset() {

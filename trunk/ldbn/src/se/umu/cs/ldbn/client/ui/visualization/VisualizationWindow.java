@@ -2,7 +2,6 @@ package se.umu.cs.ldbn.client.ui.visualization;
 
 import java.util.List;
 
-import se.umu.cs.ldbn.client.Main;
 import se.umu.cs.ldbn.client.core.AttributeSet;
 import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.ui.visualization.color.BlackPalette;
@@ -14,11 +13,10 @@ import se.umu.cs.ldbn.client.ui.visualization.color.StandardPalette;
 import se.umu.cs.ldbn.client.ui.window.WindowPanel;
 import se.umu.cs.ldbn.client.utils.Common;
 
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.DeferredCommand;
-import com.google.gwt.user.client.IncrementalCommand;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
@@ -68,11 +66,11 @@ public final class VisualizationWindow extends WindowPanel
 
 	private SimplePanel menuWrapper;
 	
-	private int ieCanvasPasses;
+	//private int ieCanvasPasses;
 	
 	private VisualizationWindow() {
 		super("FD Visualization");
-		ieCanvasPasses = 0;
+		//ieCanvasPasses = 0;
 	}
 	
 	public void setData(AttributeSet attributes, List<FD> fds) {
@@ -102,7 +100,7 @@ public final class VisualizationWindow extends WindowPanel
 				curDiagramTypeIndex == 0 ? false : true,
 				curFDRenderIndex == 0 ? true : false);
 		show();
-		DeferredCommand.addCommand(new Command() {
+		Scheduler.get().scheduleDeferred(new Command() {
 			public void execute() {
 				int w = Math.max(drawer.getOffsetWidth(), 
 						menuWrapper.getOffsetWidth() + 8);
@@ -113,7 +111,7 @@ public final class VisualizationWindow extends WindowPanel
 				//VisualizationWindow.super.center();
 				//IE BUG canvas must be drawn twice 
 				if(Common.isAgentIE()) {
-					DeferredCommand.addCommand(new Command() {
+					Scheduler.get().scheduleDeferred(new Command() {
 						public void execute() {
 							setVisible(false);
 							setVisible(true);
@@ -135,7 +133,7 @@ public final class VisualizationWindow extends WindowPanel
 				zoomLevels[curZoomLevelIndex], 
 				curDiagramTypeIndex == 0 ? false : true,
 				curFDRenderIndex == 0 ? true : false);
-		DeferredCommand.addCommand(new Command() {
+		Scheduler.get().scheduleDeferred(new Command() {
 			public void execute() {
 				int w = Math.max(drawer.getOffsetWidth(), 
 						menuWrapper.getOffsetWidth() + 8);

@@ -1,63 +1,62 @@
 package se.umu.cs.ldbn.client.ui.visualization.color;
 
-import com.google.gwt.widgetideas.graphics.client.Color;
-
+import com.google.gwt.canvas.dom.client.CssColor;
 
 public final class OpenOfficePalette implements ColorPalette {
 	
 	private final String name;
-	private final Color[] colors;
+	private final CssColor[] colors;
 	private int curColor; 
 	
 	public OpenOfficePalette() {
 		this.name = "OpenOffice Style";
 		
-		colors = new Color[] {
+		colors = new CssColor[] {
 				//Open Office Chart Colors
-				new Color("#004586"),
-				new Color("#FF420E"),
-				new Color("#FFD320"),
-				new Color("#579D1C"),
-				new Color("#7E0021"),
-				new Color("#83CAFF"),
-				new Color("#314004"),
-				new Color("#AECF00"),
-				new Color("#4B1F6F"),
-				new Color("#FF950E"),
-				new Color("#C5000B"),
-				new Color("#0084D1"),
+				CssColor.make("#004586"),
+				CssColor.make("#FF420E"),
+				CssColor.make("#FFD320"),
+				CssColor.make("#579D1C"),
+				CssColor.make("#7E0021"),
+				CssColor.make("#83CAFF"),
+				CssColor.make("#314004"),
+				CssColor.make("#AECF00"),
+				CssColor.make("#4B1F6F"),
+				CssColor.make("#FF950E"),
+				CssColor.make("#C5000B"),
+				CssColor.make("#0084D1"),
 				
 				/*
 				 * //colors taken from http://www.hitmill.com/html/pastels.html Table 3
-				new Color("#5757FF"),
-				new Color("#62A9FF"),
-				new Color("#62D0FF"),
-				//new Color("#06DCFB"),
-				//new Color("#01FCEF"),
-				new Color("#03EBA6"),
-				new Color("#01F33E"),
+				CssColor.make("#5757FF"),
+				CssColor.make("#62A9FF"),
+				CssColor.make("#62D0FF"),
+				//CssColor.make("#06DCFB"),
+				//CssColor.make("#01FCEF"),
+				CssColor.make("#03EBA6"),
+				CssColor.make("#01F33E"),
 				
-				new Color("#7979FF"),
-				new Color("#86BCFF"),
-				new Color("#8ADCFF"),
-				//new Color("#3DE4FC"),
-				//new Color("#5FFEF7"),
-				new Color("#33FDC0"),
-				new Color("#4BFE78"),
+				CssColor.make("#7979FF"),
+				CssColor.make("#86BCFF"),
+				CssColor.make("#8ADCFF"),
+				//CssColor.make("#3DE4FC"),
+				//CssColor.make("#5FFEF7"),
+				CssColor.make("#33FDC0"),
+				CssColor.make("#4BFE78"),
 				
-				new Color("#9999FF"),
-				new Color("#99C7FF"),
-				new Color("#A8E4FF"),
-				//new Color("#75ECFD"),
-				//new Color("#92FEF9"),
-				new Color("#7DFDD7"),
-				new Color("#8BFEA8")
+				CssColor.make("#9999FF"),
+				CssColor.make("#99C7FF"),
+				CssColor.make("#A8E4FF"),
+				//CssColor.make("#75ECFD"),
+				//CssColor.make("#92FEF9"),
+				CssColor.make("#7DFDD7"),
+				CssColor.make("#8BFEA8")
 				*/
 		};
 		curColor = 0;
 	}
 
-	public Color[] getAllColors() {
+	public CssColor[] getAllColors() {
 		return colors;
 	}
 
@@ -65,9 +64,9 @@ public final class OpenOfficePalette implements ColorPalette {
 		return name;
 	}
 	
-	public Color nextColor() {
+	public CssColor nextColor() {
 		curColor %= colors.length;
-		Color r = colors[curColor];
+		CssColor r = colors[curColor];
 		curColor++;
 		return r;
 	}

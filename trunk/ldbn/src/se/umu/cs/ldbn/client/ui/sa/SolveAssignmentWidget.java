@@ -13,9 +13,9 @@ import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.core.Relation;
 import se.umu.cs.ldbn.client.i18n.I18N;
+import se.umu.cs.ldbn.client.io.AssignmentListEntry;
 import se.umu.cs.ldbn.client.io.AssignmentLoader;
 import se.umu.cs.ldbn.client.io.AssignmentLoaderCallback;
-import se.umu.cs.ldbn.client.io.AssignmentListEntry;
 import se.umu.cs.ldbn.client.io.Comment;
 import se.umu.cs.ldbn.client.io.CommentCallback;
 import se.umu.cs.ldbn.client.io.CommentListEntry;
@@ -24,12 +24,13 @@ import se.umu.cs.ldbn.client.ui.FDWidget;
 import se.umu.cs.ldbn.client.ui.HeaderWidget;
 import se.umu.cs.ldbn.client.ui.InfoButton;
 import se.umu.cs.ldbn.client.ui.dialog.CheckSolutionDialog;
+import se.umu.cs.ldbn.client.ui.dialog.CheckSolutionDialog.MSG_TYPE;
 import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialog;
 import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialogCallback;
-import se.umu.cs.ldbn.client.ui.dialog.CheckSolutionDialog.MSG_TYPE;
 import se.umu.cs.ldbn.client.utils.AssignmentGenerator;
 import se.umu.cs.ldbn.client.utils.Common;
 
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
@@ -37,7 +38,6 @@ import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
@@ -249,7 +249,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		Object sender = event.getSource();
 		if(sender == checkSolution) {
 			Main.get().showGlassPanelLoading();
-			DeferredCommand.addCommand(new Command() {
+			Scheduler.get().scheduleDeferred(new Command() {
 				public void execute() {
 					checkSolution();
 				}
@@ -260,7 +260,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 			if (Window.confirm("Are you sure you want to see the solution?\n" +
 					"This will erase all of your input!")) {
 				Main.get().showGlassPanelLoading();
-				DeferredCommand.addCommand(new Command() {
+				Scheduler.get().scheduleDeferred(new Command() {
 					public void execute() {
 						showSolution();
 					}
@@ -683,7 +683,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 			this.assignmentName.setText("");
 		}
 		
-		DeferredCommand.addCommand(new Command() {
+		Scheduler.get().scheduleDeferred(new Command() {
 			public void execute() {
 				Comment.get().send(SolveAssignmentWidget.this);
 			}

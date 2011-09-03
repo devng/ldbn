@@ -12,9 +12,9 @@ import se.umu.cs.ldbn.client.ui.dialog.RenameDialogCallback;
 import se.umu.cs.ldbn.client.ui.sa.GivenAttributesWidget;
 import se.umu.cs.ldbn.client.utils.Common;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Image;
@@ -89,7 +89,7 @@ public final class EditableGivenAttributesWidget extends GivenAttributesWidget
 		currentSaw = null;
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Collection getTakenNames() {
 		return map.values();
 	}

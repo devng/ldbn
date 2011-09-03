@@ -4,18 +4,7 @@
     "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app>
-  
-  <!-- Servlets -->
-  <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>se.umu.cs.ldbn.server.GreetingServiceImpl</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/ldbn/greet</url-pattern>
-  </servlet-mapping>
-  
+
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>Ldbn.html</welcome-file>

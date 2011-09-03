@@ -7,14 +7,11 @@
   <inherits name="com.google.gwt.http.HTTP" />
   <inherits name="com.google.gwt.i18n.I18N" />
   
-  <!-- GWT Incubator stuff-->
-  <inherits name='com.google.gwt.widgetideas.GWTCanvas'/>
-  
   <!-- D'n'D -->
   <inherits name="com.allen_sauer.gwt.dnd.gwt-dnd" />
   
   <!-- Add gwt-log support                                  -->
-  <inherits name="com.allen_sauer.gwt.log.gwt-log" />
+  <inherits name="com.allen_sauer.gwt.log.gwt-log-DEBUG" />
   <!--
     Enable experimental WindowLogger, which logs messages to a separate
     popup window. There are currently a couple of restrictions:
@@ -27,13 +24,13 @@
   	<!--
       You probably will want to disable the default `DivLogger` as well:
   	-->
-  	<set-property name="log_DivLogger" value="ENABLED" />
+  	<set-property name="log_DivLogger" value="DISABLED" />
     <!--
       The default log level is `OFF`. In development you'll usually want
       to switch to `DEBUG` level logging.
     -->
-   <extend-property name="log_level" values="INFO" />
-   <set-property    name="log_level" value="INFO" />
+   <extend-property name="log_level" values="OFF" />
+   <set-property    name="log_level" value="OFF" />
 
   <!-- Inherit the default GWT style sheet.  You can change       -->
   <!-- the theme of your GWT application by uncommenting          -->

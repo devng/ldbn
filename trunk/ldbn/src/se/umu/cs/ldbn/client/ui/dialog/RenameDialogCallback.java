@@ -6,7 +6,7 @@ public interface RenameDialogCallback {
 	String getOldName();
 	void setNewName(String s);
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	/**
 	 * The collection objects must implement the HasName interface.
 	 * For some reason if a class A inherits B, and u have a collection

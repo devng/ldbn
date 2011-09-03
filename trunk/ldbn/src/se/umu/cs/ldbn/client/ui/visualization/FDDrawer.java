@@ -8,13 +8,14 @@ import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.ui.visualization.color.ColorPalette;
 
+import com.google.gwt.canvas.client.Canvas;
+import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.canvas.dom.client.CssColor;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.widgetideas.graphics.client.Color;
-import com.google.gwt.widgetideas.graphics.client.GWTCanvas;
 
 final class FDDrawer extends AbsolutePanel {
 	
@@ -25,7 +26,8 @@ final class FDDrawer extends AbsolutePanel {
 	private List<FD> curFds;
 	private ColorPalette curPalette;
 	private int curZoom;
-	private GWTCanvas canvas;
+	private Canvas canvas;
+	private Context2d canvasContext;
 	private boolean isType2Diagram;
 	private boolean useForwardOrder;
 	private int curFDHeight;
@@ -62,7 +64,7 @@ final class FDDrawer extends AbsolutePanel {
 		}
 		this.add(hp, 10, 10);
 		//calls initSizeAndCanvas after all VisualAttributes are attached
-		DeferredCommand.addCommand(new Command() {
+		Scheduler.get().scheduleDeferred(new Command() {
 			public void execute() {
 				initSizeAndCanvas();
 				drawCanvas();
@@ -92,15 +94,19 @@ final class FDDrawer extends AbsolutePanel {
 		attHeight += (VA_MARGIN  << 1);
 		int toalHeight = attHeight + (25 + 10 * curZoom) + curFds.size() * curFDHeight;
 		this.setPixelSize(totalWidth + 20, toalHeight);
-		this.canvas = new GWTCanvas(totalWidth, toalHeight-attHeight);
+		this.canvas = Canvas.createIfSupported();
+		// TODO what if it is not supported
+		canvas.setCoordinateSpaceHeight(toalHeight);
+		canvas.setCoordinateSpaceWidth(totalWidth);
+		canvasContext = canvas.getContext2d();
 		this.add(canvas, 10, 10+attHeight);
 		if(curZoom > 2) {
-			canvas.setLineWidth(2);
+			canvasContext.setLineWidth(2);
 		}
 	}
 	
 	public void drawCanvas() {
-		Color color;
+		CssColor color;
 		int curH = (25 + 10 * curZoom) + (curFds.size()-1) * curFDHeight;
 		if(isType2Diagram) {
 			curH -= 15; 
@@ -110,8 +116,8 @@ final class FDDrawer extends AbsolutePanel {
 			useForwardOrder ? i >= 0 : i < curFds.size(); ) {
 			
 			color  = curPalette.nextColor();
-			canvas.setFillStyle(color);
-			canvas.setStrokeStyle(color);
+			canvasContext.setFillStyle(color);
+			canvasContext.setStrokeStyle(color);
 			FD fd = curFds.get(i);
 			AttributeSet lhs = fd.getLHS();
 			AttributeSet rhs = fd.getRHS();
@@ -169,29 +175,31 @@ final class FDDrawer extends AbsolutePanel {
 			va.setHasIncommingArrow(false);
 			va.setHasOutgoingArrow(false);
 		}
-		canvas.clear();
+		canvasContext.clearRect(0, 0, 
+			canvas.getCoordinateSpaceWidth(), 
+			canvas.getCoordinateSpaceHeight());
 		drawCanvas();
 	}
 	
 	private void drawLine(double x1, double y1, double x2, double y2) {
-		canvas.beginPath();
-		canvas.moveTo(x1+0.1, y1+0.1);
-		canvas.lineTo(x2+0.1, y2+0.1);
-		canvas.stroke();
+		canvasContext.beginPath();
+		canvasContext.moveTo(x1+0.1, y1+0.1);
+		canvasContext.lineTo(x2+0.1, y2+0.1);
+		canvasContext.stroke();
 	}
 	
 	private void drawTriangle(double x, double y) {
 		x += 0.1; y += 0.1;
-		canvas.saveContext();
-		canvas.setLineWidth(1);
-		canvas.beginPath();
-		canvas.moveTo(x, y);
-		canvas.lineTo(x+5, y+10);
-		canvas.lineTo(x-5, y+10);
-		canvas.closePath();
-		canvas.stroke();
-		canvas.fill();
-		canvas.restoreContext();
+		canvasContext.save();
+		canvasContext.setLineWidth(1);
+		canvasContext.beginPath();
+		canvasContext.moveTo(x, y);
+		canvasContext.lineTo(x+5, y+10);
+		canvasContext.lineTo(x-5, y+10);
+		canvasContext.closePath();
+		canvasContext.stroke();
+		canvasContext.fill();
+		canvasContext.restore();
 	}
 	
 	private void drawConnectionLine(int x1, int x2, int h, FD f) {
@@ -200,7 +208,7 @@ final class FDDrawer extends AbsolutePanel {
 			if(va.hasOutgoingArrow()) {
 				int p = va.getPositionArrowOut();
 				if(f.getLHS().containsAtt(va.getAttIndex())) {
-					Color c2 = va.getLastOutcommingColor();
+					CssColor c2 = va.getLastOutcommingColor();
 					drawConnection(p, h, c2);
 				} else if(x1 < p && p < x2) {
 					drawLine(x1, h, p-4, h);
@@ -211,12 +219,12 @@ final class FDDrawer extends AbsolutePanel {
 			if(va.hasIncommingArrow()) {
 				int p = va.getPositionArrowIn();
 				if(f.getRHS().containsAtt(va.getAttIndex())) {
-					canvas.saveContext();
-					Color color  = va.getLastIncommingColor();
-					canvas.setFillStyle(color);
-					canvas.setStrokeStyle(color);
+					canvasContext.save();
+					CssColor color  = va.getLastIncommingColor();
+					canvasContext.setFillStyle(color);
+					canvasContext.setStrokeStyle(color);
 					drawTriangle(p, h+1);
-					canvas.restoreContext();
+					canvasContext.restore();
 				} else {
 					if(x1 < p && p < x2) {
 						drawLine(x1, h, p-4, h);
@@ -230,27 +238,27 @@ final class FDDrawer extends AbsolutePanel {
 	}
 	
 	private void drawArc (double x, double y) {
-		canvas.beginPath();
-		canvas.arc(x+0.1, y+0.1, 4, Math.PI, 0, false);
-		canvas.stroke();
+		canvasContext.beginPath();
+		canvasContext.arc(x+0.1, y+0.1, 4, Math.PI, 0, false);
+		canvasContext.stroke();
 	}
 	
-	private void drawConnection (double x, double y, Color c2) {
+	private void drawConnection (double x, double y, CssColor c2) {
 		x += 0.1; y += 0.1;
-		canvas.saveContext();
-		canvas.setFillStyle(c2);
-		canvas.setStrokeStyle(c2);
-		canvas.beginPath();
-		canvas.arc(x, y, 3, 0, Math.PI, false);
-		canvas.closePath();
-		canvas.stroke();
-		canvas.fill();
-		canvas.restoreContext();
+		canvasContext.save();
+		canvasContext.setFillStyle(c2);
+		canvasContext.setStrokeStyle(c2);
+		canvasContext.beginPath();
+		canvasContext.arc(x, y, 3, 0, Math.PI, false);
+		canvasContext.closePath();
+		canvasContext.stroke();
+		canvasContext.fill();
+		canvasContext.restore();
 		
-		canvas.beginPath();
-		canvas.arc(x, y, 3, Math.PI, 0, false);
-		canvas.closePath();
-		canvas.stroke();
-		canvas.fill();
+		canvasContext.beginPath();
+		canvasContext.arc(x, y, 3, Math.PI, 0, false);
+		canvasContext.closePath();
+		canvasContext.stroke();
+		canvasContext.fill();
 	}
 }

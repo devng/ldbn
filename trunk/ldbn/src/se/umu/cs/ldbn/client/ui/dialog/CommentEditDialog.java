@@ -1,12 +1,12 @@
 package se.umu.cs.ldbn.client.ui.dialog;
 
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.Widget;
-
 import se.umu.cs.ldbn.client.io.CommentEdit;
 import se.umu.cs.ldbn.client.io.CommentEditCallback;
 import se.umu.cs.ldbn.client.io.CommentListEntry;
 import se.umu.cs.ldbn.client.utils.Common;
+
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.Widget;
 
 public class CommentEditDialog extends OkCancelDialog {
 	

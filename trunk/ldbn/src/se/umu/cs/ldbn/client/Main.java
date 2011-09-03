@@ -16,11 +16,11 @@ import se.umu.cs.ldbn.client.utils.Common;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Window.Location;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Panel;
@@ -33,7 +33,7 @@ import com.google.gwt.user.client.ui.TabPanel;
 public final class Main implements EntryPoint, 
 	SelectionHandler<Integer>, LoginListener {
 	
-	public static String VERSION = "1.1.05122010";
+	public static String VERSION = "1.1.110904";
 	
 	public static final int WIDTH_PX;
 	
@@ -98,7 +98,7 @@ public final class Main implements EntryPoint,
 	public void onModuleLoad() {
 		Log.setUncaughtExceptionHandler();
 		//used by the logger!
-		DeferredCommand.addCommand(new Command() {
+		Scheduler.get().scheduleDeferred(new Command() {
 			public void execute() {
 				onModuleLoad2();
 			}
@@ -148,7 +148,7 @@ public final class Main implements EntryPoint,
 		glass = new GlassPanel(mainPanel);
 		DOM.setInnerHTML(RootPanel.get("loading").getElement(), 
 				"<table width=\""+WIDTH_PX+"px\" border=\"0\" style=\"color: gray; text-decoration:none;\"><tr>" +
-				"<td style=\"text-align:left; font-size:x-small\">Copyright &copy; 2008 - 2010 " +
+				"<td style=\"text-align:left; font-size:x-small\">Copyright &copy; 2008 - 2011 " +
 				"<a href=\"mailto:ens07ngv@cs.umu.se\" style=\"color: gray; text-decoration:none;\">" +
 				"Nikolay Georgiev</a></td>"+
 				"<td style=\"text-align: right; font-size:x-small\">Version: " + VERSION +"</td>"+

@@ -1,9 +1,9 @@
 package se.umu.cs.ldbn.client.io;
 
-import com.google.gwt.user.client.Window;
-
 import se.umu.cs.ldbn.client.io.LdbnParser.LDBN_TYPE;
 import se.umu.cs.ldbn.client.io.LdbnParser.MSG_TYPE;
+
+import com.google.gwt.user.client.Window;
 
 public class UserAdminList extends AbstractRequestSender {
 	
