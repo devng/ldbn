@@ -14,6 +14,7 @@ It is assumed that we use GWT ver. 1.7.1.
  * Install the Subclipse Eclipse Plugin for accessing the SVN server. More information on Subclipse and installation notes can be found [http://subclipse.tigris.org/ here].
 
  * Install the Google Plugin for Eclipse 3.5 (Galileo) as described [http://code.google.com/eclipse/docs/install-eclipse-3.5.html here]. This will install GWT ver. 1.7.1 . Install all other components of the plugin, although we do not need an App Engine support for the time being. 
+  * Recent version of the plugin do not come bundled with GWT ver. 1.7.1. You need to manually download the proper version from http://code.google.com/webtoolkit/versions.html . Then you need to configure the plugin to use that version. This is done in _Window->Preferences->Google->Web Toolkit_ Just add the GWT SDK in the list and make it the default GWT SDK.
 
 == Checking out the LDBN Project from the Repository ==
 
