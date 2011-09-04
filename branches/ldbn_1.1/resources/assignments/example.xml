@@ -1,0 +1,51 @@
+<ldbn type="msg">
+	<msg type="error">Unknown database 'ldbn2'.</msg>
+</ldbn>
+
+<ldbn type="msg">
+	<msg type="warn">DB did not returned any assignments.</msg>
+</ldbn>
+
+<ldbn type="msg">
+	<msg type="ok">Assignment is stored in the DB.</msg>
+</ldbn>
+
+<ldbn type="assignment_list">
+	<entry id="1" name="test-1" author="admin" author_id="1" last_modified="2008-06-16 21:19:55"/>
+	<entry id="2" name="test-minimal-cover" author="ngg" author_id="2" last_modified="2008-07-24 02:13:32"/>
+</ldbn>
+
+<ldbn type="comments_list" assignment_id="1">
+	<comment id="1" author="admin" author_id="1" last_modified="2008-06-16 21:19:55">base64string</comment>
+	<comment id="2" author="ngg" author_id="2" last_modified="2008-07-24 02:13:32">base64string</comment>
+</ldbn>
+
+<ldbn type="session">
+	<session id="1" />
+	<user id="2" />
+	<email val="nino@gbg.bg" />
+</ldbn>
+
+<ldbn type="assignment">
+	<att>a</att>
+	<att>b</att>
+	<att>c</att>
+	<att>d</att>
+	<fd>
+		<lhs>
+			<fdatt>a</fdatt>
+			<fdatt>b</fdatt>
+		</lhs>
+		<rhs>
+			<fdatt>c</fdatt>
+		</rhs>
+	</fd>
+	<fd>
+		<lhs>
+			<fdatt>c</fdatt>
+		</lhs>
+		<rhs>
+			<fdatt>d</fdatt>
+		</rhs>
+	</fd>
+</ldbn>
