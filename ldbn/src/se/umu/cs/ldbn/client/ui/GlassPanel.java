@@ -29,7 +29,6 @@ public class GlassPanel extends Composite {
        initWidget(panel);
        panel.setSize(Main.WIDTH_PX+"px", "10000px");
        this.parent = parent;
-       //this.parent = RootPanel.get();
        panel.setStylePrimaryName("glassPanel");
    }
    

@@ -13,7 +13,6 @@ public abstract class OkCancelDialog extends BaseDialog {
 	
 	public OkCancelDialog(String title, boolean modal) {
 		super(title,  modal);
-		//setText(title);
 		closeButton.setText("Cancel");
 	}
 	
@@ -21,7 +20,6 @@ public abstract class OkCancelDialog extends BaseDialog {
 	@Override
 	public void onClick(ClickEvent event) {
 		Object sender = event.getSource();
-		System.out.println("Test");
 		if(sender == closeButton) {
 			onCancelClick();
 		} else if (sender == okButton) {

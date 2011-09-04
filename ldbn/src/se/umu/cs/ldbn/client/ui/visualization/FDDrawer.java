@@ -39,7 +39,6 @@ final class FDDrawer extends AbsolutePanel {
 		super();
 		isCanvasSupported = Canvas.isSupported();
 		if (!isCanvasSupported) {
-			I18N.get();
 			this.add(new Label(I18N.constants().canvasNotSupported()));
 		}
 		DOM.setStyleAttribute(this.getElement(), "background", "white");

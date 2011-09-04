@@ -165,9 +165,6 @@ public abstract class WindowPanel extends com.google.gwt.user.client.ui.FocusPan
 		boolean wrapContentInScrollPanel = useScrollPanel();
 		this.windowController = Main.get().getWindowController();
 		this.resizable = resizable;
-		// bug must have greater z order than other elements
-		DOM.setStyleAttribute(this.getElement(), "zIndex", "1000");
-		
 		Grid header = new Grid(1, 2);
 		header.setStyleName("dw-header");
 		header.setWidth("100%");
@@ -193,8 +190,7 @@ public abstract class WindowPanel extends com.google.gwt.user.client.ui.FocusPan
 		});
 		cf.setAlignment(0, 1, HasHorizontalAlignment.ALIGN_RIGHT,
 				HasVerticalAlignment.ALIGN_TOP);
-		com.google.gwt.user.client.Element e = cf.getElement(0, 1);
-		DOM.setStyleAttribute(e, "width", "15px");
+		DOM.setStyleAttribute(cf.getElement(0, 1), "width", "15px");
 
 		this.headerWidget = header;
 
@@ -231,7 +227,19 @@ public abstract class WindowPanel extends com.google.gwt.user.client.ui.FocusPan
 		DOM.setStyleAttribute(this.getElement(), "background", "#F6F6F6");
 		//setAnimationEnabled(false);
 		this.setVisible(false);
-		RootPanel.get().add(this, 0, 0);
+		
+		/*
+		 * We add the window in the same static contex as the Main.mainPanel. 
+		 * Then we give each instance of WindowPanel z-index: 1, 
+		 * thus ensuring the window is infront of the other content.
+		 * This also ensures that the drag-and-drop proxies are not covered
+		 * by instances of WindowPanel, since they are added to another
+		 * static contex, namely RootPanel.get().
+		 * 
+		 * @see http://css-discuss.incutio.com/wiki/Overlapping_And_ZIndex
+		 */
+		this.getElement().getStyle().setZIndex(1);
+		RootPanel.get(Main.MAIN_DIV_ID).add(this, 0, 0);
 	}
 
 	public int getContentHeight() {
@@ -244,11 +252,14 @@ public abstract class WindowPanel extends com.google.gwt.user.client.ui.FocusPan
 
 	public void moveBy(int right, int down) {
 		AbsolutePanel parent = (AbsolutePanel) getParent();
-		Location location = new WidgetLocation(this, parent);
+		Location location = new WidgetLocation(WindowPanel.this, parent);
 		int left = location.getLeft() + right;
 		int top = location.getTop() + down;
-		//setPopupPosition(left, top);
-		parent.setWidgetPosition(this, left, top);
+		// no static positions
+		if(left == -1 && top == -1) { 
+			left = -2;
+		}
+		parent.setWidgetPosition(WindowPanel.this, left, top);
 	}
 
 	public void setContentSize(int width, int height) {
@@ -317,6 +328,7 @@ public abstract class WindowPanel extends com.google.gwt.user.client.ui.FocusPan
 	public void show() {
 		//this method is implemented very badly, we should find a better solution
 		setVisible(true);
+		
 		Scheduler.get().scheduleDeferred(new Command() {
 			public void execute() {
 				//offset size is only available after the Widget is attached to the DOM
