@@ -38,11 +38,10 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public abstract class WindowPanel extends SimplePanel /*PopupPanel*/ {
+public abstract class WindowPanel extends com.google.gwt.user.client.ui.FocusPanel {
 
 	/**
 	 * WindowPanel direction constant, used in
@@ -139,6 +138,8 @@ public abstract class WindowPanel extends SimplePanel /*PopupPanel*/ {
 	protected Widget eastWidget;
 
 	protected Grid grid = new Grid(3, 3);
+	
+	private boolean initialLoad = false;
 
 	protected Widget headerWidget;
 
@@ -164,6 +165,8 @@ public abstract class WindowPanel extends SimplePanel /*PopupPanel*/ {
 		boolean wrapContentInScrollPanel = useScrollPanel();
 		this.windowController = Main.get().getWindowController();
 		this.resizable = resizable;
+		// bug must have greater z order than other elements
+		DOM.setStyleAttribute(this.getElement(), "zIndex", "1000");
 		
 		Grid header = new Grid(1, 2);
 		header.setStyleName("dw-header");
@@ -192,7 +195,6 @@ public abstract class WindowPanel extends SimplePanel /*PopupPanel*/ {
 				HasVerticalAlignment.ALIGN_TOP);
 		com.google.gwt.user.client.Element e = cf.getElement(0, 1);
 		DOM.setStyleAttribute(e, "width", "15px");
-
 
 		this.headerWidget = header;
 
@@ -275,7 +277,8 @@ public abstract class WindowPanel extends SimplePanel /*PopupPanel*/ {
 	@Override
 	protected void onLoad() {
 		super.onLoad();
-		if (contentOrScrollPanelWidget.getOffsetHeight() != 0) {
+		if (!initialLoad && contentOrScrollPanelWidget.getOffsetHeight() != 0) {
+			initialLoad = true;
 			headerWidget.setPixelSize(headerWidget.getOffsetWidth(),
 					headerWidget.getOffsetHeight());
 			setContentSize(contentOrScrollPanelWidget.getOffsetWidth(),

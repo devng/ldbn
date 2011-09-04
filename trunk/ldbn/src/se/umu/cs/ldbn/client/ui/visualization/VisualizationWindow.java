@@ -11,7 +11,6 @@ import se.umu.cs.ldbn.client.ui.visualization.color.OpenOfficePalette;
 import se.umu.cs.ldbn.client.ui.visualization.color.PastelPalette;
 import se.umu.cs.ldbn.client.ui.visualization.color.StandardPalette;
 import se.umu.cs.ldbn.client.ui.window.WindowPanel;
-import se.umu.cs.ldbn.client.utils.Common;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -66,11 +65,8 @@ public final class VisualizationWindow extends WindowPanel
 
 	private SimplePanel menuWrapper;
 	
-	//private int ieCanvasPasses;
-	
 	private VisualizationWindow() {
 		super("FD Visualization");
-		//ieCanvasPasses = 0;
 	}
 	
 	public void setData(AttributeSet attributes, List<FD> fds) {
@@ -110,14 +106,14 @@ public final class VisualizationWindow extends WindowPanel
 				//setVisible(true);
 				//VisualizationWindow.super.center();
 				//IE BUG canvas must be drawn twice 
-				if(Common.isAgentIE()) {
-					Scheduler.get().scheduleDeferred(new Command() {
-						public void execute() {
-							setVisible(false);
-							setVisible(true);
-						}
-					});
-				}
+//				if(Common.isAgentIE()) {
+//					Scheduler.get().scheduleDeferred(new Command() {
+//						public void execute() {
+//							setVisible(false);
+//							setVisible(true);
+//						}
+//					});
+//				}
 				isCentering = false;
 			}
 		});
