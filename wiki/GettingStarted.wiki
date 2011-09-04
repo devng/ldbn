@@ -3,7 +3,7 @@
 
 = Getting Started with LDBN =
 
-In this guide we will use Eclipse IDE (version 3.6 Galileo for Java EE Developers) on Windows XP, but the installation should be similar for other Eclipse versions and OS (a Linux installation guide will follow soon).  
+In this guide we will use Eclipse IDE (version 3.6 Helios for Java EE Developers) on Windows XP, but the installation should be similar for other Eclipse versions and OS (a Linux installation guide will follow soon).  
 
 It is assumed that we use GWT ver. 2.3.0.
 
