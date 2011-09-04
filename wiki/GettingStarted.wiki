@@ -3,7 +3,7 @@
 
 = Getting Started with LDBN =
 
-In this guide we will use Eclipse IDE (version 3.5 Galileo for Java EE Developers) on Windows XP, but the installation should be similar for other Eclipse versions and OS (a Linux installation guide will follow soon).  
+In this guide we will use Eclipse IDE (version 3.6 Galileo for Java EE Developers) on Windows XP, but the installation should be similar for other Eclipse versions and OS (a Linux installation guide will follow soon).  
 
 It is assumed that we use GWT ver. 2.3.0.
 
@@ -13,7 +13,7 @@ It is assumed that we use GWT ver. 2.3.0.
 
  * Install the Subclipse Eclipse Plugin for accessing the SVN server. More information on Subclipse and installation notes can be found [http://subclipse.tigris.org/ here].
 
- * Install the Google Plugin for Eclipse as described [http://code.google.com/eclipse/docs/install-eclipse-3.5.html here]. This should install the GWT 2.3.0 SDK as well. Install all other components of the plugin, although we do not need an App Engine support for the time being. 
+ * Install the Google Plugin for Eclipse as described [http://code.google.com/eclipse/docs/install-eclipse-3.6.html here]. This should install the GWT 2.3.0 SDK as well. Install all other components of the plugin, although we do not need an App Engine support for the time being. 
   * If a you need another version of the GWT SDK then you need to manually download it form [http://code.google.com/webtoolkit/versions.html here]. 
   * Then you need to configure the plugin to use that version. This is done in _Window->Preferences->Google->Web Toolkit_. Just add the GWT SDK in the list and make it the default GWT SDK.
 
