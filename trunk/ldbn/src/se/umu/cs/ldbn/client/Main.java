@@ -71,11 +71,11 @@ public final class Main implements EntryPoint,
 	}
 	
 	public static final String REPLACE_LOADING = 
-		"<table width=\""+WIDTH_PX+"px\" border=\"0\" style=\"color: gray; text-decoration:none;\"><tr>" +
+		"<table width=\"" + WIDTH_PX + "px\" border=\"0\" style=\"color: gray; text-decoration:none;\"><tr>" +
 		"<td style=\"text-align:left; font-size:x-small\">Copyright &copy; 2008 - 2011 " +
 		"<a href=\"mailto:ens07ngv@cs.umu.se\" style=\"color: gray; text-decoration:none;\">" +
 		"Nikolay Georgiev</a></td>"+
-		"<td style=\"text-align: right; font-size:x-small\">Version: " + VERSION +"</td>"+
+		"<td style=\"text-align: right; font-size:x-small\">Version: " + VERSION + "</td>"+
 		"</tr></table>";
 	
 	
@@ -105,8 +105,6 @@ public final class Main implements EntryPoint,
 	private AbsolutePanel tabCA;
 	private boolean isTabCALoaded;
 	private boolean isTabAdminLoaded;
-	
-
 	
 	private Main() {
 		super();
