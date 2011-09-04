@@ -1,0 +1,55 @@
+\chapter{Conclusions}
+\label{chap:conclusion}
+As the core of a previous thesis~\cite{mt1},
+a Web-based environment for learning normalization of relational database schemata
+called LDBN 1.0 (Learn DataBase Normalization) was developed to
+enhance teaching and learning of relational-database normalization. 
+In this thesis we developed some crucial extensions to LDBN.
+
+The main design goal of this project was to develop an extension of the system which is capable of 
+visualizing FDs. The visualization approach is based
+upon templates found in popular textbooks such as~\cite{bdb1} and~\cite{bdb2}. 
+A secondary goals of the
+thesis was to increase the usability of the system by: 
+
+\begin{enumerate}
+	\item reducing the number of unnecessary assignments
+	submitted to the system;
+	\item emphasizing assignments submitted by database course lecturers;
+	\item giving more control to lecturers over the system.
+\end{enumerate}
+
+Another major goal was the
+development of a user-friendly, fast and most importantly robust
+user interface (UI) for the new features of the system. 
+Indeed, the UI is one of the key features of LDBN 1.1 and critical for its
+success. Therefore, during the implementation process 
+most of our efforts were concentrated on the development and on the improvement of the UI. 
+We believe that it will be well received by both students and lecturers.
+Furthermore, we hope that advanced features such as drag and drop will 
+increase the usability of the environment.
+
+It should be mentioned that LDBN is developed as an open source project 
+under the Apache License, Version 2.0~\cite{walv20}. 
+Source code and documentation are available at the project Web page~\cite{wldbnpp}. 
+The development of LDBN will continue, and we
+hope that soon a community will be
+built around the project, and that it will attract other developers as well. 
+Possible directions for improving LDBN 1.1 are presented in the following section. 
+
+\section{Limitations and Future Work}
+There are many other approaches for visualizing FDs.
+A logical next step for LDBN 1.1 would be to support
+even more types of visualization diagrams. 
+However, this was not a requirement for the thesis and we believe the provided 
+visualization is sufficient at the moment. 
+
+Another possible direction for future development is support for printing the visualization output.
+However, this is not possible at the moment as it would require rendering the visualization on the server side as
+a static image file and sending it back to the client. 
+This is complicated by the fact that our visualization relies heavily on
+the \verb=<canvas>= HTML5-element which is only available on the client. 
+A rendering on the server side would require a totally different approach. 
+Support for printing was more of a desire than a requirement and was therefore not implemented 
+in the final version of LDBN, on the other hand, the user can still print the visualization output
+by using screen capture.

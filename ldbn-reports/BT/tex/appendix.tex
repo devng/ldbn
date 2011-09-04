@@ -1,0 +1,253 @@
+\chapter{Glossary}
+\label{chap:glossary}
+
+\begin{description}
+	\item[AJAX] \emph{Asynchronous JavaScript And XML} Asynchronous JavaScript And XML is a group of interrelated web development techniques used for creating interactive web applications, for more details see Section~\ref{sec:copdp}.
+	
+	\item[API] An \emph{Application Programming Interface} is a set of functions, procedures or classes that an operating system, library or service provides to support requests made by computer programs~\cite{wapi}.
+	
+	\item[CSS] \emph{Cascading Style Sheets} is a stylesheet language used to describe the presentation of a document written in HTML.
+	
+	\item[DAO] A \emph{Data Access Object} is an object that provides an abstract interface to some type of database or persistence mechanism (in our case Hibernate), providing some specific operations without exposing details of the database. 
+	
+	\item[DBMS] A \emph{Database Management System} is a complex set of software programs that controls the organization, storage, management, and retrieval of data in a database.
+	
+	\item[DOM] The \emph{Document Object Model} is a platform- and language-neutral interface that 
+	  allows programs and scripts to dynamically access and update the content, structure and 
+	  style of documents~\cite{w3-dom}.
+	  
+	\item[ELBS] \emph{Elektronische Lehrbuchsammlung} refers to the E-Book viewer described in this diploma thesis. 
+	We distinguish between two versions of ELBS - the initial or original version is referred as ELBS 1.0, and 
+	the improved version, discussed in this report, as ELBS 1.1. 
+		
+	\item[GUI] \emph{A Graphical User Interface.}
+	
+	\item[GWT] \emph{Google Web Toolkit} is an open source Java software development framework that allows web developers to create AJAX applications in Java. More details in Section~\ref{sec:copdp}.
+	
+	\item[JDBC] \emph{Java Database Connectivity} JDBC is an API for the Java programming language that defines how a client may access a database management systems.
+	
+	\item[JUnit] is a unit testing framework for the Java programming language~\cite{wjunit}.
+	
+	\item[LDAP] The \emph{Lightweight Directory Access Protocol} is an application protocol for querying and modifying data of directory services using the Internet Protocol (IP). A directory is a set of objects with hierarchically organized attributes. 
+	
+	\item[MFC] \emph{Microsoft Foundation Classes} is a library that wraps portions of the Win32 API in C++ classes, 
+including functionality that enables them to use a default application framework.
+	
+	\item[OCR] \emph{Optical Character Recognition} is the process of extracting text from image materials.
+	
+	\item[ODBC] \emph{Open Database Connectivity} provides a standard software API method for using database management systems.
+	
+	\item[PDF] \emph{Portable Document Format} is for document exchange, developed by Adobe. 
+	One of the advantages of the format is the fact that it encapsulates a complete description of the document, which includes the text, fonts, images, and 2D vector graphics.
+	
+%	\item[RPC] \emph{Remote Procedure Call} is an inter-process communication technology that allows a computer program to cause a subroutine or procedure to execute in another address space.
+	
+	\item[Samba] Samba is a free implementation of the Server Message Block (SMB) protocol, which is 
+	used to provide shared access to files between computers on a network.
+	
+	\item[SQL] \emph{Structured Query Language} is a computer language designed for the retrieval and management of data in relational database management systems, database schema creation and modification, and database object access control management.
+	
+	\item[Swing] A Java API for developing GUIs.
+	
+	\item[XML] \emph{Extensible Markup Language}. It presents a descriptive, system-independent markup language 
+for description of electronic text, which inherits from SGML and 
+also has a notion of different documents as instances of document types.
+	
+	\item[XMLHttpRequest] is an API that can be used by JavaScript and other web browser scripting languages to transfer asynchronously XML and other text data between a web server and a browser.
+\end{description}
+
+\chapter{Code Examples}
+\label{chap:codeexamples}
+
+Some of the code examples that illustrate key features of our system are presented in this chapter.
+
+
+\begin{lstlisting}[caption={Qt Hello World GUI Program}, label={listing:qthelloworld}]
+#include <QApplication>
+#include <QPushButton>
+
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+	
+    QPushButton button("Quit");
+    button.show();
+	
+    QObject::connect(&button, SIGNAL(clicked()),
+        &a, SLOT(quit()));
+	
+    return a.exec();
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={User Class - Example of Hibernate Mapping Using Annotations}, label={listing:userhibernate}]
+@Entity
+@Table(name = "user")
+public class User implements Serializable 
+{	
+	@Id
+	@Column(name = "user_id", unique = true, nullable = false)
+	private Integer id;
+	
+	@Column(name = "username", unique = true, nullable = false, length = 100)
+	private String username;
+	
+	@Column(name = "user_type", nullable = false)
+	@Enumerated(EnumType.ORDINAL) 
+	private UserTypeEnum type;
+	
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "user_group_association", 
+			joinColumns = { @JoinColumn(name = "user_id") }, 
+			inverseJoinColumns = { @JoinColumn(name = "ug_id") })
+	private Set<UserGroup> userGropus = new HashSet<UserGroup>(0);
+	
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "user_rights_association", 
+			joinColumns = { @JoinColumn(name = "user_id") }, 
+			inverseJoinColumns = { @JoinColumn(name = "ur_id") })
+	private Set<UserRight>  userRights = new HashSet<UserRight>(0);
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Example of a Typical Win32 Program for Producing Screenshots. 
+This program cannot copy a page from the ELBS Viewer.}, label={listing:srcshot}]
+#include <windows.h>
+
+bool SaveBMPFile(char *filename, HBITMAP bitmap, HDC bitmapDC);
+
+bool ScreenCapture(char *filename)
+{
+   // Create a normal DC and a memory DC for the entire screen. The 
+   // device context (DC)  provides a "snapshot" of the screen contents. The 
+   // memory DC keeps a copy of this "snapshot" in the associated 
+   // bitmap. 
+   HDC hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL); 
+   HDC hdcCompatible = CreateCompatibleDC(hdcScreen); 
+   
+   // Create a compatible bitmap for hdcScreen. 
+   HBITMAP hbmScreen = CreateCompatibleBitmap(hdcScreen, 
+                     GetDeviceCaps(hdcScreen, HORZRES), 
+                     GetDeviceCaps(hdcScreen, VERTRES)); 
+
+   // Select the bitmaps into the compatible DC. 
+   SelectObject(hdcCompatible, hbmScreen)
+   
+   // copy from the screen to my bitmap
+   // Copy color data for the entire display into a 
+   // bitmap that is selected into a compatible DC. 
+   BitBlt(hdcCompatible, 0,0, 
+      GetDeviceCaps(hdcScreen, HORZRES), 
+      GetDeviceCaps(hdcScreen, VERTRES), 
+      hdcScreen, 0,0, SRCCOPY))
+   
+   // save the bitmap
+   bool ret = SaveBMPFile(filename, hbmScreen, hdcCompatible); 
+   
+   // free the bitmap memory
+   DeleteObject(hbmScreen);  
+   
+   return ret;
+}
+   
+int main()
+{
+   ScreenCapture("c:\\testScreenCap.bmp");
+   return 0;
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[caption={Example of a Bookmark File for the ELBS Viewer.}, label={listing:bookmarks}]
+# Page offest is optional and it is
+# used for adjusting the logical page number 
+# to the actual page scan number
+page_offset = 11
+# Kapitel 1
+- Ohr = 1
+--  Anatomiec und Physiologie = 1  
+--- Äeßeres Ohr = 1  
+--- Mittleohr = 2
+--- Innenohr = 4
+--- Der Hörvorgang = 6
+--- Zentrale Verbindungen von Hörß und Gleichgewichtsorgan = 9
+-- Leitsymptome = 9
+-- Morphologische Diagnostik und Funktionsprüfungen des Hörorgans = 12
+-- Untersuchungen des verstibulären Systems = 24 
+-- Der Nervus facialis = 247
+-- Klinik des Außeren Ohrs = 30
+-- Klinik des Mittleohrs = 36
+-- Klinik des Innenohrs = 51
+-- Schwerhörigkeit und Hörgerätversorgung = 62
+-- Cochler Implantant = 63
+-- Akustikusneurinom = 64
+# Die restlichen Kapitel...
+\end{lstlisting}
+
+
+\chapter{Additional Screenshots and Figures}
+\label{chap:screenshots}
+
+Additional images and graphics described in this diploma thesis are
+shown below.
+
+\begin{figure}[htb]
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{./img/elbs11mw2}
+		\caption{Bookmarks in ELBS Viewer Version 1.1}
+		\label{fig:elbs11mw2}
+	\end{center}
+\end{figure} 
+
+\begin{figure}[htb]
+	\begin{center}
+		\includegraphics[width=0.6\textwidth]{./img/thumbnails-format.pdf}
+		\caption{ELBS Viewer Thumbnails Format}
+		\label{fig:thumbnails-format}
+	\end{center}
+\end{figure} 
+
+\begin{figure}[htb]
+	\begin{center}
+		\includegraphics[width=0.75\textwidth]{./img/hinweis.png}
+		\caption{ELBS Pop-Up Window with Copy Right Law Remarks }
+		\label{fig:hinweis}
+	\end{center}
+\end{figure} 
+
+\begin{figure}[hrb]
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{./img/watermark}
+		\caption{Example of a Watermark on a Downloaded Page from the ELBS Viewer}
+		\label{fig:watermark}
+	\end{center}
+\end{figure} 
+
+\begin{figure}[htb]
+	\begin{center}
+		\includegraphics[width=\textwidth]{./img/dp/home-1}
+		\caption{Home Page of the Download Portal}
+		\label{fig:dp-home-1}
+	\end{center}
+\end{figure} 
+
+
+\begin{figure}[htb]
+	\begin{center}
+		\includegraphics[width=0.9\textwidth]{./img/dp/download-2}
+		\caption{Overview of all the Documents Associated with an User}
+		\label{fig:download-2}
+	\end{center}
+\end{figure} 
+
+
+
+\begin{figure}[htb]
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{./img/dp/add-user-1}
+		\caption{Administrator UI for Adding and Deleting External User in the Download Portal}
+		\label{fig:add-user}
+	\end{center}
+\end{figure} 
+
+
