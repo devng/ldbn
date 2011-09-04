@@ -17,6 +17,7 @@ import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Command;
@@ -34,6 +35,10 @@ public final class Main implements EntryPoint,
 	SelectionHandler<Integer>, LoginListener {
 	
 	public static String VERSION = "1.1.110904";
+	
+	public static final String MAIN_DIV_ID = "gwtapp";
+	
+	public static final String LOADING_DIV_ID = "loading";
 	
 	public static final int WIDTH_PX;
 	
@@ -57,18 +62,39 @@ public final class Main implements EntryPoint,
 				if (tmp >= 640 && tmp <= 4000) {
 					screenWidth = tmp;
 				}
-			} catch (Exception e) {}
+			} catch (Exception e) {
+				System.out.println(e);
+			}
 		}
 		
 		WIDTH_PX = screenWidth;
 	}
 	
+	public static final String REPLACE_LOADING = 
+		"<table width=\""+WIDTH_PX+"px\" border=\"0\" style=\"color: gray; text-decoration:none;\"><tr>" +
+		"<td style=\"text-align:left; font-size:x-small\">Copyright &copy; 2008 - 2011 " +
+		"<a href=\"mailto:ens07ngv@cs.umu.se\" style=\"color: gray; text-decoration:none;\">" +
+		"Nikolay Georgiev</a></td>"+
+		"<td style=\"text-align: right; font-size:x-small\">Version: " + VERSION +"</td>"+
+		"</tr></table>";
+	
+	
 	private static Main instance;
+	
+	public static Main get() {
+		// instance is created in the onModuleLoad2() method,
+		// which should be called only once at the begining
+		if (instance == null) {
+			throw new IllegalArgumentException("onModuleLoad method must be " +
+					"called first.");
+		}
+		return instance;
+	}
 
 	private PickupDragController dragControll;
 	private WindowController windowControll;
 
-	public AbsolutePanel mainPanel;
+	private AbsolutePanel mainPanel;
 
 	private GlassPanel glass;
 
@@ -80,13 +106,7 @@ public final class Main implements EntryPoint,
 	private boolean isTabCALoaded;
 	private boolean isTabAdminLoaded;
 	
-	public static Main get() {
-		if (instance == null) {
-			throw new IllegalArgumentException("onModuleLoad method must be " +
-					"called first.");
-		}
-		return instance;
-	}
+
 	
 	private Main() {
 		super();
@@ -111,9 +131,6 @@ public final class Main implements EntryPoint,
 	    }
 		if (instance == null) {
 			instance = this;
-		}
-		if(instance != this) { // should not occur, but who knows?!
-			Log.warn("Main.java : instance != this");
 		}
 		
 		//init I18N
@@ -146,14 +163,18 @@ public final class Main implements EntryPoint,
 		tabs.selectTab(0);
 		mainPanel.add(tabs);
 		glass = new GlassPanel(mainPanel);
-		DOM.setInnerHTML(RootPanel.get("loading").getElement(), 
-				"<table width=\""+WIDTH_PX+"px\" border=\"0\" style=\"color: gray; text-decoration:none;\"><tr>" +
-				"<td style=\"text-align:left; font-size:x-small\">Copyright &copy; 2008 - 2011 " +
-				"<a href=\"mailto:ens07ngv@cs.umu.se\" style=\"color: gray; text-decoration:none;\">" +
-				"Nikolay Georgiev</a></td>"+
-				"<td style=\"text-align: right; font-size:x-small\">Version: " + VERSION +"</td>"+
-				"</tr></table>");
-		Panel rp = RootPanel.get("gwtapp");
+		DOM.setInnerHTML(RootPanel.get(LOADING_DIV_ID).getElement(), REPLACE_LOADING);
+		Panel rp = RootPanel.get(MAIN_DIV_ID);
+		/*
+		 * add(widget, int, int) method requires the parent elements 
+		 * also be positioned elements, i.e. they must have a property: position.
+		 * This is used by the WindowPanel class in order to add the window in the same 
+		 * static contex as the mainPanel. Then we give each instance of WindowPanel
+		 * z-index: 1, thus ensuring the window is infront of the other content.
+		 * 
+		 * @see http://css-discuss.incutio.com/wiki/Overlapping_And_ZIndex
+		 */
+		rp.getElement().getStyle().setPosition(Position.RELATIVE);
 		rp.add(mainPanel);
 	}
 	
