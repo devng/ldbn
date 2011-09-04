@@ -225,7 +225,6 @@ public abstract class WindowPanel extends com.google.gwt.user.client.ui.FocusPan
 		setupCell(2, 2, SOUTH_EAST);
 		
 		DOM.setStyleAttribute(this.getElement(), "background", "#F6F6F6");
-		//setAnimationEnabled(false);
 		this.setVisible(false);
 		
 		/*
@@ -351,5 +350,4 @@ public abstract class WindowPanel extends com.google.gwt.user.client.ui.FocusPan
 	public void center() {
 		show();
 	}
-	
 }
