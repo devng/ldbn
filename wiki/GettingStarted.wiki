@@ -82,7 +82,7 @@ The default configuration for the database is sored in the _config.php_ file, wh
 
 We need to create a new Eclipse _Run Configuration_ for the project. Do the following:
 
- * First we need to compile the project into JavaScript. This is necessary only the first time you are running LDBN. 
+ * First we need to compile the project into JavaScript . This is necessary only the first time you are running LDBN. 
   * Right click on the Project folder _Google->GWT Compile_.
 
  * In Eclipse do a right mouse click on the file _Ldbn.html_ located in the _war_ folder. Then go to _Run As -> Web Application (running on an external server)_. 
