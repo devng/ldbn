@@ -3,19 +3,19 @@
 
 = Getting Started with LDBN =
 
-In this guide we will use Eclipse IDE (version 3.5 Galileo) for Java EE Developers on Windows XP, but the installation should be similar for other Eclipse versions and OS (a Linux installation guide will follow soon).  
+In this guide we will use Eclipse IDE (version 3.5 Galileo for Java EE Developers) on Windows XP, but the installation should be similar for other Eclipse versions and OS (a Linux installation guide will follow soon).  
 
-It is assumed that we use GWT ver. 1.7.1.
+It is assumed that we use GWT ver. 2.3.0.
 
 == Installing the Necessary Software ==
 
- * Download and install Eclipse IDE for Java EE Developers and create a new workspace. More information on Eclipse and installation notes can be found [http://www.eclipse.org/ here].
+ * Download and install Eclipse IDE and create a new workspace. More information on Eclipse and installation notes can be found [http://www.eclipse.org/ here].
 
  * Install the Subclipse Eclipse Plugin for accessing the SVN server. More information on Subclipse and installation notes can be found [http://subclipse.tigris.org/ here].
 
- * Install the Google Plugin for Eclipse 3.5 (Galileo) as described [http://code.google.com/eclipse/docs/install-eclipse-3.5.html here]. This will install GWT ver. 1.7.1 . Install all other components of the plugin, although we do not need an App Engine support for the time being. 
-  * Recent version of the plugin do not come bundled with GWT ver. 1.7.1. You need to manually download the proper version from http://code.google.com/webtoolkit/versions.html . 
-  * Then you need to configure the plugin to use that version. This is done in _Window->Preferences->Google->Web Toolkit_ Just add the GWT SDK in the list and make it the default GWT SDK.
+ * Install the Google Plugin for Eclipse as described [http://code.google.com/eclipse/docs/install-eclipse-3.5.html here]. This should install the GWT 2.3.0 SDK as well. Install all other components of the plugin, although we do not need an App Engine support for the time being. 
+  * If a you need another version of the GWT SDK then you need to manually download it form [http://code.google.com/webtoolkit/versions.html here]. 
+  * Then you need to configure the plugin to use that version. This is done in _Window->Preferences->Google->Web Toolkit_. Just add the GWT SDK in the list and make it the default GWT SDK.
 
 == Checking out the LDBN Project from the Repository ==
 
@@ -39,13 +39,13 @@ Please note that you only have read rights for the project. If you would like to
 
 == Starting LDBN Locally ==
 
-Before starting LDBN locally you have to install an Apache web server with PHP and a MySQL Database. However, installing and configuring  a web server and a database could be quite complicated. Therefore, for testing purposes We recommend to use [http://www.apachefriends.org/de/xampp.html XAMPP]. XAMPP will install all for the LDBN Project necessary components. 
+Before starting LDBN locally you have to install an Apache web server with PHP and a MySQL Database. However, installing and configuring  a Web-server and a database could be quite complicated. Therefore, for testing purposes We recommend to use [http://www.apachefriends.org/de/xampp.html XAMPP]. XAMPP will install all for the LDBN Project necessary components. 
 
 Please note that you should use XAMPP only for testing purposes!
 
 === Configuration of the Apache Server ===
 
-After you have installed XAMPP your Apache server is configured and ready to use. However, since we are not going to use the GWT's built-in Tomcat server we need to do some additional configuration of our apache server.
+After you have installed XAMPP your Apache server is configured and ready to use. However, since we are not going to use the GWT's built-in Jetty Web-server we need to do some additional configuration of our Apache Web-server.
 
  * Open the _http.conf_ file of your Apache server with a text editor. Usually the file is located in _<xampp installation folder>/apache/conf_ 
 
@@ -80,23 +80,25 @@ The default configuration for the database is sored in the _config.php_ file, wh
 
 === Change the Run Configuration for the Eclipse Project ===
 
-We need to create a new Eclipse run configuration for the project. Do the following:
+We need to create a new Eclipse _Run Configuration_ for the project. Do the following:
 
- * In Eclipse do a right mouse click on the file _Ldbn.html_ located in the _war_ folder. Then go to _Run As -> Web Application_. This will open the development shell in hosted mode and hosted mode browser itself and launch the LDBN application. However, since we are not using the standard Tomcat server we need to do some additional work to make our application run properly.
+ * First we need to compile the project into JavaScript. This is necessary only the first time you are running LDBN. 
+  * Right click on the Project folder _Google->GWT Compile_.
 
-    http://ldbnonline.com/wiki/ldbn-run1.jpg
+ * In Eclipse do a right mouse click on the file _Ldbn.html_ located in the _war_ folder. Then go to _Run As -> Web Application (running on an external server)_. 
 
- * Close the development shell and hosted mode browser. In Eclipse go to _Run -> Run Configurations_.
+    http://ldbnonline.com/wiki/run-step1.jpg
 
-    http://ldbnonline.com/wiki/ldbn-run2.jpg
+ * This opens a new pop-up dialog. 
+  * For _External server root_ enter _http://localhost/ldbn_.
+  * Check the check box _Select an HTML page:_
+  * In the list _Matching items:_ select _Ldbn.html_
+  * Click the _OK_ button
 
- * In the _Run Configurations_ dialog go to _Web Applications_ and select _Ldbn.html_. Then select the _Arguments tab_. 
-  * Under _Program arguments_ enter the following line: {{{-noserver -port 80 -startupUrl ldbn/Ldbn.html se.umu.cs.ldbn.Ldbn}}} 
-  * Under _VM arguments_ enter the following line: {{{-Xmx256M}}}
-  * Change the working directory to _Other_ and enter: {{{/ldbn/war}}}
+    http://ldbnonline.com/wiki/run-step2.jpg
 
-    http://ldbnonline.com/wiki/ldbn-run3.jpg
+ * This should make a new run configuration for Ldbn and run it. To open the application by double clicking on the link in the _Development Mode_ view. Or you can start the application in any browser using the following URL: _http://localhost/ldbn/Ldbn.html?gwt.codesvr=127.0.0.1:9997_
 
- * Click on _Apply_ and then click _Run_
+    http://ldbnonline.com/wiki/run-step3.jpg
 
-Now GWT will start again the development shell in hosted mode and hosted mode browser itself. You can compile the application by pressing the _Compile/Browse_ button in the hosted mode browser. The compiled java script code is saved to the _war/ldbn_ folder. Please note that GWT might open two hosted mode browsers just ignore the first one, it is a GWT bug.  
+ * You can compile the application at any time and run it by using the following URL: _http://localhost/ldbn/Ldbn.html_. Note that the compiled application runs much faster. 
