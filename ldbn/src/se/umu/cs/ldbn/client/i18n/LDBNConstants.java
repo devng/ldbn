@@ -356,4 +356,11 @@ public interface LDBNConstants extends com.google.gwt.i18n.client.Constants {
    * @return translated "Check Solution Dialog"
    */
   String csdTitle();
+  
+  /**
+   * Translated "Your browser does not support the HTML5 Canvas. Please upgrade your browser.".
+   * 
+   * @return translated "Your browser does not support the HTML5 Canvas. Please upgrade your browser.".
+   */
+  String canvasNotSupported();
 }

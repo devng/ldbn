@@ -6,6 +6,7 @@ import java.util.List;
 import se.umu.cs.ldbn.client.core.AttributeSet;
 import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.core.FD;
+import se.umu.cs.ldbn.client.i18n.I18N;
 import se.umu.cs.ldbn.client.ui.visualization.color.ColorPalette;
 
 import com.google.gwt.canvas.client.Canvas;
@@ -16,6 +17,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 
 final class FDDrawer extends AbsolutePanel {
 	
@@ -30,17 +32,25 @@ final class FDDrawer extends AbsolutePanel {
 	private Context2d canvasContext;
 	private boolean isType2Diagram;
 	private boolean useForwardOrder;
+	private boolean isCanvasSupported;
 	private int curFDHeight;
 	
 	public FDDrawer() {
 		super();
+		isCanvasSupported = Canvas.isSupported();
+		if (!isCanvasSupported) {
+			I18N.get();
+			this.add(new Label(I18N.constants().canvasNotSupported()));
+		}
 		DOM.setStyleAttribute(this.getElement(), "background", "white");
 	}
 
 	
 	public void drawFDs(AttributeSet atts, List<FD> fds, ColorPalette cp, 
 			int zoomLevel, boolean isType2Diagram, boolean useForwardOrder) {
-		
+		if (!isCanvasSupported) {
+			return;
+		}
 		this.clear();
 		//curAtts = atts;
 		curFds = fds;
@@ -73,6 +83,9 @@ final class FDDrawer extends AbsolutePanel {
 	}
 	
 	public void initSizeAndCanvas() {
+		if (!isCanvasSupported) {
+			return;
+		}
 		int totalWidth = VA_MARGIN; //margin
 		int attHeight = 0;
 		for (VisualAttribute va : vatts) {
@@ -95,7 +108,6 @@ final class FDDrawer extends AbsolutePanel {
 		int toalHeight = attHeight + (25 + 10 * curZoom) + curFds.size() * curFDHeight;
 		this.setPixelSize(totalWidth + 20, toalHeight);
 		this.canvas = Canvas.createIfSupported();
-		// TODO what if it is not supported
 		canvas.setCoordinateSpaceHeight(toalHeight);
 		canvas.setCoordinateSpaceWidth(totalWidth);
 		canvasContext = canvas.getContext2d();
@@ -106,6 +118,9 @@ final class FDDrawer extends AbsolutePanel {
 	}
 	
 	public void drawCanvas() {
+		if (!isCanvasSupported) {
+			return;
+		}
 		CssColor color;
 		int curH = (25 + 10 * curZoom) + (curFds.size()-1) * curFDHeight;
 		if(isType2Diagram) {
@@ -170,6 +185,9 @@ final class FDDrawer extends AbsolutePanel {
 	}
 	
 	public void reDrawCanvas() {
+		if (!isCanvasSupported) {
+			return;
+		}
 		curPalette.reset();
 		for (VisualAttribute va : vatts) {
 			va.setHasIncommingArrow(false);
