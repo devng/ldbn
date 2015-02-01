@@ -9,13 +9,13 @@ $sql = "SELECT a.id, a.name, a.user_id, u.name, u.is_admin, a.modified_on
         WHERE a.user_id=u.user_id
         ORDER BY a.id DESC";
 
-if (! $sth = @mysql_query($sql)) {
-	die(getDBErrorXML());
+if (! $sth = $dbhandle->query($sql)) {
+	die($db_error_xml);
 }
 
 echo '<ldbn type="assignment_list">';
 
-while ($row = mysql_fetch_row($sth)) {
+foreach ($sth as $row) {
 	echo ("<entry id=\"$row[0]\" name=\"$row[1]\" author_id=\"$row[2]\" author=\"$row[3]\" is_admin=\"$row[4]\" last_modified=\"$row[5]\" />");
 }
 

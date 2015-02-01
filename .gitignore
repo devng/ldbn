@@ -1,5 +1,9 @@
 .DS_Store
 
-/bin/
+bin/
+classes/
+deploy/
+gwt-unitCache/
+war/ldbn/
 
 *.class

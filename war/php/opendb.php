@@ -1,14 +1,13 @@
 <?php
-	// include this file whenever you want to use the database.
+// include this file whenever you want to use the database.
 require_once("config.php");
-	//header('Content-Type: text/plain;');
-	function getDBErrorXML() {
-		return '<ldbn type="msg">' .
-			'<msg type="error">'.mysql_error().'</msg>'.
-			'</ldbn>';
-	}
-	
-	$conn = @mysql_connect($dbhost, $dbuser, $dbpass) or die (
-			getDBErrorXML());
-	@mysql_select_db($dbname) or die (getDBErrorXML());
+
+// Generic DB error message for the front end
+$db_error_xml = '<ldbn type="msg"><msg type="error">Request failed due to a database error.</msg></ldbn>';
+
+
+// open the database
+$dbhandle = new PDO($db_url) or die ('<msg type="error">Cannot open the database file.</msg></ldbn>');
+$dbhandle->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
+
 ?>

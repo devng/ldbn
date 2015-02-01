@@ -21,7 +21,7 @@ if(isset($id) && $id != "") {
 	if(isset($xml) && isset($name)) {
 		checkID($id);
 		checkName($name);
-		$sql = 'UPDATE assignment SET name=\''.$name.'\', xml=\''.$xml.'\' WHERE id='.$id.';';
+		$sql = 'UPDATE assignment SET name=\''.$name.'\', xml=\''.$xml.'\', modified_on = CURRENT_TIMESTAMP WHERE id='.$id.';';
 	} else {
 		die ('<ldbn type="msg"><msg type="error">Some arguments are not set.</msg></ldbn>');
 	}
@@ -33,7 +33,7 @@ if(isset($id) && $id != "") {
 		die ('<ldbn type="msg"><msg type="error">Some arguments are not set.</msg></ldbn>');
 	};
 }
-@mysql_query($sql) or die (getDBErrorXML());
+$dbhandle->query($sql) or die ($db_error_xml);
 echo ('<ldbn type="msg">' .
 		'<msg type="ok">Assignment is stored in the DB.</msg>' .
 	  '</ldbn>');
