@@ -1,0 +1,50 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    
+    dependencies {
+        classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'gwt'
+apply plugin: 'eclipse'
+
+repositories { mavenCentral() }
+
+dependencies {
+	gwt 'com.allen-sauer.gwt.log:gwt-log:3.3.2'
+	gwt 'com.allen-sauer.gwt.dnd:gwt-dnd:3.3.3'
+}
+
+gwt {
+	gwtVersion = '2.7.0'
+
+	modules 'se.umu.cs.ldbn.Ldbn'
+
+	compiler {
+		strict = true;
+		disableClassMetadata = true;
+		disableCastChecking = true;
+	}
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.2.1'
+}
+
+task copyWebResources(type: Copy) {
+	description 'Copies the resource directory to the target www directory.'
+    from 'src/main/resources'
+    into 'build/www'
+}
+assemble.dependsOn copyWebResources
+
+task copyGwtOutput(dependsOn: 'compileGwt', type: Copy) {
+	description 'Copies the compiled GWT output to the target www directory.'
+	from 'build/gwt/out/ldbn'
+	into 'build/www/ldbn'
+}
+assemble.dependsOn copyGwtOutput

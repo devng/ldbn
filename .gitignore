@@ -1,9 +1,10 @@
 .DS_Store
 
+.gradle/
+.settings/
+build/
 bin/
-classes/
-deploy/
-gwt-unitCache/
-war/ldbn/
+.classpath
+.project
 
 *.class
