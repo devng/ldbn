@@ -40,9 +40,9 @@ public final class Login extends AbstractRequestSender {
 		}
 	}
 	
-	public void sendLogin(String userName, String userPassMD5) {
+	public void sendLogin(String userName, String userPassBase64) {
 		url = Config.get().getUserLoginScriptURL();
-		data = "user_name="+userName+"&user_pass="+userPassMD5;
+		data = "user_name="+userName+"&user_pass="+userPassBase64;
 		isSendLogin = true;
 		send();
 	}

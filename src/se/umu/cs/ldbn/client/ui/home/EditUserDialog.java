@@ -22,7 +22,7 @@ public final class EditUserDialog extends RegisterUserDialog {
 		super("Change Account");
 		//setText("Change Account");
 		checkPassLenght = false;
-		useMD5 = false;
+		useBase64 = false;
 	}
 	
 	protected void oKAction(String userName, String pass, String email) {
@@ -31,7 +31,7 @@ public final class EditUserDialog extends RegisterUserDialog {
 				setErrorMsg("Password is too short.");
 				return;
 			}
-			pass = Common.md5(pass);
+			pass = Common.base64encode(pass);
 		} else {
 			pass = null;
 		}

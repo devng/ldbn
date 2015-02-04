@@ -35,21 +35,21 @@ public final class UserManagement extends AbstractRequestSender {
 		}
 	}
 	
-	public void sendUserRegistration(String newUserName, String newUserPassMD5, 
+	public void sendUserRegistration(String newUserName, String newUserPassBase64, 
 			String newUserEmail) {
 		url = Config.get().getUserRegisterScriptURL();
-		data = "user_name="+newUserName+"&user_pass="+newUserPassMD5+"&user_mail="+newUserEmail;
+		data = "user_name="+newUserName+"&user_pass="+newUserPassBase64+"&user_mail="+newUserEmail;
 		send();
 	}
 	
-	public void sendUserChange(String newUserName, String newUserPassMD5, String newUserEmail) {
+	public void sendUserChange(String newUserName, String newUserPassBase64, String newUserEmail) {
 		url = Config.get().getUserChangeScriptURL();
 		data = "";
 		if(newUserName != null && !newUserName.equals("")) {
 			data +=  "user_name="+newUserName+"&";
 		}
-		if(newUserPassMD5 != null && !newUserPassMD5.equals("")) {
-			data +=  "user_pass="+newUserPassMD5+"&";
+		if(newUserPassBase64 != null && !newUserPassBase64.equals("")) {
+			data +=  "user_pass="+newUserPassBase64+"&";
 		}
 		if(newUserEmail != null && !newUserEmail.equals("")) {
 			data +=  "user_mail="+newUserEmail+"&";

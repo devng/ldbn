@@ -28,7 +28,7 @@ public class RegisterUserDialog extends OkCancelDialog implements UserManagement
 	protected PasswordTextBox passTB2;
 	protected TextBox emailTB;
 	protected boolean checkPassLenght;
-	protected boolean useMD5;
+	protected boolean useBase64;
 	
 	
 	protected RegisterUserDialog() {
@@ -38,7 +38,7 @@ public class RegisterUserDialog extends OkCancelDialog implements UserManagement
 	protected RegisterUserDialog(String title) {
 		super(title, true);
 		checkPassLenght = true;
-		useMD5 = true;
+		useBase64 = true;
 		UserManagement.get().addListener(this);
 	}
 	
@@ -76,8 +76,8 @@ public class RegisterUserDialog extends OkCancelDialog implements UserManagement
 				return;
 			}
 		}
-		if(useMD5) {
-			pass = Common.md5(pass);
+		if(useBase64) {
+			pass = Common.base64encode(pass);
 		}
 		
 		//email

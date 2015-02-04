@@ -91,7 +91,7 @@ public final class UserLoginWidget extends Composite implements ClickHandler,
 		} else {
 			
 		}
-		String pass = Common.md5(passTB.getText().trim());
+		String pass = Common.base64encode(passTB.getText().trim());
 		UserData.get().setName(username);
 		UserData.get().setPass(pass);
 		Login.get().sendLogin(username, pass);
@@ -108,6 +108,5 @@ public final class UserLoginWidget extends Composite implements ClickHandler,
 		if(keyCode == KeyCodes.KEY_ENTER) {
 			doLogin();
 		}
-		
 	}
 }
