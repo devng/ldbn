@@ -36,11 +36,11 @@ if ($delete) {
 	if(!$is_admin) {
 		$sql .= " AND user_id=".$user_id;
 	}
-	if (! $sth = @mysql_query($sql)) {
-		die(getDBErrorXML());
+	if (! $sth = $dbhandle->query($sql)) {
+		die($db_error_xml);
 	} else {
 		$rows = 0;
-		$rows = @mysql_affected_rows();
+		$rows = sqlite_changes($dbhandle);
 		if ($rows > 0) {
 			echo ('<ldbn type="msg">' .
 			'<msg type="ok">The comment was successfully deleted.</msg>' .
@@ -53,16 +53,16 @@ if ($delete) {
 		
 	}
 } else {
-	$sql = "UPDATE comment SET comment_val = '$comment' WHERE id=".$id_comment;
+	$sql = "UPDATE comment SET comment_val = '$comment', modified_on = CURRENT_TIMESTAMP WHERE id=".$id_comment;
 	if(!$is_admin) {
 		$sql .= " AND user_id=".$user_id;
 	}
 	
-	if (! $sth = @mysql_query($sql)) {
-		die(getDBErrorXML());
+	if (! $sth = $dbhandle->query($sql)) {
+		die($db_error_xml);
 	} else {
 		$rows = 0;
-		$rows = @mysql_affected_rows();
+		$rows = sqlite_changes($dbhandle);
 		if ($rows > 0) {
 			echo ('<ldbn type="msg">' .
 			'<msg type="ok">The comment was successfully updated.</msg>' .

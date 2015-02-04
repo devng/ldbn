@@ -16,20 +16,12 @@ if ($is_admin) {
 			'</ldbn>');
 	}
 	$sql = "UPDATE user SET is_admin=1 WHERE user_id=".$admin_id;
-	if (! $sth = @mysql_query($sql)) {
-		die(getDBErrorXML());
+	if (! $sth = $dbhandle->query($sql)) {
+		die($db_error_xml);
 	} else {
-		$rows = 0;
-		$rows = @mysql_affected_rows();
-		if ($rows > 0) {
-			echo ('<ldbn type="msg">' .
-			'<msg type="ok">The user was successfully added to the administrator list.</msg>' .
-			'</ldbn>');
-		} else {
-			echo ('<ldbn type="msg">' .
-			'<msg type="error">The administrator list could not be updated.</msg>' .
-			'</ldbn>');
-		}
+		echo ('<ldbn type="msg">' .
+		'<msg type="ok">The user was successfully added to the administrator list.</msg>' .
+		'</ldbn>');
 	}
 } else {
 	die ('<ldbn type="msg"><msg type="error">Insufficient rights! You are not an administrator.</msg></ldbn>');

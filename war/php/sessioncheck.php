@@ -12,16 +12,16 @@ if (isset($_POST['id_user']) && isset($_POST['id_session'])) {
 	$id_session = $_POST['id_session'];
 	checkMD5($id_session);
 	$sql = "SELECT user_id, added_on FROM session WHERE session_string='$id_session' AND user_id=$user_id";
-	if (! $sth = @mysql_query($sql)) {
-		die(getDBErrorXML());
+	if (! $sth = $dbhandle->query($sql)) {
+		die($db_error_xml);
 	}
-	if ($row = mysql_fetch_row($sth)) {
+	if ($row = $sth->fetch()) {
 		//checks if the user is admin and/or super user
 	 	$sql = "SELECT user_id, is_admin, is_su FROM user WHERE user_id=$user_id";
-	 	if (! $sth = @mysql_query($sql)) {
-			die(getDBErrorXML());
+	 	if (! $sth = $dbhandle->query($sql)) {
+			die($db_error_xml);
 		}
-		if ($row = mysql_fetch_row($sth)) {
+		if ($row = $sth->fetch()) {
 			$is_admin    = $row[1] == "1";
 			$is_su       = $row[2] == "1";
 		}

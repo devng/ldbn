@@ -34,7 +34,7 @@ import com.google.gwt.user.client.ui.TabPanel;
 public final class Main implements EntryPoint, 
 	SelectionHandler<Integer>, LoginListener {
 	
-	public static String VERSION = "1.1.110904";
+	public static String VERSION = "1.1.1-150201";
 	
 	public static final String MAIN_DIV_ID = "gwtapp";
 	
@@ -72,7 +72,7 @@ public final class Main implements EntryPoint,
 	
 	public static final String REPLACE_LOADING = 
 		"<table width=\"" + WIDTH_PX + "px\" border=\"0\" style=\"color: gray; text-decoration:none;\"><tr>" +
-		"<td style=\"text-align:left; font-size:x-small\">Copyright &copy; 2008 - 2011 " +
+		"<td style=\"text-align:left; font-size:x-small\">Copyright &copy; 2008 - 2015 " +
 		"<a href=\"mailto:ens07ngv@cs.umu.se\" style=\"color: gray; text-decoration:none;\">" +
 		"Nikolay Georgiev</a></td>"+
 		"<td style=\"text-align: right; font-size:x-small\">Version: " + VERSION + "</td>"+

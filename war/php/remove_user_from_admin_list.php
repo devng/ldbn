@@ -16,11 +16,11 @@ if ($is_su) {
 			'</ldbn>');
 	}
 	$sql = "UPDATE user SET is_admin=0, is_su=0 WHERE user_id=".$admin_id;
-	if (! $sth = @mysql_query($sql)) {
-		die(getDBErrorXML());
+	if (! $sth = $dbhandle->query($sql)) {
+		die($db_error_xml);
 	} else {
 		$rows = 0;
-		$rows = @mysql_affected_rows();
+		$rows = sqlite_changes($dbhandle);
 		if ($rows > 0) {
 			echo ('<ldbn type="msg">' .
 			'<msg type="ok">The user was successfully removed from the administrator list.</msg>' .

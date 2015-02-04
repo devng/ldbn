@@ -10,8 +10,8 @@ if (isset($_POST['id_session'])) {
 	$sql = "DELETE
 			FROM session  
 			WHERE session_string = '$id_session' 
-			OR DATEDIFF(CURRENT_TIMESTAMP , added_on ) > 0 ";
-	@mysql_query($sql) or die (getDBErrorXML());
+			OR (JULIANDAY('now') - JULIANDAY(added_on) > 0)";
+	$dbhandle->query($sql) or die ($db_error_xml);
 	echo ('<ldbn type="msg">' .
 		'<msg type="ok">Logout successful.</msg>' .
 	  '</ldbn>');

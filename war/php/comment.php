@@ -15,7 +15,7 @@ if (isset($_POST['comment']) && $_POST['comment'] != "") {
 	$comment = $_POST['comment'];
 	checkBase64($comment);
 	$sql = "INSERT INTO comment(assignment_id, user_id, comment_val) VALUES ('$assignment_id', '$user_id', '$comment');";
-	@mysql_query($sql) or die (getDBErrorXML());
+	$dbhandle->query($sql) or die ($db_error_xml);
 	$sql = "SELECT c.id, c.user_id, u.name, c.modified_on, c.comment_val
         FROM comment AS c, user AS u
         WHERE c.user_id=u.user_id AND assignment_id=$assignment_id AND c.user_id=$user_id
@@ -28,13 +28,13 @@ if (isset($_POST['comment']) && $_POST['comment'] != "") {
         ORDER BY c.id";
 }
 
-if (! $sth = @mysql_query($sql)) {
-	die(getDBErrorXML());
+if (! $sth = $dbhandle->query($sql)) {
+	die($db_error_xml);
 }
 
 echo '<ldbn type="comments_list" assignment_id="'.$assignment_id.'">';
 //NB this could be empty !!!
-while ($row = mysql_fetch_row($sth)) {
+foreach ($sth as $row) {
 	echo ("<comment id=\"$row[0]\" author_id=\"$row[1]\" author=\"$row[2]\" last_modified=\"$row[3]\">$row[4]</comment>");
 }
 
