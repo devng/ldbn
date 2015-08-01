@@ -180,7 +180,8 @@ function checkMailUnique($dbhandle, $user_mail) {
 }
 
 /**
- * Check the user's session by checking if the session is in the database, if not die with an error.
+ * Check the user's session by verifying if the session is in the database, if not die with an error.
+ * The request POST parameters id_user and id_session must be set.
  */
 function checkSession($dbhandle) {
 	$id_session;
@@ -227,7 +228,7 @@ function checkSession($dbhandle) {
  */
 function deleteOldSessions($dbhandle) {
 	$sql;
-	if (isMySqlDB) {
+	if (isMySqlDB ()) {
 		$sql = "DELETE FROM session WHERE DATEDIFF(CURRENT_TIMESTAMP, added_on) > 0";
 	} else {
 		$sql = "DELETE FROM session WHERE JULIANDAY('now') - JULIANDAY(added_on) > 0";

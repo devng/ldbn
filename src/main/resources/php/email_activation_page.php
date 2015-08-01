@@ -20,7 +20,7 @@ if ($use_account_email_activation && isset ( $_GET ['a'] )) {
 	}
 	if ($row = $sth->fetch ()) {
 		$user_id = $row [0];
-		$sql = "UPDATE user SET active=1 WHERE user_id=$user_id";
+		$sql = "UPDATE user SET is_active=1 WHERE user_id=$user_id";
 		if (! $sth = $dbhandle->query ( $sql )) {
 			dieWithXMLMessage ( $msg_db_error );
 		}

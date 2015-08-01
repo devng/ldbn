@@ -1,3 +1,5 @@
+# Create table statements for an SQLite3 database
+
 DROP TABLE IF EXISTS assignment;
 CREATE TABLE assignment (
   id INTEGER PRIMARY KEY,
@@ -14,7 +16,7 @@ CREATE TABLE user (
   pass_hash VARCHAR NOT NULL,
   pass_salt VARCHAR NOT NULL,
   email VARCHAR NOT NULL,
-  active INTEGER NOT NULL DEFAULT 0,
+  is_active INTEGER NOT NULL DEFAULT 0,
   is_admin INTEGER NOT NULL DEFAULT 0,
   is_su INTEGER NOT NULL DEFAULT 0
 );

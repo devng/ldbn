@@ -1,0 +1,51 @@
+# Create table statements for a MySQL database
+
+DROP TABLE IF EXISTS assignment;
+CREATE TABLE assignment (
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	user_id INTEGER NOT NULL, 
+	name VARCHAR(255) NOT NULL,
+	modified_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	xml TEXT NOT NULL,
+	PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS user;
+CREATE TABLE user (
+	user_id INTEGER NOT NULL AUTO_INCREMENT,
+	name VARCHAR(255) NOT NULL,
+	pass_hash VARCHAR(64) NOT NULL,
+	pass_salt VARCHAR(64) NOT NULL,
+	email VARCHAR(255) NOT NULL ,
+	is_active TINYINT NOT NULL DEFAULT 0,
+    is_admin TINYINT NOT NULL DEFAULT 0,
+    is_su TINYINT NOT NULL DEFAULT 0,
+	PRIMARY KEY (user_id)
+);
+
+DROP TABLE IF EXISTS session;
+CREATE TABLE session (
+	session_string VARCHAR(64) NOT NULL ,
+	user_id INTEGER NOT NULL,
+	added_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (session_string)
+);
+
+DROP TABLE IF EXISTS activation;
+CREATE TABLE activation (
+	activation_string VARCHAR(64) NOT NULL ,
+	user_id INTEGER NOT NULL,
+	added_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (activation_string)
+);
+
+DROP TABLE IF EXISTS comment;
+CREATE TABLE comment (
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	assignment_id INTEGER NOT NULL,
+	user_id INTEGER NOT NULL,
+	comment_val TEXT NOT NULL ,
+	modified_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (id)
+);
+

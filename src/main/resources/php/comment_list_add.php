@@ -3,7 +3,7 @@
  * This script lists all comments for a given assignment. 
  * 
  * However, if the parameter comments is set, then a comment is added to the 
- * database for that assignment and then only that comment is returned to the client
+ * database for that assignment and then only that comment is returned to the client.
  */
 require_once ("common.php");
 

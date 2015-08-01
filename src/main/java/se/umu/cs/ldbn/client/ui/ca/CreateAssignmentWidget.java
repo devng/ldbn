@@ -77,6 +77,7 @@ public final class CreateAssignmentWidget extends Composite
 	private DisclosureWidget dwGivenFDs;
 	private FormPanel downloadForm;
 	private Hidden hidenXML;
+	private Hidden hidenXMLFilename;
 	
 	private CreateAssignmentWidget() {
 		mainPanel = new AbsolutePanel();
@@ -205,11 +206,15 @@ public final class CreateAssignmentWidget extends Composite
 		hidenXML = new Hidden();
 		hidenXML.setName("xml");
 		hidenXML.setValue("");
+		hidenXMLFilename = new Hidden();
+		hidenXMLFilename.setName("filename");
+		hidenXMLFilename.setValue("");
 		downloadForm.setEncoding(FormPanel.ENCODING_MULTIPART);
 		downloadForm.setMethod(FormPanel.METHOD_POST);
 		downloadForm.setAction(Config.get().getDownloadScriptURL());
 	    // Create a panel to hold all of the form widgets.
-		downloadForm.setWidget(hidenXML);
+		downloadForm.add(hidenXML);
+		downloadForm.add(hidenXMLFilename);
 		mainPanel.add(downloadForm);
 	}
 	
@@ -261,6 +266,10 @@ public final class CreateAssignmentWidget extends Composite
 			currentAssignment = tmp;
 			String data = AssignmentSaver.buildXML(currentAssignment);
 			hidenXML.setValue(data);
+			hidenXMLFilename.setValue("");
+			if (currentAssignment.getName() != null && !currentAssignment.getName().trim().isEmpty()) {
+				hidenXMLFilename.setValue(currentAssignment.getName().trim() + ".xml");
+			}
 			downloadForm.submit();
 		} else if (sender == importButton) {
 			UploadDialog.get().center();

@@ -7,9 +7,9 @@ INSERT INTO assignment (user_id, name, xml) VALUES
 (1, 'test3', '<ldbn type="assignment"><att>A</att><att>B</att><att>C</att><att>D</att><att>E</att><fd><lhs><fdatt>C</fdatt><fdatt>E</fdatt></lhs><rhs><fdatt>A</fdatt></rhs></fd><fd><lhs><fdatt>C</fdatt><fdatt>E</fdatt></lhs><rhs/></fd><fd><lhs><fdatt>B</fdatt><fdatt>C</fdatt></lhs><rhs><fdatt>D</fdatt></rhs></fd><fd><lhs><fdatt>C</fdatt></lhs><rhs><fdatt>B</fdatt></rhs></fd><fd><lhs><fdatt>D</fdatt></lhs><rhs/></fd><fd><lhs><fdatt>B</fdatt><fdatt>E</fdatt></lhs><rhs><fdatt>C</fdatt></rhs></fd><fd><lhs><fdatt>D</fdatt></lhs><rhs/></fd><fd><lhs><fdatt>C</fdatt><fdatt>E</fdatt></lhs><rhs><fdatt>A</fdatt></rhs></fd><fd><lhs><fdatt>B</fdatt><fdatt>C</fdatt></lhs><rhs><fdatt>D</fdatt></rhs></fd><fd><lhs><fdatt>A</fdatt><fdatt>B</fdatt></lhs><rhs><fdatt>C</fdatt></rhs></fd><fd><lhs><fdatt>C</fdatt></lhs><rhs><fdatt>D</fdatt></rhs></fd><fd><lhs><fdatt>B</fdatt><fdatt>E</fdatt></lhs><rhs><fdatt>C</fdatt></rhs></fd><fd><lhs><fdatt>A</fdatt><fdatt>C</fdatt><fdatt>D</fdatt></lhs><rhs><fdatt>B</fdatt></rhs></fd><fd><lhs><fdatt>C</fdatt></lhs><rhs><fdatt>D</fdatt></rhs></fd><fd><lhs><fdatt>C</fdatt><fdatt>E</fdatt></lhs><rhs/></fd><fd><lhs><fdatt>C</fdatt></lhs><rhs><fdatt>A</fdatt></rhs></fd><fd><lhs><fdatt>D</fdatt></lhs><rhs><fdatt>E</fdatt></rhs></fd><fd><lhs><fdatt>A</fdatt><fdatt>B</fdatt></lhs><rhs><fdatt>C</fdatt></rhs></fd><fd><lhs><fdatt>A</fdatt><fdatt>C</fdatt><fdatt>D</fdatt></lhs><rhs><fdatt>B</fdatt></rhs></fd><fd><lhs><fdatt>D</fdatt></lhs><rhs><fdatt>E</fdatt></rhs></fd><fd><lhs><fdatt>C</fdatt></lhs><rhs><fdatt>B</fdatt></rhs></fd><fd><lhs><fdatt>C</fdatt></lhs><rhs><fdatt>A</fdatt></rhs></fd></ldbn>\r\n');
 
 /* user admin with password ldbn */
-INSERT INTO user (name, email, pass_hash, pass_salt, active, is_admin, is_su) VALUES
+INSERT INTO user (name, email, pass_hash, pass_salt, is_active, is_admin, is_su) VALUES
 ('admin', 'admin@ldbnonline.com', 'b8e7ead0df1499ef7a7515dc3f8bac8b7d38ab2e0553deaef26e4b96d955eb23', 'salt123', 1, 1, 1);
 
 /* user hegner with password ldbn */
-INSERT INTO user (name, email, pass_hash, pass_salt, active, is_admin, is_su) VALUES
+INSERT INTO user (name, email, pass_hash, pass_salt, is_active, is_admin, is_su) VALUES
 ('hegner', 'hegner@cs.umu.se', 'b8e7ead0df1499ef7a7515dc3f8bac8b7d38ab2e0553deaef26e4b96d955eb23', 'salt123', 1, 1, 0);

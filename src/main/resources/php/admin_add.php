@@ -13,7 +13,7 @@ if (isset ( $_POST ['admin_id'] ) && $_POST ['admin_id'] != "") {
 	$admin_id = $_POST ['admin_id'];
 	checkID ( $admin_id );
 } else {
-	dieWithXMLMessage ( "Some arguments are not set." );
+	dieWithXMLMessage ( $msg_missing_arguments );
 }
 
 if ($is_admin) {

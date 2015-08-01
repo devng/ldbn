@@ -1,18 +1,21 @@
 buildscript {
-    repositories {
-        jcenter()
-    }
-    
-    dependencies {
-        classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
-    }
+	repositories {
+		jcenter()
+	}
+	
+	dependencies {
+		classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
+	}
 }
 
 apply plugin: 'java'
 apply plugin: 'gwt'
 apply plugin: 'eclipse'
+apply plugin: 'idea'
 
-repositories { mavenCentral() }
+repositories { 
+	mavenCentral() 
+}
 
 dependencies {
 	gwt 'com.allen-sauer.gwt.log:gwt-log:3.3.2'
@@ -32,13 +35,14 @@ gwt {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.2.1'
+	gradleVersion = '2.4.0'
 }
 
 task copyWebResources(type: Copy) {
 	description 'Copies the resource directory to the target www directory.'
-    from 'src/main/resources'
-    into 'build/www'
+	from 'src/main/resources'
+	exclude '**/db*'
+	into 'build/www'
 }
 assemble.dependsOn copyWebResources
 

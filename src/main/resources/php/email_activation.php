@@ -13,7 +13,7 @@ if ($use_account_email_activation) {
 	if (isset ( $_POST ['user_mail'] )) {
 		$user_mail = $_POST ['user_mail'];
 		checkMail ( $user_mail );
-		$sql = "SELECT user_id, name, active FROM user WHERE email='$user_mail'";
+		$sql = "SELECT user_id, name, is_active FROM user WHERE email='$user_mail'";
 		if (! $sth = $dbhandle->query ( $sql )) {
 			dieWithXMLMessage ( $msg_db_error );
 		}

@@ -36,7 +36,7 @@ if (isset ( $_POST ['user_mail'] )) {
 	checkMail ( $user_mail );
 	checkMailUnique ( $dbhandle, $user_mail );
 	
-	$sql = "UPDATE user SET email='$user_mail', active=0 WHERE user_id=$user_id;";
+	$sql = "UPDATE user SET email='$user_mail', is_active=0 WHERE user_id=$user_id;";
 	if (! $sth = $dbhandle->query ( $sql )) {
 		dieWithXMLMessage ( $msg_db_error );
 	}
