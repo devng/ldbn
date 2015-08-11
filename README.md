@@ -1,6 +1,8 @@
 # LDBN - Learn DataBase Normalization
 
-**Live demo:** [http://ldbnonline.com/Ldbn.html](http://ldbnonline.com/Ldbn.html)
+[![Build Status](https://travis-ci.org/devng/ldbn.svg?branch=master)](https://travis-ci.org/devng/ldbn)
+
+**Live demo:** [http://ldbnonline.com](http://ldbnonline.com)
 
 ## About This Project
 The project aims to provide an easy way for students to learn database normalization in a Web-based environment. 
