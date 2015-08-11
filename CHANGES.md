@@ -1,4 +1,5 @@
 ## Project News and Changes
+* **2015-08-11** - Integrate Travis CI
 * **2015-02-05** - Version 1.2 is now complete. Following changes were made:
     * Project has moved to GitHub
     * Integrate the Gradle build system for the project.
