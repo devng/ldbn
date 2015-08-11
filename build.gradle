@@ -13,6 +13,10 @@ apply plugin: 'gwt'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
+task wrapper(type: Wrapper) {
+	gradleVersion = '2.5'
+}
+
 repositories { 
 	mavenCentral() 
 }
@@ -32,10 +36,6 @@ gwt {
 		disableClassMetadata = true;
 		disableCastChecking = true;
 	}
-}
-
-task wrapper(type: Wrapper) {
-	gradleVersion = '2.4.0'
 }
 
 task copyWebResources(type: Copy) {
