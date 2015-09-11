@@ -22,6 +22,8 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public final class Common {
 
+	public final static String RESOURCE_PREFIX = "/";
+
 	public final static int MIN_PASSWORD_LENGTH = 4;
 	/*
 	 * regular expressions for validating user data, peace not if you change
@@ -30,6 +32,13 @@ public final class Common {
 	public final static String NAME_REGEX = "([\\w]|\\-){1,20}";
 
 	public final static String EMAIL_REGEX = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,10}";
+
+	public static String getResourceUrl(String resource) {
+		if (resource == null) {
+			return null;
+		}
+		return RESOURCE_PREFIX + resource;
+	}
 
 	/**
 	 * Set the transparent background colour of a widget
@@ -174,6 +183,10 @@ public final class Common {
 
 	public static native int getScreenWidth () /*-{
 		return screen.width;
+	}-*/;
+
+	public static native int getWindowWidth () /*-{
+		return window.innerWidth;
 	}-*/;
 
 	public static native String base64decode(final String data) /*-{

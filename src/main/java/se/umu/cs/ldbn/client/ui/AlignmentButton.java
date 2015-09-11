@@ -21,7 +21,7 @@ public class AlignmentButton extends Image implements MouseOverHandler,
 	private Collection<AlignmentButtonListener> listeners;
 
 	public AlignmentButton(boolean isHorizontal) {
-		super("img/alingment.png");
+		super(Common.getResourceUrl("img/alingment.png"));
 		setTitle("Align horizontal / vertical");
 		this.isHorizontal = isHorizontal;
 		if(isHorizontal) {

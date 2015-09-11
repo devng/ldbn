@@ -41,7 +41,7 @@ public final class GivenFDsWidget extends Composite
 		ab.setTitle("Align horizontal/vertical");
 		ab.addListener(this);
 
-		visual = new Image("img/eye.png");
+		visual = new Image(Common.getResourceUrl("img/eye.png"));
 		visual.setTitle("FD Visualization");
 		visual.addClickHandler(this);
 		Common.setCursorPointer(visual);

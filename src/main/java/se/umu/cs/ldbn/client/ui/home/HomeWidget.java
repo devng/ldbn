@@ -4,6 +4,7 @@ import se.umu.cs.ldbn.client.io.Login;
 import se.umu.cs.ldbn.client.io.LoginListener;
 import se.umu.cs.ldbn.client.ui.DisclosureWidget;
 import se.umu.cs.ldbn.client.ui.HeaderWidget;
+import se.umu.cs.ldbn.client.utils.Common;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
@@ -35,7 +36,7 @@ public class HomeWidget extends Composite implements LoginListener  {
 		hw = new HeaderWidget();
 		hw.add(login);
 		mainPanel.add(hw);
-		Frame viewer = new Frame("info/about.html"); 
+		Frame viewer = new Frame(Common.getResourceUrl("info/about.html"));
 		viewer.setWidth("100%");
 		viewer.setHeight(VIEWER_PX_HEIGHT+"px");
 		//DOM.setStyleAttribute(viewer.getElement(), "overflow", "hidden");

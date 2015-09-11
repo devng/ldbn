@@ -22,9 +22,6 @@ import com.allen_sauer.gwt.dnd.client.util.Location;
 import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Document;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -45,7 +42,7 @@ public abstract class WindowPanel extends com.google.gwt.user.client.ui.FocusPan
 
 	/**
 	 * WindowPanel direction constant, used in
-	 * {@link ResizeDragController#makeDraggable(com.google.gwt.user.client.ui.Widget, com.allen_sauer.gwt.dnd.demo.client.example.resize.WindowPanel.DirectionConstant)}.
+	 * {@link ResizeDragController#makeDraggable}.
 	 */
 	public static class DirectionConstant {
 
@@ -179,15 +176,10 @@ public abstract class WindowPanel extends com.google.gwt.user.client.ui.FocusPan
 		nameLabel.setStyleName("csd-title");
 		header.setWidget(0, 0, nameLabel);
 
-		closeButton = new Image("img/window-button-close.png");
+		closeButton = new Image(Common.getResourceUrl("img/window-button-close.png"));
 		header.setWidget(0, 1, closeButton);
 		Common.setCursorPointer(closeButton);
-		closeButton.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				hide();
-			}
-		});
+		closeButton.addClickHandler(event -> hide());
 		cf.setAlignment(0, 1, HasHorizontalAlignment.ALIGN_RIGHT,
 				HasVerticalAlignment.ALIGN_TOP);
 		DOM.setStyleAttribute(cf.getElement(0, 1), "width", "15px");
@@ -328,8 +320,7 @@ public abstract class WindowPanel extends com.google.gwt.user.client.ui.FocusPan
 		//this method is implemented very badly, we should find a better solution
 		setVisible(true);
 		
-		Scheduler.get().scheduleDeferred(new Command() {
-			public void execute() {
+		Scheduler.get().scheduleDeferred(() -> {
 				//offset size is only available after the Widget is attached to the DOM
 				int ow = getOffsetWidth();
 				int oh = getOffsetHeight();
@@ -343,7 +334,6 @@ public abstract class WindowPanel extends com.google.gwt.user.client.ui.FocusPan
 			    top -= Document.get().getBodyOffsetTop();
 			    AbsolutePanel parent = (AbsolutePanel) getParent();
 			    parent.setWidgetPosition(WindowPanel.this, sl + left, st + top);
-			}
 		});
 	}
 	

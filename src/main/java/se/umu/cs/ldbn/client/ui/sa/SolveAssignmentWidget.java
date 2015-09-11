@@ -33,11 +33,6 @@ import se.umu.cs.ldbn.client.utils.Common;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
@@ -140,7 +135,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		hw.add(checkSolution);
 		hw.add(showSolution);
 		hw.add(info);
-		Image trenner = new Image("img/trenner.jpg");
+		Image trenner = new Image(Common.getResourceUrl("img/trenner.jpg"));
 		trenner.setStyleName("att-but");
 		hw.add(trenner);
 		hw.add(assignmentName);
@@ -167,22 +162,12 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		dwDecomposition2NF = new DisclosureWidget(I18N.messages().sawDecomposeInto("2NF"), decomposition2NF);
 		add(dwDecomposition2NF);
 		//3NF
-		import2NF = new Image("img/import.png", 0, 0, 15, 15);
+		import2NF = new Image(Common.getResourceUrl("img/import.png"), 0, 0, 15, 15);
 		import2NF.addClickHandler(this);
 		import2NF.setTitle(I18N.constants().sawImportRelations());
 		Common.setCursorPointer(import2NF);
-		import2NF.addMouseOverHandler(new MouseOverHandler() {
-			@Override
-			public void onMouseOver(MouseOverEvent event) {
-				import2NF.setVisibleRect(15, 0, 15, 15);
-			}
-		});
-		import2NF.addMouseOutHandler(new MouseOutHandler() {
-			@Override
-			public void onMouseOut(MouseOutEvent event) {
-				import2NF.setVisibleRect(0, 0, 15, 15);
-			}
-		});
+		import2NF.addMouseOverHandler(event -> import2NF.setVisibleRect(15, 0, 15, 15));
+		import2NF.addMouseOutHandler(event -> import2NF.setVisibleRect(0, 0, 15, 15));
 		decomposition3NF = new DecompositionWidget();
 		Widget[] tmp = new Widget[decomposition3NF.getAdditionalControlls().length+1];
 		for (int i = 1; i < tmp.length; i++) {
@@ -192,22 +177,12 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		dwDecomposition3NF = new DisclosureWidget(I18N.messages().sawDecomposeInto("3NF"), decomposition3NF, tmp);
 		add(dwDecomposition3NF);
 		//BCNF
-		import3NF = new Image("img/import.png", 0, 0, 15, 15);
+		import3NF = new Image(Common.getResourceUrl("img/import.png"), 0, 0, 15, 15);
 		import3NF.addClickHandler(this);
 		import3NF.setTitle(I18N.constants().sawImportRelations());
 		Common.setCursorPointer(import3NF);
-		import3NF.addMouseOverHandler(new MouseOverHandler() {
-			@Override
-			public void onMouseOver(MouseOverEvent event) {
-				import3NF.setVisibleRect(15, 0, 15, 15);
-			}
-		});
-		import3NF.addMouseOutHandler(new MouseOutHandler() {
-			@Override
-			public void onMouseOut(MouseOutEvent event) {
-				import3NF.setVisibleRect(0, 0, 15, 15);
-			}
-		});
+		import3NF.addMouseOverHandler(event -> import3NF.setVisibleRect(15, 0, 15, 15));
+		import3NF.addMouseOutHandler(event -> import3NF.setVisibleRect(0, 0, 15, 15));
 		decompositionBCNF = new DecompositionWidget();
 		tmp = new Widget[decompositionBCNF.getAdditionalControlls().length+1];
 		for (int i = 1; i < tmp.length; i++) {
@@ -249,22 +224,14 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		Object sender = event.getSource();
 		if(sender == checkSolution) {
 			Main.get().showGlassPanelLoading();
-			Scheduler.get().scheduleDeferred(new Command() {
-				public void execute() {
-					checkSolution();
-				}
-			});
+			Scheduler.get().scheduleDeferred(() -> checkSolution());
 		} else if (sender == loadAssignment) {
 			LoadAssignmentDialog.get().load(this);
 		} else if (sender == showSolution) {
 			if (Window.confirm("Are you sure you want to see the solution?\n" +
 					"This will erase all of your input!")) {
 				Main.get().showGlassPanelLoading();
-				Scheduler.get().scheduleDeferred(new Command() {
-					public void execute() {
-						showSolution();
-					}
-				});
+				Scheduler.get().scheduleDeferred(() -> showSolution());
 			}
 		} else if (sender == import2NF) {
 			boolean b = Window.confirm(I18N.messages().sawImportRelationsConfirm("2NF"));
@@ -683,11 +650,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 			this.assignmentName.setText("");
 		}
 
-		Scheduler.get().scheduleDeferred(new Command() {
-			public void execute() {
-				Comment.get().send(SolveAssignmentWidget.this);
-			}
-		});
+		Scheduler.get().scheduleDeferred(() -> Comment.get().send(SolveAssignmentWidget.this));
 	}
 
 	private void restoreDefaultSize() {

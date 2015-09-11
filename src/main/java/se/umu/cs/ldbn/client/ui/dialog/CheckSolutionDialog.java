@@ -1,6 +1,7 @@
 package se.umu.cs.ldbn.client.ui.dialog;
 
 import se.umu.cs.ldbn.client.i18n.I18N;
+import se.umu.cs.ldbn.client.utils.Common;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.DOM;
@@ -43,13 +44,13 @@ public final class CheckSolutionDialog extends CloseDialog  {
 		Image img;
 		switch (type) {
 		case error:
-			img = new Image("img/errMsg.png");
+			img = new Image(Common.getResourceUrl("img/errMsg.png"));
 			break;
 		case warn:
-			img = new Image("img/warnMsg.png");
+			img = new Image(Common.getResourceUrl("img/warnMsg.png"));
 			break;
 		case ok:
-			img = new Image("img/okMsg.png");
+			img = new Image(Common.getResourceUrl("img/okMsg.png"));
 			break;
 		default:
 			img = null;

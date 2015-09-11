@@ -11,6 +11,7 @@ import se.umu.cs.ldbn.client.ui.InfoButton;
 import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialog;
 import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialogCallback;
 import se.umu.cs.ldbn.client.ui.user.UserData;
+import se.umu.cs.ldbn.client.utils.Common;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -64,7 +65,7 @@ public final class AdministratorWidget extends AbsolutePanel
 		info.setStyleName("att-img");
 		hw.add(info);
 		
-		Image trenner = new Image("img/trenner.jpg");
+		Image trenner = new Image(Common.getResourceUrl("img/trenner.jpg"));
 		trenner.setStyleName("att-but");
 		hw.add(trenner);
 			
@@ -79,7 +80,7 @@ public final class AdministratorWidget extends AbsolutePanel
 		
 		this.add(hw);
 		
-		Frame viewer = new Frame("info/user_rights.html"); 
+		Frame viewer = new Frame(Common.getResourceUrl("info/user_rights.html"));
 		viewer.setWidth("100%");
 		viewer.setHeight(VIEWER_PX_HEIGHT+"px");
 		//DOM.setStyleAttribute(viewer.getElement(), "overflow", "hidden");

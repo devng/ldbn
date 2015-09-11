@@ -219,7 +219,7 @@ public final class DisclosureWidget extends Composite implements ClickHandler,
 		VerticalPanel borderPanel = new VerticalPanel();
 		borderPanel.setStyleName("dw");
 		/*Expand button*/
-		collapseButton = new Image("img/dw-collapse-but.png", 0, 15, 15, 15);
+		collapseButton = new Image(Common.getResourceUrl("img/dw-collapse-but.png"), 0, 15, 15, 15);
 		collapseButton.addClickHandler(this);
 		collapseButton.addMouseOverHandler(this);
 		collapseButton.addMouseOutHandler(this);

@@ -36,18 +36,13 @@ public class MinimalCoverWidget extends Composite implements ClickHandler,
 		buttons.add(minCovAddFD);
 		buttons.add(new InfoButton("find-mincov"));
 		
-		visual = new Image("img/eye.png");
+		visual = new Image(Common.getResourceUrl("img/eye.png"));
 		visual.setTitle("FD Visualization");
-		visual.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
+		visual.addClickHandler(event -> {
 				VisualizationWindow vw = VisualizationWindow.get();
 				SolveAssignmentWidget sa = SolveAssignmentWidget.get();
 				vw.setData(sa.domainAsAttSet, mainPanel.getFDs());
 				vw.center();
-				
-			}
 		});
 		Common.setCursorPointer(visual);
 		

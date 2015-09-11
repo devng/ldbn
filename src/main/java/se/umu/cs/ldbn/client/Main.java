@@ -20,7 +20,6 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window.Location;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -34,7 +33,7 @@ import com.google.gwt.user.client.ui.TabPanel;
 public final class Main implements EntryPoint,
 	SelectionHandler<Integer>, LoginListener {
 
-	public static String VERSION = "1.2.2-151201";
+	public static String VERSION = "1.3-160319";
 
 	public static final String MAIN_DIV_ID = "gwtapp";
 
@@ -44,14 +43,14 @@ public final class Main implements EntryPoint,
 
 	static {
 		//set the application width in pixels to fit to the screen
-		int screenWidth = Common.getScreenWidth();
-		screenWidth -= 60;
+		int appWidth = Common.getScreenWidth();
+		appWidth -= 60;
 		int min = 1024-60;
 		int max = 1920-60;
-		if (screenWidth < min) {
-			screenWidth = min;
-		} else if (screenWidth > max) {
-			screenWidth = max;
+		if (appWidth < min) {
+			appWidth = min;
+		} else if (appWidth > max) {
+			appWidth = max;
 		}
 
 		//see if the user has not defined a different screen width
@@ -60,20 +59,20 @@ public final class Main implements EntryPoint,
 			try {
 				int tmp = Integer.parseInt(w);
 				if (tmp >= 640 && tmp <= 4000) {
-					screenWidth = tmp;
+					appWidth = tmp;
 				}
 			} catch (Exception e) {
 				System.out.println(e);
 			}
 		}
 
-		WIDTH_PX = screenWidth;
+		WIDTH_PX = appWidth;
 	}
 
 	public static final String REPLACE_LOADING =
 		"<table width=\"" + WIDTH_PX + "px\" border=\"0\" style=\"color: gray; text-decoration:none;\"><tr>" +
-		"<td style=\"text-align:left; font-size:x-small\">Copyright &copy; 2008 - 2015 " +
-		"<a href=\"mailto:ens07ngv@cs.umu.se\" style=\"color: gray; text-decoration:none;\">" +
+		"<td style=\"text-align:left; font-size:x-small\">Copyright &copy; 2008 - 2016 " +
+		"<a href=\"mailto:nikolay@georgiev.email\" style=\"color: gray; text-decoration:none;\">" +
 		"Nikolay Georgiev</a></td>"+
 		"<td style=\"text-align: right; font-size:x-small\">Version: " + VERSION + "</td>"+
 		"</tr></table>";
@@ -115,11 +114,7 @@ public final class Main implements EntryPoint,
 	public void onModuleLoad() {
 		Log.setUncaughtExceptionHandler();
 		//used by the logger!
-		Scheduler.get().scheduleDeferred(new Command() {
-			public void execute() {
-				onModuleLoad2();
-			}
-		});
+		Scheduler.get().scheduleDeferred(() -> onModuleLoad2());
 	}
 
 	private void onModuleLoad2() {

@@ -15,7 +15,6 @@ import se.umu.cs.ldbn.client.ui.window.WindowPanel;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
@@ -96,8 +95,7 @@ public final class VisualizationWindow extends WindowPanel
 				curDiagramTypeIndex == 0 ? false : true,
 				curFDRenderIndex == 0 ? true : false);
 		show();
-		Scheduler.get().scheduleDeferred(new Command() {
-			public void execute() {
+		Scheduler.get().scheduleDeferred(() -> {
 				int w = Math.max(drawer.getOffsetWidth(),
 						menuWrapper.getOffsetWidth() + 8);
 				setContentSize(w, drawer.getOffsetHeight() + MENU_PX_HEIGHT);
@@ -105,17 +103,7 @@ public final class VisualizationWindow extends WindowPanel
 				//setAnimationEnabled(true);
 				//setVisible(true);
 				//VisualizationWindow.super.center();
-				//IE BUG canvas must be drawn twice
-//				if(Common.isAgentIE()) {
-//					Scheduler.get().scheduleDeferred(new Command() {
-//						public void execute() {
-//							setVisible(false);
-//							setVisible(true);
-//						}
-//					});
-//				}
 				isCentering = false;
-			}
 		});
 	}
 
@@ -129,12 +117,10 @@ public final class VisualizationWindow extends WindowPanel
 				zoomLevels[curZoomLevelIndex],
 				curDiagramTypeIndex == 0 ? false : true,
 				curFDRenderIndex == 0 ? true : false);
-		Scheduler.get().scheduleDeferred(new Command() {
-			public void execute() {
+		Scheduler.get().scheduleDeferred(() -> {
 				int w = Math.max(drawer.getOffsetWidth(),
 						menuWrapper.getOffsetWidth() + 8);
 				setContentSize(w, drawer.getOffsetHeight() + MENU_PX_HEIGHT);
-			}
 		});
 
 	}

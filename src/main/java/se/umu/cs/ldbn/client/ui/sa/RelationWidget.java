@@ -63,7 +63,7 @@ public final class RelationWidget extends Composite implements ClickHandler,
 		
 		header = new Grid(1, 6);
 		header.setStyleName("relW-header");
-		collapseButton = new Image("img/dw-collapse-but.png", 0, 15, 15, 15);
+		collapseButton = new Image(Common.getResourceUrl("img/dw-collapse-but.png"), 0, 15, 15, 15);
 		collapseButton.addClickHandler(this);
 		collapseButton.addMouseOutHandler(this);
 		collapseButton.addMouseOverHandler(this);
@@ -71,14 +71,14 @@ public final class RelationWidget extends Composite implements ClickHandler,
 		Common.setCursorPointer(collapseButton);
 		collapseButton.setStyleName("relW-collapseBut");
 		
-		editBut = new Image("img/edit-big.png", 0, 0, 20, 20);
+		editBut = new Image(Common.getResourceUrl("img/edit-big.png"), 0, 0, 20, 20);
 		editBut.addMouseOutHandler(this);
 		editBut.addMouseOverHandler(this);
 		editBut.addClickHandler(this);
 		editBut.setTitle("Edit attributes");
 		Common.setCursorPointer(editBut);
 		
-		keyButton = new Image("img/key-but-big.png", 0, 0, 20, 20);
+		keyButton = new Image(Common.getResourceUrl("img/key-but-big.png"), 0, 0, 20, 20);
 		keyButton.addClickHandler(this);
 		keyButton.addMouseOverHandler(this);
 		keyButton.addMouseOutHandler(this);
@@ -92,7 +92,7 @@ public final class RelationWidget extends Composite implements ClickHandler,
 		relName = new Label(name);
 		header.setWidget(0, 1, relName);
 		
-		addBut = new Image("img/add.png", 0, 15, 15, 15);
+		addBut = new Image(Common.getResourceUrl("img/add.png"), 0, 15, 15, 15);
 		addBut.addClickHandler(this);
 		addBut.addMouseOutHandler(this);
 		addBut.addMouseOverHandler(this);
@@ -100,18 +100,13 @@ public final class RelationWidget extends Composite implements ClickHandler,
 		addBut.setTitle("Add FDs");
 		header.setWidget(0, 3, addBut);
 		
-		Image visual = new Image("img/eye.png");
+		Image visual = new Image(Common.getResourceUrl("img/eye.png"));
 		visual.setTitle("FD Visualization");
 		Common.setCursorPointer(visual);
-		visual.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
+		visual.addClickHandler(event ->  {
 				VisualizationWindow vw = VisualizationWindow.get();
 				vw.setData(raw.getAttributes(), fdHP.getFDs());
 				vw.center();
-				
-			}
 		});
 		header.setWidget(0, 4, visual);
 		

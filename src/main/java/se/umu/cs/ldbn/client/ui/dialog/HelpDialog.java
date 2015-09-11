@@ -1,5 +1,7 @@
 package se.umu.cs.ldbn.client.ui.dialog;
 
+import se.umu.cs.ldbn.client.utils.Common;
+
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.Widget;
@@ -28,7 +30,7 @@ public final class HelpDialog extends CloseDialog {
 	 * @param fileName
 	 */
 	public void showInfo(String fileName) {
-		viewer.setUrl("info/"+fileName);
+		viewer.setUrl(Common.getResourceUrl("info/" + fileName));
 		center();
 	}
 	

@@ -67,7 +67,7 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 			super();
 			isSorting = false;
 			isDec = false;
-			sortingImg = new Image("img/column-sorting.png", 0, 0, 9, 7);
+			sortingImg = new Image(Common.getResourceUrl("img/column-sorting.png"), 0, 0, 9, 7);
 			hp = new HorizontalPanel();
 			initWidget(hp);
 			hp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);

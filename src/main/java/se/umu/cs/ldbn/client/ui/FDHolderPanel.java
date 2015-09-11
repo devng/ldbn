@@ -37,7 +37,7 @@ public final class FDHolderPanel extends VerticalPanel
 
 	private class EditButton extends Image {
 		public EditButton() {
-			super("img/edit-big.png", 0, 0, 20, 20);
+			super(Common.getResourceUrl("img/edit-big.png"), 0, 0, 20, 20);
 			Common.setCursorPointer(this);
 			setTitle("Edit FD");
 		}
@@ -67,28 +67,18 @@ public final class FDHolderPanel extends VerticalPanel
 		buttons = new HashMap<>();
 		checkControlls = new Image[3];
 		checkControlls = new Image[3];
-		checkControlls[0] = new Image("img/check-box.png", 0, 0, 15, 15);
+		checkControlls[0] = new Image(Common.getResourceUrl("img/check-box.png"), 0, 0, 15, 15);
 		Common.setCursorPointer(checkControlls[0]);
 		checkControlls[0].setTitle("Select all");
 		checkControlls[0].addClickHandler(this);
-		checkControlls[1] = new Image("img/check-box.png", 0, 15, 15, 15);
+		checkControlls[1] = new Image(Common.getResourceUrl("img/check-box.png"), 0, 15, 15, 15);
 		Common.setCursorPointer(checkControlls[1]);
 		checkControlls[1].setTitle("Select none");
 		checkControlls[1].addClickHandler(this);
-		checkControlls[2] = new Image("img/bin.png", 0, 0, 15, 15);
+		checkControlls[2] = new Image(Common.getResourceUrl("img/bin.png"), 0, 0, 15, 15);
 		checkControlls[2].setTitle("Delete selected");
-		checkControlls[2].addMouseOverHandler(new MouseOverHandler() {
-			@Override
-			public void onMouseOver(MouseOverEvent event) {
-				checkControlls[2].setVisibleRect(15, 0, 15, 15);
-			}
-		});
-		checkControlls[2].addMouseOutHandler(new MouseOutHandler() {
-			@Override
-			public void onMouseOut(MouseOutEvent event) {
-				checkControlls[2].setVisibleRect(0, 0, 15, 15);
-			}
-		});
+		checkControlls[2].addMouseOverHandler(event -> checkControlls[2].setVisibleRect(15, 0, 15, 15));
+		checkControlls[2].addMouseOutHandler(event -> checkControlls[2].setVisibleRect(0, 0, 15, 15));
 		Common.setCursorPointer(checkControlls[2]);
 		checkControlls[2].addClickHandler(this);
 	}

@@ -13,7 +13,6 @@ import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -73,11 +72,9 @@ final class FDDrawer extends AbsolutePanel {
 		}
 		this.add(hp, 10, 10);
 		//calls initSizeAndCanvas after all VisualAttributes are attached
-		Scheduler.get().scheduleDeferred(new Command() {
-			public void execute() {
+		Scheduler.get().scheduleDeferred(() -> {
 				initSizeAndCanvas();
 				drawCanvas();
-			}
 		});
 	}
 

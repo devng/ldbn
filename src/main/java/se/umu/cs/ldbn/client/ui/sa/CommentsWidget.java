@@ -76,7 +76,7 @@ public final class CommentsWidget extends Composite implements ClickHandler {
 			cf.setAlignment(0, 0, HasHorizontalAlignment.ALIGN_LEFT,
 					HasVerticalAlignment.ALIGN_MIDDLE);
 
-			editButton = new Image("img/edit-name.png", 0, 0, 15, 15);
+			editButton = new Image(Common.getResourceUrl("img/edit-name.png"), 0, 0, 15, 15);
 			editButton.addClickHandler(this);
 			editButton.addMouseOutHandler(this);
 			editButton.addMouseOverHandler(this);
@@ -87,7 +87,7 @@ public final class CommentsWidget extends Composite implements ClickHandler {
 			cf.setAlignment(0, 1, HasHorizontalAlignment.ALIGN_LEFT,
 					HasVerticalAlignment.ALIGN_MIDDLE);
 
-			deleteButton = new Image("img/bin.png", 0, 0, 15, 15);
+			deleteButton = new Image(Common.getResourceUrl("img/bin.png"), 0, 0, 15, 15);
 			deleteButton.addClickHandler(this);
 			deleteButton.addMouseOutHandler(this);
 			deleteButton.setTitle("Delete the comment.");

@@ -8,47 +8,132 @@ buildscript {
 	}
 }
 
+
+ext {
+	verJersey = '2.19'
+	verGuice = '4.0'
+	verJackson = '2.7.1'
+	verGwt = '2.8.0-beta1'
+	verJetty = '9.2.6.v20141205'
+
+	dockerDir = "$projectDir/docker"
+}
+
 apply plugin: 'java'
 apply plugin: 'gwt'
+apply plugin: 'war'
+apply plugin: 'jetty'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '2.8'
+	gradleVersion = '2.11'
 }
 
 repositories {
 	mavenCentral()
 }
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 dependencies {
-	gwt 'com.allen-sauer.gwt.log:gwt-log:3.3.2'
-	gwt 'com.allen-sauer.gwt.dnd:gwt-dnd:3.3.3'
+	compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
+	compile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.0.1'
+	compile group: 'com.google.inject', name: 'guice', version: verGuice
+	compile group: 'com.google.inject.extensions', name: 'guice-servlet', version: verGuice
+	compile group: 'com.squarespace.jersey2-guice', name: 'jersey2-guice', version: "0.10"
+	compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: verJersey
+	compile group: 'com.owlike', name: 'genson', version: '1.3'
+
+	gwt group: 'com.allen-sauer.gwt.log', name: 'gwt-log', version: '3.3.2'
+	gwt group: 'com.allen-sauer.gwt.dnd', name: 'gwt-dnd', version: '3.3.4'
+	gwt group: 'com.google.gwt.inject', name: 'gin', version: '2.1.2'
+
+	testCompile group: 'junit', name: 'junit', version: '4.11'
+	testCompile group: 'com.google.gwt', name: 'gwt-dev', version: verGwt
+	testCompile group: 'com.google.gwt.gwtmockito', name: 'gwtmockito', version: '1.1.5'
+	testCompile group: 'org.easytesting', name: 'fest-assert', version: '1.4'
+	testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
+}
+
+sourceSets {
+	main {
+		resources {
+			srcDir 'src/main/resources'
+			srcDir 'src/main/webapp'
+		}
+	}
 }
 
 gwt {
-	gwtVersion = '2.7.0'
+	gwtVersion = "${verGwt}"
+	System.out.println("Using GWT version " + gwtVersion)
+
+	minHeapSize = "512M";
+	maxHeapSize = "2048M";
 
 	modules 'se.umu.cs.ldbn.Ldbn'
 
+	logLevel = 'INFO'
+
+	// define the local workers for GWT, we assume at least dual core, but exclude any possible HT fake CPU cores
+	def gwtLocalWorkers = Math.max(2, (int) (Runtime.getRuntime().availableProcessors() / 2))
+	System.out.println("Using " + gwtLocalWorkers + " GWT compiler workers.")
+
+	// for compiler reference see
+	// http://steffenschaefer.github.io/gwt-gradle-plugin/doc/latest/javadoc/de/richsource/gradle/plugins/gwt/GwtCompileOptions.html
 	compiler {
 		strict = true;
 		disableClassMetadata = true;
 		disableCastChecking = true;
+		localWorkers = gwtLocalWorkers;
 	}
 }
 
-task copyWebResources(type: Copy) {
-	description 'Copies the resource directory to the target www directory.'
-	from 'src/main/resources'
-	exclude '**/db*'
-	into 'build/www'
-}
-assemble.dependsOn copyWebResources
+war {
+	//dependsOn "gitRevision"
 
-task copyGwtOutput(dependsOn: 'compileGwt', type: Copy) {
-	description 'Copies the compiled GWT output to the target www directory.'
-	from 'build/gwt/out/ldbn'
-	into 'build/www/ldbn'
+	archiveName = "root.war"
+
+	excludes += [
+			"**/rebel.xml", "**/*.sql", "**/*.php"
+	]
+
+	from "${buildDir}/classes/main"
 }
-assemble.dependsOn copyGwtOutput
+
+war.doLast {
+	File explodedWarDir = "${buildDir}/libs/war" as File
+	ant.unzip(src: war.archivePath, dest: explodedWarDir)
+}
+
+task copyWarToDocker(type: Copy, dependsOn: 'jar') {
+	description 'Copies the war file to the target docker directory.'
+	from war.archivePath
+	into dockerDir
+}
+
+assemble.dependsOn copyWarToDocker
+
+
+task gitRevision(type: Exec) {
+	commandLine "git", "rev-parse", "--short", "HEAD"
+}
+
+
+jettyRunWar.contextPath = ''
+
+
+// put GWT SDK and GWT client libraries on class path using provided scope
+idea {
+	module {
+		scopes.PROVIDED.plus += [configurations.gwtSdk, configurations.gwt]
+	}
+}
+
+eclipse {
+	classpath {
+		plusConfigurations += [configurations.gwtSdk, configurations.gwt]
+	}
+}

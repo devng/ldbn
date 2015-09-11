@@ -114,7 +114,7 @@ public final class CreateAssignmentWidget extends Composite
 		info.setStyleName("att-img");
 		
 		hw.add(loadInSATabButton);
-		Image trenner = new Image("img/trenner.jpg");
+		Image trenner = new Image(Common.getResourceUrl("img/trenner.jpg"));
 		trenner.setStyleName("att-but");
 		hw.add(trenner);
 		hw.add(newButton);
@@ -125,7 +125,7 @@ public final class CreateAssignmentWidget extends Composite
 		loginFirst = new Label(I18N.constants().loginFirst());
 		loginFirst.setStyleName("att-but");
 		hw.add(loginFirst);
-		trenner = new Image("img/trenner.jpg");
+		trenner = new Image(Common.getResourceUrl("img/trenner.jpg"));
 		trenner.setStyleName("att-but");
 		editMode = new Label(I18N.constants().editMode());
 		editMode.setVisible(false);
@@ -164,19 +164,14 @@ public final class CreateAssignmentWidget extends Composite
 		givenFDs.add(hp);
 		
 		/* additional controls */
-		Image visual = new Image("img/eye.png");
+		Image visual = new Image(Common.getResourceUrl("img/eye.png"));
 		visual.setTitle("FD Visualization");
 		Common.setCursorPointer(visual);
-		visual.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				VisualizationWindow vw = VisualizationWindow.get();
-				vw.setData(egas.getDomain().createAttributeSet(), 
-						givenFDs.getFDs());
-				vw.center();
-				
-			}
+		visual.addClickHandler(event -> {
+			VisualizationWindow vw = VisualizationWindow.get();
+			vw.setData(egas.getDomain().createAttributeSet(),
+					givenFDs.getFDs());
+			vw.center();
 		});
 		
 		Widget[] superAdditionalControl = givenFDs.getAdditionalControlls();

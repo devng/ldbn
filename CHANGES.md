@@ -1,4 +1,10 @@
-## Project News and Changes
+## Project News and Change Log
+* **NEXT** - Version 1.3:
+    * Backend is re-writen in Java, get rid off all PHP code
+    * Backen API is RESTful now
+    * Add URL history support for the front-end
+    * Use Gin for GI in the front-end
+    * Make the front-end more responsive
 * **2015-12-01** - Version 1.2.2 - Small Code Cleanups
 * **2015-09-12** - Version 1.2.1 - Docker Integration
 * **2015-08-11** - Integrate Travis CI

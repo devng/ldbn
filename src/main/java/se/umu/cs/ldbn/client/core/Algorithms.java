@@ -493,7 +493,7 @@ public final class Algorithms {
 			if (!containsKey) {
 				Relation keyRelation = new Relation(allKeys.get(0));
 				result.add(keyRelation);
-				keyRelation.setFDs(new ArrayList<FD>()); // should not be
+				keyRelation.setFDs(new ArrayList<>()); // should not be
 															// null;
 				ArrayList<AttributeSet> keys = new ArrayList<>();
 				keys.add(allKeys.get(0));

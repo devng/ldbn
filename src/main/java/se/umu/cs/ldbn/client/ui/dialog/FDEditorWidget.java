@@ -89,7 +89,7 @@ public final class FDEditorWidget extends Composite
 		leftTA.setSize("160px", "70px");
 		mainPanel.add(leftTA);
 
-		arrowImg = new Image("img/arrow-right-large.png");
+		arrowImg = new Image(Common.getResourceUrl("img/arrow-right-large.png"));
 		mainPanel.add(arrowImg);
 
 		rightTA = new FDEditorTextArea();

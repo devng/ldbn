@@ -18,10 +18,6 @@ import se.umu.cs.ldbn.client.utils.Common;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -45,34 +41,24 @@ public final class DecompositionWidget extends Composite
 		rCounter = 1;
 		checkControlls = new Image[4];
 
-		checkControlls[0] = new Image("img/eye.png");
+		checkControlls[0] = new Image(Common.getResourceUrl("img/eye.png"));
 		checkControlls[0].addClickHandler(this);
 		checkControlls[0].setTitle("FD Visualization");
 		Common.setCursorPointer(checkControlls[0]);
 
-		checkControlls[1] = new Image("img/check-box.png", 0, 0, 15, 15);
+		checkControlls[1] = new Image(Common.getResourceUrl("img/check-box.png"), 0, 0, 15, 15);
 		Common.setCursorPointer(checkControlls[1]);
 		checkControlls[1].setTitle("Select all");
 		checkControlls[1].addClickHandler(this);
-		checkControlls[2] = new Image("img/check-box.png", 0, 15, 15, 15);
+		checkControlls[2] = new Image(Common.getResourceUrl("img/check-box.png"), 0, 15, 15, 15);
 		Common.setCursorPointer(checkControlls[2]);
 		checkControlls[2].setTitle("Select none");
 		checkControlls[2].addClickHandler(this);
-		checkControlls[3] = new Image("img/bin.png", 0, 0, 15, 15);
+		checkControlls[3] = new Image(Common.getResourceUrl("img/bin.png"), 0, 0, 15, 15);
 		checkControlls[3].setTitle("Delete selected");
 
-		checkControlls[3].addMouseOverHandler(new MouseOverHandler() {
-			@Override
-			public void onMouseOver(MouseOverEvent event) {
-				checkControlls[3].setVisibleRect(15, 0, 15, 15);
-			}
-		});
-		checkControlls[3].addMouseOutHandler(new MouseOutHandler() {
-			@Override
-			public void onMouseOut(MouseOutEvent event) {
-				checkControlls[3].setVisibleRect(0, 0, 15, 15);
-			}
-		});
+		checkControlls[3].addMouseOverHandler(event -> checkControlls[3].setVisibleRect(15, 0, 15, 15));
+		checkControlls[3].addMouseOutHandler(event -> checkControlls[3].setVisibleRect(0, 0, 15, 15));
 		checkControlls[3].addClickHandler(this);
 		Common.setCursorPointer(checkControlls[3]);
 

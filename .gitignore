@@ -5,6 +5,8 @@ bin/
 war/
 gwt-unitCache/
 *.class
+*.war
+*.jar
 
 # Eclipse/Gradle/Idea generated files #
 ##################################

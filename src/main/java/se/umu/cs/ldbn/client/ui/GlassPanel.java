@@ -1,6 +1,7 @@
 package se.umu.cs.ldbn.client.ui;
 
 import se.umu.cs.ldbn.client.Main;
+import se.umu.cs.ldbn.client.utils.Common;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -24,7 +25,7 @@ public class GlassPanel extends Composite {
 	   super();
 	   panel = new HorizontalPanel();
 	   panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-	   loading = new Image("img/loading.gif");
+	   loading = new Image(Common.getResourceUrl("img/loading.gif"));
 	   panel.add(loading);
        initWidget(panel);
        panel.setSize(Main.WIDTH_PX+"px", "10000px");

@@ -53,7 +53,7 @@ public final class EditableGivenAttributesWidget extends GivenAttributesWidget
 		for (String attName : att.getAttNames()) {
 			SingleAttributeWidget saw = new SingleAttributeWidget(attName);
 			VerticalPanel vp = new VerticalPanel();
-			Image img = new Image("img/edit-name.png", 0, 0, 15, 15);
+			Image img = new Image(Common.getResourceUrl("img/edit-name.png"), 0, 0, 15, 15);
 			map.put(img, saw);
 			img.addClickHandler(this);
 			Common.setCursorPointer(img);
