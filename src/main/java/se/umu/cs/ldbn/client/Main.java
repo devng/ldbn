@@ -34,7 +34,7 @@ import com.google.gwt.user.client.ui.TabPanel;
 public final class Main implements EntryPoint, 
 	SelectionHandler<Integer>, LoginListener {
 	
-	public static String VERSION = "1.2-150205";
+	public static String VERSION = "1.2.1-150912";
 	
 	public static final String MAIN_DIV_ID = "gwtapp";
 	

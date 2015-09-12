@@ -26,3 +26,44 @@ The students can test their knowledge by solving different assignments, which co
 The user can check his solution with LDBN. The result is shown in an information window. The user are given small hints were the mistake might be. If the user is still uncertain about the right solution then LDBN can provide him/her with a sample solution as well.
 
 Other features of LDBN include an easy way for lecturers to create new assignments. 
+
+
+## How to Build and Run the Project
+
+LDBN uses the [Gradle](https://gradle.org) build system, you can build the project locally just by typing the following in the console:
+
+```
+./gradlew build
+```
+
+The output of the Gradle build is located in the  _build/www_ directory.
+
+Furthermore, you can start the application by using [Docker](https://www.docker.com). After a successful Gradle build run the following command to create the Docker container:
+```
+docker build -t ldbn .
+```
+
+After that you can start the Docker container by:
+```
+docker run -d --name=ldbn -p 80:80 -v `pwd`/docker/example-db/:/var/ldbn/sql ldbn
+```
+
+Now you can open [http://localhost](https://localhost) in you browser to view the web application.
+
+To stop the Docker container run:
+```
+docker stop ldbn
+```
+
+### How to Extend LDBN
+If you want to import the project in an IDE such as Eclipse or IntelliJ IDEA then Gradle provides a way to generate all the necessary project files.
+
+Generate Eclipse project:
+```
+./gradlew eclipse
+```
+
+Generate IntelliJ IDEA project:
+```
+./gradlew idea
+```
