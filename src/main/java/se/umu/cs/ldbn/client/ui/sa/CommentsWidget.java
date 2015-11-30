@@ -34,9 +34,9 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public final class CommentsWidget extends Composite implements ClickHandler {
-	
+
 	private static CommentsWidget inst;
-	
+
 	public static CommentsWidget get() {
 		if (inst == null) {
 			inst = new CommentsWidget();
@@ -44,9 +44,9 @@ public final class CommentsWidget extends Composite implements ClickHandler {
 		return inst;
 	}
 
-	private final class CommentEntry extends Composite implements MouseOutHandler, MouseOverHandler, 
+	private final class CommentEntry extends Composite implements MouseOutHandler, MouseOverHandler,
 	    ClickHandler, LoginListener, CommentEditCallback {
-		
+
 		private VerticalPanel mainPanel;
 		private Grid header;
 		private HTML content;
@@ -57,7 +57,7 @@ public final class CommentsWidget extends Composite implements ClickHandler {
 		private CommentListEntry cle;
 		private boolean isToDelete;
 		private String possibleText;
-		
+
 		public CommentEntry(CommentListEntry cle) {
 			this.cle = cle;
 			isToDelete = false;
@@ -68,14 +68,14 @@ public final class CommentsWidget extends Composite implements ClickHandler {
 			header = new Grid(1, 5);
 			CellFormatter cf = header.getCellFormatter();
 			header.setStyleName("relW-header");
-			
-			
+
+
 			userName = new HTML("<B>"+cle.getAuthor()+"</B>");
 			header.setWidget(0, 0, userName);
 			cf.setWidth(0, 0, "20");
 			cf.setAlignment(0, 0, HasHorizontalAlignment.ALIGN_LEFT,
 					HasVerticalAlignment.ALIGN_MIDDLE);
-			
+
 			editButton = new Image("img/edit-name.png", 0, 0, 15, 15);
 			editButton.addClickHandler(this);
 			editButton.addMouseOutHandler(this);
@@ -86,7 +86,7 @@ public final class CommentsWidget extends Composite implements ClickHandler {
 			cf.setWidth(0, 1, "20px");
 			cf.setAlignment(0, 1, HasHorizontalAlignment.ALIGN_LEFT,
 					HasVerticalAlignment.ALIGN_MIDDLE);
-			
+
 			deleteButton = new Image("img/bin.png", 0, 0, 15, 15);
 			deleteButton.addClickHandler(this);
 			deleteButton.addMouseOutHandler(this);
@@ -101,19 +101,19 @@ public final class CommentsWidget extends Composite implements ClickHandler {
 			header.setWidget(0, 4, lastModified);
 			cf.setAlignment(0, 4, HasHorizontalAlignment.ALIGN_RIGHT,
 					HasVerticalAlignment.ALIGN_MIDDLE);
-			
+
 			mainPanel.add(header);
-			
+
 			content = new HTML(cle.getCommentString());
 			mainPanel.add(content);
-			
+
 			this.initWidget(mainPanel);
 			setWidth("100%");
 			Login.get().addListener(this);
-			
+
 			editButton.setVisible(false);
 			deleteButton.setVisible(false);
-			
+
 			//display edit and delete buttons only if the user is logged in
 			if (UserData.get().isLoggedIn()) {
 				String id = UserData.get().getId();
@@ -123,9 +123,9 @@ public final class CommentsWidget extends Composite implements ClickHandler {
 					deleteButton.setVisible(true);
 				}
 			}
-			
+
 		}
-		
+
 		@Override
 		public void onMouseOut(MouseOutEvent event) {
 			Object sender = event.getSource();
@@ -134,7 +134,7 @@ public final class CommentsWidget extends Composite implements ClickHandler {
 			} else if (sender == editButton) {
 				editButton.setVisibleRect(0, 0, 15, 15);
 			}
-			
+
 		}
 
 		@Override
@@ -145,7 +145,7 @@ public final class CommentsWidget extends Composite implements ClickHandler {
 			} else if (sender == editButton) {
 				editButton.setVisibleRect(15, 0, 15, 15);
 			}
-			
+
 		}
 
 		@Override
@@ -157,7 +157,7 @@ public final class CommentsWidget extends Composite implements ClickHandler {
 					isToDelete = true;
 					ce.send(this, cle.getId(), "", true);
 				}
-				
+
 			} else if (sender == editButton) {
 				CommentEditDialog ced = CommentEditDialog.get(cle, this);
 				ced.center();
@@ -171,15 +171,15 @@ public final class CommentsWidget extends Composite implements ClickHandler {
 				editButton.setVisible(true);
 				deleteButton.setVisible(true);
 			}
-			
+
 		}
 
 		public void onSessionKilled() {
 			editButton.setVisible(false);
-			deleteButton.setVisible(false);			
+			deleteButton.setVisible(false);
 		}
 
-		
+
 		public void onReseive(boolean isOK) {
 			if(isOK) {
 				if (isToDelete) {
@@ -198,16 +198,16 @@ public final class CommentsWidget extends Composite implements ClickHandler {
 			possibleText = null;
 			isToDelete = false;
 		}
-		
+
 		public void setPossibleCommentText(String str) {
 			this.possibleText = str;
 		}
 	}
-	
+
 	private VerticalPanel mainPanel;
 	private List<CommentEntry> entries;
 	private Button addCommentBut;
-	
+
 	private CommentsWidget() {
 		mainPanel = new VerticalPanel();
 		HorizontalPanel hp = new HorizontalPanel();
@@ -218,19 +218,19 @@ public final class CommentsWidget extends Composite implements ClickHandler {
 		hp.add(addCommentBut);
 		hp.add(new InfoButton("comment"));
 		mainPanel.add(hp);
-		entries = new ArrayList<CommentEntry>();
+		entries = new ArrayList<>();
 		initWidget(mainPanel);
 		mainPanel.setSpacing(6);
 		setWidth("100%");
 	}
-	
+
 	public void clearData() {
 		for (CommentEntry cm : entries) {
 			cm.removeFromParent();
 		}
 		entries.clear();
 	}
-	
+
 	public void addComments(List<CommentListEntry> comments) {
 		for (CommentListEntry cle : comments) {
 			CommentEntry c =  new CommentEntry(cle);
@@ -238,7 +238,7 @@ public final class CommentsWidget extends Composite implements ClickHandler {
 			entries.add(c);
 		}
 	}
-	
+
 	@Override
 	public void onClick(ClickEvent event) {
 		Object sender = event.getSource();

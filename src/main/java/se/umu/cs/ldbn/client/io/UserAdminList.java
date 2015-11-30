@@ -6,23 +6,23 @@ import se.umu.cs.ldbn.client.io.LdbnParser.MSG_TYPE;
 import com.google.gwt.user.client.Window;
 
 public class UserAdminList extends AbstractRequestSender {
-	
+
 	private static UserAdminList inst;
-	
+
 	public static UserAdminList get() {
 		if (inst == null) {
 			inst = new UserAdminList();
 		}
 		return inst;
 	}
-	
+
 	private String adminId;
 	private boolean toRemove;
 
 	private UserAdminList() {
 		super();
 	}
-	
+
 	protected String getData() {
 		String data = "&admin_id="+adminId;
 		data = addSessionData(data);
@@ -36,8 +36,8 @@ public class UserAdminList extends AbstractRequestSender {
 			return Config.get().getAddUserToAdminListScriptURL();
 		}
 	}
-	
-	protected boolean handleResponce() {
+
+	protected boolean handleResponse() {
 		LdbnParser p = LdbnParser.get();
 		if (p.getLastLdbnType() == LDBN_TYPE.msg &&
 				p.getMsgType() == MSG_TYPE.ok) {
@@ -46,7 +46,7 @@ public class UserAdminList extends AbstractRequestSender {
 		}
 		return false;
 	}
-	
+
 	public void send(String adminId, boolean toRemove) {
 		this.adminId = adminId;
 		this.toRemove = toRemove;

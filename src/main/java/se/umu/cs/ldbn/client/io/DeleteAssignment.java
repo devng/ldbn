@@ -8,21 +8,21 @@ import com.google.gwt.user.client.Window;
 public final class DeleteAssignment extends AbstractRequestSender {
 
 	private static DeleteAssignment inst;
-	
+
 	public static DeleteAssignment get() {
 		if (inst == null) {
 			inst = new DeleteAssignment();
 		}
 		return inst;
 	}
-	
+
 	private DeleteAssignment() {
 		super();
 	}
-	
+
 	private String assignmentId;
-	
-	
+
+
 	protected String getData() {
 		String data = "&assignment_id="+assignmentId;
 		data = addSessionData(data);
@@ -33,7 +33,7 @@ public final class DeleteAssignment extends AbstractRequestSender {
 		return Config.get().getDeleteAssignmentScriptURL();
 	}
 
-	protected boolean handleResponce() {
+	protected boolean handleResponse() {
 		LdbnParser p = LdbnParser.get();
 		if (p.getLastLdbnType() == LDBN_TYPE.msg &&
 				p.getMsgType() == MSG_TYPE.ok) {
@@ -42,7 +42,7 @@ public final class DeleteAssignment extends AbstractRequestSender {
 		}
 		return false;
 	}
-	
+
 	public void send(String assignmentId) {
 		this.assignmentId = assignmentId;
 		send();

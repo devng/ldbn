@@ -8,10 +8,10 @@ import se.umu.cs.ldbn.client.core.FD;
 import com.google.gwt.user.client.ui.HTML;
 
 public final class FDWidget extends HTML {
-	
+
 	private boolean isEditable;
 	private FD fd;
-	
+
 	public FDWidget(boolean isEditable, FD fd) {
 		this.isEditable = isEditable;
 		this.fd = fd;
@@ -19,11 +19,11 @@ public final class FDWidget extends HTML {
 		setStyleName("fdw");
 		Main.get().getDragController().makeDraggable(this);
 	}
-	
+
 	public FD getFD() {
 		return fd;
 	}
-	
+
 	public boolean isEditable() {
 		return isEditable;
 	}
@@ -38,7 +38,7 @@ public final class FDWidget extends HTML {
 	}
 
 	public void rebuildHTML() {
-		StringBuffer sb = new StringBuffer(); 
+		StringBuilder sb = new StringBuilder();
 		sb.append("<table border='0' cellpadding='2' cellspacing='2'>");
 		sb.append("<tr>");
 		List<String> atts = fd.getLHS().getAttributeNames();

@@ -25,37 +25,37 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public final class VisualizationWindow extends WindowPanel 
+public final class VisualizationWindow extends WindowPanel
 	implements ChangeHandler {
-	
+
 	private final static int MENU_PX_HEIGHT = 60;
-	
+
 	private static VisualizationWindow inst;
-	
+
 	public static VisualizationWindow get() {
 		if (inst == null) {
 			inst = new VisualizationWindow();
 		}
 		return inst;
 	}
-	
+
 	private boolean isCentering;
-	
+
 	private FDDrawer drawer;
-	
+
 	private Panel contentPanel;
 	private Grid menuPanel;
-	
+
 	private ListBox diagramBox;
 	private ListBox colorBox;
 	private ListBox zoomBox;
 	private ListBox fdRenderBox;
-	
-	private String[] diagramTypes; 
+
+	private String[] diagramTypes;
 	private ColorPalette[] palettes;
 	private int[] zoomLevels;
-	private String[] fdRenderOrder; 
-	
+	private String[] fdRenderOrder;
+
 	private AttributeSet curSet;
 	private List<FD> curFDs;
 	private int curPaletteIndex;
@@ -64,20 +64,20 @@ public final class VisualizationWindow extends WindowPanel
 	private int curFDRenderIndex;
 
 	private SimplePanel menuWrapper;
-	
+
 	private VisualizationWindow() {
 		super("FD Visualization");
 	}
-	
+
 	public void setData(AttributeSet attributes, List<FD> fds) {
 		curFDs = fds;
 		curSet = attributes;
 	}
-	
+
 	public void reDrawCanvas() {
 		drawer.reDrawCanvas();
 	}
-	
+
 	@Override
 	public void center() {
 		if (isCentering) {
@@ -92,20 +92,20 @@ public final class VisualizationWindow extends WindowPanel
 		//setVisible(false);
 		palettes[curPaletteIndex].reset();
 		drawer.drawFDs(curSet, curFDs, palettes[curPaletteIndex],
-				zoomLevels[curZoomLevelIndex], 
+				zoomLevels[curZoomLevelIndex],
 				curDiagramTypeIndex == 0 ? false : true,
 				curFDRenderIndex == 0 ? true : false);
 		show();
 		Scheduler.get().scheduleDeferred(new Command() {
 			public void execute() {
-				int w = Math.max(drawer.getOffsetWidth(), 
+				int w = Math.max(drawer.getOffsetWidth(),
 						menuWrapper.getOffsetWidth() + 8);
 				setContentSize(w, drawer.getOffsetHeight() + MENU_PX_HEIGHT);
 				//hide();
 				//setAnimationEnabled(true);
 				//setVisible(true);
 				//VisualizationWindow.super.center();
-				//IE BUG canvas must be drawn twice 
+				//IE BUG canvas must be drawn twice
 //				if(Common.isAgentIE()) {
 //					Scheduler.get().scheduleDeferred(new Command() {
 //						public void execute() {
@@ -126,79 +126,79 @@ public final class VisualizationWindow extends WindowPanel
 		}
 		palettes[curPaletteIndex].reset();
 		drawer.drawFDs(curSet, curFDs, palettes[curPaletteIndex],
-				zoomLevels[curZoomLevelIndex], 
+				zoomLevels[curZoomLevelIndex],
 				curDiagramTypeIndex == 0 ? false : true,
 				curFDRenderIndex == 0 ? true : false);
 		Scheduler.get().scheduleDeferred(new Command() {
 			public void execute() {
-				int w = Math.max(drawer.getOffsetWidth(), 
+				int w = Math.max(drawer.getOffsetWidth(),
 						menuWrapper.getOffsetWidth() + 8);
 				setContentSize(w, drawer.getOffsetHeight() + MENU_PX_HEIGHT);
 			}
 		});
 
 	}
-	
+
 	protected Widget getContentWidget() {
 		diagramTypes = new String[]{"Type 1: LDBN", "Type 2: Elmasri"};
-		palettes = new ColorPalette[]{ 
+		palettes = new ColorPalette[]{
 				new BlackPalette(), new GrayPalette(), new StandardPalette(),
 				new OpenOfficePalette(), new PastelPalette()};
 		zoomLevels = new int[]{1, 2, 3};
 		fdRenderOrder = new String[]{"Forward", "Reverse"};
-		
+
 		curPaletteIndex = 3;
 		curDiagramTypeIndex = 1;
 		curZoomLevelIndex = 1;
-		
+
 		menuPanel = new Grid(2,4);
-		
+
 		menuPanel.setWidget(0, 0, new HTML("<NOBR>Diagram Type</NOBR>"));
 		diagramBox = new ListBox(false);
-		for (int i = 0; i < diagramTypes.length; i++) {
-			diagramBox.addItem(diagramTypes[i]);
-	    }
+		for (String diagramType : diagramTypes) {
+			diagramBox.addItem(diagramType);
+		}
 		diagramBox.setSelectedIndex(curDiagramTypeIndex);
 		diagramBox.addChangeHandler(this);
 		menuPanel.setWidget(1, 0, diagramBox);
-		
+
 		menuPanel.setWidget(0, 1, new HTML("<NOBR>Color Palette</NOBR>"));
 		colorBox = new ListBox(false);
-		for (int i = 0; i < palettes.length; i++) {
-			colorBox.addItem(palettes[i].getName());
-	    }
+		for (ColorPalette palette : palettes) {
+			colorBox.addItem(palette.getName());
+		}
 		colorBox.setSelectedIndex(curPaletteIndex);
 		colorBox.addChangeHandler(this);
 		menuPanel.setWidget(1, 1, colorBox);
-		
+
 		menuPanel.setWidget(0, 2, new Label("Zoom"));
 		zoomBox = new ListBox(false);
-		for (int i = 0; i < zoomLevels.length; i++) {
-			zoomBox.addItem(" "+zoomLevels[i]+" x ");
-	    }
+		for (int zoomLevel : zoomLevels) {
+			zoomBox.addItem(" " + zoomLevel + " x ");
+		}
 		zoomBox.setSelectedIndex(curZoomLevelIndex);
 		zoomBox.addChangeHandler(this);
 		menuPanel.setWidget(1, 2, zoomBox);
-		
+
 		menuPanel.setWidget(0, 3, new HTML("<NOBR>FDs Order</NOBR>"));
 		fdRenderBox = new ListBox(false);
-		for (int i = 0; i < fdRenderOrder.length; i++) {
-			fdRenderBox.addItem(fdRenderOrder[i]);
-	    }
+		for (String aFdRenderOrder : fdRenderOrder) {
+			fdRenderBox.addItem(aFdRenderOrder);
+		}
 		fdRenderBox.setSelectedIndex(curFDRenderIndex);
 		fdRenderBox.addChangeHandler(this);
 		menuPanel.setWidget(1, 3, fdRenderBox);
-		
+
 		menuWrapper = new SimplePanel();
 		menuWrapper.setWidth("99%");
 		menuWrapper.setStyleName("fdw");
 		menuWrapper.add(menuPanel);
-		
+
 		contentPanel = new VerticalPanel();
 		contentPanel.add(menuWrapper);
 		drawer = new FDDrawer();
 		contentPanel.add(drawer);
-		
+
 		return contentPanel;
 	}
 

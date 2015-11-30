@@ -7,41 +7,41 @@ import com.google.gwt.user.client.Window;
 public final class UserManagement extends AbstractRequestSender {
 
 	private static UserManagement inst;
-	
+
 	public static UserManagement get() {
 		if(inst == null) {
 			inst = new UserManagement();
 		}
 		return inst;
 	}
-	
+
 	private ArrayList<UserManagementListener> listeners;
 	private String url;
 	private String data;
-	
+
 	private UserManagement() {
-		listeners = new ArrayList<UserManagementListener>();
+		listeners = new ArrayList<>();
 	}
-	
+
 	public void addListener(UserManagementListener umc) {
 		if (umc != null) {
 			listeners.add(umc);
 		}
 	}
-	
+
 	public void removeListener(UserManagementListener umc) {
 		if (umc != null) {
 			listeners.remove(umc);
 		}
 	}
-	
-	public void sendUserRegistration(String newUserName, String newUserPassBase64, 
+
+	public void sendUserRegistration(String newUserName, String newUserPassBase64,
 			String newUserEmail) {
 		url = Config.get().getUserRegisterScriptURL();
 		data = "user_name="+newUserName+"&user_pass="+newUserPassBase64+"&user_mail="+newUserEmail;
 		send();
 	}
-	
+
 	public void sendUserChange(String newUserName, String newUserPassBase64, String newUserEmail) {
 		url = Config.get().getUserChangeScriptURL();
 		data = "";
@@ -72,7 +72,7 @@ public final class UserManagement extends AbstractRequestSender {
 		return url;
 	}
 
-	protected boolean handleResponce() {
+	protected boolean handleResponse() {
 		LdbnParser p = LdbnParser.get();
 		if (p.getLastLdbnType() == LdbnParser.LDBN_TYPE.msg) {
 			if(p.getMsgType() == LdbnParser.MSG_TYPE.ok) {
@@ -80,7 +80,7 @@ public final class UserManagement extends AbstractRequestSender {
 				for (UserManagementListener l : listeners) {
 						l.setOKStatus();
 				}
-				return true;	
+				return true;
 			}
 		}
 		return false;

@@ -14,7 +14,7 @@ public final class ResizeDragController extends AbstractDragController {
   private static final int MIN_WIDGET_WIDTH  = 200;
   private static final int MIN_WIDGET_HEIGHT = 100;
 
-  private HashMap<Widget, DirectionConstant> directionMap = new HashMap<Widget, DirectionConstant>();
+  private HashMap<Widget, DirectionConstant> directionMap = new HashMap<>();
 
   private WindowPanel windowPanel = null;
 

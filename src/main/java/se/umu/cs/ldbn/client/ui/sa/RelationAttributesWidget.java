@@ -9,42 +9,42 @@ import se.umu.cs.ldbn.client.core.AttributeSet;
 import com.google.gwt.user.client.ui.HTML;
 
 public final class RelationAttributesWidget extends HTML {
-	
+
 	private AttributeSet attributes;
 	private AttributeSet key;
 	private List<RelationAttributesWidgetListener> listeners;
-	
+
 	public RelationAttributesWidget() {
 		this(new AttributeSet(SolveAssignmentWidget.get().getDomainTable())
 				, new AttributeSet(SolveAssignmentWidget.get().getDomainTable()));
 	}
-	
+
 	public RelationAttributesWidget(AttributeSet attributes) {
 		this(attributes, new AttributeSet(SolveAssignmentWidget.get().getDomainTable()));
 	}
-	
-	public RelationAttributesWidget(AttributeSet attributes, 
+
+	public RelationAttributesWidget(AttributeSet attributes,
 			AttributeSet key) {
 		this.attributes = attributes;
 		this.key = key;
-		listeners = new ArrayList<RelationAttributesWidgetListener>();
+		listeners = new ArrayList<>();
 		setHTML(generateAttributeHTML());
 		setStyleName("fdw");
 		Main.get().getDragController().makeDraggable(this);
 	}
-	
+
 	public void addListener(RelationAttributesWidgetListener l) {
 		listeners.add(l);
 	}
-	
+
 	public void removeListener(RelationAttributesWidgetListener l) {
 		listeners.remove(l);
 	}
-	
+
 	public AttributeSet getAttributes() {
 		return attributes;
 	}
-	
+
 	public AttributeSet getKey() {
 		return key;
 	}
@@ -56,18 +56,18 @@ public final class RelationAttributesWidget extends HTML {
 			l.onAttributesChange();
 		}
 	}
-	
+
 	public void setKey(AttributeSet key) {
 		this.key = key;
 		setHTML(generateAttributeHTML());
 	}
-	
+
 	String generateAttributeHTML() {
-		StringBuffer sb = new StringBuffer(); 
+		StringBuilder sb = new StringBuilder();
 		sb.append("<table border='0' cellpadding='2' cellspacing='2'>");
 		sb.append("<tr>");
 		List<String> names = attributes.getAttributeNames();
-		for (String str : names) {	
+		for (String str : names) {
 			sb.append("<td>");
 			if(key.containsAtt(str)) {
 				sb.append("<b>");

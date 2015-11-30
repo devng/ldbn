@@ -5,18 +5,18 @@ import java.util.List;
 import se.umu.cs.ldbn.client.ui.admin.UserListDialog;
 
 public final class UserList extends AbstractRequestSender {
-	
+
 	private static UserList inst;
-	
+
 	public static UserList get() {
 		if (inst == null) {
 			inst = new UserList();
 		}
 		return inst;
 	}
-	
+
 	private boolean toRemove;
-	
+
 	private UserList() {
 		toRemove = false;
 	}
@@ -31,7 +31,7 @@ public final class UserList extends AbstractRequestSender {
 		return Config.get().getListAllUsersScriptURL();
 	}
 
-	protected boolean handleResponce() {
+	protected boolean handleResponse() {
 		LdbnParser p = LdbnParser.get();
 		if (p.getLastLdbnType() == LdbnParser.LDBN_TYPE.user_list) {
 			List<UserListEntry> data = p.getUserList();
@@ -40,7 +40,7 @@ public final class UserList extends AbstractRequestSender {
 		}
 		return false;
 	}
-	
+
 	public void send(boolean toRemove) {
 		super.send();
 		this.toRemove = toRemove;

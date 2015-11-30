@@ -6,47 +6,47 @@ import java.util.List;
 import se.umu.cs.ldbn.client.ui.user.UserData;
 
 public final class Login extends AbstractRequestSender {
-	
-	private static Login inst; 
-	
+
+	private static Login inst;
+
 	public static Login get() {
 		if(inst == null) {
 			inst = new Login();
 		}
 		return inst;
 	}
-	
+
 	private List<LoginListener> listeners;
 	private String url;
 	private String data;
 	private boolean isSendLogin;
-	
+
 	private Login() {
-		listeners = new ArrayList<LoginListener>();
+		listeners = new ArrayList<>();
 		isSendLogin = false;
 		url = null;
 		data = null;
 	}
-	
+
 	public void addListener(LoginListener l) {
 		if(l != null) {
 			listeners.add(l);
 		}
 	}
-	
+
 	public void removeListener(LoginListener l) {
 		if(l != null) {
 			listeners.remove(l);
 		}
 	}
-	
+
 	public void sendLogin(String userName, String userPassBase64) {
 		url = Config.get().getUserLoginScriptURL();
 		data = "user_name="+userName+"&user_pass="+userPassBase64;
 		isSendLogin = true;
 		send();
 	}
-	
+
 	public void sendKillSession(String sessionID) {
 		url = Config.get().getKillSessionScriptURL();
 		data = "id_session="+sessionID;
@@ -62,14 +62,14 @@ public final class Login extends AbstractRequestSender {
 		return url;
 	}
 
-	protected boolean handleResponce() {
+	protected boolean handleResponse() {
 		if(isSendLogin) {
 			return handleLoginResponce();
 		} else {
 			return handleKillSessionResponse();
 		}
 	}
-	
+
 	private boolean handleLoginResponce() {
 		LdbnParser p = LdbnParser.get();
 		if (p.getLastLdbnType() == LdbnParser.LDBN_TYPE.session) {
@@ -87,7 +87,7 @@ public final class Login extends AbstractRequestSender {
 		}
 		return false;
 	}
-	
+
 	private boolean handleKillSessionResponse() {
 		LdbnParser p = LdbnParser.get();
 		if (p.getLastLdbnType() == LdbnParser.LDBN_TYPE.msg) {

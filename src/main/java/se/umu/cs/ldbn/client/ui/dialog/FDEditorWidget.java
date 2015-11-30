@@ -24,13 +24,13 @@ import com.google.gwt.user.client.ui.Widget;
 
 public final class FDEditorWidget extends Composite
 	implements ClickHandler {
-	
+
 	private final class FDEditorTextArea extends AttributeTextArea  {
-		
+
 		public void onDrop (DragContext context) {
 			Widget w = context.draggable;
 			if(w == null) return;
-			
+
 			if(w instanceof SingleAttributeWidget) {
 				this.appendAttributes(((SingleAttributeWidget)w).getText());
 			} else if (w instanceof FDWidget) {
@@ -44,7 +44,7 @@ public final class FDEditorWidget extends Composite
 				}
 			}
 		}
-		
+
 		public void setFDWidget(FDWidget fdw) {
 			FDEditorWidget fdEdit = FDEditorDialog.get().getFDEditorWidget();
 			AttributeTextArea ata = fdEdit.getLeftTextArea();
@@ -58,11 +58,11 @@ public final class FDEditorWidget extends Composite
 			for (String str : atts) {
 				ata.appendAttributes(str);
 			}
-			if (fdw.isEditable() && currnetFDHP != null && 
+			if (fdw.isEditable() && currnetFDHP != null &&
 					currnetFDHP.containsFDWidget(fdw) && currentFDW == null) {
 					currentFDW = fdw;
 					fdw.getParent().setVisible(false);
-				
+
 			}
 		}
 	}
@@ -74,15 +74,15 @@ public final class FDEditorWidget extends Composite
 	private Button clearButton;
 	private Button addButton;
 	private FDHolderPanel currnetFDHP;
-	
+
 	private DomainTable currentDomain;
-	
+
 	public FDEditorWidget() {
 		super();
 		mainPanel = new HorizontalPanel();
-		
+
 		mainPanel.setSpacing(4);
-		
+
 		mainPanel.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
 
 		leftTA = new FDEditorTextArea();
@@ -91,13 +91,13 @@ public final class FDEditorWidget extends Composite
 
 		arrowImg = new Image("img/arrow-right-large.png");
 		mainPanel.add(arrowImg);
-		
+
 		rightTA = new FDEditorTextArea();
 		rightTA.setSize("160px", "70px");
 		mainPanel.add(rightTA);
-		
+
 		mainPanel.setVerticalAlignment(VerticalPanel.ALIGN_TOP);
-		
+
 		VerticalPanel vp = new VerticalPanel();
 		vp.add(new InfoButton("fdeditor"));
 		addButton = new Button("Set/Add");
@@ -111,15 +111,15 @@ public final class FDEditorWidget extends Composite
 		clearButton.setStyleName("fdew-btn");
 		vp.add(clearButton);
 		mainPanel.add(vp);
-		
+
 		initWidget(mainPanel);
 	}
-	
+
 	public void clearText() {
 		leftTA.setText("");
 		rightTA.setText("");
 	}
-	
+
 	public DomainTable getCurrentDomain() {
 		return currentDomain;
 	}
@@ -131,7 +131,7 @@ public final class FDEditorWidget extends Composite
 	public AttributeTextArea getRightTextArea() {
 		return rightTA;
 	}
-	
+
 	@Override
 	public void onClick(ClickEvent event) {
 		Object sender = event.getSource();
@@ -147,37 +147,37 @@ public final class FDEditorWidget extends Composite
 			if (leftTA.hasOmittedAttributes() || rightTA.hasOmittedAttributes()) {
 				FDEditorDialog.get().setErrorMsg("Some attributes had invalid names.");
 			}
-			
+
 			if(currentFDW != null && fdw.getFD().equals(currentFDW.getFD())) {
 				handleCurrentFDWidget();
 				return;
 			}
-			
+
 			if(currentFDW != null && currnetFDHP != null) {
 				currnetFDHP.removeFDWidget(currentFDW);
 			}
 			currentFDW = null;
-			
+
 			addFDWidget(fdw);
 		}
 	}
-	
+
 	public void setCurrentDomain(DomainTable currentDomain) {
 		this.currentDomain = currentDomain;
 	}
-	
+
 	public void setCurrentFDHolderPanel(FDHolderPanel fdHP) {
 		currnetFDHP = fdHP;
 	}
-	
+
 	public void setFDWidtet(FDWidget fdw) {
 		leftTA.setFDWidget(fdw);
 	}
-	
+
 	/**
-	 * This is used by FDEditorDialog, in order to restore the initial 
-	 * FDWidget if the "Close" Button is hit without setting or modifying the 
-	 * initial widget. 
+	 * This is used by FDEditorDialog, in order to restore the initial
+	 * FDWidget if the "Close" Button is hit without setting or modifying the
+	 * initial widget.
 	 */
 	void handleCurrentFDWidget() {
 		if(currentFDW != null) {
@@ -185,7 +185,7 @@ public final class FDEditorWidget extends Composite
 		}
 		currentFDW = null;
 	}
-	
+
 	/**
 	 * use setCurrentFDHolderPanel before you use this method
 	 * @param fd
@@ -195,7 +195,7 @@ public final class FDEditorWidget extends Composite
 			currnetFDHP.addFDWidget(fd);
 		}
 	}
-	
+
 	private void clearTextAreas() {
 		leftTA.setText("");
 		rightTA.setText("");
@@ -209,8 +209,8 @@ public final class FDEditorWidget extends Composite
 			return null;
 		}
 		boolean isAnythinInserted = false;
-		for (int i = 0; i < l.size(); i++) {
-			if(fd.getLHS().addAtt(l.get(i))) {
+		for (String aL : l) {
+			if (fd.getLHS().addAtt(aL)) {
 				isAnythinInserted = true;
 			}
 		}
@@ -222,8 +222,8 @@ public final class FDEditorWidget extends Composite
 			return null;
 		}
 		isAnythinInserted = false;
-		for (int i = 0; i < r.size(); i++) {
-			if(fd.getRHS().addAtt(r.get(i))) {
+		for (String aR : r) {
+			if (fd.getRHS().addAtt(aR)) {
 				isAnythinInserted = true;
 			}
 		}

@@ -32,7 +32,7 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public final class DecompositionWidget extends Composite 
+public final class DecompositionWidget extends Composite
 	implements ClickHandler, HasAdditionalControlls{
 
 	private List<RelationWidget> relations;
@@ -40,16 +40,16 @@ public final class DecompositionWidget extends Composite
 	private Panel relationsPanel;
 	private Image[] checkControlls;
 	private int rCounter;
-	
+
 	public DecompositionWidget() {
 		rCounter = 1;
 		checkControlls = new Image[4];
-		
+
 		checkControlls[0] = new Image("img/eye.png");
 		checkControlls[0].addClickHandler(this);
 		checkControlls[0].setTitle("FD Visualization");
 		Common.setCursorPointer(checkControlls[0]);
-		
+
 		checkControlls[1] = new Image("img/check-box.png", 0, 0, 15, 15);
 		Common.setCursorPointer(checkControlls[1]);
 		checkControlls[1].setTitle("Select all");
@@ -60,7 +60,7 @@ public final class DecompositionWidget extends Composite
 		checkControlls[2].addClickHandler(this);
 		checkControlls[3] = new Image("img/bin.png", 0, 0, 15, 15);
 		checkControlls[3].setTitle("Delete selected");
-		
+
 		checkControlls[3].addMouseOverHandler(new MouseOverHandler() {
 			@Override
 			public void onMouseOver(MouseOverEvent event) {
@@ -75,9 +75,9 @@ public final class DecompositionWidget extends Composite
 		});
 		checkControlls[3].addClickHandler(this);
 		Common.setCursorPointer(checkControlls[3]);
-		
+
 		VerticalPanel vp = new VerticalPanel();
-		relations = new ArrayList<RelationWidget>();
+		relations = new ArrayList<>();
 		addRelation = new Button("Add a New Relation");
 		addRelation.setStyleName("min-cov-but");
 		addRelation.addClickHandler(this);
@@ -128,45 +128,44 @@ public final class DecompositionWidget extends Composite
 				}
 			}
 		} else if (sender == checkControlls[0]) {
-			ArrayList<FD> fds = new ArrayList<FD>();
-			for (Iterator<RelationWidget> i = relations.iterator(); i.hasNext();) {
-				RelationWidget rw = i.next();
+			ArrayList<FD> fds = new ArrayList<>();
+			for (RelationWidget rw : relations) {
 				fds.addAll(rw.getFDHolderPanel().getFDs());
 
 			}
 			VisualizationWindow vw = VisualizationWindow.get();
-			vw.setData(SolveAssignmentWidget.get().domainAsAttSet, 
+			vw.setData(SolveAssignmentWidget.get().domainAsAttSet,
 					fds);
 			vw.center();
 		}
 	}
-	
+
 	public void addRelationList(Collection<Relation> list) {
 		for (Relation r : list) {
 			addRelation(r);
 		}
 	}
-	
+
 	public void addRelation(Relation r) {
 		List<FD> fds = r.getFds();
 		if(fds == null) {
 			Log.warn("DecompositonWidget.addRelation : FD List is null");
-			fds = new ArrayList<FD>(); //Place holder
+			fds = new ArrayList<>(); //Place holder
 		}
-		
+
 		RelationWidget rw = new RelationWidget("R"+rCounter);
 		RelationAttributesWidget raw = rw.getRelationAttributesWidget();
 		rCounter++;
 		relations.add(rw);
 		relationsPanel.add(rw);
 		FDHolderPanel fdhp = rw.getFDHolderPanel();
-		
-		if(r.getAttrbutes() != null) {
-			raw.setAttributes(r.getAttrbutes());
+
+		if(r.getAttributes() != null) {
+			raw.setAttributes(r.getAttributes());
 		} else {
 			Log.warn("DecompositonWidget.addRelation : attributes are null, skip it");
 		}
-		
+
 		if(r.getPrimaryKey() != null) {
 			raw.setKey(r.getPrimaryKey());
 		} else {
@@ -176,28 +175,28 @@ public final class DecompositionWidget extends Composite
 		for (FD fd : fds) {
 			fdhp.addFDWidget(new FDWidget(true, fd));
 		}
-		
+
 
 	}
-	
+
 	public List<RelationWidget> getRelationWidgets() {
 		return relations;
 	}
-	
+
 	public List<Relation> getRelations() {
-		ArrayList<Relation> result = new ArrayList<Relation>(relations.size());
+		ArrayList<Relation> result = new ArrayList<>(relations.size());
 		for (RelationWidget rw : relations) {
 			result.add(rw.getRelation());
 		}
 		return result;
 	}
-	
+
 	public void clearData() {
 		relations.clear();
 		relationsPanel.clear();
 		rCounter = 1;
 	}
-	
+
 	public Widget[] getAdditionalControlls() {
 		return checkControlls;
 	}

@@ -17,21 +17,21 @@ import com.google.gwt.xml.client.XMLParser;
 import com.google.gwt.xml.client.impl.DOMParseException;
 
 public final class LdbnParser {
-	
-	public static enum LDBN_TYPE {assignment, msg, assignment_list, session, 
+
+	public static enum LDBN_TYPE {assignment, msg, assignment_list, session,
 		comment, user_list, unknown};
-	
+
 	public static enum MSG_TYPE {ok, warn, error, unknown};
-	
+
 	private static LdbnParser inst = null;
-	
+
 	public static LdbnParser get() {
 		if(inst == null) {
 			inst = new LdbnParser();
 		}
 		return inst;
 	}
-	
+
 	private LDBN_TYPE lastLdbnType;
 	//vars used for parsing a ldbn xml string with type=assignment
 	private DomainTable currentDomain;
@@ -43,13 +43,13 @@ public final class LdbnParser {
 	//note such xml string can only contain one message
 	private MSG_TYPE lastMsgType;
 	private String lastMsg;
-	
+
 	//vars used for parsing a ldbn xml string with type assignment_list
 	//map format: assignment id in the DB -> name
 	private List<AssignmentListEntry> assignmentList;
-	
+
 	private List<UserListEntry> userList;
-	
+
 	//vars used for session
 	private String userid;
 	private boolean isAdmin;
@@ -60,13 +60,13 @@ public final class LdbnParser {
 	private List<CommentListEntry> comments;
 	//comments for which assignment
 	private String assignmentIDComent;
-	
+
 	private LdbnParser() {
 		lastLdbnType = LDBN_TYPE.unknown;
 		lastMsgType = MSG_TYPE.unknown;
 	}
-	
-	
+
+
 	public void clear() {
 		lastLdbnType = LDBN_TYPE.unknown;
 		lastMsgType = MSG_TYPE.unknown;
@@ -86,50 +86,50 @@ public final class LdbnParser {
 		assignmentIDComent = null;
 		comments = null;
 	}
-	
+
 	public Assignment getAssignment() {
 		return assignment;
 	}
-	
+
 	public List<AssignmentListEntry> getAssignmentList() {
 		return assignmentList;
 	}
-	
+
 	public List<UserListEntry> getUserList() {
 		return userList;
 	}
-	
+
 	public LDBN_TYPE getLastLdbnType() {
 		return lastLdbnType;
 	}
-	
+
 	public String getMsgText() {
 		String msg = lastMsg.replaceAll("\\n", "\n");
 		msg = msg.replaceAll("<BR>", "\n");
 		msg = msg.replaceAll("<br>", "\n");
 		return msg;
 	}
-	
+
 	public MSG_TYPE getMsgType() {
 		return lastMsgType;
 	}
-	
+
 	public String getSessionId() {
 		return sessionid;
 	}
-	
+
 	public String getUserId() {
 		return userid;
 	}
-	
+
 	public boolean isAdmin() {
 		return isAdmin;
 	}
-	
+
 	public boolean isSuperUser() {
 		return isSuperUser;
 	}
-	
+
 	public String getEmail() {
 		return email;
 	}
@@ -142,17 +142,17 @@ public final class LdbnParser {
 	public String getAssignmentIDComent() {
 		return assignmentIDComent;
 	}
-	
+
 	public LDBN_TYPE parse(String xml) {
 		clear();
 		Document doc;
 		try {
 			doc = XMLParser.parse(xml);
 		} catch (DOMParseException e) {
-			
+
 			return LDBN_TYPE.unknown;
 		}
-		
+
 		Node ldbn = doc.getElementsByTagName("ldbn").item(0);
 		if(ldbn == null) return LDBN_TYPE.unknown;
 		String type = ((Element) ldbn).getAttribute("type");
@@ -166,32 +166,32 @@ public final class LdbnParser {
 			visitElementNodes(ldbn);
 		} else if (type.equals(LDBN_TYPE.assignment_list.toString())) {
 			lastLdbnType = LDBN_TYPE.assignment_list;
-			assignmentList = new ArrayList<AssignmentListEntry>() ;
+			assignmentList = new ArrayList<>() ;
 			visitElementNodes(ldbn);
 		} else if (type.equals(LDBN_TYPE.user_list.toString())) {
 			lastLdbnType = LDBN_TYPE.user_list;
-			userList = new ArrayList<UserListEntry>() ;
+			userList = new ArrayList<>() ;
 			visitElementNodes(ldbn);
 		} else if (type.equals(LDBN_TYPE.session.toString())) {
 			lastLdbnType = LDBN_TYPE.session;
 			visitElementNodes(ldbn);
 		} else if (type.equals("comments_list")) {
 			lastLdbnType = LDBN_TYPE.comment;
-			comments = new ArrayList<CommentListEntry>();
+			comments = new ArrayList<>();
 			assignmentIDComent = ((Element) ldbn).getAttribute("assignment_id");
 			visitElementNodes(ldbn);
 		}else {
 			return LDBN_TYPE.unknown;
 		}
-		
-		
+
+
 		return lastLdbnType;
 	}
-	
-	
+
+
 	private Assignment parseAssignmentXML(Node ldbn) {
 		currentDomain = new DomainTable();
-		currentFDs = new ArrayList<FD>();
+		currentFDs = new ArrayList<>();
 		visitElementNodes(ldbn);
 		Assignment a = new Assignment(currentDomain, currentFDs);
 		a.setName(assignmentName);
@@ -242,7 +242,7 @@ public final class LdbnParser {
 					System.out.println("isAdmin is null.");
 				}
 				String last_modified = el.getAttribute("last_modified").replaceAll("\\s", "_");
-				AssignmentListEntry data = 
+				AssignmentListEntry data =
 					new AssignmentListEntry(id, name, author_id, author, isAdmin,
 							last_modified);
 				if(name != null && id != null) {
@@ -265,12 +265,12 @@ public final class LdbnParser {
 				} else {
 					System.out.println("isSU is null.");
 				}
-				UserListEntry data = 
+				UserListEntry data =
 					new UserListEntry(id, name, isAdmin, isSU);
 				if(name != null && id != null) {
 					userList.add(data);
 				}
-			} else if (tag.equals("att")) { 
+			} else if (tag.equals("att")) {
 				//TODO There can be a  null pointer exception, if the user
 				//is trying to parse ldbn of type msg with an att tag in it,
 				//which is not a valid ldbn xml, but we cannot control, what is

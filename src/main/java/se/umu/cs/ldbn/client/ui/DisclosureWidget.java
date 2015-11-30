@@ -27,17 +27,17 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * A widget, which consist of a header and a content widget. The header widget 
- * is provided the content widget must be passed as a argument to the 
- * constructor. This widget is very useful for applications which take a lot of 
- * vertical space, because it can be resized manually with the mouse, or it can 
- * be  collapsed so only the header can be visible. 
+ * A widget, which consist of a header and a content widget. The header widget
+ * is provided the content widget must be passed as a argument to the
+ * constructor. This widget is very useful for applications which take a lot of
+ * vertical space, because it can be resized manually with the mouse, or it can
+ * be  collapsed so only the header can be visible.
  */
 public final class DisclosureWidget extends Composite implements ClickHandler,
 		MouseOverHandler, MouseOutHandler {
 
 	/**
-	 * Timer for the blind up/down effect. 
+	 * Timer for the blind up/down effect.
 	 */
 	private class FXTimer extends Timer {
 		public void run() {
@@ -66,10 +66,10 @@ public final class DisclosureWidget extends Composite implements ClickHandler,
 		}
 	}
 	/**
-	 * Panel used for resizing. It uses directly the DOM classes for capturing 
+	 * Panel used for resizing. It uses directly the DOM classes for capturing
 	 * mouse events because, the widget has to be aware of drag events even
-	 * when the mouse leaves the widget area, therefore no mouse listener can 
-	 * be applied. 
+	 * when the mouse leaves the widget area, therefore no mouse listener can
+	 * be applied.
 	 */
 	private class ResizePanel extends HTML {
 
@@ -80,7 +80,7 @@ public final class DisclosureWidget extends Composite implements ClickHandler,
 
 		public void onBrowserEvent(Event event) {
 			super.onBrowserEvent(event);
-			
+
 			switch (DOM.eventGetType(event)) {
 
 			case Event.ONMOUSEDOWN: {
@@ -109,7 +109,7 @@ public final class DisclosureWidget extends Composite implements ClickHandler,
                     lastY = y;
                     DOM.eventPreventDefault(event);
 
-					
+
 				}
 				break;
 			}
@@ -136,30 +136,30 @@ public final class DisclosureWidget extends Composite implements ClickHandler,
 	private boolean isResizing;
 	/** last position of the mouse during resizing.  */
 	private int lastY;
-	/** 
-	 * Has the widget been resized manually.If it hasn't been, then 
-	 * when the <code>scroller</code> is expanded next time, 
-	 * <code>setHeight</code> will be set to \"\" 
+	/**
+	 * Has the widget been resized manually.If it hasn't been, then
+	 * when the <code>scroller</code> is expanded next time,
+	 * <code>setHeight</code> will be set to \"\"
 	 */
 	private boolean hasBeenResized;
 	/* Variables used for the blinding effect **/
-	/** 
-	 * Indicates if the effect is still in progress. If false than no other 
-	 * effects can be engaged 
+	/**
+	 * Indicates if the effect is still in progress. If false than no other
+	 * effects can be engaged
 	 **/
 	private boolean isFxFinished;
 	/**
-	 * Is the widget open. It can only be true after a blind up effect.  
+	 * Is the widget open. It can only be true after a blind up effect.
 	 */
 	private boolean isOpen;
 	/**
-	 * Last height after a blind up effect. 
+	 * Last height after a blind up effect.
 	 */
 	private int lastHeight;
 
 	/**
-	 * How many pixels per step should be added/subtract to/from the widget 
-	 * content panel, when a blind up/down effect has been engeged. 
+	 * How many pixels per step should be added/subtract to/from the widget
+	 * content panel, when a blind up/down effect has been engeged.
 	 */
 	private int pxStep;
 
@@ -168,10 +168,10 @@ public final class DisclosureWidget extends Composite implements ClickHandler,
 
 	/**
 	 * Creates a DisclosureWidget.
-	 * 
-	 * @param name a name for the widget that will appear in the widget header. 
+	 *
+	 * @param name a name for the widget that will appear in the widget header.
 	 * @param content content widget, which is then wrapped inside a ScrollPanel
-	 * so resizing could be possible. 
+	 * so resizing could be possible.
 	 */
 	public DisclosureWidget(String name, Widget content) {
 		this(name, content, null);
@@ -179,11 +179,11 @@ public final class DisclosureWidget extends Composite implements ClickHandler,
 
 	/**
 	 * Creates a DisclosureWidget with additional controls in the header.
-	 * 
-	 * @param name a name for the widget that will appear in the widget header. 
+	 *
+	 * @param name a name for the widget that will appear in the widget header.
 	 * @param content content widget, which is then wrapped inside a ScrollPanel
-	 * so resizing could be possible. 
-	 * @param headerControls additional controls for the widget, which will 
+	 * so resizing could be possible.
+	 * @param headerControls additional controls for the widget, which will
 	 * appear in the upper right corner.
 	 */
 	public DisclosureWidget(String name, Widget content, Widget[] headerControls) {
@@ -204,9 +204,10 @@ public final class DisclosureWidget extends Composite implements ClickHandler,
 		}
 
 		if (this.headerContorls != null) {
-			for (int i = 0; i < this.headerContorls.length; i++) {
-				this.headerContorls[i].addStyleName("dw-heder-controls");;
-				headerControlsPanel.add(this.headerContorls[i]);
+			for (Widget headerContorl : this.headerContorls) {
+				headerContorl.addStyleName("dw-heder-controls");
+				;
+				headerControlsPanel.add(headerContorl);
 			}
 		}
 		hasBeenResized = false;
@@ -253,7 +254,7 @@ public final class DisclosureWidget extends Composite implements ClickHandler,
 
 	/**
 	 * Returns the content widget, without the ScrollerPanel.
-	 * 
+	 *
 	 * @return the content widget, without the ScrollerPanel.
 	 */
 	public Widget getContent() {
@@ -264,7 +265,7 @@ public final class DisclosureWidget extends Composite implements ClickHandler,
 	public void onClick(ClickEvent event) {
 		fxBlind();
 	}
-	
+
 	@Override
 	public void onMouseOver(MouseOverEvent event) {
 		useShadows = true;
@@ -273,7 +274,7 @@ public final class DisclosureWidget extends Composite implements ClickHandler,
 		} else {
 			collapseButton.setVisibleRect(15, 0, 15, 15);
 		}
-		
+
 	}
 
 	@Override
@@ -284,7 +285,7 @@ public final class DisclosureWidget extends Composite implements ClickHandler,
 		} else {
 			collapseButton.setVisibleRect(0, 0, 15, 15);
 		}
-		
+
 	}
 
 	/** Expands the widget to the default height */
@@ -300,7 +301,7 @@ public final class DisclosureWidget extends Composite implements ClickHandler,
 
 	/**
 	 * Replace the content widget.
-	 *  
+	 *
 	 * @param content a new Content widget.
 	 */
 	public void setContent(Widget content) {
@@ -311,9 +312,9 @@ public final class DisclosureWidget extends Composite implements ClickHandler,
 	}
 
 	/**
-	 * Decrement the height of this.scroller. 
-	 * 
-	 * @param dY how many pixels to decrement. 
+	 * Decrement the height of this.scroller.
+	 *
+	 * @param dY how many pixels to decrement.
 	 * @return return false if no the scroller height cannot be decremented any
 	 * more
 	 */
@@ -335,7 +336,7 @@ public final class DisclosureWidget extends Composite implements ClickHandler,
 		if (!isFxFinished) {
 			return;
 		}
-			
+
 		isFxFinished = false;
 		if (isOpen) {
 			lastHeight = scroller.getOffsetHeight();
@@ -348,13 +349,13 @@ public final class DisclosureWidget extends Composite implements ClickHandler,
 		}
 		fxT.scheduleRepeating(25);
 	}
-	
+
 	/**
 	 * Increment the height of the this.scroller.
-	 * 
+	 *
 	 * @param dY how many pixels to increment.
-	 * @return return false if the scroller height cannot be incremented any 
-	 * more, thus <code>this.lastHeight</code> value has been reached. 
+	 * @return return false if the scroller height cannot be incremented any
+	 * more, thus <code>this.lastHeight</code> value has been reached.
 	 */
 	private boolean incHeight(int dY) {
 		int y = scroller.getOffsetHeight();
@@ -368,7 +369,7 @@ public final class DisclosureWidget extends Composite implements ClickHandler,
 		} else {
 			scroller.setHeight("");
 		}
-		
+
 		return false;
 	}
 }

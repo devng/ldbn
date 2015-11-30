@@ -20,7 +20,7 @@ import com.google.gwt.user.client.ui.TextBox;
 
 public final class UserLoginWidget extends Composite implements ClickHandler,
 	KeyPressHandler {
-	
+
 	private HorizontalPanel mainPanel;
 	//user
 	private TextBox userTB;
@@ -34,13 +34,13 @@ public final class UserLoginWidget extends Composite implements ClickHandler,
 	private Button register;
 	//help
 	private Button help;
-	
+
 	public UserLoginWidget() {
 		mainPanel = new HorizontalPanel();
 		initWidget(mainPanel);
 		mainPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		mainPanel.setSpacing(5);
-		
+
 		//user
 		userTB = new TextBox();
 		userTB.addKeyPressHandler(this);
@@ -71,7 +71,7 @@ public final class UserLoginWidget extends Composite implements ClickHandler,
 		mainPanel.add(new InfoButton("login"));
 		Common.setCursorPointer(help);
 	}
-	
+
 	@Override
 	public void onClick(ClickEvent event) {
 		Object sender = event.getSource();
@@ -83,20 +83,15 @@ public final class UserLoginWidget extends Composite implements ClickHandler,
 			UserHelpDialog.get().center();
 		}
 	}
-	
+
 	private void doLogin() {
 		String username = userTB.getText().trim();
-		if(username.matches(Common.NAME_REGEX)) {
-			
-		} else {
-			
-		}
 		String pass = Common.base64encode(passTB.getText().trim());
 		UserData.get().setName(username);
 		UserData.get().setPass(pass);
 		Login.get().sendLogin(username, pass);
 	}
-	
+
 	public void clear() {
 		userTB.setText("");
 		passTB.setText("");
