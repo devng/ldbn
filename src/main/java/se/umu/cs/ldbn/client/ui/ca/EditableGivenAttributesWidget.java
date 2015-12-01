@@ -20,29 +20,29 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-//DO not inherit from GivenAttributesWidget it is a bug in GWT and 
-//this.att wont be set, and it will still be null after the constructor 
+//DO not inherit from GivenAttributesWidget it is a bug in GWT and
+//this.att wont be set, and it will still be null after the constructor
 //has been called.
-public final class EditableGivenAttributesWidget extends GivenAttributesWidget  
+public final class EditableGivenAttributesWidget extends GivenAttributesWidget
 	implements DomainTableListener, ClickHandler, RenameDialogCallback {
-	
+
 	private Map<Image, SingleAttributeWidget> map;
 	//used for renaming
 	private SingleAttributeWidget currentSaw;
-	
+
 	public EditableGivenAttributesWidget() {
 		super();
 		att = new DomainTable();
 		att.addListener(this);
-		map = new HashMap<Image, SingleAttributeWidget>();
+		map = new HashMap<>();
 	}
-	
 
-	
+
+
 	public void onDomainChange() {
 		recalculateMainPanel();
 	}
-	
+
 	public void setDomain(DomainTable att) {
 		throw new UnsupportedOperationException("You cannot change the domains");
 	}
@@ -53,7 +53,7 @@ public final class EditableGivenAttributesWidget extends GivenAttributesWidget
 		for (String attName : att.getAttNames()) {
 			SingleAttributeWidget saw = new SingleAttributeWidget(attName);
 			VerticalPanel vp = new VerticalPanel();
-			Image img = new Image("img/edit-name.png", 0, 0, 15, 15); 
+			Image img = new Image("img/edit-name.png", 0, 0, 15, 15);
 			map.put(img, saw);
 			img.addClickHandler(this);
 			Common.setCursorPointer(img);
@@ -64,7 +64,7 @@ public final class EditableGivenAttributesWidget extends GivenAttributesWidget
 			mainPanel.add(vp);
 		}
 	}
-	
+
 	@Override
 	public void onClick(ClickEvent event) {
 		Object sender = event.getSource();
@@ -79,22 +79,22 @@ public final class EditableGivenAttributesWidget extends GivenAttributesWidget
 			RenameDialog.get().rename(this);
 		}
 	}
-	
+
 	public String getOldName() {
 		return currentSaw.getName();
 	}
-	
+
 	public void setNewName(String s) {
 		att.renameAtt(currentSaw.getName(), s);
 		currentSaw = null;
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	public Collection getTakenNames() {
 		return map.values();
 	}
 
-	
+
 	public void onRenameCanceled() {
 		currentSaw = null;
 	}

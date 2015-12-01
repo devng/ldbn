@@ -5,21 +5,21 @@ import java.util.List;
 import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialog;
 
 public final class AssignmentLoader extends AbstractRequestSender {
-	
+
 	private static AssignmentLoader inst;
-	
+
 	public static AssignmentLoader get() {
 		if (inst == null) {
 			inst = new AssignmentLoader();
 		}
 		return inst;
 	}
-	
+
 	private String data;
 	private String url;
 	private boolean isListRequest;
 	private AssignmentLoaderCallback currentAlc;
-	
+
 	private AssignmentLoader() {
 		data = null;
 		url = null;
@@ -32,7 +32,7 @@ public final class AssignmentLoader extends AbstractRequestSender {
 		isListRequest = true;
 		send();
 	}
-	
+
 	public void loadFromURL(String id, AssignmentLoaderCallback alc) {
 		url = Config.get().getLoadScriptURL();
 		currentAlc = alc;
@@ -44,12 +44,12 @@ public final class AssignmentLoader extends AbstractRequestSender {
 	protected String getData() {
 		return data;
 	}
-	
+
 	protected String getURL() {
 		return url;
 	}
 
-	protected boolean handleResponce() {
+	protected boolean handleResponse() {
 		if(isListRequest) {
 			LdbnParser p = LdbnParser.get();
 			if (p.getLastLdbnType() == LdbnParser.LDBN_TYPE.assignment_list) {

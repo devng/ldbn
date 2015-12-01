@@ -31,10 +31,10 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public final class FDHolderPanel extends VerticalPanel 
-	implements ClickHandler, MouseOverHandler, MouseOutHandler, 
+public final class FDHolderPanel extends VerticalPanel
+	implements ClickHandler, MouseOverHandler, MouseOutHandler,
 	HasAdditionalControlls, DomainTableListener {
-	
+
 	private class EditButton extends Image {
 		public EditButton() {
 			super("img/edit-big.png", 0, 0, 20, 20);
@@ -46,25 +46,25 @@ public final class FDHolderPanel extends VerticalPanel
 	private HashSet<FDWidget> fds;
 	/**
 	 * Maps all the check boxes to their corresponding widgets. The keys are
-	 * instances of the CheckBox class and values are instances of the widget 
+	 * instances of the CheckBox class and values are instances of the widget
 	 * class.
 	 */
 	private Map<CheckBox, FDWidget> checkBoxes;
 	private Map<EditButton, CheckBox> buttons;
 	/**
-	 * Array of images used as buttons, which are used as controls for 
+	 * Array of images used as buttons, which are used as controls for
 	 * selection and deletion of all the check boxes.
 	 */
 	private Image[] checkControlls;
-	
+
 	private List<FDHolderPanelListener> listeners;
-	
+
 	public FDHolderPanel() {
 		super();
-		listeners = new ArrayList<FDHolderPanelListener>();
-		fds = new HashSet<FDWidget>();
-		checkBoxes = new HashMap<CheckBox, FDWidget>();
-		buttons = new HashMap<EditButton, CheckBox>();
+		listeners = new ArrayList<>();
+		fds = new HashSet<>();
+		checkBoxes = new HashMap<>();
+		buttons = new HashMap<>();
 		checkControlls = new Image[3];
 		checkControlls = new Image[3];
 		checkControlls[0] = new Image("img/check-box.png", 0, 0, 15, 15);
@@ -92,17 +92,17 @@ public final class FDHolderPanel extends VerticalPanel
 		Common.setCursorPointer(checkControlls[2]);
 		checkControlls[2].addClickHandler(this);
 	}
-	
+
 	public void addListener(FDHolderPanelListener l) {
 		if(l == null) return;
 		listeners.add(l);
 	}
-	
+
 	public void removeListener(FDHolderPanelListener l) {
 		if(l == null) return;
 		listeners.remove(l);
 	}
-	
+
 	public void clearData() {
 		for (Iterator<FDWidget> iter = fds.iterator(); iter.hasNext();) {
 			FDWidget fdw = iter.next();
@@ -113,35 +113,35 @@ public final class FDHolderPanel extends VerticalPanel
 			l.allFDsRemoved();
 		}
 	}
-	
+
 	public List<FD> getFDs() {
-		ArrayList<FD> r = new ArrayList<FD>();
+		ArrayList<FD> r = new ArrayList<>();
 		for (FDWidget fdw : fds) {
 			r.add(fdw.getFD());
 		}
 		return r;
-	} 
-	
-	
+	}
+
+
 	public Collection<FDWidget> getFDWidgets() {
 		return fds;
 	}
-	
+
 	public boolean containsFDWidget(FDWidget fdw) {
 		return fds.contains(fdw);
 	}
-	
+
 	public boolean removeFDWidget(FDWidget fdw) {
 		if(fds.remove(fdw)) {
 			fdw.getParent().removeFromParent();
 			for (FDHolderPanelListener l : listeners) {
-				l.fdRemoved(fds); 
+				l.fdRemoved(fds);
 			}
 			return true;
 		}
 		return false;
 	}
-	
+
 	public void add(Widget w) {
 		if (w instanceof FDWidget) {
 			addFDWidget((FDWidget) w);
@@ -149,7 +149,7 @@ public final class FDHolderPanel extends VerticalPanel
 			super.add(w);
 		}
 	}
-	
+
 	public void addFDWidget(FDWidget fd) {
 		add(getCheckBoxPanel(fd));
 		fds.add(fd);
@@ -157,7 +157,7 @@ public final class FDHolderPanel extends VerticalPanel
 			l.fdAdded(fds);
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.google.gwt.user.client.ui.ClickListener#onClick(com.google.gwt.user.client.ui.Widget)
@@ -193,29 +193,27 @@ public final class FDHolderPanel extends VerticalPanel
 			}
 		}
 	}
-	
+
 	/**
 	 * Select all the check boxes.
 	 */
 	public void selectAll() {
 		Set<CheckBox> keys = checkBoxes.keySet();
-		for (Iterator<CheckBox> iter = keys.iterator(); iter.hasNext();) {
-			CheckBox chBox = iter.next();
+		for (CheckBox chBox : keys) {
 			chBox.setValue(true);
 		}
 	}
-	
+
 	/**
 	 * Removes any selection from the check boxes.
 	 */
 	public void selectNone() {
 		Set<CheckBox> keys = checkBoxes.keySet();
-		for (Iterator<CheckBox> iter = keys.iterator(); iter.hasNext();) {
-			CheckBox chBox = iter.next();
+		for (CheckBox chBox : keys) {
 			chBox.setValue(false);
 		}
 	}
-	
+
 	/**
 	 * Removes the check boxes and the widgets associated with them.
 	 */
@@ -230,58 +228,58 @@ public final class FDHolderPanel extends VerticalPanel
 			}
 		}
 		for (FDHolderPanelListener l : listeners) {
-			l.fdRemoved(fds); 
+			l.fdRemoved(fds);
 		}
 	}
-	
+
 	/**
-	 * Returns the buttons for manipulating the check boxes, such as 'select 
-	 * all', 'select none\ and 'delete all'. This controlls are added to the 
+	 * Returns the buttons for manipulating the check boxes, such as 'select
+	 * all', 'select none\ and 'delete all'. This controlls are added to the
 	 * DisclosureWidget.
-	 *  
+	 *
 	 * @return widgets for manipulating the check boxes.
 	 */
 	public Widget[] getCheckBoxControlls() {
 		return checkControlls;
 	}
-	
+
 
 	@Override
 	public void onMouseOver(MouseOverEvent event) {
 		EditButton edit = (EditButton) event.getSource();
 		edit.setVisibleRect(20, 0, 20, 20);
-		
+
 	}
 
 	@Override
 	public void onMouseOut(MouseOutEvent event) {
 		EditButton edit = (EditButton) event.getSource();
 		edit.setVisibleRect(0, 0, 20, 20);
-		
+
 	}
-	
+
 	/**
-	 * Returns the buttons for manipulating the check boxes, such as 'select 
-	 * all', 'select none\ and 'delete all'. This controlls are added to the 
+	 * Returns the buttons for manipulating the check boxes, such as 'select
+	 * all', 'select none\ and 'delete all'. This controlls are added to the
 	 * DisclosureWidget.
-	 *  
+	 *
 	 * @return widgets for manipulating the check boxes.
 	 */
 	public Widget[] getAdditionalControlls() {
 		return checkControlls;
 	}
-	
+
 	public void onDomainChange() {
 		for (FDWidget fdw : fds) {
 			fdw.recalculateMask();
 		}
 	}
-	
+
 	/**
 	 * Creates a panel, which consists of a check box and a widget and then adds
-	 * both to the map. 
-	 * 
-	 * @param w a widget which will be mapped to a check box 
+	 * both to the map.
+	 *
+	 * @param w a widget which will be mapped to a check box
 	 * @return a panel containing the widget and a check box.
 	 */
 	private Panel getCheckBoxPanel(FDWidget w) {

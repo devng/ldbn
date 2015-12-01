@@ -14,26 +14,26 @@ import com.google.gwt.xml.client.Text;
 import com.google.gwt.xml.client.XMLParser;
 
 public final class AssignmentSaver extends AbstractRequestSender {
-	
+
 	private static AssignmentSaver inst;
-	
+
 	public static AssignmentSaver get() {
 		if (inst == null) {
 			inst = new AssignmentSaver();
 		}
 		return inst;
 	}
-	
+
 	private String data;
-	
+
 	private AssignmentSaver() {}
-	
+
 	public void sendToSaveScript(String xml, String name, String id) {
 		data = "id="+id+"&name="+name+"&xml="+xml;
 		data = addSessionData(data);
 		send();
 	}
-	
+
 	public static String buildXML(Assignment a) {
 		Document doc = XMLParser.createDocument();
 		Element ldbn = doc.createElement("ldbn");
@@ -71,7 +71,7 @@ public final class AssignmentSaver extends AbstractRequestSender {
 				rhsEl.appendChild(fdatt);
 				fdatt.appendChild(txt);
 			}
-			
+
 		}
 		return doc.toString();
 	}
@@ -83,13 +83,13 @@ public final class AssignmentSaver extends AbstractRequestSender {
 	protected String getURL() {
 		return Config.get().getSaveScriptURL();
 	}
-	
-	protected boolean handleResponce() {
+
+	protected boolean handleResponse() {
 		LdbnParser p = LdbnParser.get();
 		if (p.getLastLdbnType() == LdbnParser.LDBN_TYPE.msg) {
 			Window.alert(p.getMsgText());
 			return true;
-		} 
+		}
 		return false;
 	}
 }

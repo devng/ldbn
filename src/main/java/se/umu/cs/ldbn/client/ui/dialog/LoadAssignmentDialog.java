@@ -34,7 +34,7 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public final class LoadAssignmentDialog extends OkCancelDialog implements 
+public final class LoadAssignmentDialog extends OkCancelDialog implements
 	ClickHandler, ChangeHandler {
 
 	private class MyLabel extends Label {
@@ -45,21 +45,21 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 			Common.setCursorPointer(this);
 			addStyleName("nad-myLabel");
 		}
-		
+
 		public AssignmentListEntry getEntry() {
 			return entry;
 		}
 	}
-	
+
 	private class ColumnHeader extends Composite implements ClickHandler {
-		
+
 		private HorizontalPanel hp;
 		private AssignmentListEntry.compareAttribute cAtt;
 		private Label name;
 		private boolean isSorting;
 		private boolean isDec;
 		private Image sortingImg;
-		
+
 		//type == 1 - assignment name
 		//type == 2 - author name
 		//type == 3 - date
@@ -91,7 +91,7 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 				cAtt = AssignmentListEntry.compareAttribute.id;
 				break;
 			}
-			
+
 			hp.add(name);
 			hp.add(sortingImg);
 			Common.setCursorPointer(name);
@@ -117,15 +117,15 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 			sortingImg.setVisibleRect(isDec ? 9 : 18 , 0, 9, 7);
 			sort(cAtt, isDec);
 		}
-		
+
 		private void setDefaults() {
 			isSorting = false;
 			isDec = false;
 			sortingImg.setVisibleRect(0, 0, 9, 7);
 		}
-		
+
 	}
-	
+
 	private static LoadAssignmentDialog inst;
 	public static LoadAssignmentDialog get() {
 		if (inst == null) {
@@ -133,31 +133,31 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 		}
 		return inst;
 	}
-	
+
 	private LoadAssignmentDialogCallback caller;
 	private FlexTable table;
 	private ArrayList<ColumnHeader> colHeaders;
 	private List<AssignmentListEntry> data;
 	private int lastSelectedRow;
-	
+
 	private ListBox filterBox;
 	private AssignmentFilter[] filters;
 	private int currentFilterIndex;
-	
+
 	private LoadAssignmentDialog() {
 		super("Select an Assignment", true);
 		lastSelectedRow = 0;
-		colHeaders = new ArrayList<ColumnHeader>();
+		colHeaders = new ArrayList<>();
 		colHeaders.add(new ColumnHeader(1));
 		colHeaders.add(new ColumnHeader(2));
 		colHeaders.add(new ColumnHeader(3));
-		data = new ArrayList<AssignmentListEntry>(); //
+		data = new ArrayList<>(); //
 		table.addClickHandler(this);
 	}
-	
+
 	/**
 	 * Use this method to load assignments.
-	 * 
+	 *
 	 * @param caller
 	 */
 	public void load(LoadAssignmentDialogCallback caller) {
@@ -172,13 +172,13 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 			if(!UserData.get().isAdmin()) {
 				filterBox.clear();
 				filterBox.addItem(filters[0].getName());
-			} 
+			}
 			currentFilterIndex = 0;
 			filterBox.setSelectedIndex(0);
 		}
 		AssignmentLoader.get().loadAssignmentList();
 	}
-	
+
 	@Override
 	public void onClick(ClickEvent event) {
 		super.onClick(event);
@@ -194,9 +194,9 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 				rf.addStyleName(lastSelectedRow, "nad-selected");
 			}
 		}
-	
+
 	}
-	
+
 	/**
 	 * Used by the AssignmentLoader.
 	 * @param list
@@ -206,7 +206,7 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 		loadAssinmentListWithoutReCenter(data);
 		center();
 	}
-	
+
 	@Override
 	public void center() {
 		super.center();
@@ -226,7 +226,7 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 		}
 		lastSelectedRow = 0;
 	}
-	
+
 	@Override
 	public void onChange(ChangeEvent event) {
 		Object sender = event.getSource();
@@ -243,7 +243,7 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 			e.printStackTrace();
 		}
 	}
-	
+
 	protected Widget getDialogContentWidget() {
 		//START INIT FILTERS
 		filterBox = new ListBox(false);
@@ -251,7 +251,7 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 		filters[0] = new AssignmentFilterYou();
 		filters[1] = new AssignmentFilterAll();
 		filters[2] = new AssignmentFilterAdmin();
-		
+
 		filterBox.addItem(filters[0].getName());
 		filterBox.addItem(filters[1].getName());
 		filterBox.addItem(filters[2].getName());
@@ -263,7 +263,7 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 		hp.add(new Label ("Show : "));
 		hp.add(filterBox);
 		//END INIT FILTERS
-		
+
 		//START INIT TABLE
 		ScrollPanel sp = new ScrollPanel();
 		sp.setSize("100%", "200px");
@@ -275,13 +275,13 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 		sp.add(table);
 		DOM.setStyleAttribute(table.getElement(), "PaddingRight", "20px");
 		//END INIT TABLE
-		
+
 		VerticalPanel vp = new VerticalPanel();
 		vp.add(sp);
 		vp.add(hp);
 		return vp;
 	}
-	
+
 	protected void onOkClick() {
 		if(lastSelectedRow < 1) {
 			setErrorMsg("Invalid selection.");
@@ -295,29 +295,29 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 		caller.onLoaded(((MyLabel) (table.getWidget(lastSelectedRow, 0))).getEntry());
 		hide();
 	}
-	
+
 	@Override
 	protected String getHelpMessage() {
 		return "Choose an assignment from the list bellow";
 	}
 
-	
+
 	private void sort(AssignmentListEntry.compareAttribute cAtt, boolean isDec) {
 		AssignmentListEntry.setCompareAttribute(cAtt);
 		AssignmentListEntry.setDecreasing(isDec);
 		table.getRowFormatter().removeStyleName(lastSelectedRow, "nad-selected");
 		lastSelectedRow = 0;
 		Collections.sort(data);
-		
+
 		currentFilterIndex = filterBox.getSelectedIndex();
 		AssignmentFilter filer = filters[currentFilterIndex];
 		List<AssignmentListEntry> filteredData = filer.apply(data);
 		loadAssinmentListWithoutReCenter(filteredData);
 	}
-	
+
 	private void loadAssinmentListWithoutReCenter(List<AssignmentListEntry> data) {
 		table.clear();
-		
+
 		for (int i = 0; i < colHeaders.size(); i++) {
 			table.setWidget(0, i, colHeaders.get(i));
 		}
@@ -332,9 +332,9 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 			}
 			table.setWidget(row, 0, new MyLabel(entry));
 			table.setWidget(row, 1, Common.createCursorLabel(entry.getAuthor()));
-			table.setWidget(row, 2, Common.createCursorHTML("<nobr>" + 
+			table.setWidget(row, 2, Common.createCursorHTML("<nobr>" +
 					entry.getModifiedOn() + "</nobr>"));
 			row++;
 		}
 	}
-} 
+}

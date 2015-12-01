@@ -20,9 +20,9 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 
 final class FDDrawer extends AbsolutePanel {
-	
-	private final static int VA_MARGIN = 4; 
-	
+
+	private final static int VA_MARGIN = 4;
+
 	private List<VisualAttribute> vatts;
 	//private AttributeSet curAtts;
 	private List<FD> curFds;
@@ -34,7 +34,7 @@ final class FDDrawer extends AbsolutePanel {
 	private boolean useForwardOrder;
 	private boolean isCanvasSupported;
 	private int curFDHeight;
-	
+
 	public FDDrawer() {
 		super();
 		isCanvasSupported = Canvas.isSupported();
@@ -44,8 +44,8 @@ final class FDDrawer extends AbsolutePanel {
 		DOM.setStyleAttribute(this.getElement(), "background", "white");
 	}
 
-	
-	public void drawFDs(AttributeSet atts, List<FD> fds, ColorPalette cp, 
+
+	public void drawFDs(AttributeSet atts, List<FD> fds, ColorPalette cp,
 			int zoomLevel, boolean isType2Diagram, boolean useForwardOrder) {
 		if (!isCanvasSupported) {
 			return;
@@ -58,12 +58,12 @@ final class FDDrawer extends AbsolutePanel {
 		this.isType2Diagram = isType2Diagram;
 		this.useForwardOrder = useForwardOrder;
 		curFDHeight = (14 + 10 * curZoom);
-		
+
 		DomainTable domain = atts.domain();
 		List<String> names = atts.getAttributeNames();
-		vatts = new ArrayList<VisualAttribute>(names.size());
+		vatts = new ArrayList<>(names.size());
 		HorizontalPanel hp = new HorizontalPanel();
-		
+
 		for (String name : names) {
 			int mask = domain.getAttIndex(name);
 			VisualAttribute va = new VisualAttribute(name, mask);
@@ -80,7 +80,7 @@ final class FDDrawer extends AbsolutePanel {
 			}
 		});
 	}
-	
+
 	public void initSizeAndCanvas() {
 		if (!isCanvasSupported) {
 			return;
@@ -98,8 +98,8 @@ final class FDDrawer extends AbsolutePanel {
 				va.setPositionArrowIn(totalWidth + (w >> 1) + 7);
 				va.setPositionArrowOut(totalWidth + (w >> 1) - 7);
 			}
-			
-			
+
+
 			totalWidth += w + (VA_MARGIN << 1); // * 2
 			attHeight = h > attHeight ? h : attHeight;
 		}
@@ -115,7 +115,7 @@ final class FDDrawer extends AbsolutePanel {
 			canvasContext.setLineWidth(2);
 		}
 	}
-	
+
 	public void drawCanvas() {
 		if (!isCanvasSupported) {
 			return;
@@ -123,12 +123,12 @@ final class FDDrawer extends AbsolutePanel {
 		CssColor color;
 		int curH = (25 + 10 * curZoom) + (curFds.size()-1) * curFDHeight;
 		if(isType2Diagram) {
-			curH -= 15; 
+			curH -= 15;
 		}
 
-		for (int i = useForwardOrder ? curFds.size() - 1 : 0; 
+		for (int i = useForwardOrder ? curFds.size() - 1 : 0;
 			useForwardOrder ? i >= 0 : i < curFds.size(); ) {
-			
+
 			color  = curPalette.nextColor();
 			canvasContext.setFillStyle(color);
 			canvasContext.setStrokeStyle(color);
@@ -146,7 +146,7 @@ final class FDDrawer extends AbsolutePanel {
 					} else {
 						drawLine(va.getPositionArrowOut(), 0, va.getPositionArrowOut(), curH);
 					}
-					
+
 				}
 				if(rhs.containsAtt(va.getAttIndex())) {
 					wMin = Math.min(wMin, va.getPositionArrowIn());
@@ -157,9 +157,9 @@ final class FDDrawer extends AbsolutePanel {
 					} else {
 						drawLine(va.getPositionArrowIn(), 0, va.getPositionArrowIn(), curH);
 						drawTriangle(va.getPositionArrowIn(), 0);
-						
+
 					}
-					
+
 				}
 			}
 			if (isType2Diagram) {
@@ -167,7 +167,7 @@ final class FDDrawer extends AbsolutePanel {
 			} else {
 				drawConnectionLine(wMin, wMax, curH, fd);
 			}
-			
+
 			for (VisualAttribute va : vatts) {
 				if(lhs.containsAtt(va.getAttIndex())) {
 					va.setHasOutgoingArrow(true);
@@ -182,7 +182,7 @@ final class FDDrawer extends AbsolutePanel {
 			if (useForwardOrder) i--; else i++;
 		}
 	}
-	
+
 	public void reDrawCanvas() {
 		if (!isCanvasSupported) {
 			return;
@@ -192,19 +192,19 @@ final class FDDrawer extends AbsolutePanel {
 			va.setHasIncommingArrow(false);
 			va.setHasOutgoingArrow(false);
 		}
-		canvasContext.clearRect(0, 0, 
-			canvas.getCoordinateSpaceWidth(), 
+		canvasContext.clearRect(0, 0,
+			canvas.getCoordinateSpaceWidth(),
 			canvas.getCoordinateSpaceHeight());
 		drawCanvas();
 	}
-	
+
 	private void drawLine(double x1, double y1, double x2, double y2) {
 		canvasContext.beginPath();
 		canvasContext.moveTo(x1+0.1, y1+0.1);
 		canvasContext.lineTo(x2+0.1, y2+0.1);
 		canvasContext.stroke();
 	}
-	
+
 	private void drawTriangle(double x, double y) {
 		x += 0.1; y += 0.1;
 		canvasContext.save();
@@ -218,48 +218,47 @@ final class FDDrawer extends AbsolutePanel {
 		canvasContext.fill();
 		canvasContext.restore();
 	}
-	
+
 	private void drawConnectionLine(int x1, int x2, int h, FD f) {
-		for (int i = 0; i < vatts.size(); i++) { //must be sorted by position
-			VisualAttribute va = vatts.get(i);
-			if(va.hasOutgoingArrow()) {
+		for (VisualAttribute va : vatts) { //must be sorted by position
+			if (va.hasOutgoingArrow()) {
 				int p = va.getPositionArrowOut();
-				if(f.getLHS().containsAtt(va.getAttIndex())) {
+				if (f.getLHS().containsAtt(va.getAttIndex())) {
 					CssColor c2 = va.getLastOutcommingColor();
 					drawConnection(p, h, c2);
-				} else if(x1 < p && p < x2) {
-					drawLine(x1, h, p-4, h);
+				} else if (x1 < p && p < x2) {
+					drawLine(x1, h, p - 4, h);
 					drawArc(p, h);
-					x1 = p+4;
+					x1 = p + 4;
 				}
-			} 
-			if(va.hasIncommingArrow()) {
+			}
+			if (va.hasIncommingArrow()) {
 				int p = va.getPositionArrowIn();
-				if(f.getRHS().containsAtt(va.getAttIndex())) {
+				if (f.getRHS().containsAtt(va.getAttIndex())) {
 					canvasContext.save();
-					CssColor color  = va.getLastIncommingColor();
+					CssColor color = va.getLastIncommingColor();
 					canvasContext.setFillStyle(color);
 					canvasContext.setStrokeStyle(color);
-					drawTriangle(p, h+1);
+					drawTriangle(p, h + 1);
 					canvasContext.restore();
 				} else {
-					if(x1 < p && p < x2) {
-						drawLine(x1, h, p-4, h);
+					if (x1 < p && p < x2) {
+						drawLine(x1, h, p - 4, h);
 						drawArc(p, h);
-						x1 = p+4;
+						x1 = p + 4;
 					}
 				}
 			}
 		}
 		drawLine(x1, h, x2, h);
 	}
-	
+
 	private void drawArc (double x, double y) {
 		canvasContext.beginPath();
 		canvasContext.arc(x+0.1, y+0.1, 4, Math.PI, 0, false);
 		canvasContext.stroke();
 	}
-	
+
 	private void drawConnection (double x, double y, CssColor c2) {
 		x += 0.1; y += 0.1;
 		canvasContext.save();
@@ -271,7 +270,7 @@ final class FDDrawer extends AbsolutePanel {
 		canvasContext.stroke();
 		canvasContext.fill();
 		canvasContext.restore();
-		
+
 		canvasContext.beginPath();
 		canvasContext.arc(x, y, 3, Math.PI, 0, false);
 		canvasContext.closePath();

@@ -10,11 +10,9 @@ import java.util.Set;
 
 import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
 
-import com.allen_sauer.gwt.log.client.Log;
-
 /**
  * Class with static methods of different algorithms.
- * 
+ *
  * For the detailed description of the algorithms see the following book: Alfons
  * Kemper, Andre Eickler: Datenbanksysteme, 6. Auflage. Oldenbourg Verlag ISBN
  * 3-486-5690-9
@@ -23,21 +21,19 @@ public final class Algorithms {
 
 	/**
 	 * Calculates the attribute closure (Attribute Huelle - German, see p. 172).
-	 * 
+	 *
 	 * @param a
 	 *            Set of attributes.
 	 * @param fds
 	 *            Set of FDs
 	 * @return Set of attributes such that a -> a+
-	 * @see p. 172
 	 */
 	public static AttributeSet attributeClosure(AttributeSet a, List<FD> fds) {
 		AttributeSet r = a.clone();
-		int lastAtts = 0;
+		int lastAtts;
 		do {
 			lastAtts = r.attMask();
-			for (int i = 0; i < fds.size(); i++) {
-				FD fd = fds.get(i);
+			for (FD fd : fds) {
 				if (fd.getLHS().isSubSetOf(r)) {
 					r.union(fd.getRHS());
 				}
@@ -51,10 +47,9 @@ public final class Algorithms {
 	 * an given set of FDs. The algorithm first makes left reduction , then
 	 * right reduction , then deleting all FDs such as A -> {}, group all FD
 	 * such as A -> B and A -> C to A -> BC
-	 * 
+	 *
 	 * @param f
 	 *            all given FDs of the relation
-	 * @return the minimal cover as list of FD Objects.
 	 */
 	public static void minimalCover(List<FD> f) {
 		if(f == null ) {
@@ -67,7 +62,7 @@ public final class Algorithms {
 			oldF = cloneF(f);
 			i++;
 			//reduction
-			leftReduction(f); 
+			leftReduction(f);
 			rightReduction(f);
 
 			// clean FD such as A -> {}
@@ -79,7 +74,7 @@ public final class Algorithms {
 			}
 
 			// group FD in such way that A -> B , A -> C equals to A -> BC
-			HashMap<AttributeSet, AttributeSet> table = new HashMap<AttributeSet, AttributeSet>();
+			HashMap<AttributeSet, AttributeSet> table = new HashMap<>();
 			for (FD fd : f) {
 				if (table.containsKey(fd.getLHS())) {
 					AttributeSet rhs = table.get(fd.getLHS());
@@ -93,22 +88,22 @@ public final class Algorithms {
 			for (AttributeSet lhs : lhsAtts) {
 				f.add(new FD(lhs, table.get(lhs)));
 			}
-			
-			
+
+
 		} while (i < max_iterations && isFChanged(f, oldF));
-		
+
 		oldF = null;
-		
+
 	}
-	
+
 	private static List<FD> cloneF(List<FD> f) {
-		ArrayList<FD> result = new ArrayList<FD>(f.size());
+		ArrayList<FD> result = new ArrayList<>(f.size());
 		for (FD fd : f) {
 			result.add(fd.clone());
 		}
 		return result;
 	}
-	
+
 	private static boolean isFChanged(List<FD> newF, List<FD> oldF) {
 		if(newF.size() != oldF.size()) {
 			return true;
@@ -118,8 +113,8 @@ public final class Algorithms {
 	}
 
 	private static void leftReduction(List<FD> fds) {
-		HashSet<FD> newFDs = new HashSet<FD>();
-		HashSet<FD> toRemoveFDs = new HashSet<FD>();
+		HashSet<FD> newFDs = new HashSet<>();
+		HashSet<FD> toRemoveFDs = new HashSet<>();
 
 		for (int i = 0; i < fds.size(); i++) {
 			FD fd = fds.get(i);
@@ -139,13 +134,11 @@ public final class Algorithms {
 				leftSide.addAtt(j);
 			}
 		}
-		for (Iterator<FD> it = toRemoveFDs.iterator(); it.hasNext();) {
-			FD fd = it.next();
+		for (FD fd : toRemoveFDs) {
 			fds.remove(fd);
 		}
 
-		for (Iterator<FD> it = newFDs.iterator(); it.hasNext();) {
-			FD fd = it.next();
+		for (FD fd : newFDs) {
 			if (!fds.contains(fd)) {
 				fds.add(fd);
 			}
@@ -154,7 +147,7 @@ public final class Algorithms {
 
 	private static void rightReduction(List<FD> fds) {
 		for (int i = 0; i < fds.size(); i++) {
-			FD fd = ((FD) fds.get(i));
+			FD fd = fds.get(i);
 			AttributeSet rightSide = fd.getRHS();
 			AttributeSetIterator iter = rightSide.iterator();
 			for (; iter.hasNext();) {
@@ -171,13 +164,13 @@ public final class Algorithms {
 	/**
 	 * Convert FDs in such a form, so that all fds in the RHS (right hand sinde)
 	 * have only one attribute
-	 * 
+	 *
 	 * @param fds
 	 *            list of FDs
 	 * @return the canonical form of the list
 	 */
 	public static List<FD> canonicalForm(List<FD> fds) {
-		ArrayList<FD> result = new ArrayList<FD>();
+		ArrayList<FD> result = new ArrayList<>();
 		for (FD fd : fds) {
 			for (AttributeSetIterator iter = fd.getRHS().iterator(); iter
 					.hasNext();) {
@@ -192,14 +185,14 @@ public final class Algorithms {
 
 	/**
 	 * Equivalence between sets of Functional Dependencies:
-	 * 
+	 *
 	 * Consider two sets of FDs, F and G, F = {A -> B, B -> C, AC -> D} and G =
 	 * {A -> B, B -> C, A -> D} Are F and G equivalent? To determine their
 	 * equivalence, we need to prove that F+ = G+. However, since computing F+
 	 * or G+ is computationally expensive we take a short cut. We can conclude
 	 * that F and G are equivalent, if we can prove that all FDs in F can be
 	 * inferred from the set of FDs in G and vice versa.
-	 * 
+	 *
 	 * For our example above, let us see if we can infer all FDs in F using G;
 	 * we will use attribute closure to determine that. Take the attributes from
 	 * the LHS of FDs in F and compute attribute closure for each using FDs in
@@ -210,7 +203,7 @@ public final class Algorithms {
 	 * FDs in G using FDs in F: A+ using F = ABCD; A -> A; A -> B; A -> C; A->
 	 * D; B+ using F = BC; B -> B; B -> C; Since all FDs in F can be obtained
 	 * from G and vice versa, we conclude that F and G are equivalent
-	 * 
+	 *
 	 * @param fdsF
 	 *            List of FDs F
 	 * @param fdsG
@@ -218,14 +211,12 @@ public final class Algorithms {
 	 * @return true if F and G are equivalent
 	 */
 	public static boolean equivalence(List<FD> fdsF, List<FD> fdsG) {
-		for (Iterator<FD> iter = fdsF.iterator(); iter.hasNext();) {
-			FD fd = iter.next();
+		for (FD fd : fdsF) {
 			if (!fdTest(fd, fdsG))
 				return false;
 		}
 
-		for (Iterator<FD> iter = fdsG.iterator(); iter.hasNext();) {
-			FD fd = iter.next();
+		for (FD fd : fdsG) {
 			if (!fdTest(fd, fdsF))
 				return false;
 		}
@@ -234,7 +225,7 @@ public final class Algorithms {
 
 	/**
 	 * Checks if the memberCandidate FD is in FDS+ (FD closure).
-	 * 
+	 *
 	 * @param memberCandidate
 	 * @param fds
 	 * @return
@@ -242,24 +233,21 @@ public final class Algorithms {
 	public static boolean fdTest(FD memberCandidate, List<FD> fds) {
 		AttributeSet lhsClosure = attributeClosure(memberCandidate.getLHS(),
 				fds);
-		if (lhsClosure.containsAttSet(memberCandidate.getRHS())) {
-			return true;
-		}
-		return false;
+		return lhsClosure.containsAttSet(memberCandidate.getRHS());
 	}
 
 	/**
 	 * Gives all key candidates of a relationship, thus the keys are minimal, if
 	 * the FDs List is null or empty, a list with only one element is returned
 	 * containing <code>att</code>.
-	 * 
+	 *
 	 * @param fds
 	 * @param atts
 	 * @return
 	 */
 	public static List<AttributeSet> findAllKeyCandidates(List<FD> fds,
 			AttributeSet atts) {
-		List<AttributeSet> keys = new ArrayList<AttributeSet>();
+		List<AttributeSet> keys = new ArrayList<>();
 		if (fds == null || fds.size() == 0) {
 			keys.add(atts);
 			return keys;
@@ -277,8 +265,7 @@ public final class Algorithms {
 					for (Iterator<AttributeSet> i = keys.iterator(); i
 							.hasNext();) {
 						AttributeSet k = i.next();
-						if (key.containsAttSet(k)) { // E.g. ABC contains AB,
-														// thus dont add ABC
+						if (key.containsAttSet(k)) { // E.g. ABC contains AB, thus don't add ABC
 							addKey = false;
 						} else if (k.containsAttSet(key)) { // E.g. AB from the
 															// key list contains
@@ -299,7 +286,7 @@ public final class Algorithms {
 	/**
 	 * Checks if a attribute set is a key. It does not test if the key is
 	 * minimal.
-	 * 
+	 *
 	 * @param key
 	 * @param atts
 	 * @param fds
@@ -323,7 +310,7 @@ public final class Algorithms {
 	 * relation FDs' closure. Thus we build a collection of all FDs, contained
 	 * in the decomposition, and use the member algorithm to test if the initial
 	 * FDs are members of its closure.
-	 * 
+	 *
 	 * @param initialFDs
 	 *            the FDs which were originally given in the assignment.
 	 * @param decomposition
@@ -332,7 +319,7 @@ public final class Algorithms {
 	 */
 	public static boolean isDependencyPreserving(List<FD> initialFDs,
 			List<Relation> decomposition) {
-		List<FD> decompositionFDs = new ArrayList<FD>();
+		List<FD> decompositionFDs = new ArrayList<>();
 		for (Relation relation : decomposition) {
 			List<FD> rFDs = relation.getFds();
 			if (rFDs != null) {
@@ -346,7 +333,7 @@ public final class Algorithms {
 	/**
 	 * See the paper of Georg Gottlob "Computing covers for embedded functional
 	 * dependencies"
-	 * 
+	 *
 	 * @param u
 	 *            Original scheme U
 	 * @param f
@@ -358,7 +345,7 @@ public final class Algorithms {
 	public static List<FD> reductionByResolution(AttributeSet u, List<FD> f,
 			AttributeSet r) {
 		List<FD> canonicalForm = canonicalForm(f);
-		ArrayList<FD> g = new ArrayList<FD>(canonicalForm); // G = F
+		ArrayList<FD> g = new ArrayList<>(canonicalForm); // G = F
 		AttributeSet x = u.clone(); // X = U - R
 		x.removeAttSet(r);
 
@@ -366,7 +353,7 @@ public final class Algorithms {
 		for (; iter.hasNext();) {
 			String a = iter.next();
 			iter.remove();
-			ArrayList<FD> res = new ArrayList<FD>();
+			ArrayList<FD> res = new ArrayList<>();
 			for (FD fd : g) {
 				if (fd.getRHS().containsAtt(a)) {
 					for (FD fd2 : g) {
@@ -394,41 +381,37 @@ public final class Algorithms {
 
 	/**
 	 * checks if elements in the LHS are present in the RHS
-	 * 
+	 *
 	 * @param f
 	 *            an FD
 	 * @return true if an element of the LHS is present in the RHS as well.
 	 */
 	private static boolean isTrivial(FD f) {
-		if ((f.getLHS().attMask() & f.getRHS().attMask()) == 0) {
-			return false;
-		}
-		return true;
+		return (f.getLHS().attMask() & f.getRHS().attMask()) != 0;
 	}
 
 	/**
 	 * Checks if a decomposition has the lossless/nonaditive join property. The
 	 * algorithm is the one proposed in Elmasri's Book.
-	 * 
+	 *
 	 * @param initialFDs
 	 * @param atts
 	 * @param decomposition
 	 * @return
 	 */
-	public static boolean isLossless(List<FD> initialFDs, AttributeSet atts,
-			List<Relation> decomposition) {
+	public static boolean isLossless(List<FD> initialFDs, AttributeSet atts, List<Relation> decomposition) {
 		AttributeSet[] s = new AttributeSet[decomposition.size()];
 		int[] sMask = new int[s.length];
 		for (int i = 0; i < s.length; i++) {
-			s[i] = decomposition.get(i).getAttrbutes().clone();
-			sMask[i] = decomposition.get(i).getAttrbutes().attMask();
+			s[i] = decomposition.get(i).getAttributes().clone();
+			sMask[i] = decomposition.get(i).getAttributes().attMask();
 		}
-		List<FD> fdCan = canonicalForm(initialFDs); 
+		List<FD> fdCan = canonicalForm(initialFDs);
 		do {
 			for (FD fd : fdCan) {
 				boolean containsLHSRHS =  false;
-				for (int i = 0; i < s.length; i++) {
-					if (s[i].containsAttSet(fd.getLHS()) && s[i].containsAttSet(fd.getRHS())) {
+				for (AttributeSet value : s) {
+					if (value.containsAttSet(fd.getLHS()) && value.containsAttSet(fd.getRHS())) {
 						containsLHSRHS = true;
 						break;
 					}
@@ -437,8 +420,8 @@ public final class Algorithms {
 			}
 		} while (hasSChanged(sMask, s));
 
-		for (int i = 0; i < s.length; i++) {
-			if (s[i].containsAttSet(atts)) {
+		for (AttributeSet value : s) {
+			if (value.containsAttSet(atts)) {
 				return true;
 			}
 		}
@@ -455,7 +438,7 @@ public final class Algorithms {
 		}
 		return result;
 	}
-	
+
 	private static void setSymbol(AttributeSet[] s, AttributeSet x, AttributeSet y, boolean isASymbol) {
 		for (AttributeSet sA : s) {
 			if(sA.containsAttSet(x)) {
@@ -467,49 +450,18 @@ public final class Algorithms {
 			}
 		}
 	}
-	
-//	public static boolean isLossless2(List<FD> initialFDs, AttributeSet atts,
-//	List<Relation> decomposition) {
-//ArrayList<Relation> z = new ArrayList<Relation>();
-//for (Relation relation : decomposition) {
-//	z.add(relation);
-//}
-//AttributeSet k = new AttributeSet(atts.domain());
-//if(z.size() >= 1) {
-//	k = z.get(0).getAttrbutes();
-//	z.remove(0);
-//}
-//AttributeSet oldK;
-//AttributeSet initialK = k.clone();
-//do{
-//	oldK = k.clone();
-//	for (Iterator<Relation> i = z.iterator(); i.hasNext();) {
-//		Relation r = i.next();
-//		AttributeSet lhs = k.clone();
-//		lhs.removeAttSet(r.getAttrbutes());
-//		FD fd1 = new FD(lhs, k.clone());
-//		FD fd2 = new FD(lhs.clone(), r.getAttrbutes().clone());
-//		if (fdTest(fd1, initialFDs) || fdTest(fd2, initialFDs)) {
-//			k.union(r.getAttrbutes());
-//			i.remove();
-//		}
-//	}
-//}while(!k.equals(oldK));
-//return k.equals(atts) && !initialK.equals(k);
-//}
 
 	public static Collection<Relation> synthese(Relation r, boolean areFDMinimalCoder) {
-		HashSet<Relation> result = new HashSet<Relation>();
+		HashSet<Relation> result = new HashSet<>();
 		List<FD> fds = r.getFds();
 		if (!areFDMinimalCoder) {
 			minimalCover(fds);
 		}
-		List<AttributeSet> allKeys = findAllKeyCandidates(fds, r.getAttrbutes());
+		List<AttributeSet> allKeys = findAllKeyCandidates(fds, r.getAttributes());
 
 		//2. create new relations
-		for (Iterator<FD> iter = fds.iterator(); iter.hasNext();) {
-			FD fd = iter.next();
-			List<FD> fds3nf = new ArrayList<FD>();
+		for (FD fd : fds) {
+			List<FD> fds3nf = new ArrayList<>();
 			fds3nf.add(fd);
 			AttributeSet att3nf = fd.getLHS().clone();
 			att3nf.union(fd.getRHS());
@@ -520,29 +472,18 @@ public final class Algorithms {
 
 		// Associate FDs for each relation , see Kemper's book p. 185
 		for (Relation r1 : result) {
-//			AttributeSet atts = r1.getAttrbutes();
-//			List<FD> r1_fds = new ArrayList<FD>();
-			List<FD> r1_fds = reductionByResolution(r.getAttrbutes(), r.getFds(), r1.getAttrbutes());
+			List<FD> r1_fds = reductionByResolution(r.getAttributes(), r.getFds(), r1.getAttributes());
 			minimalCover(r1_fds);
-//			for (FD fd : fds) {
-//				AttributeSet lhs = fd.getLHS();
-//				AttributeSet rhs = fd.getRHS();
-//				if(atts.containsAttSet(lhs) && atts.containsAttSet(rhs)) {
-//					if(!r1_fds.contains(fd)) {
-//						r1_fds.add(fd);
-//					}
-//				}
-//			}
 			r1.setFDs(r1_fds);
 		}
-		
-		
+
+
 		if (allKeys.size() > 0) {
 			boolean containsKey = false;
 			for (Relation rr : result) {
 				for (AttributeSet k : allKeys) {
 					System.out.println(k);
-					if (rr.getAttrbutes().containsAttSet(k)) {
+					if (rr.getAttributes().containsAttSet(k)) {
 						containsKey = true;
 						break;
 					}
@@ -554,14 +495,14 @@ public final class Algorithms {
 				result.add(keyRelation);
 				keyRelation.setFDs(new ArrayList<FD>()); // should not be
 															// null;
-				ArrayList<AttributeSet> keys = new ArrayList<AttributeSet>();
+				ArrayList<AttributeSet> keys = new ArrayList<>();
 				keys.add(allKeys.get(0));
 				keyRelation.setKeyCandidates(keys);
 				keyRelation.setPrimaryKey(allKeys.get(0));
 
 			}
 		} else {
-			Log.warn("Could not find key for the relation");
+			System.out.println("Could not find key for the relation");
 		}
 
 		// find a key for each relation
@@ -569,37 +510,22 @@ public final class Algorithms {
 		for (Relation r3nf : result) {
 			List<FD> fds3nf = r3nf.getFds();
 			for (FD fd3nf : fds3nf) {
-				if (isSuperKey(fd3nf.getLHS(), r3nf.getAttrbutes(), fds3nf)) {
+				if (isSuperKey(fd3nf.getLHS(), r3nf.getAttributes(), fds3nf)) {
 					r3nf.setPrimaryKey(fd3nf.getLHS());
 				}
 			}
 			if (r3nf.getPrimaryKey() == null) {
-				r3nf.setPrimaryKey(r3nf.getAttrbutes());
+				r3nf.setPrimaryKey(r3nf.getAttributes());
 			}
 		}
 
-		// for (Relation r3nf : result) {
-		// List<FD> fds3nf = r3nf.getFds();
-		// AttributeSet att3nf = r3nf.getAttrbutes();
-		// List<AttributeSet> keys = findAllKeyCandidates(fds3nf, att3nf);
-		//			
-		// if(keys.size() < 1) {
-		// r3nf.setSuperKey(att3nf.clone());
-		// keys.add(r3nf.getSuperKey());
-		//				
-		// } else {
-		// r3nf.setSuperKey(keys.get(0));
-		// }
-		// r3nf.setKeyCandidates(keys);
-		// }
-
 		// eliminate relationships such as Ra is subset of Rb
-		List<Relation> toRemove = new ArrayList<Relation>();
+		List<Relation> toRemove = new ArrayList<>();
 		for (Relation r1 : result) {
 			for (Relation r2 : result) {
 				if (r1 == r2)
 					continue;
-				if (r1.getAttrbutes().containsAttSet(r2.getAttrbutes())) {
+				if (r1.getAttributes().containsAttSet(r2.getAttributes())) {
 					toRemove.add(r2);
 				}
 			}
@@ -611,11 +537,8 @@ public final class Algorithms {
 	/**
 	 * Finds a BCNF decomposition if there is one. The input is the output of the
 	 * syntese algorithm.
-	 * 
+	 *
 	 * Algorithm is described in the book [1]. page 187
-	 * 
-	 * @param list
-	 * @return
 	 */
 	public static Collection<Relation> findBCNF(Collection<Relation> synthese) {
 		List<FD> nonBCNF = null;
@@ -635,23 +558,23 @@ public final class Algorithms {
 			AttributeSet rhs = fd.getRHS();
 			AttributeSet attU = lhs.clone();
 			attU.union(rhs);
-			AttributeSet attN = curRel.getAttrbutes().clone();
+			AttributeSet attN = curRel.getAttributes().clone();
 			attN.removeAttSet(rhs);
 			Relation r1 = new Relation(attU);
 			Relation r2 = new Relation(attN);
 			// associate FDs with r1 and r2;
-			List<FD> fds = reductionByResolution(curRel.getAttrbutes(), curRel
-					.getFds(), r1.getAttrbutes());
+			List<FD> fds = reductionByResolution(curRel.getAttributes(), curRel
+					.getFds(), r1.getAttributes());
 			r1.setFDs(fds);
-			fds = reductionByResolution(curRel.getAttrbutes(), curRel.getFds(),
-					r2.getAttrbutes());
+			fds = reductionByResolution(curRel.getAttributes(), curRel.getFds(),
+					r2.getAttributes());
 			r2.setFDs(fds);
 			// find keys for r1 and r2
 			List<AttributeSet> keys = findAllKeyCandidates(r1.getFds(), r1
-					.getAttrbutes());
+					.getAttributes());
 			r1.setKeyCandidates(keys);
 			r1.setPrimaryKey(keys.get(0));
-			keys = findAllKeyCandidates(r2.getFds(), r2.getAttrbutes());
+			keys = findAllKeyCandidates(r2.getFds(), r2.getAttributes());
 			r2.setKeyCandidates(keys);
 			r2.setPrimaryKey(keys.get(0));
 
@@ -667,7 +590,7 @@ public final class Algorithms {
 	/**
 	 * Check if a Relation r is in BCNF, and returns a list of FDs, which
 	 * violate the BCNF rule, or null if the relation is in deed in BCNF
-	 * 
+	 *
 	 * @param r
 	 *            a Relation, returned from the syntheses algorithm.
 	 * @return null if the Relation r is in BCNF or a list of FD, which violate
@@ -679,19 +602,19 @@ public final class Algorithms {
 		}
 		if (r.getKeyCandidates() == null) {
 			List<AttributeSet> keys = findAllKeyCandidates(r.getFds(), r
-					.getAttrbutes());
+					.getAttributes());
 			r.setKeyCandidates(keys);
 		}
 		List<FD> fds = r.getFds();
 		List<AttributeSet> keys = r.getKeyCandidates();
-		List<FD> nonBCNF = new ArrayList<FD>();
+		List<FD> nonBCNF = new ArrayList<>();
 		for (FD fd : fds) {
 			AttributeSet lhs = fd.getLHS();
 			AttributeSet rhs = fd.getRHS();
 			if (lhs.containsAttSet(rhs))
 				continue; // FD trivial
 			boolean isKey = false; // if LHS of FD is a super key
-			for (AttributeSet key : keys) { 
+			for (AttributeSet key : keys) {
 				if (lhs.containsAttSet(key)) {
 					isKey = true;
 					break;
@@ -706,12 +629,12 @@ public final class Algorithms {
 		return nonBCNF;
 	}
 
-	
+
 	/**
 	 * Checks if a decomposition is in 2nd normal form (2NF).
-	 * @param rel list of relations with computed key candidates and FDs 
+	 * @param rel list of relations with computed key candidates and FDs
 	 * computed with reduce by resolution algorithm.
-	 * @return true if every relation is in 2NF.  
+	 * @return true if every relation is in 2NF.
 	 */
 	public static boolean isIn2NF(List<Relation> rel) {
         //to see if the relation ship is in 2 nf we hae to insure that
@@ -723,15 +646,15 @@ public final class Algorithms {
         //we iterate over every FD and compare it LHS (left hand side) with
         //the key, if the LHS is part of the key, then the relationship
         //is not in 2 nf
-		
+
 		for (Relation r : rel) {
 			List<AttributeSet> keys = r.getKeyCandidates();
 			AttributeSet keyAttributes = new AttributeSet(SolveAssignmentWidget.get().getDomainTable());
 			for (AttributeSet k : keys) {
 				keyAttributes.union(k);
 			}
-			if(keyAttributes.equals(r.getAttrbutes())) {
-				return true; // all attributes are key attributes 
+			if(keyAttributes.equals(r.getAttributes())) {
+				return true; // all attributes are key attributes
 			}
 			for (AttributeSet k : keys) {
 				for (int i = 0; i <= k.attMask(); i++) {
@@ -740,7 +663,7 @@ public final class Algorithms {
 						AttributeSet tmp = new AttributeSet(SolveAssignmentWidget.get().getDomainTable());
 						tmp.setMask(tmpAtt);
 						if(keys.contains(tmp)) continue;
-						
+
 						AttributeSet tmp2 = attributeClosure(tmp, r.getFds());
 						if(tmp2.attMask() != 0 && tmp.attMask() != tmp2.attMask() && !keyAttributes.containsAttSet(tmp2)) {
 							return false;
@@ -748,9 +671,9 @@ public final class Algorithms {
 					}
 				}
 			}
-			
+
 		}
-		
+
 		return true;
 	}
 
@@ -762,7 +685,7 @@ public final class Algorithms {
 				keyAttributes.union(k);
 			}
 			List<FD> fds = r.getFds();
-			for (FD fd : fds) { 
+			for (FD fd : fds) {
 				if (fd.getRHS().isSubSetOf(fd.getLHS())) {
 					continue;
 				} else if (fd.getRHS().isSubSetOf(keyAttributes)) {
@@ -784,7 +707,7 @@ public final class Algorithms {
 		}
 		return true;
 	}
-	
+
 	public static boolean isInBCNF(List<Relation> rel) {
 		for (Relation r : rel) {
 			List<FD> tmp = isBCNF(r);

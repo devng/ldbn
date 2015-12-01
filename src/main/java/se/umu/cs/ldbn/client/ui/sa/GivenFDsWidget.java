@@ -21,43 +21,43 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public final class GivenFDsWidget extends Composite 
+public final class GivenFDsWidget extends Composite
 	implements AlignmentButtonListener, HasAdditionalControlls, ClickHandler {
-	
+
 	private Grid mainPanel;
 	private Panel mainPanelChild;
 	private AlignmentButton ab;
 	private Image visual;
 	private Widget[] additionalControlls;
 	private List<Widget> currentContent;
-	
+
 	public GivenFDsWidget() {
 		mainPanel = new Grid(1,1);
 		mainPanelChild = new VerticalPanel();
 		mainPanel.setWidget(0, 0,mainPanelChild);
 		initWidget(mainPanel);
-		
+
 		ab = new AlignmentButton(false);
 		ab.setTitle("Align horizontal/vertical");
 		ab.addListener(this);
-		
+
 		visual = new Image("img/eye.png");
 		visual.setTitle("FD Visualization");
 		visual.addClickHandler(this);
 		Common.setCursorPointer(visual);
-		
+
 		additionalControlls = new Widget[2];
 		additionalControlls[0] = visual;
 		additionalControlls[1] = ab;
-		
-		currentContent = new ArrayList<Widget>();
+
+		currentContent = new ArrayList<>();
 	}
-	
+
 	public void clearData() {
 		mainPanelChild.clear();
 		currentContent.clear();
 	}
-	
+
 	public void setFDs(List<FD> fds) {
 		mainPanelChild.clear();
 		for (FD fd : fds) {
@@ -68,7 +68,7 @@ public final class GivenFDsWidget extends Composite
 			mainPanelChild.add(hp);
 		}
 	}
-	
+
 	public void onAlignmentChanged(boolean isHorizontal) {
 		Panel newP = isHorizontal ? new HorizontalPanel() : new VerticalPanel();
 		for (Widget w : currentContent) {
@@ -78,7 +78,7 @@ public final class GivenFDsWidget extends Composite
 		mainPanel.setWidget(0, 0, newP);
 		mainPanelChild = newP;
 	}
-	
+
 	public Widget[] getAdditionalControlls() {
 		return additionalControlls;
 	}
