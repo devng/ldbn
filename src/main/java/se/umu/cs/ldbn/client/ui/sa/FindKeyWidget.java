@@ -1,8 +1,8 @@
 package se.umu.cs.ldbn.client.ui.sa;
 
-import se.umu.cs.ldbn.client.core.AttributeSet;
 import se.umu.cs.ldbn.client.ui.InfoButton;
 import se.umu.cs.ldbn.client.ui.dialog.AttributesEditorDialog;
+import se.umu.cs.ldbn.shared.core.AttributeSet;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;

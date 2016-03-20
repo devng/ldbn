@@ -4,9 +4,6 @@ import java.util.Collection;
 import java.util.List;
 
 import se.umu.cs.ldbn.client.Main;
-import se.umu.cs.ldbn.client.core.Assignment;
-import se.umu.cs.ldbn.client.core.DomainTable;
-import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.i18n.I18N;
 import se.umu.cs.ldbn.client.io.AssignmentListEntry;
 import se.umu.cs.ldbn.client.io.AssignmentLoader;
@@ -32,6 +29,9 @@ import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
 import se.umu.cs.ldbn.client.ui.user.UserData;
 import se.umu.cs.ldbn.client.ui.visualization.VisualizationWindow;
 import se.umu.cs.ldbn.client.utils.Common;
+import se.umu.cs.ldbn.shared.core.Assignment;
+import se.umu.cs.ldbn.shared.core.DomainTable;
+import se.umu.cs.ldbn.shared.core.FD;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.event.dom.client.ClickEvent;

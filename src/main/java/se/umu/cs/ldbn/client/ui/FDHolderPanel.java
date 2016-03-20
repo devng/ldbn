@@ -10,10 +10,10 @@ import java.util.Map;
 import java.util.Set;
 
 import se.umu.cs.ldbn.client.Main;
-import se.umu.cs.ldbn.client.core.DomainTableListener;
-import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
 import se.umu.cs.ldbn.client.utils.Common;
+import se.umu.cs.ldbn.shared.core.DomainTableListener;
+import se.umu.cs.ldbn.shared.core.FD;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.log.client.Log;

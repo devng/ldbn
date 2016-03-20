@@ -3,10 +3,10 @@ package se.umu.cs.ldbn.client.utils;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import se.umu.cs.ldbn.client.core.Relation;
 import se.umu.cs.ldbn.client.i18n.I18N;
 import se.umu.cs.ldbn.client.io.LdbnParser;
 import se.umu.cs.ldbn.client.io.LdbnParser.LDBN_TYPE;
+import se.umu.cs.ldbn.shared.core.Relation;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.DOM;

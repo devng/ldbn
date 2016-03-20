@@ -6,6 +6,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import se.umu.cs.ldbn.shared.dto.ErrorDto;
 import se.umu.cs.ldbn.shared.dto.RestErrorCode;
 
@@ -13,6 +16,8 @@ import com.owlike.genson.Genson;
 
 @Provider
 public class LdbnRestExceptionMapper implements ExceptionMapper<Exception> {
+	
+	private static final Logger log = LoggerFactory.getLogger(LdbnRestExceptionMapper.class);
 
     private final Genson objectMapper;
 
@@ -22,8 +27,7 @@ public class LdbnRestExceptionMapper implements ExceptionMapper<Exception> {
 
     @Override
     public Response toResponse(final Exception ex) {
-        System.err.println("Exception in REST interface:");
-        ex.printStackTrace(System.err);
+        log.error("Exception in REST interface:", ex);
 
         if (ex instanceof IllegalArgumentException) {
             return errorResponse(400, "Malformed REST request.");
@@ -34,9 +38,7 @@ public class LdbnRestExceptionMapper implements ExceptionMapper<Exception> {
             return errorResponse(waex.getResponse().getStatus(), waex.getMessage());
         }
 
-
-        System.err.println("Uncaught exception: " + ex);
-        return errorResponse(RestErrorCode.SERVER_ERROR, null, ex.toString());
+        return errorResponse(RestErrorCode.SERVER_ERROR, null, "Unknown error in REST interface.");
     }
 
     /**
@@ -79,7 +81,7 @@ public class LdbnRestExceptionMapper implements ExceptionMapper<Exception> {
         try {
             errorJson = objectMapper.serialize(errorDto);
         } catch (Exception e) {
-            System.err.println("Could not create error JSON: " + e);
+            log.error("Could not create error JSON:", e);
         }
         return errorJson;
     }

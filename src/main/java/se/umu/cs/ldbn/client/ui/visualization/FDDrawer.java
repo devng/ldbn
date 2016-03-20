@@ -3,11 +3,11 @@ package se.umu.cs.ldbn.client.ui.visualization;
 import java.util.ArrayList;
 import java.util.List;
 
-import se.umu.cs.ldbn.client.core.AttributeSet;
-import se.umu.cs.ldbn.client.core.DomainTable;
-import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.i18n.I18N;
 import se.umu.cs.ldbn.client.ui.visualization.color.ColorPalette;
+import se.umu.cs.ldbn.shared.core.AttributeSet;
+import se.umu.cs.ldbn.shared.core.DomainTable;
+import se.umu.cs.ldbn.shared.core.FD;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;

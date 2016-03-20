@@ -2,8 +2,6 @@ package se.umu.cs.ldbn.client.ui.visualization;
 
 import java.util.List;
 
-import se.umu.cs.ldbn.client.core.AttributeSet;
-import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.ui.visualization.color.BlackPalette;
 import se.umu.cs.ldbn.client.ui.visualization.color.ColorPalette;
 import se.umu.cs.ldbn.client.ui.visualization.color.GrayPalette;
@@ -11,6 +9,8 @@ import se.umu.cs.ldbn.client.ui.visualization.color.OpenOfficePalette;
 import se.umu.cs.ldbn.client.ui.visualization.color.PastelPalette;
 import se.umu.cs.ldbn.client.ui.visualization.color.StandardPalette;
 import se.umu.cs.ldbn.client.ui.window.WindowPanel;
+import se.umu.cs.ldbn.shared.core.AttributeSet;
+import se.umu.cs.ldbn.shared.core.FD;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ChangeEvent;

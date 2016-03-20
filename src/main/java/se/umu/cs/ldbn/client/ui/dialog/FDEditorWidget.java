@@ -2,8 +2,6 @@ package se.umu.cs.ldbn.client.ui.dialog;
 
 import java.util.List;
 
-import se.umu.cs.ldbn.client.core.DomainTable;
-import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.ui.AttributeTextArea;
 import se.umu.cs.ldbn.client.ui.FDHolderPanel;
 import se.umu.cs.ldbn.client.ui.FDWidget;
@@ -11,6 +9,8 @@ import se.umu.cs.ldbn.client.ui.InfoButton;
 import se.umu.cs.ldbn.client.ui.SingleAttributeWidget;
 import se.umu.cs.ldbn.client.ui.sa.RelationAttributesWidget;
 import se.umu.cs.ldbn.client.utils.Common;
+import se.umu.cs.ldbn.shared.core.DomainTable;
+import se.umu.cs.ldbn.shared.core.FD;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.google.gwt.event.dom.client.ClickEvent;

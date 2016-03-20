@@ -1,4 +1,4 @@
-package se.umu.cs.ldbn.client.core;
+package se.umu.cs.ldbn.shared.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,8 +7,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
 
 /**
  * Class with static methods of different algorithms.
@@ -634,9 +632,10 @@ public final class Algorithms {
 	 * Checks if a decomposition is in 2nd normal form (2NF).
 	 * @param rel list of relations with computed key candidates and FDs
 	 * computed with reduce by resolution algorithm.
+	 * @param domain the current domain table, usually taken from the SolveAssignmentWidget#getDomainTable
 	 * @return true if every relation is in 2NF.
 	 */
-	public static boolean isIn2NF(List<Relation> rel) {
+	public static boolean isIn2NF(List<Relation> rel, DomainTable domain) {
         //to see if the relation ship is in 2 nf we hae to insure that
         //every element that is not part of the key, aka not a key element,
         //is not depending on only just part of the key, e.g.
@@ -649,7 +648,7 @@ public final class Algorithms {
 
 		for (Relation r : rel) {
 			List<AttributeSet> keys = r.getKeyCandidates();
-			AttributeSet keyAttributes = new AttributeSet(SolveAssignmentWidget.get().getDomainTable());
+			AttributeSet keyAttributes = new AttributeSet(domain);
 			for (AttributeSet k : keys) {
 				keyAttributes.union(k);
 			}
@@ -660,7 +659,7 @@ public final class Algorithms {
 				for (int i = 0; i <= k.attMask(); i++) {
 					int tmpAtt = i & k.attMask();
 					if((tmpAtt != k.attMask()) && (tmpAtt != 0)) {
-						AttributeSet tmp = new AttributeSet(SolveAssignmentWidget.get().getDomainTable());
+						AttributeSet tmp = new AttributeSet(domain);
 						tmp.setMask(tmpAtt);
 						if(keys.contains(tmp)) continue;
 
@@ -677,10 +676,18 @@ public final class Algorithms {
 		return true;
 	}
 
-	public static boolean isIn3NF(List<Relation> rel) {
+	
+	/**
+	 * Checks if a decomposition is in 3nd normal form (3NF).
+	 * @param rel list of relations with computed key candidates and FDs
+	 * computed with reduce by resolution algorithm.
+	 * @param domain the current domain table, usually taken from the SolveAssignmentWidget#getDomainTable
+	 * @return true if every relation is in 3NF.
+	 */
+	public static boolean isIn3NF(List<Relation> rel, DomainTable domain) {
 		for (Relation r : rel) {
 			List<AttributeSet> keys = r.getKeyCandidates();
-			AttributeSet keyAttributes = new AttributeSet(SolveAssignmentWidget.get().getDomainTable());
+			AttributeSet keyAttributes = new AttributeSet(domain);
 			for (AttributeSet k : keys) {
 				keyAttributes.union(k);
 			}

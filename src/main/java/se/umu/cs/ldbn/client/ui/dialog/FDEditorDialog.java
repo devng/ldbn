@@ -1,8 +1,8 @@
 package se.umu.cs.ldbn.client.ui.dialog;
 
 import se.umu.cs.ldbn.client.Main;
-import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.ui.FDHolderPanel;
+import se.umu.cs.ldbn.shared.core.DomainTable;
 
 import com.google.gwt.user.client.ui.Widget;
 

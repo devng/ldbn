@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import se.umu.cs.ldbn.client.core.FD;
-import se.umu.cs.ldbn.client.core.Relation;
 import se.umu.cs.ldbn.client.ui.FDHolderPanel;
 import se.umu.cs.ldbn.client.ui.FDWidget;
 import se.umu.cs.ldbn.client.ui.HasAdditionalControlls;
@@ -14,6 +12,8 @@ import se.umu.cs.ldbn.client.ui.InfoButton;
 import se.umu.cs.ldbn.client.ui.dialog.AttributesEditorDialog;
 import se.umu.cs.ldbn.client.ui.visualization.VisualizationWindow;
 import se.umu.cs.ldbn.client.utils.Common;
+import se.umu.cs.ldbn.shared.core.FD;
+import se.umu.cs.ldbn.shared.core.Relation;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.event.dom.client.ClickEvent;

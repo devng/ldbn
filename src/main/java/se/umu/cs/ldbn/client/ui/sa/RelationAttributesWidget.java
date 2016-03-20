@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import se.umu.cs.ldbn.client.Main;
-import se.umu.cs.ldbn.client.core.AttributeSet;
+import se.umu.cs.ldbn.shared.core.AttributeSet;
 
 import com.google.gwt.user.client.ui.HTML;
 

@@ -3,13 +3,13 @@ package se.umu.cs.ldbn.client.ui.dialog;
 import java.util.List;
 
 import se.umu.cs.ldbn.client.Main;
-import se.umu.cs.ldbn.client.core.AttributeSet;
-import se.umu.cs.ldbn.client.core.AttributeSetIterator;
 import se.umu.cs.ldbn.client.ui.AttributeTextArea;
 import se.umu.cs.ldbn.client.ui.FDWidget;
 import se.umu.cs.ldbn.client.ui.SingleAttributeWidget;
 import se.umu.cs.ldbn.client.ui.sa.RelationAttributesWidget;
 import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
+import se.umu.cs.ldbn.shared.core.AttributeSet;
+import se.umu.cs.ldbn.shared.core.AttributeSetIterator;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.google.gwt.user.client.ui.Widget;

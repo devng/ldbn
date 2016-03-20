@@ -4,13 +4,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import se.umu.cs.ldbn.client.core.DomainTable;
-import se.umu.cs.ldbn.client.core.DomainTableListener;
 import se.umu.cs.ldbn.client.ui.SingleAttributeWidget;
 import se.umu.cs.ldbn.client.ui.dialog.RenameDialog;
 import se.umu.cs.ldbn.client.ui.dialog.RenameDialogCallback;
 import se.umu.cs.ldbn.client.ui.sa.GivenAttributesWidget;
 import se.umu.cs.ldbn.client.utils.Common;
+import se.umu.cs.ldbn.shared.core.DomainTable;
+import se.umu.cs.ldbn.shared.core.DomainTableListener;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.event.dom.client.ClickEvent;

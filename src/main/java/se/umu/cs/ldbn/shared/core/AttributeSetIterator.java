@@ -1,4 +1,4 @@
-package se.umu.cs.ldbn.client.core;
+package se.umu.cs.ldbn.shared.core;
 
 import java.util.Iterator;
 

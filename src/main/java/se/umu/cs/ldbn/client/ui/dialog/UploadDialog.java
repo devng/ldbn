@@ -1,10 +1,10 @@
 package se.umu.cs.ldbn.client.ui.dialog;
 
-import se.umu.cs.ldbn.client.core.Assignment;
 import se.umu.cs.ldbn.client.io.Config;
 import se.umu.cs.ldbn.client.io.LdbnParser;
 import se.umu.cs.ldbn.client.ui.ca.CreateAssignmentWidget;
 import se.umu.cs.ldbn.client.utils.Common;
+import se.umu.cs.ldbn.shared.core.Assignment;
 
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Window;

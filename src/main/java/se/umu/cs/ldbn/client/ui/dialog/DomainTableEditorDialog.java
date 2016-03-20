@@ -2,9 +2,9 @@ package se.umu.cs.ldbn.client.ui.dialog;
 
 import java.util.List;
 
-import se.umu.cs.ldbn.client.core.DomainTable;
 import se.umu.cs.ldbn.client.ui.AttributeTextArea;
 import se.umu.cs.ldbn.client.ui.ca.CreateAssignmentWidget;
+import se.umu.cs.ldbn.shared.core.DomainTable;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
 

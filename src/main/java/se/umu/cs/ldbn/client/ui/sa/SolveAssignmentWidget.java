@@ -6,12 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import se.umu.cs.ldbn.client.Main;
-import se.umu.cs.ldbn.client.core.Algorithms;
-import se.umu.cs.ldbn.client.core.Assignment;
-import se.umu.cs.ldbn.client.core.AttributeSet;
-import se.umu.cs.ldbn.client.core.DomainTable;
-import se.umu.cs.ldbn.client.core.FD;
-import se.umu.cs.ldbn.client.core.Relation;
 import se.umu.cs.ldbn.client.i18n.I18N;
 import se.umu.cs.ldbn.client.io.AssignmentListEntry;
 import se.umu.cs.ldbn.client.io.AssignmentLoader;
@@ -29,6 +23,12 @@ import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialog;
 import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialogCallback;
 import se.umu.cs.ldbn.client.utils.AssignmentGenerator;
 import se.umu.cs.ldbn.client.utils.Common;
+import se.umu.cs.ldbn.shared.core.Algorithms;
+import se.umu.cs.ldbn.shared.core.Assignment;
+import se.umu.cs.ldbn.shared.core.AttributeSet;
+import se.umu.cs.ldbn.shared.core.DomainTable;
+import se.umu.cs.ldbn.shared.core.FD;
+import se.umu.cs.ldbn.shared.core.Relation;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -371,7 +371,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 			if (!errorFree) {
 				dialog.msgErr(I18N.messages().sawDecompositionIsNotInNF("2NF") + " See previous error messages.");
 			} else {
-				boolean isIn2NF = Algorithms.isIn2NF(relations);
+				boolean isIn2NF = Algorithms.isIn2NF(relations, getDomainTable());
 				if(isIn2NF) {
 					dialog.msgOK(I18N.messages().sawDecompositionIsInNF("2NF"));
 				} else {
@@ -412,7 +412,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 			if (!errorFree) {
 				dialog.msgErr(I18N.messages().sawDecompositionIsNotInNF("3NF") + " See previous error messages.");
 			} else {
-				boolean isIn3NF = Algorithms.isIn3NF(relations);
+				boolean isIn3NF = Algorithms.isIn3NF(relations, getDomainTable());
 				if(isIn3NF) {
 					dialog.msgOK(I18N.messages().sawDecompositionIsInNF("3NF"));
 				} else {

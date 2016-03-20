@@ -3,13 +3,13 @@ package se.umu.cs.ldbn.client.ui.sa;
 import java.util.ArrayList;
 import java.util.List;
 
-import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.ui.AlignmentButton;
 import se.umu.cs.ldbn.client.ui.AlignmentButtonListener;
 import se.umu.cs.ldbn.client.ui.FDWidget;
 import se.umu.cs.ldbn.client.ui.HasAdditionalControlls;
 import se.umu.cs.ldbn.client.ui.visualization.VisualizationWindow;
 import se.umu.cs.ldbn.client.utils.Common;
+import se.umu.cs.ldbn.shared.core.FD;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;

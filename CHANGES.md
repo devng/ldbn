@@ -5,6 +5,7 @@
     * Add URL history support for the front-end
     * Use Gin for GI in the front-end
     * Make the front-end more responsive
+    * Move the core package from client to shared
 * **2015-12-01** - Version 1.2.2 - Small Code Cleanups
 * **2015-09-12** - Version 1.2.1 - Docker Integration
 * **2015-08-11** - Integrate Travis CI

@@ -1,8 +1,8 @@
 package se.umu.cs.ldbn.client.ui.sa;
 
-import se.umu.cs.ldbn.client.core.DomainTable;
-import se.umu.cs.ldbn.client.core.DomainTableListener;
 import se.umu.cs.ldbn.client.ui.SingleAttributeWidget;
+import se.umu.cs.ldbn.shared.core.DomainTable;
+import se.umu.cs.ldbn.shared.core.DomainTableListener;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.ui.Composite;

@@ -2,10 +2,10 @@ package se.umu.cs.ldbn.client.io;
 
 import java.util.List;
 
-import se.umu.cs.ldbn.client.core.Assignment;
-import se.umu.cs.ldbn.client.core.AttributeSet;
-import se.umu.cs.ldbn.client.core.DomainTable;
-import se.umu.cs.ldbn.client.core.FD;
+import se.umu.cs.ldbn.shared.core.Assignment;
+import se.umu.cs.ldbn.shared.core.AttributeSet;
+import se.umu.cs.ldbn.shared.core.DomainTable;
+import se.umu.cs.ldbn.shared.core.FD;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.xml.client.Document;

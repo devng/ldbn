@@ -2,11 +2,11 @@ package se.umu.cs.ldbn.client.utils;
 
 import java.util.ArrayList;
 
-import se.umu.cs.ldbn.client.core.Assignment;
-import se.umu.cs.ldbn.client.core.DomainTable;
-import se.umu.cs.ldbn.client.core.FD;
 import se.umu.cs.ldbn.client.io.LdbnParser;
 import se.umu.cs.ldbn.client.io.LdbnParser.LDBN_TYPE;
+import se.umu.cs.ldbn.shared.core.Assignment;
+import se.umu.cs.ldbn.shared.core.DomainTable;
+import se.umu.cs.ldbn.shared.core.FD;
 
 public final class AssignmentGenerator {
 
