@@ -1,13 +1,17 @@
 package se.umu.cs.ldbn.server.dao;
 
-import java.util.List;
-
 import se.umu.cs.ldbn.shared.dto.AssignmentDto;
 
-public interface AssignmentDao {
-	
-	AssignmentDto getAssignmen(Integer id);
+import java.util.List;
 
-	List<AssignmentDto> getAllAssignmen();
+public interface AssignmentDao {
+
+    AssignmentDto getAssignment(Integer id);
+
+    List<AssignmentDto> getAllAssignment(boolean includeXml);
+
+    AssignmentDto saveAssignment(AssignmentDto dto);
+
+    AssignmentDto updateAssignment(AssignmentDto dto);
 
 }

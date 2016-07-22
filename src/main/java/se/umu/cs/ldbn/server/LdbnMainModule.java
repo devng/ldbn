@@ -1,11 +1,10 @@
 package se.umu.cs.ldbn.server;
 
-import java.util.Properties;
-
+import com.squarespace.jersey2.guice.JerseyModule;
 import se.umu.cs.ldbn.server.dao.LdbnDaoModule;
 import se.umu.cs.ldbn.server.rest.LdbnRestModule;
 
-import com.squarespace.jersey2.guice.JerseyModule;
+import java.util.Properties;
 
 public class LdbnMainModule extends JerseyModule {
 	

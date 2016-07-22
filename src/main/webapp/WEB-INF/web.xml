@@ -9,8 +9,17 @@
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>jersey.config.server.provider.packages</param-name>
-            <param-value>se.umu.cs.ldbn</param-value>
+            <param-value>
+                io.swagger.jaxrs.listing,
+                se.umu.cs.ldbn.server
+            </param-value>
         </init-param>
+        <!-- https://jersey.java.net/documentation/latest/bean-validation.html
+        <init-param>
+            <param-name>jersey.config.beanValidation.enableOutputValidationErrorEntity.server</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        -->
         <load-on-startup>1</load-on-startup>
     </servlet>
 
@@ -18,6 +27,24 @@
         <servlet-name>ldbnREST</servlet-name>
         <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Jersey2Config</servlet-name>
+        <servlet-class>io.swagger.jersey.config.JerseyJaxrsConfig</servlet-class>
+        <init-param>
+            <param-name>api.version</param-name>
+            <param-value>1.0.0</param-value>
+        </init-param>
+        <init-param>
+            <param-name>swagger.api.basepath</param-name>
+            <param-value>http://localhost:8080/rest</param-value>
+        </init-param>
+        <init-param>
+            <param-name>scan.all.resources</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
 
     <listener>
         <listener-class>se.umu.cs.ldbn.server.LdbnServletContextListener</listener-class>
@@ -30,7 +57,7 @@
 
     <filter-mapping>
         <filter-name>guiceFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/rest/*</url-pattern>
     </filter-mapping>
 
     <welcome-file-list>

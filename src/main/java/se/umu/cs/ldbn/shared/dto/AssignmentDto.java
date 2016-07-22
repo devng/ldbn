@@ -4,50 +4,53 @@ import java.util.Date;
 
 public class AssignmentDto {
 
-	private Integer id;
-	private Integer user_id;
-	private String name;
-	private Date modified_on;
-	private String xml;
+    private Integer id;
 
-	public Integer getId() {
-		return id;
-	}
+    private String name;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private Date modifiedOn;
 
-	public Integer getUser_id() {
-		return user_id;
-	}
+    private String xml;
 
-	public void setUser_id(Integer user_id) {
-		this.user_id = user_id;
-	}
+    private UserDto author;
 
-	public String getName() {
-		return name;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public Date getModified_on() {
-		return modified_on;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setModified_on(Date modified_on) {
-		this.modified_on = modified_on;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getXml() {
-		return xml;
-	}
+    public Date getModifiedOn() {
+        return modifiedOn;
+    }
 
-	public void setXml(String xml) {
-		this.xml = xml;
-	}
+    public void setModifiedOn(Date modifiedOn) {
+        this.modifiedOn = modifiedOn;
+    }
 
+    public String getXml() {
+        return xml;
+    }
+
+    public void setXml(String xml) {
+        this.xml = xml;
+    }
+
+    public UserDto getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(UserDto author) {
+        this.author = author;
+    }
 }

@@ -21,6 +21,7 @@ gwt-unitCache/
 
 # OS generated files #
 ######################
+*.log
 .DS_Store
 .DS_Store?
 ._*

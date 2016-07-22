@@ -1,0 +1,12 @@
+Customized swagger-ui 2.1.4 - https://github.com/swagger-api/swagger-ui/releases/tag/v2.1.4
+
+Changes made:
+
+index.html
+- Hardcode the swagger json URL.
+- Remove OAuth.
+- Hide the API selector.
+
+Delete the all translation but English in swagger-ui/lang.
+
+Update the logo and icon images.

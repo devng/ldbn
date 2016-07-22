@@ -1,8 +1,10 @@
 package se.umu.cs.ldbn.client;
 
+import com.google.gwt.core.client.GWT;
 import se.umu.cs.ldbn.client.i18n.I18N;
 import se.umu.cs.ldbn.client.io.Login;
 import se.umu.cs.ldbn.client.io.LoginListener;
+import se.umu.cs.ldbn.client.rest.AssignmentsRestClient;
 import se.umu.cs.ldbn.client.ui.GlassPanel;
 import se.umu.cs.ldbn.client.ui.admin.AdministratorWidget;
 import se.umu.cs.ldbn.client.ui.ca.CreateAssignmentWidget;
@@ -33,7 +35,7 @@ import com.google.gwt.user.client.ui.TabPanel;
 public final class Main implements EntryPoint,
 	SelectionHandler<Integer>, LoginListener {
 
-	public static String VERSION = "1.3-160319";
+	public static String VERSION = "1.3-160723";
 
 	public static final String MAIN_DIV_ID = "gwtapp";
 
@@ -104,6 +106,8 @@ public final class Main implements EntryPoint,
 	private boolean isTabCALoaded;
 	private boolean isTabAdminLoaded;
 
+	private AssignmentsRestClient assignmentsRestClient;
+
 	private Main() {
 		super();
 	}
@@ -168,6 +172,8 @@ public final class Main implements EntryPoint,
 		 */
 		rp.getElement().getStyle().setPosition(Position.RELATIVE);
 		rp.add(mainPanel);
+
+		assignmentsRestClient = GWT.create(AssignmentsRestClient.class);
 	}
 
 
@@ -223,5 +229,9 @@ public final class Main implements EntryPoint,
 			tabCA.add(CreateAssignmentWidget.get());
 			isTabCALoaded = true;
 		}
+	}
+
+	public AssignmentsRestClient getAssignmentsRestClient() {
+		return assignmentsRestClient;
 	}
 }
