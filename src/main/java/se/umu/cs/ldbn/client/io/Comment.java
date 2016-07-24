@@ -32,7 +32,7 @@ public class Comment extends AbstractRequestSender {
 
 	public void send(CommentCallback callback) {
 		this.callback = callback;
-		send();
+		//send();
 	}
 
 	protected String getURL() {
@@ -43,7 +43,7 @@ public class Comment extends AbstractRequestSender {
 		LdbnParser p = LdbnParser.get();
 		if (p.getLastLdbnType() == LdbnParser.LDBN_TYPE.comment) {
 			List<CommentListEntry> c = p.getComments();
-			String id = p.getAssignmentIDComent();
+			Integer id = p.getAssignmentIDComent();
 			callback.onCommentsReceived(c, id);
 			return true;
 		}

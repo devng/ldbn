@@ -1,10 +1,10 @@
 package se.umu.cs.ldbn.client;
 
 import com.google.gwt.core.client.GWT;
+import org.fusesource.restygwt.client.Defaults;
 import se.umu.cs.ldbn.client.i18n.I18N;
 import se.umu.cs.ldbn.client.io.Login;
 import se.umu.cs.ldbn.client.io.LoginListener;
-import se.umu.cs.ldbn.client.rest.AssignmentsRestClient;
 import se.umu.cs.ldbn.client.ui.GlassPanel;
 import se.umu.cs.ldbn.client.ui.admin.AdministratorWidget;
 import se.umu.cs.ldbn.client.ui.ca.CreateAssignmentWidget;
@@ -44,6 +44,8 @@ public final class Main implements EntryPoint,
 	public static final int WIDTH_PX;
 
 	static {
+		Defaults.setServiceRoot(GWT.getHostPageBaseURL() + "rest/");
+
 		//set the application width in pixels to fit to the screen
 		int appWidth = Common.getScreenWidth();
 		appWidth -= 60;
@@ -105,8 +107,6 @@ public final class Main implements EntryPoint,
 	private AbsolutePanel tabCA;
 	private boolean isTabCALoaded;
 	private boolean isTabAdminLoaded;
-
-	private AssignmentsRestClient assignmentsRestClient;
 
 	private Main() {
 		super();
@@ -172,8 +172,6 @@ public final class Main implements EntryPoint,
 		 */
 		rp.getElement().getStyle().setPosition(Position.RELATIVE);
 		rp.add(mainPanel);
-
-		assignmentsRestClient = GWT.create(AssignmentsRestClient.class);
 	}
 
 
@@ -199,7 +197,7 @@ public final class Main implements EntryPoint,
 	}
 
 	public void loadSATab() {
-		if(!isTabSALoaded) {
+		if (!isTabSALoaded) {
 			tabSA.add(SolveAssignmentWidget.get());
 			isTabSALoaded = true;
 		}
@@ -229,9 +227,5 @@ public final class Main implements EntryPoint,
 			tabCA.add(CreateAssignmentWidget.get());
 			isTabCALoaded = true;
 		}
-	}
-
-	public AssignmentsRestClient getAssignmentsRestClient() {
-		return assignmentsRestClient;
 	}
 }

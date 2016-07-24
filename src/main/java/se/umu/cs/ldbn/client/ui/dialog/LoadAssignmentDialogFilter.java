@@ -1,6 +1,6 @@
 package se.umu.cs.ldbn.client.ui.dialog;
 
-import se.umu.cs.ldbn.client.io.AssignmentListEntry;
+import se.umu.cs.ldbn.shared.dto.AssignmentDto;
 
 public interface LoadAssignmentDialogFilter {
 	/**
@@ -12,6 +12,6 @@ public interface LoadAssignmentDialogFilter {
 	 * @return returns true if the entry should be included in the dialog list,
 	 * otherwise returns false.
 	 */
-	boolean filter(AssignmentListEntry entry);
+	boolean filter(AssignmentDto entry);
 
 }

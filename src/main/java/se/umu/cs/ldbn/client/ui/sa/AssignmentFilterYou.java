@@ -1,10 +1,11 @@
 package se.umu.cs.ldbn.client.ui.sa;
 
+import se.umu.cs.ldbn.client.ui.user.UserData;
+import se.umu.cs.ldbn.shared.dto.AssignmentDto;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import se.umu.cs.ldbn.client.io.AssignmentListEntry;
-import se.umu.cs.ldbn.client.ui.user.UserData;
+import java.util.stream.Collectors;
 
 public class AssignmentFilterYou implements AssignmentFilter {
 
@@ -14,18 +15,19 @@ public class AssignmentFilterYou implements AssignmentFilter {
 		return name;
 	}
 
-	public List<AssignmentListEntry> apply(List<AssignmentListEntry> data) {
+	public List<AssignmentDto> apply(List<AssignmentDto> data) {
+		if (data == null) {
+			return null;
+		}
 		UserData ud = UserData.get();
-		if(!ud.isLoggedIn()) {
+		if (!ud.isLoggedIn()) {
 			throw new IllegalStateException("You have to login first.");
 		}
-		String userId = ud.getId().trim();
-		ArrayList<AssignmentListEntry> result =
-				new ArrayList<>(data.size());
-		for (AssignmentListEntry ale : data) {
-			String authorId = ale.getAuthorID();
-			if (authorId != null && userId.equals(authorId.trim())) {
-				result.add(ale);
+		final Integer userId = ud.getId();
+		List<AssignmentDto> result = new ArrayList<>(data.size());
+		for (AssignmentDto a : data) {
+			if (a.getAuthor() != null && userId.equals(a.getAuthor().getId())) {
+				result.add(a);
 			}
 		}
 		return result;

@@ -1,6 +1,5 @@
 package se.umu.cs.ldbn.client.ui.admin;
 
-import se.umu.cs.ldbn.client.io.AssignmentListEntry;
 import se.umu.cs.ldbn.client.io.DeleteAssignment;
 import se.umu.cs.ldbn.client.io.Login;
 import se.umu.cs.ldbn.client.io.LoginListener;
@@ -21,6 +20,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import se.umu.cs.ldbn.shared.dto.AssignmentDto;
 
 public final class AdministratorWidget extends AbsolutePanel 
 	implements ClickHandler, LoginListener, LoadAssignmentDialogCallback {
@@ -124,12 +124,12 @@ public final class AdministratorWidget extends AbsolutePanel
 	}
 
 	
-	public void onLoaded(AssignmentListEntry entry) {
+	public void onLoaded(AssignmentDto entry) {
 		String name = entry.getName();
-		String autor = entry.getAuthor();
+		String autor = entry.getAuthor().getName();
 		if (Window.confirm("Are you sure you want to delete the assignment \"" + 
 				name + "\" by \"" + autor + "\"")) {
-			DeleteAssignment.get().send(entry.getId());
+			DeleteAssignment.get().send("" + entry.getId());
 		}
 		
 	}

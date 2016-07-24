@@ -1,13 +1,13 @@
 package se.umu.cs.ldbn.client.ui.sa;
 
-import java.util.List;
+import se.umu.cs.ldbn.shared.dto.AssignmentDto;
 
-import se.umu.cs.ldbn.client.io.AssignmentListEntry;
+import java.util.List;
 
 public interface AssignmentFilter {
 		
 	String getName();
 	
-	List<AssignmentListEntry> apply(List<AssignmentListEntry> data);
+	List<AssignmentDto> apply(List<AssignmentDto> data);
 	
 }

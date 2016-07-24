@@ -5,14 +5,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import org.fusesource.restygwt.client.Method;
+import org.fusesource.restygwt.client.MethodCallback;
 import se.umu.cs.ldbn.client.Main;
 import se.umu.cs.ldbn.client.i18n.I18N;
-import se.umu.cs.ldbn.client.io.AssignmentListEntry;
-import se.umu.cs.ldbn.client.io.AssignmentLoader;
-import se.umu.cs.ldbn.client.io.AssignmentLoaderCallback;
-import se.umu.cs.ldbn.client.io.Comment;
-import se.umu.cs.ldbn.client.io.CommentCallback;
-import se.umu.cs.ldbn.client.io.CommentListEntry;
+import se.umu.cs.ldbn.client.io.*;
+import se.umu.cs.ldbn.client.rest.AssignmentsRestClient;
 import se.umu.cs.ldbn.client.ui.DisclosureWidget;
 import se.umu.cs.ldbn.client.ui.FDWidget;
 import se.umu.cs.ldbn.client.ui.HeaderWidget;
@@ -39,10 +37,11 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
+import se.umu.cs.ldbn.shared.dto.AssignmentDto;
 
 public final class SolveAssignmentWidget extends AbsolutePanel
 	implements ClickHandler, LoadAssignmentDialogCallback,
-	AssignmentLoaderCallback, CommentCallback {
+	AssignmentLoaderCallback, CommentCallback, MethodCallback<AssignmentDto> {
 
 	private static SolveAssignmentWidget inst;
 	public static SolveAssignmentWidget get() {
@@ -93,14 +92,14 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	private Image import2NF;
 	private Image import3NF;
 	//current assignment
-	private String curAssinmentId;
+	private Integer curAssinmentId;
 	private List<FD> minCoverF;
 	//Label assignment name
 	private HTML assignmentName;
 
 	private SolveAssignmentWidget() {
 		super();
-		curAssinmentId = "1";
+		curAssinmentId = 1;
 	}
 
 	private void init() {
@@ -209,7 +208,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		return domain;
 	}
 
-	public String getCurrentAssignmentId() {
+	public Integer getCurrentAssignmentId() {
 		return curAssinmentId;
 	}
 
@@ -250,12 +249,13 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 
 	public void onLoadCanceled() {}
 
-	public void onLoaded(AssignmentListEntry entry) {
+	public void onLoaded(AssignmentDto entry) {
 		curAssinmentId = entry.getId();
-		AssignmentLoader.get().loadFromURL(entry.getId(), this);
+
+		AssignmentsRestClient.INSTANCE.getAssignment(curAssinmentId, this);
 	}
 
-	public String getAssignmentID() {
+	public Integer getAssignmentID() {
 		return curAssinmentId;
 	}
 
@@ -264,7 +264,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	}
 
 	public void onCommentsReceived(List<CommentListEntry> comments,
-			String assignentID) {
+			Integer assignentID) {
 		CommentsWidget.get().addComments(comments);
 	}
 
@@ -664,5 +664,18 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 
 	public boolean checkUserRights() {
 		return false;
+	}
+
+	@Override
+	public void onFailure(Method method, Throwable throwable) {
+		// TODO
+	}
+
+	@Override
+	public void onSuccess(Method method, AssignmentDto assignmentDto) {
+		AssignmentXmlParser p = AssignmentXmlParser.get();
+		Assignment a = p.parse(assignmentDto);
+		// TODO if a == null, do what?
+		onAssignmentLoaded(a);
 	}
 }

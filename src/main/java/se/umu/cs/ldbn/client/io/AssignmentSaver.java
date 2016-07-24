@@ -28,7 +28,7 @@ public final class AssignmentSaver extends AbstractRequestSender {
 
 	private AssignmentSaver() {}
 
-	public void sendToSaveScript(String xml, String name, String id) {
+	public void sendToSaveScript(String xml, String name, Integer id) {
 		data = "id="+id+"&name="+name+"&xml="+xml;
 		data = addSessionData(data);
 		send();

@@ -3,15 +3,12 @@ package se.umu.cs.ldbn.client.ui.ca;
 import java.util.Collection;
 import java.util.List;
 
+import org.fusesource.restygwt.client.Method;
+import org.fusesource.restygwt.client.MethodCallback;
 import se.umu.cs.ldbn.client.Main;
 import se.umu.cs.ldbn.client.i18n.I18N;
-import se.umu.cs.ldbn.client.io.AssignmentListEntry;
-import se.umu.cs.ldbn.client.io.AssignmentLoader;
-import se.umu.cs.ldbn.client.io.AssignmentLoaderCallback;
-import se.umu.cs.ldbn.client.io.AssignmentSaver;
-import se.umu.cs.ldbn.client.io.Config;
-import se.umu.cs.ldbn.client.io.Login;
-import se.umu.cs.ldbn.client.io.LoginListener;
+import se.umu.cs.ldbn.client.io.*;
+import se.umu.cs.ldbn.client.rest.AssignmentsRestClient;
 import se.umu.cs.ldbn.client.ui.DisclosureWidget;
 import se.umu.cs.ldbn.client.ui.FDHolderPanel;
 import se.umu.cs.ldbn.client.ui.FDWidget;
@@ -48,15 +45,16 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import se.umu.cs.ldbn.shared.dto.AssignmentDto;
 
 public final class CreateAssignmentWidget extends Composite 
 	implements ClickHandler, RenameDialogCallback, LoadAssignmentDialogCallback,
-	LoadAssignmentDialogFilter, AssignmentLoaderCallback, LoginListener {
+	LoadAssignmentDialogFilter, AssignmentLoaderCallback, LoginListener, MethodCallback<AssignmentDto> {
 	
 	//assignment variables  
 	private Assignment currentAssignment;
 	private String loadedName;
-	private String loadedId;
+	private Integer loadedId;
 	
 	private AbsolutePanel mainPanel;
 	private EditableGivenAttributesWidget egas;
@@ -316,10 +314,10 @@ public final class CreateAssignmentWidget extends Composite
 		currentAssignment = null;
 	}
 	
-	public void onLoaded(AssignmentListEntry entry) {
+	public void onLoaded(AssignmentDto entry) {
 		loadedId = entry.getId();
 		loadedName = entry.getName();
-		AssignmentLoader.get().loadFromURL(entry.getId(), this);
+		AssignmentsRestClient.INSTANCE.getAssignment(entry.getId(), this);
 	}
 	
 	public void onLoadCanceled() {}
@@ -344,7 +342,7 @@ public final class CreateAssignmentWidget extends Composite
 		if(currentAssignment != null) {
 			String xml = AssignmentSaver.buildXML(currentAssignment);
 			AssignmentSaver.get().sendToSaveScript(xml, name, 
-					loadedId == null ? "" : loadedId);
+					loadedId == null ? 0 : loadedId);
 			currentAssignment  = null;
 			editMode.setVisible(false);
 			loadedId = null;
@@ -381,23 +379,40 @@ public final class CreateAssignmentWidget extends Composite
 		importButton.setEnabled(true);
 		exportButton.setEnabled(true);
 	}
-	
-	public boolean filter(AssignmentListEntry entry) {
+
+	public boolean filter(AssignmentDto dto) {
 		//Administrators can edit all assignments
 		boolean isAdmin = UserData.get().isAdmin();
 		if (isAdmin) {
 			return true;
 		}
-		
-		String userId = UserData.get().getId();
+
+		Integer userId = UserData.get().getId();
 		if (userId == null) {
 			return false;
 		}
-		
-		return userId.equals(entry.getAuthorID());
+
+		if (dto.getAuthor() == null) {
+			return false;
+		}
+
+		return userId.equals(dto.getAuthor().getId());
 	}
 
 	public boolean checkUserRights() {
 		return true;
+	}
+
+	@Override
+	public void onFailure(Method method, Throwable throwable) {
+		// TODO
+	}
+
+	@Override
+	public void onSuccess(Method method, AssignmentDto assignmentDto) {
+		AssignmentXmlParser p = AssignmentXmlParser.get();
+		Assignment a = p.parse(assignmentDto);
+		// TODO if a == null, do what?
+		onAssignmentLoaded(a);
 	}
 }

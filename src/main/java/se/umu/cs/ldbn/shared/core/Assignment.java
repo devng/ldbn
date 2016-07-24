@@ -6,7 +6,7 @@ public final class Assignment {
 
 	private DomainTable domain;
 	private List<FD> fds;
-	private String id;
+	private Integer id;
 	private String name;
 
 	public Assignment(DomainTable domain, List<FD> fds) {
@@ -22,11 +22,11 @@ public final class Assignment {
 		return domain;
 	}
 
-	public void setID(String id) {
+	public void setID(Integer id) {
 		this.id = id;
 	}
 
-	public String getID() {
+	public Integer getID() {
 		return id;
 	}
 

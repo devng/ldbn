@@ -1,18 +1,21 @@
 package se.umu.cs.ldbn.shared.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 
+// fields must be public otherwise RestyGWT does not work
 public class AssignmentDto {
 
-    private Integer id;
+    public Integer id;
 
-    private String name;
+    public String name;
 
-    private Date modifiedOn;
+    public Date modifiedOn;
 
-    private String xml;
+    public String xml;
 
-    private UserDto author;
+    public UserDto author;
 
     public Integer getId() {
         return id;

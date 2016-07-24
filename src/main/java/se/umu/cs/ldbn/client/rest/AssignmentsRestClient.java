@@ -16,7 +16,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
-@Path("/rest/api/v1/assignments")
+@Path("/api/v1/assignments")
 public interface AssignmentsRestClient extends RestService {
 
     AssignmentsRestClient INSTANCE = GWT.create(AssignmentsRestClient.class);
@@ -29,7 +29,7 @@ public interface AssignmentsRestClient extends RestService {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    void getAssignment(@PathParam("id") Integer id, MethodCallback<List<AssignmentDto>> callback);
+    void getAssignment(@PathParam("id") Integer id, MethodCallback<AssignmentDto> callback);
 
     @POST
     @Path("/")

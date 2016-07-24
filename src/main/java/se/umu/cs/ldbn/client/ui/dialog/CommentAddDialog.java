@@ -51,7 +51,7 @@ public class CommentAddDialog extends OkCancelDialog implements CommentCallback 
 		hide();
 	}
 
-	public String getAssignmentID() {
+	public Integer getAssignmentID() {
 		return SolveAssignmentWidget.get().getCurrentAssignmentId();
 	}
 
@@ -61,7 +61,7 @@ public class CommentAddDialog extends OkCancelDialog implements CommentCallback 
 	}
 
 	public void onCommentsReceived(List<CommentListEntry> comments,
-			String assignmentID) {
+			Integer assignmentID) {
 		CommentsWidget.get().addComments(comments);
 	}
 }

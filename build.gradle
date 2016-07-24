@@ -53,7 +53,9 @@ dependencies {
 	compile group: 'org.mybatis', name: 'mybatis-guice', version: '3.7.1'
 	compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.8.11.2'
 	compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.13'
-	compile group: 'org.fusesource.restygwt', name: 'restygwt', version: '2.0.3'
+
+	// needed by GWT during compilation but not after that
+	compileOnly group: 'org.fusesource.restygwt', name: 'restygwt', version: '2.0.3'
 
 	gwt group: 'com.allen-sauer.gwt.log', name: 'gwt-log', version: '3.3.2'
 	gwt group: 'com.allen-sauer.gwt.dnd', name: 'gwt-dnd', version: '3.3.4'
@@ -85,7 +87,17 @@ gwt {
 	minHeapSize = "512M";
 	maxHeapSize = "2048M";
 
-	modules 'se.umu.cs.ldbn.Ldbn'
+	// Defina a production build by passing -DprodBuild=true to the command line
+	def prodBuild = Boolean.getBoolean("prodBuild")
+
+	if (prodBuild) {
+		System.out.println("Doing GWT production build.")
+		modules 'se.umu.cs.ldbn.LdbnProd'
+	} else {
+		System.out.println("Doing GWT development build.")
+		modules 'se.umu.cs.ldbn.LdbnDev'
+	}
+
 
 	logLevel = 'INFO'
 
@@ -96,7 +108,9 @@ gwt {
 	// for compiler reference see
 	// http://steffenschaefer.github.io/gwt-gradle-plugin/doc/latest/javadoc/de/richsource/gradle/plugins/gwt/GwtCompileOptions.html
 	compiler {
+		draftCompile = !prodBuild;
 		strict = true;
+		style = prodBuild ? 'OBF' : 'DETAILED';
 		disableClassMetadata = true;
 		disableCastChecking = true;
 		localWorkers = gwtLocalWorkers;

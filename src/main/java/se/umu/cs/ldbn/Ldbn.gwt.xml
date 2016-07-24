@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 1.7.1//EN"
-        "http://google-web-toolkit.googlecode.com/svn/tags/1.7.1/distro-source/core/src/gwt-module.dtd">
-<module rename-to='ldbn'>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.7.0//EN" "http://gwtproject.org/doctype/2.7.0/gwt-module.dtd">
+<module>
 
     <source path="client"/>
     <source path="shared"/>
 
-    <!-- Inherit the core Web Toolkit stuff.                        -->
+    <!-- Inherit the core Web Toolkit stuff. -->
     <inherits name="com.google.gwt.user.User"/>
     <inherits name="com.google.gwt.xml.XML"/>
     <inherits name="com.google.gwt.http.HTTP"/>
     <inherits name="com.google.gwt.i18n.I18N"/>
+    <inherits name="com.google.gwt.inject.Inject"/>
 
     <!-- Add RestyGWT for easy rest calls -->
     <inherits name="org.fusesource.restygwt.RestyGWT"/>
@@ -18,30 +18,8 @@
     <!-- Add GWT D'n'D -->
     <inherits name="com.allen_sauer.gwt.dnd.gwt-dnd"/>
 
-    <!-- Add gwt-log support                                  -->
+    <!-- Add gwt-log support -->
     <inherits name="com.allen_sauer.gwt.log.gwt-log-DEBUG"/>
-
-    <!--
-      Enable experimental WindowLogger, which logs messages to a separate
-      popup window. There are currently a couple of restrictions:
-        1. When Firefox is configured to open new Windows as new tabs,
-           WindowLogger does not work
-        2. In hosted mode, the windows are not automatically closed,
-           although you can easily close them manually in the usual way
-      -->
-    <set-property name="log_WindowLogger" value="DISABLED"/>
-
-    <!--
-    You probably will want to disable the default `DivLogger` as well:
-    -->
-    <set-property name="log_DivLogger" value="DISABLED"/>
-
-    <!--
-      The default log level is `OFF`. In development you'll usually want
-      to switch to `DEBUG` level logging.
-    -->
-    <extend-property name="log_level" values="OFF"/>
-    <set-property name="log_level" value="OFF"/>
 
     <!-- Inherit the default GWT style sheet.  You can change       -->
     <!-- the theme of your GWT application by uncommenting          -->
@@ -50,6 +28,6 @@
     <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
     <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
-    <!-- Specify the app entry point class.                         -->
+    <!-- Specify the app entry point class. -->
     <entry-point class='se.umu.cs.ldbn.client.Main'/>
 </module>

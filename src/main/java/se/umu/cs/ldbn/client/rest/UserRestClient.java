@@ -9,7 +9,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
-@Path("/rest/api/v1/users")
+@Path("/api/v1/users")
 public interface UserRestClient extends RestService {
 
     UserRestClient INSTANCE = GWT.create(UserRestClient.class);

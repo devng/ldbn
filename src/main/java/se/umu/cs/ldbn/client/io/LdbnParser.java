@@ -15,6 +15,7 @@ import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 import com.google.gwt.xml.client.impl.DOMParseException;
+import se.umu.cs.ldbn.shared.dto.AssignmentDto;
 
 public final class LdbnParser {
 
@@ -46,12 +47,12 @@ public final class LdbnParser {
 
 	//vars used for parsing a ldbn xml string with type assignment_list
 	//map format: assignment id in the DB -> name
-	private List<AssignmentListEntry> assignmentList;
+	private List<AssignmentDto> assignmentList;
 
 	private List<UserListEntry> userList;
 
 	//vars used for session
-	private String userid;
+	private Integer userid;
 	private boolean isAdmin;
 	private boolean isSuperUser;
 	private String sessionid;
@@ -59,7 +60,7 @@ public final class LdbnParser {
 	//vars used for comments
 	private List<CommentListEntry> comments;
 	//comments for which assignment
-	private String assignmentIDComent;
+	private Integer assignmentIDComent;
 
 	private LdbnParser() {
 		lastLdbnType = LDBN_TYPE.unknown;
@@ -91,7 +92,7 @@ public final class LdbnParser {
 		return assignment;
 	}
 
-	public List<AssignmentListEntry> getAssignmentList() {
+	public List<AssignmentDto> getAssignmentList() {
 		return assignmentList;
 	}
 
@@ -118,7 +119,7 @@ public final class LdbnParser {
 		return sessionid;
 	}
 
-	public String getUserId() {
+	public Integer getUserId() {
 		return userid;
 	}
 
@@ -139,7 +140,7 @@ public final class LdbnParser {
 	}
 
 
-	public String getAssignmentIDComent() {
+	public Integer getAssignmentIDComent() {
 		return assignmentIDComent;
 	}
 
@@ -178,7 +179,7 @@ public final class LdbnParser {
 		} else if (type.equals("comments_list")) {
 			lastLdbnType = LDBN_TYPE.comment;
 			comments = new ArrayList<>();
-			assignmentIDComent = ((Element) ldbn).getAttribute("assignment_id");
+			assignmentIDComent = Integer.valueOf( ((Element) ldbn).getAttribute("assignment_id"));
 			visitElementNodes(ldbn);
 		}else {
 			return LDBN_TYPE.unknown;
@@ -229,25 +230,6 @@ public final class LdbnParser {
 				} else {
 					lastMsg = val;
 				}
-			} else if (tag.equals("entry")) {
-				String id = el.getAttribute("id");
-				String name = el.getAttribute("name");
-				String author_id  = el.getAttribute("author_id");
-				String author = el.getAttribute("author");
-				String isAdminString = el.getAttribute("is_admin");
-				boolean isAdmin = false;
-				if (isAdminString != null) {
-					isAdmin = isAdminString.toLowerCase().equals("1");
-				} else {
-					System.out.println("isAdmin is null.");
-				}
-				String last_modified = el.getAttribute("last_modified").replaceAll("\\s", "_");
-				AssignmentListEntry data =
-					new AssignmentListEntry(id, name, author_id, author, isAdmin,
-							last_modified);
-				if(name != null && id != null) {
-					assignmentList.add(data);
-				}
 			} else if (tag.equals("user_entry")) {
 				String id = el.getAttribute("id");
 				String name = el.getAttribute("name");
@@ -297,7 +279,7 @@ public final class LdbnParser {
 			} else if (tag.equals("session")) {
 				sessionid = el.getAttribute("id");
 			} else if (tag.equals("user")) {
-				userid = el.getAttribute("id");
+				userid = Integer.valueOf(el.getAttribute("id"));
 				isAdmin = "1".equals(el.getAttribute("is_admin"));
 				isSuperUser = "1".equals(el.getAttribute("is_su"));
 			} else if (tag.equals("email")) {

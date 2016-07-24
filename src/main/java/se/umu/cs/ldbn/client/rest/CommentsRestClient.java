@@ -11,7 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
-@Path("/rest/api/v1/assignments/{assignmentId}/comments")
+@Path("/api/v1/assignments/{assignmentId}/comments")
 public interface CommentsRestClient {
 
     CommentsRestClient INSTANCE = GWT.create(CommentsRestClient.class);

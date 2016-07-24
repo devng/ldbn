@@ -85,13 +85,14 @@ public final class Common {
 	 * @return true if no errors are returned by the server.
 	 */
 	public static boolean checkResponse(Response response) {
-		if(response.getStatusCode() != 200) {
-			Window.alert(I18N.messages().serverErrorCode(String.
-					valueOf(response.getStatusCode())));
-			return false;
-		}
-		String responce = response.getText();
-		return checkResponceTextOnly(responce);
+		//if(response.getStatusCode() != 200) {
+		//	Window.alert(I18N.messages().serverErrorCode(String.
+		//			valueOf(response.getStatusCode())));
+		//	return false;
+		//}
+		//String responce = response.getText();
+		//return checkResponceTextOnly(responce);
+		return true;
 	}
 
 	public static boolean checkResponceTextOnly(String responce) {

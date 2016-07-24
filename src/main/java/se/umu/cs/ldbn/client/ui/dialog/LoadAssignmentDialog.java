@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import se.umu.cs.ldbn.client.io.AssignmentListEntry;
-import se.umu.cs.ldbn.client.io.AssignmentLoader;
+import org.fusesource.restygwt.client.Method;
+import org.fusesource.restygwt.client.MethodCallback;
+import se.umu.cs.ldbn.client.rest.AssignmentsRestClient;
+import se.umu.cs.ldbn.client.ui.comparator.AssignmentDtoComparator;
 import se.umu.cs.ldbn.client.ui.sa.AssignmentFilter;
 import se.umu.cs.ldbn.client.ui.sa.AssignmentFilterAdmin;
 import se.umu.cs.ldbn.client.ui.sa.AssignmentFilterAll;
@@ -33,28 +35,31 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import se.umu.cs.ldbn.shared.dto.AssignmentDto;
 
 public final class LoadAssignmentDialog extends OkCancelDialog implements
-	ClickHandler, ChangeHandler {
+	ClickHandler, ChangeHandler, MethodCallback<List<AssignmentDto>> {
 
 	private class MyLabel extends Label {
-		private AssignmentListEntry entry;
-		public MyLabel(AssignmentListEntry entry) {
-			super(entry.getName());
-			this.entry = entry;
+
+		private AssignmentDto dto;
+
+		public MyLabel(AssignmentDto dto) {
+			super(dto.getName());
+			this.dto = dto;
 			Common.setCursorPointer(this);
 			addStyleName("nad-myLabel");
 		}
 
-		public AssignmentListEntry getEntry() {
-			return entry;
+		public AssignmentDto getDto() {
+			return dto;
 		}
 	}
 
 	private class ColumnHeader extends Composite implements ClickHandler {
 
 		private HorizontalPanel hp;
-		private AssignmentListEntry.compareAttribute cAtt;
+		private AssignmentDtoComparator.CompareAttribute cAtt;
 		private Label name;
 		private boolean isSorting;
 		private boolean isDec;
@@ -76,19 +81,19 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 			switch (type) {
 			case 1:
 				name = new HTML("<B>Name</B>");
-				cAtt = AssignmentListEntry.compareAttribute.name;
+				cAtt = AssignmentDtoComparator.CompareAttribute.name;
 				break;
 			case 2:
 				name = new HTML("<B>Author</B>");
-				cAtt = AssignmentListEntry.compareAttribute.author;
+				cAtt = AssignmentDtoComparator.CompareAttribute.authorId;
 				break;
 			case 3:
 				name = new HTML("<B>Last modified</B>");
-				cAtt = AssignmentListEntry.compareAttribute.modified;
+				cAtt = AssignmentDtoComparator.CompareAttribute.modifiedOn;
 				break;
 			default: //should not be used
 				name = new HTML("");
-				cAtt = AssignmentListEntry.compareAttribute.id;
+				cAtt = AssignmentDtoComparator.CompareAttribute.id;
 				break;
 			}
 
@@ -137,7 +142,7 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 	private LoadAssignmentDialogCallback caller;
 	private FlexTable table;
 	private ArrayList<ColumnHeader> colHeaders;
-	private List<AssignmentListEntry> data;
+	private List<AssignmentDto> data;
 	private int lastSelectedRow;
 
 	private ListBox filterBox;
@@ -176,7 +181,21 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 			currentFilterIndex = 0;
 			filterBox.setSelectedIndex(0);
 		}
-		AssignmentLoader.get().loadAssignmentList();
+		AssignmentsRestClient.INSTANCE.indexAssignments(this);
+	}
+
+	@Override
+	public void onFailure(Method method, Throwable throwable) {
+		Log.error("Error getting Assignments", throwable);
+		// TODO
+	}
+
+	@Override
+	public void onSuccess(Method method, List<AssignmentDto> assignmentDtos) {
+		Log.debug("Success getting Assignments");
+		data = assignmentDtos;
+		loadAssinmentListWithoutReCenter(data);
+		center();
 	}
 
 	@Override
@@ -197,22 +216,12 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 
 	}
 
-	/**
-	 * Used by the AssignmentLoader.
-	 * @param list
-	 */
-	public void loadAssigmentList(List<AssignmentListEntry> list) {
-		data = list;
-		loadAssinmentListWithoutReCenter(data);
-		center();
-	}
-
 	@Override
 	public void center() {
 		super.center();
 		try {
 			AssignmentFilter filter = filters[currentFilterIndex];
-			List<AssignmentListEntry> filteredData = filter.apply(data);
+			List<AssignmentDto> filteredData = filter.apply(data);
 			loadAssinmentListWithoutReCenter(filteredData);
 		} catch (IllegalStateException e) {
 			this.setErrorMsg(e.getMessage());
@@ -235,7 +244,7 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 			if (sender == filterBox) {
 				currentFilterIndex = filterBox.getSelectedIndex();
 				AssignmentFilter filer = filters[currentFilterIndex];
-				List<AssignmentListEntry> filteredData = filer.apply(data);
+				List<AssignmentDto> filteredData = filer.apply(data);
 				loadAssinmentListWithoutReCenter(filteredData);
 			}
 		} catch (IllegalStateException e) {
@@ -292,7 +301,7 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 			Log.warn("LoadAssignmentDialog.caller == null. Cannot load assignment");
 			return;
 		}
-		caller.onLoaded(((MyLabel) (table.getWidget(lastSelectedRow, 0))).getEntry());
+		caller.onLoaded(((MyLabel) (table.getWidget(lastSelectedRow, 0))).getDto());
 		hide();
 	}
 
@@ -302,20 +311,19 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 	}
 
 
-	private void sort(AssignmentListEntry.compareAttribute cAtt, boolean isDec) {
-		AssignmentListEntry.setCompareAttribute(cAtt);
-		AssignmentListEntry.setDecreasing(isDec);
+	private void sort(AssignmentDtoComparator.CompareAttribute cAtt, boolean isDec) {
+		AssignmentDtoComparator comparator = new AssignmentDtoComparator(cAtt, isDec);
 		table.getRowFormatter().removeStyleName(lastSelectedRow, "nad-selected");
 		lastSelectedRow = 0;
-		Collections.sort(data);
+		Collections.sort(data, comparator);
 
 		currentFilterIndex = filterBox.getSelectedIndex();
 		AssignmentFilter filer = filters[currentFilterIndex];
-		List<AssignmentListEntry> filteredData = filer.apply(data);
+		List<AssignmentDto> filteredData = filer.apply(data);
 		loadAssinmentListWithoutReCenter(filteredData);
 	}
 
-	private void loadAssinmentListWithoutReCenter(List<AssignmentListEntry> data) {
+	private void loadAssinmentListWithoutReCenter(List<AssignmentDto> data) {
 		table.clear();
 
 		for (int i = 0; i < colHeaders.size(); i++) {
@@ -326,12 +334,12 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 			filter = (LoadAssignmentDialogFilter) caller;
 		}
 		int row = 1;
-		for (AssignmentListEntry entry : data) {
+		for (AssignmentDto entry : data) {
 			if(filter != null && !filter.filter(entry)) {
 				continue;
 			}
 			table.setWidget(row, 0, new MyLabel(entry));
-			table.setWidget(row, 1, Common.createCursorLabel(entry.getAuthor()));
+			table.setWidget(row, 1, Common.createCursorLabel(entry.getAuthor().getName()));
 			table.setWidget(row, 2, Common.createCursorHTML("<nobr>" +
 					entry.getModifiedOn() + "</nobr>"));
 			row++;

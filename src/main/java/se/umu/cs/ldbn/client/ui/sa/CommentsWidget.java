@@ -116,7 +116,7 @@ public final class CommentsWidget extends Composite implements ClickHandler {
 
 			//display edit and delete buttons only if the user is logged in
 			if (UserData.get().isLoggedIn()) {
-				String id = UserData.get().getId();
+				Integer id = UserData.get().getId();
 				boolean isAdmin = UserData.get().isAdmin();
 				if (isAdmin || id.equals(cle.getAuthorID())) {
 					editButton.setVisible(true);
@@ -165,7 +165,7 @@ public final class CommentsWidget extends Composite implements ClickHandler {
 		}
 
 		public void onLoginSuccess() {
-			String id = UserData.get().getId();
+			Integer id = UserData.get().getId();
 			boolean isAdmin = UserData.get().isAdmin();
 			if (isAdmin || id.equals(cle.getAuthorID())) {
 				editButton.setVisible(true);
