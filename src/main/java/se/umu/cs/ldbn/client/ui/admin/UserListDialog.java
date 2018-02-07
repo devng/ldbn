@@ -168,7 +168,7 @@ public class UserListDialog extends OkCancelDialog implements ClickHandler {
 		setErrorMsg("");
 		UserListEntry selected = data.get(lastSelectedRow - 1);
 		if (toRemove && Window.confirm(
-				"Are you sure you want to remove the user \"" + selected.getName()
+				"Are you sure you want to remove the model \"" + selected.getName()
 				+ "\" from the administrator list?")) {
 			hide();
 			UserAdminList.get().send(selected.getId(), toRemove);
@@ -176,7 +176,7 @@ public class UserListDialog extends OkCancelDialog implements ClickHandler {
 		}
 
 		if (!toRemove && Window.confirm(
-				"Are you sure you want to add the user \"" + selected.getName()
+				"Are you sure you want to add the model \"" + selected.getName()
 				+ "\" to the administrator list?")) {
 			hide();
 			UserAdminList.get().send(selected.getId(), toRemove);

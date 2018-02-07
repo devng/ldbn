@@ -6,13 +6,14 @@ import java.util.List;
 
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
+import se.umu.cs.ldbn.client.ClientInjector;
 import se.umu.cs.ldbn.client.rest.AssignmentsRestClient;
 import se.umu.cs.ldbn.client.ui.comparator.AssignmentDtoComparator;
 import se.umu.cs.ldbn.client.ui.sa.AssignmentFilter;
 import se.umu.cs.ldbn.client.ui.sa.AssignmentFilterAdmin;
 import se.umu.cs.ldbn.client.ui.sa.AssignmentFilterAll;
 import se.umu.cs.ldbn.client.ui.sa.AssignmentFilterYou;
-import se.umu.cs.ldbn.client.ui.user.UserData;
+import se.umu.cs.ldbn.client.model.UserModel;
 import se.umu.cs.ldbn.client.utils.Common;
 
 import com.allen_sauer.gwt.log.client.Log;
@@ -149,8 +150,11 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 	private AssignmentFilter[] filters;
 	private int currentFilterIndex;
 
+	private final AssignmentsRestClient assignmentsRestClient;
+
 	private LoadAssignmentDialog() {
 		super("Select an Assignment", true);
+		assignmentsRestClient = ClientInjector.INSTANCE.getAssignmentsRestClient();
 		lastSelectedRow = 0;
 		colHeaders = new ArrayList<>();
 		colHeaders.add(new ColumnHeader(1));
@@ -174,14 +178,14 @@ public final class LoadAssignmentDialog extends OkCancelDialog implements
 		currentFilterIndex = 2;
 		filterBox.setSelectedIndex(2);
 		if (caller.checkUserRights()) {
-			if(!UserData.get().isAdmin()) {
+			if(!UserModel.get().isAdmin()) {
 				filterBox.clear();
 				filterBox.addItem(filters[0].getName());
 			}
 			currentFilterIndex = 0;
 			filterBox.setSelectedIndex(0);
 		}
-		AssignmentsRestClient.INSTANCE.indexAssignments(this);
+		assignmentsRestClient.indexAssignments(this);
 	}
 
 	@Override

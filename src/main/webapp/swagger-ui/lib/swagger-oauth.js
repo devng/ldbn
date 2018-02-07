@@ -41,13 +41,13 @@ function handleLogin() {
     appName = window.swaggerUi.api.info.title;
   }
 
-  $('.api-popup-dialog').remove(); 
+  $('.api-popup-dialog').remove();
   popupDialog = $(
     [
       '<div class="api-popup-dialog">',
       '<div class="api-popup-title">Select OAuth2.0 Scopes</div>',
       '<div class="api-popup-content">',
-        '<p>Scopes are used to grant an application different levels of access to data on behalf of the end user. Each API may declare one or more scopes.',
+        '<p>Scopes are used to grant an application different levels of access to data on behalf of the end model. Each API may declare one or more scopes.',
           '<a href="#">Learn how to use</a>',
         '</p>',
         '<p><strong>' + appName + '</strong> API requires the following scopes. Select which ones you want to grant to Swagger UI.</p>',
@@ -107,23 +107,23 @@ function handleLogin() {
     var redirectUrl = window.oAuthRedirectUrl || defaultRedirectUrl;
     var url = null;
     var scopes = []
-    var o = popup.find('input:checked'); 
+    var o = popup.find('input:checked');
     var OAuthSchemeKeys = [];
     var state;
     for(k =0; k < o.length; k++) {
       var scope = $(o[k]).attr('scope');
       if (scopes.indexOf(scope) === -1)
         scopes.push(scope);
-      var OAuthSchemeKey = $(o[k]).attr('oauthtype');      
+      var OAuthSchemeKey = $(o[k]).attr('oauthtype');
       if (OAuthSchemeKeys.indexOf(OAuthSchemeKey) === -1)
           OAuthSchemeKeys.push(OAuthSchemeKey);
     }
-    
-    //TODO: merge not replace if scheme is different from any existing 
+
+    //TODO: merge not replace if scheme is different from any existing
     //(needs to be aware of schemes to do so correctly)
-    window.enabledScopes=scopes;    
-    
-    for (var key in authSchemes) { 
+    window.enabledScopes=scopes;
+
+    for (var key in authSchemes) {
       if (authSchemes.hasOwnProperty(key) && OAuthSchemeKeys.indexOf(key) != -1) { //only look at keys that match this scope.
         var flow = authSchemes[key].flow;
 
@@ -139,7 +139,7 @@ function handleLogin() {
             window.swaggerUi.tokenName = dets.tokenName || 'access_token';
             clientCredentialsFlow(scopes, dets.tokenUrl, key);
             return;
-        }        
+        }
         else if(authSchemes[key].grantTypes) {
           // 1.2 support
           var o = authSchemes[key].grantTypes;
@@ -245,7 +245,7 @@ function clientCredentialsFlow(scopes, tokenUrl, OAuthSchemeKey) {
         onOAuthComplete("");
       }
     });
-    
+
   }
 
 window.processOAuthCode = function processOAuthCode(data) {
@@ -287,14 +287,14 @@ window.onOAuthComplete = function onOAuthComplete(token,OAuthSchemeKey) {
       alert(token.error);
     }
     else {
-      var b = token[window.swaggerUi.tokenName];      
+      var b = token[window.swaggerUi.tokenName];
       if (!OAuthSchemeKey){
           OAuthSchemeKey = token.state;
       }
       if(b){
         // if all roles are satisfied
         var o = null;
-        $.each($('.auth .api-ic .api_information_panel'), function(k, v) { 
+        $.each($('.auth .api-ic .api_information_panel'), function(k, v) {
           var children = v;
           if(children && children.childNodes) {
             var requiredScopes = [];

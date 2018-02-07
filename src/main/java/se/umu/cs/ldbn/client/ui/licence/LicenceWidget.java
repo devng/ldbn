@@ -10,18 +10,10 @@ import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.Hidden;
 
 public class LicenceWidget extends Composite {
-	private static LicenceWidget inst;
-	
-	public static LicenceWidget get() {
-		if(inst == null) {
-			inst = new LicenceWidget();
-		} 
-		return inst;
-	}
-	
+
 	private AbsolutePanel mainPanel;
 	private HeaderWidget hw;
-	
+
 	private LicenceWidget() {
 		mainPanel = new AbsolutePanel();
 		initWidget(mainPanel);
@@ -35,6 +27,6 @@ public class LicenceWidget extends Composite {
 		viewer.setHeight("420px");
 		DisclosureWidget dw = new DisclosureWidget("Copyright", viewer);
 		mainPanel.add(dw);
-		
+
 	}
 }

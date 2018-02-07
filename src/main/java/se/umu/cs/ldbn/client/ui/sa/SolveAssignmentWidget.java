@@ -5,21 +5,29 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import com.google.gwt.event.shared.EventBus;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
-import se.umu.cs.ldbn.client.Main;
+import se.umu.cs.ldbn.client.ClientInjector;
+import se.umu.cs.ldbn.client.ClientMain;
+import se.umu.cs.ldbn.client.events.CommentsReceivedEvent;
+import se.umu.cs.ldbn.client.events.CommentsReceivedEventHandler;
 import se.umu.cs.ldbn.client.i18n.I18N;
 import se.umu.cs.ldbn.client.io.*;
+import se.umu.cs.ldbn.client.model.SolveAssignmentModel;
 import se.umu.cs.ldbn.client.rest.AssignmentsRestClient;
+import se.umu.cs.ldbn.client.rest.CommentsRestClient;
 import se.umu.cs.ldbn.client.ui.DisclosureWidget;
 import se.umu.cs.ldbn.client.ui.FDWidget;
 import se.umu.cs.ldbn.client.ui.HeaderWidget;
 import se.umu.cs.ldbn.client.ui.InfoButton;
+import se.umu.cs.ldbn.client.ui.comment.CommentsWidget;
 import se.umu.cs.ldbn.client.ui.dialog.CheckSolutionDialog;
 import se.umu.cs.ldbn.client.ui.dialog.CheckSolutionDialog.MSG_TYPE;
 import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialog;
 import se.umu.cs.ldbn.client.ui.dialog.LoadAssignmentDialogCallback;
 import se.umu.cs.ldbn.client.utils.AssignmentGenerator;
+import se.umu.cs.ldbn.client.utils.AssignmentXml;
 import se.umu.cs.ldbn.client.utils.Common;
 import se.umu.cs.ldbn.shared.core.Algorithms;
 import se.umu.cs.ldbn.shared.core.Assignment;
@@ -38,10 +46,10 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import se.umu.cs.ldbn.shared.dto.AssignmentDto;
+import se.umu.cs.ldbn.shared.dto.CommentDto;
 
 public final class SolveAssignmentWidget extends AbsolutePanel
-	implements ClickHandler, LoadAssignmentDialogCallback,
-	AssignmentLoaderCallback, CommentCallback, MethodCallback<AssignmentDto> {
+	implements ClickHandler, LoadAssignmentDialogCallback {
 
 	private static SolveAssignmentWidget inst;
 	public static SolveAssignmentWidget get() {
@@ -50,18 +58,8 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		}
 		return inst;
 	}
-	//cache
-	/**
-	 * Holds the partial FD cover for every user created relation.
-	 * The key is the hash code  of the relation attribute set
-	 */
-	private HashMap<Integer, List<FD>> cacheFD;
-	private HashMap<Integer, List<AttributeSet>> cacheKeys;
-	//assignment variables
-	private DomainTable domain;
-	public AttributeSet domainAsAttSet;
-	public List<FD> fds;
-	private List<AttributeSet> originalKeys;
+
+
 	//given attributes
 	private Button checkSolution;
 	private Button loadAssignment;
@@ -91,25 +89,27 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	//imports
 	private Image import2NF;
 	private Image import3NF;
-	//current assignment
-	private Integer curAssinmentId;
-	private List<FD> minCoverF;
-	//Label assignment name
+
 	private HTML assignmentName;
+
+	private final AssignmentsRestClient assignmentsRestClient;
+
+	private final CommentsRestClient commentsRestClient;
+
+	private final SolveAssignmentModel assignmentModel;
+
+	private final EventBus eventBus;
 
 	private SolveAssignmentWidget() {
 		super();
-		curAssinmentId = 1;
+		assignmentsRestClient = ClientInjector.INSTANCE.getAssignmentsRestClient();
+		assignmentModel = ClientInjector.INSTANCE.getSolveAssignmentModel();
+		commentsRestClient = ClientInjector.INSTANCE.getCommentsRestClient();
+		eventBus = ClientInjector.INSTANCE.getEventBus();
 	}
 
 	private void init() {
 		setWidth("100%");
-		//this are not used, before an assignment has been loaded,  but
-		//if they are not set a NullPointer or IllegalArgument exception
-		//can be thrown
-		domain = new DomainTable();
-		fds = new ArrayList<>();
-
 		//Controls
 		givenAttributesWidget = new GivenAttributesWidget();
 		loadAssignment = new Button(I18N.constants().sawLoadAssignmentBut());
@@ -193,43 +193,25 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		//comments
 		dwComments = new DisclosureWidget(I18N.constants().sawUserCommentsTitle(), CommentsWidget.get());
 		add(dwComments);
-		//cache
-		cacheFD = new HashMap<>();
-		cacheKeys = new HashMap<>();
 
 		//start with  a loaded assignment
-		this.domain = new DomainTable(); //this is necessary
-		givenAttributesWidget.setDomain(domain);
+		givenAttributesWidget.setDomain(assignmentModel.getDomain());
 		Assignment a = AssignmentGenerator.generate();
 		loadAssignment(a);
 	}
-
-	public DomainTable getDomainTable() {
-		return domain;
-	}
-
-	public Integer getCurrentAssignmentId() {
-		return curAssinmentId;
-	}
-
-	public void onAssignmentLoaded(Assignment a) {
-		loadAssignment(a);
-	}
-
-	public void onAssignmentLoadError() {}
 
 	@Override
 	public void onClick(ClickEvent event) {
 		Object sender = event.getSource();
 		if(sender == checkSolution) {
-			Main.get().showGlassPanelLoading();
+			ClientMain.get().showGlassPanelLoading();
 			Scheduler.get().scheduleDeferred(() -> checkSolution());
 		} else if (sender == loadAssignment) {
 			LoadAssignmentDialog.get().load(this);
 		} else if (sender == showSolution) {
 			if (Window.confirm("Are you sure you want to see the solution?\n" +
 					"This will erase all of your input!")) {
-				Main.get().showGlassPanelLoading();
+				ClientMain.get().showGlassPanelLoading();
 				Scheduler.get().scheduleDeferred(() -> showSolution());
 			}
 		} else if (sender == import2NF) {
@@ -247,25 +229,24 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		}
 	}
 
-	public void onLoadCanceled() {}
-
 	public void onLoaded(AssignmentDto entry) {
-		curAssinmentId = entry.getId();
+		assignmentsRestClient.getAssignment(entry.getId(), new MethodCallback<AssignmentDto>() {
+			@Override
+			public void onFailure(Method method, Throwable throwable) {
+				// TODO
+			}
 
-		AssignmentsRestClient.INSTANCE.getAssignment(curAssinmentId, this);
-	}
-
-	public Integer getAssignmentID() {
-		return curAssinmentId;
+			@Override
+			public void onSuccess(Method method, AssignmentDto assignmentDto) {
+				Assignment a = AssignmentXml.parse(assignmentDto);
+				// TODO if a == null, do what?
+				loadAssignment(a);
+			}
+		});
 	}
 
 	public String getComment() {
 		return null;
-	}
-
-	public void onCommentsReceived(List<CommentListEntry> comments,
-			Integer assignentID) {
-		CommentsWidget.get().addComments(comments);
 	}
 
 	protected void onAttach() {
@@ -276,11 +257,11 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	private void checkSolution() {
 		//minimal cover check
 		List<FD> minCovFDs = minimalCoverWidget.getFDHolderPanel().getFDs();
-		minCoverF = new ArrayList<>(minCovFDs.size());
+		assignmentModel.getMinCoverF().clear();
 		for (FD fd : minCovFDs) {
-			minCoverF.add(fd.clone());
+			assignmentModel.getMinCoverF().add(fd.clone());
 		}
-		Algorithms.minimalCover(minCoverF);
+		Algorithms.minimalCover(assignmentModel.getMinCoverF());
 		CheckSolutionDialog dialog = CheckSolutionDialog.get();
 		dialog.clearMsgs();
 
@@ -299,12 +280,12 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 //			ArrayList<Relation> tmpList = new ArrayList<Relation>(1);
 //			tmpList.add(tmp);
 //			checkKeyInput(tmpList);
-			if(originalKeys == null) {
-				originalKeys = Algorithms.findAllKeyCandidates(fds, domainAsAttSet);
+			if(assignmentModel.getOriginalKeys() == null || assignmentModel.getMinCoverF().isEmpty()) {
+				assignmentModel.getOriginalKeys().addAll(Algorithms.findAllKeyCandidates(assignmentModel.getFds(), assignmentModel.getDomainAsAttSet()));
 			}
 			boolean keyFound = false;
 			boolean isSuperKey = false;
-			for (AttributeSet oKey : originalKeys) {
+			for (AttributeSet oKey : assignmentModel.getOriginalKeys()) {
 				if(key.isSubSetOf(oKey)) {
 					isSuperKey = true;
 				}
@@ -327,13 +308,13 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		dialog.msgTitle(I18N.constants().sawMinCoverCheck());
 		if(minCovFDs.size() == 0) {
 			dialog.msgWarn(I18N.constants().sawNoFDsWarn());
-		} else if (!Algorithms.equivalence(fds, minCovFDs)) {
+		} else if (!Algorithms.equivalence(assignmentModel.getFds(), minCovFDs)) {
 			dialog.msgErr(I18N.constants().sawFDsNotEquivalent());
-		} else if(minCoverF.size() != minCovFDs.size()) {
+		} else if(assignmentModel.getMinCoverF().size() != minCovFDs.size()) {
 			dialog.msgErr(I18N.constants().sawFDsTooMany());
-		} else if (!minCoverF.containsAll(minCovFDs)) {
-			// compute the minimal cover over the user input and compare it with
-			// the user actual input, if it does not contain all FDs, then a
+		} else if (!assignmentModel.getMinCoverF().containsAll(minCovFDs)) {
+			// compute the minimal cover over the model input and compare it with
+			// the model actual input, if it does not contain all FDs, then a
 			// FD was not minimal and it was computed and added to the list.
 			dialog.msgErr(I18N.constants().sawFDsNotReduced());
 		} else {
@@ -371,7 +352,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 			if (!errorFree) {
 				dialog.msgErr(I18N.messages().sawDecompositionIsNotInNF("2NF") + " See previous error messages.");
 			} else {
-				boolean isIn2NF = Algorithms.isIn2NF(relations, getDomainTable());
+				boolean isIn2NF = Algorithms.isIn2NF(relations, assignmentModel.getDomain());
 				if(isIn2NF) {
 					dialog.msgOK(I18N.messages().sawDecompositionIsInNF("2NF"));
 				} else {
@@ -412,7 +393,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 			if (!errorFree) {
 				dialog.msgErr(I18N.messages().sawDecompositionIsNotInNF("3NF") + " See previous error messages.");
 			} else {
-				boolean isIn3NF = Algorithms.isIn3NF(relations, getDomainTable());
+				boolean isIn3NF = Algorithms.isIn3NF(relations, assignmentModel.getDomain());
 				if(isIn3NF) {
 					dialog.msgOK(I18N.messages().sawDecompositionIsInNF("3NF"));
 				} else {
@@ -464,7 +445,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 			}
 		}
 
-		Main.get().hideGlassPanel();
+		ClientMain.get().hideGlassPanel();
 		dialog.center();
 	}
 
@@ -484,7 +465,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		boolean resultFD = true;
 
 		for (Relation r : rel) {
-			List<FD> fdsRBR = cacheFD.get(r.getAttributes().hashCode());
+			List<FD> fdsRBR = assignmentModel.getCacheFD().get(r.getAttributes().hashCode());
 			if(!Algorithms.equivalence(fdsRBR, r.getFds())) {
 				resultFD = false;
 				dialog.msgErr(I18N.messages().sawFDsNotClosure(r.getName()));
@@ -500,7 +481,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	private boolean checkDependencyPreservation(List<Relation> rel, boolean displayOnlyWarning) {
 		boolean isDependencyPreserving = false;
 		CheckSolutionDialog dialog = CheckSolutionDialog.get();
-		isDependencyPreserving = Algorithms.isDependencyPreserving(fds, rel);
+		isDependencyPreserving = Algorithms.isDependencyPreserving(assignmentModel.getFds(), rel);
 		if(isDependencyPreserving) {
 			dialog.msgOK(I18N.constants().sawDecompositionDP());
 		} else {
@@ -516,7 +497,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		boolean result = true;
 		CheckSolutionDialog dialog = CheckSolutionDialog.get();
 		for (Relation r : rel) {
-			List<AttributeSet> keys = cacheKeys.get(r.getAttributes().hashCode());
+			List<AttributeSet> keys = assignmentModel.getCacheKeys().get(r.getAttributes().hashCode());
 			AttributeSet pk = r.getPrimaryKey();
 			pk.andOperator(r.getAttributes());
 			boolean isKeyFound = false;
@@ -540,7 +521,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 
 	private boolean checkForLossless(List<Relation> relations) {
 		CheckSolutionDialog dialog = CheckSolutionDialog.get();
-		boolean isLossless = Algorithms.isLossless(fds, domainAsAttSet, relations);
+		boolean isLossless = Algorithms.isLossless(assignmentModel.getFds(), assignmentModel.getDomainAsAttSet(), relations);
 		if(isLossless) {
 			dialog.msgOK(I18N.constants().sawDecompositionLossless());
 		} else {
@@ -552,15 +533,15 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 	private void updateCache(Collection<Relation> rel) {
 		for (Relation r : rel) {
 			int i = r.getAttributes().hashCode();
-			if(!cacheFD.containsKey(i)) {
-				List<FD> fdsRBR = Algorithms.reductionByResolution(domainAsAttSet, fds, r.getAttributes());
+			if(!assignmentModel.getCacheFD().containsKey(i)) {
+				List<FD> fdsRBR = Algorithms.reductionByResolution(assignmentModel.getDomainAsAttSet(), assignmentModel.getFds(), r.getAttributes());
 				Algorithms.minimalCover(fdsRBR);
-				cacheFD.put(i, fdsRBR);
+				assignmentModel.getCacheFD().put(i, fdsRBR);
 			}
-			if(!cacheKeys.containsKey(i)) {
-				List<FD> fdsRBR = cacheFD.get(i);
+			if(!assignmentModel.getCacheKeys().containsKey(i)) {
+				List<FD> fdsRBR = assignmentModel.getCacheFD().get(i);
 				List<AttributeSet> keys = Algorithms.findAllKeyCandidates(fdsRBR, r.getAttributes());
-				cacheKeys.put(i, keys);
+				assignmentModel.getCacheKeys().put(i, keys);
 			}
 		}
 	}
@@ -568,24 +549,23 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 
 	private void updateRelations(Collection<Relation> rel) {
 		for (Relation r : rel) {
-			r.setFDs(cacheFD.get(r.getAttributes().hashCode()));
-			r.setKeyCandidates(cacheKeys.get(r.getAttributes().hashCode()));
+			r.setFDs(assignmentModel.getCacheFD().get(r.getAttributes().hashCode()));
+			r.setKeyCandidates(assignmentModel.getCacheKeys().get(r.getAttributes().hashCode()));
 		}
 	}
 
 	private void showSolution() {
 		clearUserInput();
 		//initial relation key
-		if(originalKeys == null) {
-			originalKeys = Algorithms.findAllKeyCandidates(fds, domainAsAttSet);
-		}
-		if(!originalKeys.isEmpty()) {
-			findKeyWidget.setKey(originalKeys.get(0));
+		if(assignmentModel.getOriginalKeys().isEmpty()) {
+			assignmentModel.getOriginalKeys().addAll(Algorithms.findAllKeyCandidates(assignmentModel.getFds(), assignmentModel.getDomainAsAttSet()));
+		} else {
+			findKeyWidget.setKey(assignmentModel.getOriginalKeys().get(0));
 		}
 
 		//minimal cover
-		List<FD> deepCopy = new ArrayList<>(fds.size());
-		for (FD fd : fds) {
+		List<FD> deepCopy = new ArrayList<>(assignmentModel.getFds().size());
+		for (FD fd : assignmentModel.getFds()) {
 			deepCopy.add(fd.clone());
 		}
 		Algorithms.minimalCover(deepCopy);
@@ -595,7 +575,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 		}
 		//2nf 3nf
 		Relation r = new Relation();
-		r.setAttributes(domain.createAttributeSet());
+		r.setAttributes(assignmentModel.getDomain().createAttributeSet());
 		r.setFDs(deepCopy);
 		Collection<Relation> synthese = Algorithms.synthese(r, true);
 
@@ -610,7 +590,7 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 			Algorithms.minimalCover(bcnfFDs);
 		}
 		decompositionBCNF.addRelationList(bcnf);
-		Main.get().hideGlassPanel();
+		ClientMain.get().hideGlassPanel();
 	}
 
 	private void clearUserInput() {
@@ -623,34 +603,40 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 
 	private void clearData() {
 		clearUserInput();
-		cacheFD.clear();
-		cacheKeys.clear();
+		assignmentModel.clear();
 		//TODO domain.clearData() causes a bug, if we use the same
 		//domain table in the create assignment tab -> we have to
 		//implement clone for this class in the future.
 		//domain.clearData();
 		givenFDsWidget.clearData();
-		fds.clear();
-		originalKeys = null;
 		CommentsWidget.get().clearData();
 	}
 
 	public void loadAssignment(Assignment a) {
 		clearData();
 		restoreDefaultSize();
-		this.domain = a.getDomain();
-		this.domainAsAttSet = domain.createAttributeSet();
-		givenAttributesWidget.setDomain(domain);
-		this.fds = a.getFDs();
-		givenFDsWidget.setFDs(fds);
+		assignmentModel.init(a);
+		givenAttributesWidget.setDomain(assignmentModel.getDomain());
+		givenFDsWidget.setFDs(assignmentModel.getFds());
 		String name = a.getName();
-		if (name != null) {
+		if (name != null || name.isEmpty()) {
 			this.assignmentName.setHTML("Assignment: <i>"+a.getName()+"</i>");
 		} else {
 			this.assignmentName.setText("");
 		}
 
-		Scheduler.get().scheduleDeferred(() -> Comment.get().send(SolveAssignmentWidget.this));
+
+		commentsRestClient.getAssignmentComments(a.getID(), new MethodCallback<List<CommentDto>>() {
+			@Override
+			public void onFailure(Method method, Throwable throwable) {
+
+			}
+
+			@Override
+			public void onSuccess(Method method, List<CommentDto> commentDtos) {
+				eventBus.fireEvent(new CommentsReceivedEvent(commentDtos));
+			}
+		});
 	}
 
 	private void restoreDefaultSize() {
@@ -664,18 +650,5 @@ public final class SolveAssignmentWidget extends AbsolutePanel
 
 	public boolean checkUserRights() {
 		return false;
-	}
-
-	@Override
-	public void onFailure(Method method, Throwable throwable) {
-		// TODO
-	}
-
-	@Override
-	public void onSuccess(Method method, AssignmentDto assignmentDto) {
-		AssignmentXmlParser p = AssignmentXmlParser.get();
-		Assignment a = p.parse(assignmentDto);
-		// TODO if a == null, do what?
-		onAssignmentLoaded(a);
 	}
 }

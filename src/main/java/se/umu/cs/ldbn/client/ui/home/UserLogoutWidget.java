@@ -2,7 +2,7 @@ package se.umu.cs.ldbn.client.ui.home;
 
 import se.umu.cs.ldbn.client.io.Login;
 import se.umu.cs.ldbn.client.ui.InfoButton;
-import se.umu.cs.ldbn.client.ui.user.UserData;
+import se.umu.cs.ldbn.client.model.UserModel;
 import se.umu.cs.ldbn.client.utils.Common;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -19,7 +19,7 @@ public final class UserLogoutWidget extends Composite implements ClickHandler {
 	private HTML label;
 	private Button logout;
 	private Button edit;
-	
+
 	public UserLogoutWidget() {
 		mainPanel = new HorizontalPanel();
 		initWidget(mainPanel);
@@ -27,7 +27,7 @@ public final class UserLogoutWidget extends Composite implements ClickHandler {
 		mainPanel.setSpacing(5);
 		//label;
 		label = new HTML();
-		
+
 		mainPanel.add(label);
 		//logout
 		logout = new Button("Logout");
@@ -42,20 +42,20 @@ public final class UserLogoutWidget extends Composite implements ClickHandler {
 		mainPanel.add(new InfoButton("logout"));
 		Common.setCursorPointer(edit);
 	}
-	
+
 	@Override
 	public void onClick(ClickEvent event) {
 		Object sender = event.getSource();
 		if (sender == logout) {
-			Login.get().sendKillSession(UserData.get().getSession());
+			Login.get().sendKillSession(UserModel.get().getSession());
 		} else if (sender == edit) {
 			EditUserDialog.get().center();
 		}
 	}
-	
+
 	protected void onAttach() {
 		super.onAttach();
-		label.setHTML("Logged in as <b>"+UserData.get().getName()+"</b>");
+		label.setHTML("Logged in as <b>"+ UserModel.get().getName()+"</b>");
 	}
 
 }

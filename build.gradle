@@ -9,7 +9,7 @@ buildscript {
 }
 
 ext {
-	verGwt = '2.8.0-beta1'
+	verGwt = '2.8.0'
 	verJersey = '2.19'
 	verGuice = '4.0'
 	verSwagger = '1.5.9'
@@ -25,7 +25,7 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '2.13'
+	gradleVersion = '2.14.1'
 }
 
 repositories {
@@ -42,6 +42,8 @@ dependencies {
 	compile group: 'com.google.inject', name: 'guice', version: verGuice
 	compile group: 'com.google.inject.extensions', name: 'guice-servlet', version: verGuice
 	compile group: 'com.google.inject.extensions', name: 'guice-persist', version: verGuice
+	compile group: 'com.google.inject.extensions', name: 'guice-assistedinject', version: verGuice
+
 	compile group: 'com.squarespace.jersey2-guice', name: 'jersey2-guice', version: '0.10'
 	compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: verJersey
 	compile group: 'org.glassfish.jersey.core', name: 'jersey-server', version: verJersey
@@ -55,10 +57,14 @@ dependencies {
 	compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.13'
 
 	// needed by GWT during compilation but not after that
-	compileOnly group: 'org.fusesource.restygwt', name: 'restygwt', version: '2.0.3'
+	compileOnly group: 'org.fusesource.restygwt', name: 'restygwt', version: '2.2.0'
 
 	gwt group: 'com.allen-sauer.gwt.log', name: 'gwt-log', version: '3.3.2'
 	gwt group: 'com.allen-sauer.gwt.dnd', name: 'gwt-dnd', version: '3.3.4'
+	gwt (group: 'com.google.gwt.inject', name: 'gin', version: '2.1.2') {
+			exclude(module: 'guice')
+			exclude(module: 'guice-assistedinject')
+	}
 	gwt (group: 'com.google.gwt.inject', name: 'gin', version: '2.1.2') {
 			exclude(module: 'guice')
 			exclude(module: 'guice-assistedinject')
@@ -84,8 +90,8 @@ gwt {
 	gwtVersion = "${verGwt}"
 	System.out.println("Using GWT version " + gwtVersion)
 
-	minHeapSize = "512M";
-	maxHeapSize = "2048M";
+	minHeapSize = "512M"
+	maxHeapSize = "2048M"
 
 	// Defina a production build by passing -DprodBuild=true to the command line
 	def prodBuild = Boolean.getBoolean("prodBuild")
@@ -108,12 +114,12 @@ gwt {
 	// for compiler reference see
 	// http://steffenschaefer.github.io/gwt-gradle-plugin/doc/latest/javadoc/de/richsource/gradle/plugins/gwt/GwtCompileOptions.html
 	compiler {
-		draftCompile = !prodBuild;
+		draftCompile = !prodBuild
 		strict = true;
-		style = prodBuild ? 'OBF' : 'DETAILED';
-		disableClassMetadata = true;
-		disableCastChecking = true;
-		localWorkers = gwtLocalWorkers;
+		style = prodBuild ? 'OBF' : 'DETAILED'
+		disableClassMetadata = true
+		disableCastChecking = true
+		localWorkers = gwtLocalWorkers
 	}
 }
 

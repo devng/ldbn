@@ -1,6 +1,6 @@
 package se.umu.cs.ldbn.client.ui.dialog;
 
-import se.umu.cs.ldbn.client.Main;
+import se.umu.cs.ldbn.client.ClientMain;
 import se.umu.cs.ldbn.client.i18n.I18N;
 import se.umu.cs.ldbn.client.ui.window.WindowPanel;
 import se.umu.cs.ldbn.client.utils.Common;
@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 abstract public class BaseDialog extends WindowPanel implements ClickHandler {
-	
+
 	protected Button okButton;
 	protected Button closeButton;
 	protected Label errorLabel;
@@ -28,24 +28,24 @@ abstract public class BaseDialog extends WindowPanel implements ClickHandler {
 		super(title, false);
 		isModal = modal;
 	}
-	
+
 	public void center() {
 		super.center();
 		if (isModal) {
-			Main.get().showGlassPanel();
+			ClientMain.get().showGlassPanel();
 		}
-		
-		
+
+
 	}
-	
+
 	public void hide() {
 		super.hide();
 		setErrorMsg("");
 		if (isModal) {
-			Main.get().hideGlassPanel();
+			ClientMain.get().hideGlassPanel();
 		}
 	}
-	
+
 	public void setErrorMsg(String msg) {
 		errorLabel.setText(msg);
 	}
@@ -53,7 +53,7 @@ abstract public class BaseDialog extends WindowPanel implements ClickHandler {
 	protected boolean useScrollPanel() {
 		return false;
 	}
-	
+
 	protected Widget getContentWidget() {
 		DockPanel dock = new DockPanel();
 		dock.setSpacing(4);
@@ -68,15 +68,15 @@ abstract public class BaseDialog extends WindowPanel implements ClickHandler {
 		closeButton = new Button(I18N.constants().closeBut());
 		okButton.addClickHandler(this);
 		closeButton.addClickHandler(this);
-		
+
 		Common.setCursorPointer(okButton);
 		Common.setCursorPointer(closeButton);
 		HorizontalPanel hp = new HorizontalPanel();
 		hp.setSpacing(4);
 		hp.add(okButton);
 		hp.add(closeButton);
-		
-		
+
+
 		errorLabel = new Label("");
 		Grid g = new Grid(1,2);
 		g.setWidget(0, 0, errorLabel);
@@ -86,15 +86,15 @@ abstract public class BaseDialog extends WindowPanel implements ClickHandler {
 		g.getCellFormatter().setAlignment(0, 1, HasHorizontalAlignment.ALIGN_RIGHT, HasVerticalAlignment.ALIGN_MIDDLE);
 		dock.add(g, DockPanel.SOUTH);
 		dock.setWidth("100%");
-		
+
 		DOM.setStyleAttribute(errorLabel.getElement(), "color", "red");
 		return dock;
 	}
-	
+
 	protected abstract Widget getDialogContentWidget();
-	
+
 	protected String getHelpMessage() {
 		return null;
 	}
-	
+
 }

@@ -1,16 +1,7 @@
-package se.umu.cs.ldbn.client.ui.user;
+package se.umu.cs.ldbn.client.model;
 
-public final class UserData {
-	
-	private static UserData inst;
-	
-	public static UserData get() {
-		if(inst == null) {
-			inst = new UserData();
-		}
-		return inst;
-	}
-	
+public final class UserModel {
+
 	private String name;
 	private Integer id;
 	private String pass;
@@ -18,8 +9,9 @@ public final class UserData {
 	private String email;
 	private boolean isAdmin;
 	private boolean isSuperUser;
-	
-	private UserData() {
+
+	UserModel() {
+		super();
 	}
 
 	public String getName() {
@@ -53,7 +45,7 @@ public final class UserData {
 	public void setSession(String session) {
 		this.session = session;
 	}
-	
+
 	public void clear() {
 		pass = null;
 		id = null;
@@ -61,7 +53,7 @@ public final class UserData {
 		name = null;
 		email = null;
 	}
-	
+
 	public boolean isLoggedIn() {
 		return session != null && id != null ;
 	}

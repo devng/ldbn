@@ -1,5 +1,7 @@
 package se.umu.cs.ldbn.client.ui.sa;
 
+import se.umu.cs.ldbn.client.ClientInjector;
+import se.umu.cs.ldbn.client.model.SolveAssignmentModel;
 import se.umu.cs.ldbn.client.ui.FDHolderPanel;
 import se.umu.cs.ldbn.client.ui.HasAdditionalControlls;
 import se.umu.cs.ldbn.client.ui.InfoButton;
@@ -19,14 +21,17 @@ import com.google.gwt.user.client.ui.Widget;
 public class MinimalCoverWidget extends Composite implements ClickHandler,
 	HasAdditionalControlls {
 
-	
+
 	private FDHolderPanel mainPanel;
 	private Button minCovAddFD;
 	private Image visual;
-	
+
+	private SolveAssignmentModel model;
+
 	public MinimalCoverWidget() {
+		model = ClientInjector.INSTANCE.getSolveAssignmentModel();
 		mainPanel = new FDHolderPanel();
-		
+
 		minCovAddFD = new Button("Add new FD");
 		minCovAddFD.setStyleName("min-cov-but");
 		minCovAddFD.addClickHandler(this);
@@ -35,24 +40,24 @@ public class MinimalCoverWidget extends Composite implements ClickHandler,
 		buttons.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		buttons.add(minCovAddFD);
 		buttons.add(new InfoButton("find-mincov"));
-		
+
 		visual = new Image(Common.getResourceUrl("img/eye.png"));
 		visual.setTitle("FD Visualization");
 		visual.addClickHandler(event -> {
 				VisualizationWindow vw = VisualizationWindow.get();
 				SolveAssignmentWidget sa = SolveAssignmentWidget.get();
-				vw.setData(sa.domainAsAttSet, mainPanel.getFDs());
+				vw.setData(model.getDomainAsAttSet(), mainPanel.getFDs());
 				vw.center();
 		});
 		Common.setCursorPointer(visual);
-		
+
 		mainPanel.add(buttons);
 		initWidget(mainPanel);
 	}
-	
+
 	public Widget[] getAdditionalControlls() {
 		Widget[] superAdditionalControl = mainPanel.getAdditionalControlls();
-		Widget[] additionalContorll = 
+		Widget[] additionalContorll =
 			new Widget[superAdditionalControl.length+1];
 		additionalContorll[0] = visual;
 		for (int i = 0; i < superAdditionalControl.length; i++) {
@@ -61,18 +66,18 @@ public class MinimalCoverWidget extends Composite implements ClickHandler,
 		}
 		return additionalContorll;
 	}
-	
+
 	public FDHolderPanel getFDHolderPanel() {
 		return mainPanel;
 	}
-	
+
 	@Override
 	public void onClick(ClickEvent event) {
 		Object sender = event.getSource();
 		if (sender == minCovAddFD) {
 			FDEditorDialog.get().center(); //always center first
 			FDEditorDialog.get().setCurrentFDHolderPanel(mainPanel);
-			FDEditorDialog.get().setCurrentDomain(SolveAssignmentWidget.get().getDomainTable());
+			FDEditorDialog.get().setCurrentDomain(model.getDomain());
 		}
 	}
 }

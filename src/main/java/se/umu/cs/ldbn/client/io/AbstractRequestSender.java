@@ -1,6 +1,6 @@
 package se.umu.cs.ldbn.client.io;
 
-import se.umu.cs.ldbn.client.ui.user.UserData;
+import se.umu.cs.ldbn.client.model.UserModel;
 import se.umu.cs.ldbn.client.utils.Common;
 
 import com.allen_sauer.gwt.log.client.Log;
@@ -28,7 +28,7 @@ public abstract class AbstractRequestSender {
 		if(data.length() > 0 && data.charAt(data.length()-1) != '&' ) {
 			data = data+"&";
 		}
-		UserData ud = UserData.get();
+		UserModel ud = UserModel.get();
 		data += "id_user="+ud.getId()+"&id_session="+ud.getSession();
 		return data;
 	}

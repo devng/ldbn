@@ -1,6 +1,6 @@
 package se.umu.cs.ldbn.client.io;
 
-import se.umu.cs.ldbn.client.ui.user.UserData;
+import se.umu.cs.ldbn.client.model.UserModel;
 import se.umu.cs.ldbn.client.utils.Common;
 
 public final class CommentEdit extends AbstractRequestSender {
@@ -30,8 +30,8 @@ public final class CommentEdit extends AbstractRequestSender {
 
 	protected String getData() {
 		String data = "";
-		data += "&id_user="+UserData.get().getId();
-		data += "&id_session=" + UserData.get().getSession();
+		data += "&id_user="+ UserModel.get().getId();
+		data += "&id_session=" + UserModel.get().getSession();
 		data += "&id_comment=" + commentId;
 		if (text != null && !text.equals("")) {
 			data += "&comment=" + Common.base64encode(text);

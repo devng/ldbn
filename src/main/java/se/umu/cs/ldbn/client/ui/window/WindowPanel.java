@@ -1,12 +1,12 @@
 /*
  * Copyright 2008 Fred Sauer
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -15,7 +15,7 @@
  */
 package se.umu.cs.ldbn.client.ui.window;
 
-import se.umu.cs.ldbn.client.Main;
+import se.umu.cs.ldbn.client.ClientMain;
 import se.umu.cs.ldbn.client.utils.Common;
 
 import com.allen_sauer.gwt.dnd.client.util.Location;
@@ -135,7 +135,7 @@ public abstract class WindowPanel extends com.google.gwt.user.client.ui.FocusPan
 	protected Widget eastWidget;
 
 	protected Grid grid = new Grid(3, 3);
-	
+
 	private boolean initialLoad = false;
 
 	protected Widget headerWidget;
@@ -149,9 +149,9 @@ public abstract class WindowPanel extends com.google.gwt.user.client.ui.FocusPan
 	protected final WindowController windowController;
 
 	protected Image closeButton;
-	
+
 	protected boolean resizable;
-	
+
 	public WindowPanel(String title) {
 		this(title, true);
 	}
@@ -160,7 +160,7 @@ public abstract class WindowPanel extends com.google.gwt.user.client.ui.FocusPan
 		super();
 		Widget contentWidget = getContentWidget();
 		boolean wrapContentInScrollPanel = useScrollPanel();
-		this.windowController = Main.get().getWindowController();
+		this.windowController = ClientMain.get().getWindowController();
 		this.resizable = resizable;
 		Grid header = new Grid(1, 2);
 		header.setStyleName("dw-header");
@@ -201,9 +201,9 @@ public abstract class WindowPanel extends com.google.gwt.user.client.ui.FocusPan
 
 		grid.setCellSpacing(0);
 		grid.setCellPadding(0);
-		
+
 		add(grid);
-		
+
 		setupCell(0, 0, NORTH_WEST);
 		northWidget = setupCell(0, 1, NORTH);
 		setupCell(0, 2, NORTH_EAST);
@@ -215,22 +215,22 @@ public abstract class WindowPanel extends com.google.gwt.user.client.ui.FocusPan
 		setupCell(2, 0, SOUTH_WEST);
 		southWidget = setupCell(2, 1, SOUTH);
 		setupCell(2, 2, SOUTH_EAST);
-		
+
 		DOM.setStyleAttribute(this.getElement(), "background", "#F6F6F6");
 		this.setVisible(false);
-		
+
 		/*
-		 * We add the window in the same static contex as the Main.mainPanel. 
-		 * Then we give each instance of WindowPanel z-index: 1, 
+		 * We add the window in the same static contex as the ClientMain.mainPanel.
+		 * Then we give each instance of WindowPanel z-index: 1,
 		 * thus ensuring the window is infront of the other content.
 		 * This also ensures that the drag-and-drop proxies are not covered
 		 * by instances of WindowPanel, since they are added to another
 		 * static contex, namely RootPanel.get().
-		 * 
+		 *
 		 * @see http://css-discuss.incutio.com/wiki/Overlapping_And_ZIndex
 		 */
 		this.getElement().getStyle().setZIndex(1);
-		RootPanel.get(Main.MAIN_DIV_ID).add(this, 0, 0);
+		RootPanel.get(ClientMain.MAIN_DIV_ID).add(this, 0, 0);
 	}
 
 	public int getContentHeight() {
@@ -247,7 +247,7 @@ public abstract class WindowPanel extends com.google.gwt.user.client.ui.FocusPan
 		int left = location.getLeft() + right;
 		int top = location.getTop() + down;
 		// no static positions
-		if(left == -1 && top == -1) { 
+		if(left == -1 && top == -1) {
 			left = -2;
 		}
 		parent.setWidgetPosition(WindowPanel.this, left, top);
@@ -306,20 +306,20 @@ public abstract class WindowPanel extends com.google.gwt.user.client.ui.FocusPan
 					col,
 					CSS_DEMO_RESIZE_EDGE);
 		}
-		
+
 		return widget;
 	}
-	
-	
+
+
 	//methods from the PopupPanel
 	public void hide() {
 		setVisible(false);
 	}
-	
+
 	public void show() {
 		//this method is implemented very badly, we should find a better solution
 		setVisible(true);
-		
+
 		Scheduler.get().scheduleDeferred(() -> {
 				//offset size is only available after the Widget is attached to the DOM
 				int ow = getOffsetWidth();
@@ -336,7 +336,7 @@ public abstract class WindowPanel extends com.google.gwt.user.client.ui.FocusPan
 			    parent.setWidgetPosition(WindowPanel.this, sl + left, st + top);
 		});
 	}
-	
+
 	public void center() {
 		show();
 	}

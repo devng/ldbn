@@ -1,17 +1,15 @@
-package se.umu.cs.ldbn.client.ui.dialog;
+package se.umu.cs.ldbn.client.ui.comment;
 
-import java.util.List;
-
-import se.umu.cs.ldbn.client.io.Comment;
-import se.umu.cs.ldbn.client.io.CommentCallback;
-import se.umu.cs.ldbn.client.io.CommentListEntry;
-import se.umu.cs.ldbn.client.ui.sa.CommentsWidget;
-import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
-
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
+import se.umu.cs.ldbn.client.io.Comment;
+import se.umu.cs.ldbn.client.rest.CommentsRestClient;
+import se.umu.cs.ldbn.client.ui.dialog.OkCancelDialog;
 
-public class CommentAddDialog extends OkCancelDialog implements CommentCallback {
+import javax.inject.Inject;
+
+public class CommentAddDialog extends OkCancelDialog {
 
 	private static CommentAddDialog inst;
 
@@ -23,7 +21,6 @@ public class CommentAddDialog extends OkCancelDialog implements CommentCallback 
 	}
 
 	private TextArea textBox;
-
 
 	private CommentAddDialog() {
 		super("Leave a comment", true);
@@ -47,21 +44,14 @@ public class CommentAddDialog extends OkCancelDialog implements CommentCallback 
 			setErrorMsg("Comment is empty.");
 			return;
 		}
-		Comment.get().send(this);
-		hide();
-	}
 
-	public Integer getAssignmentID() {
-		return SolveAssignmentWidget.get().getCurrentAssignmentId();
+		// TODO send a comment to the backend via REST
+
+		hide();
 	}
 
 	public String getComment() {
 
 		return textBox.getText();
-	}
-
-	public void onCommentsReceived(List<CommentListEntry> comments,
-			Integer assignmentID) {
-		CommentsWidget.get().addComments(comments);
 	}
 }

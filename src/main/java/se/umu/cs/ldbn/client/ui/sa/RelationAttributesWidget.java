@@ -3,7 +3,7 @@ package se.umu.cs.ldbn.client.ui.sa;
 import java.util.ArrayList;
 import java.util.List;
 
-import se.umu.cs.ldbn.client.Main;
+import se.umu.cs.ldbn.client.ClientMain;
 import se.umu.cs.ldbn.shared.core.AttributeSet;
 
 import com.google.gwt.user.client.ui.HTML;
@@ -30,7 +30,7 @@ public final class RelationAttributesWidget extends HTML {
 		listeners = new ArrayList<>();
 		setHTML(generateAttributeHTML());
 		setStyleName("fdw");
-		Main.get().getDragController().makeDraggable(this);
+		ClientMain.get().getDragController().makeDraggable(this);
 	}
 
 	public void addListener(RelationAttributesWidgetListener l) {

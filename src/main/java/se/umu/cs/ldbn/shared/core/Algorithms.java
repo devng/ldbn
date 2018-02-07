@@ -491,8 +491,7 @@ public final class Algorithms {
 			if (!containsKey) {
 				Relation keyRelation = new Relation(allKeys.get(0));
 				result.add(keyRelation);
-				keyRelation.setFDs(new ArrayList<>()); // should not be
-															// null;
+				keyRelation.setFDs(new ArrayList<>()); // should not be null;
 				ArrayList<AttributeSet> keys = new ArrayList<>();
 				keys.add(allKeys.get(0));
 				keyRelation.setKeyCandidates(keys);
@@ -676,7 +675,7 @@ public final class Algorithms {
 		return true;
 	}
 
-	
+
 	/**
 	 * Checks if a decomposition is in 3nd normal form (3NF).
 	 * @param rel list of relations with computed key candidates and FDs

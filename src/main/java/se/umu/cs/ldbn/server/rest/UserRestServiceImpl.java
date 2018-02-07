@@ -37,9 +37,9 @@ public class UserRestServiceImpl implements UserRestService {
     @Nonnull
     @Override
     public UserDto getUser(final Integer id) {
-        log.debug("Get user by id.");
+        log.debug("Get model by id.");
         if (id == null || id < 0) {
-            throw new IllegalArgumentException("Illegal user id.");
+            throw new IllegalArgumentException("Illegal model id.");
         }
         UserDto dto = userDao.getUser(id);
         if (dto == null) {

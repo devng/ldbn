@@ -26,7 +26,7 @@ public final class Common {
 
 	public final static int MIN_PASSWORD_LENGTH = 4;
 	/*
-	 * regular expressions for validating user data, peace not if you change
+	 * regular expressions for validating model data, peace not if you change
 	 * the expressions here you have to change them in the PHP scripts as well.
 	 */
 	public final static String NAME_REGEX = "([\\w]|\\-){1,20}";

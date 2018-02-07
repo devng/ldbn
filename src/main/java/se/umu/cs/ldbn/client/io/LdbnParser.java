@@ -253,7 +253,7 @@ public final class LdbnParser {
 					userList.add(data);
 				}
 			} else if (tag.equals("att")) {
-				//TODO There can be a  null pointer exception, if the user
+				//TODO There can be a  null pointer exception, if the model
 				//is trying to parse ldbn of type msg with an att tag in it,
 				//which is not a valid ldbn xml, but we cannot control, what is
 				//being passed from the server side script
@@ -278,7 +278,7 @@ public final class LdbnParser {
 				fdatt.addAtt(val);
 			} else if (tag.equals("session")) {
 				sessionid = el.getAttribute("id");
-			} else if (tag.equals("user")) {
+			} else if (tag.equals("model")) {
 				userid = Integer.valueOf(el.getAttribute("id"));
 				isAdmin = "1".equals(el.getAttribute("is_admin"));
 				isSuperUser = "1".equals(el.getAttribute("is_su"));

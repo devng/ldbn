@@ -42,10 +42,6 @@ public final class DomainTable {
 		index = i;
 	}
 
-	public List<DomainTableListener> getListers() {
-		return listeners;
-	}
-
 	public void setNewNames(List<String> names) {
 		if (names == null) {
 			return;
@@ -66,11 +62,6 @@ public final class DomainTable {
 	public void addListener(DomainTableListener l) {
 		if(l != null)
 			listeners.add(l);
-	}
-
-	public void removeListener(DomainTableListener l) {
-		if(l != null)
-			listeners.remove(l);
 	}
 
 	public boolean addAtt(String attName) {

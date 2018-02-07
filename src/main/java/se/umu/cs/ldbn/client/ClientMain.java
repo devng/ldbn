@@ -1,6 +1,21 @@
 package se.umu.cs.ldbn.client;
 
+import com.allen_sauer.gwt.dnd.client.PickupDragController;
+import com.allen_sauer.gwt.log.client.Log;
+import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.SimpleEventBus;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Window.Location;
+import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TabPanel;
 import org.fusesource.restygwt.client.Defaults;
 import se.umu.cs.ldbn.client.i18n.I18N;
 import se.umu.cs.ldbn.client.io.Login;
@@ -9,30 +24,15 @@ import se.umu.cs.ldbn.client.ui.GlassPanel;
 import se.umu.cs.ldbn.client.ui.admin.AdministratorWidget;
 import se.umu.cs.ldbn.client.ui.ca.CreateAssignmentWidget;
 import se.umu.cs.ldbn.client.ui.home.HomeWidget;
-import se.umu.cs.ldbn.client.ui.licence.LicenceWidget;
 import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
-import se.umu.cs.ldbn.client.ui.user.UserData;
+import se.umu.cs.ldbn.client.model.UserModel;
 import se.umu.cs.ldbn.client.ui.window.WindowController;
 import se.umu.cs.ldbn.client.utils.Common;
-
-import com.allen_sauer.gwt.dnd.client.PickupDragController;
-import com.allen_sauer.gwt.log.client.Log;
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.dom.client.Style.Position;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Window.Location;
-import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TabPanel;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public final class Main implements EntryPoint,
+public final class ClientMain implements EntryPoint,
 	SelectionHandler<Integer>, LoginListener {
 
 	public static String VERSION = "1.3-160723";
@@ -57,7 +57,7 @@ public final class Main implements EntryPoint,
 			appWidth = max;
 		}
 
-		//see if the user has not defined a different screen width
+		//see if the model has not defined a different screen width
 		String w = Location.getParameter("w");
 		if (w != null && !"".equals(w.trim())) {
 			try {
@@ -82,9 +82,9 @@ public final class Main implements EntryPoint,
 		"</tr></table>";
 
 
-	private static Main instance;
+	private static ClientMain instance;
 
-	public static Main get() {
+	public static ClientMain get() {
 		// instance is created in the onModuleLoad2() method,
 		// which should be called only once at the begining
 		if (instance == null) {
@@ -108,7 +108,7 @@ public final class Main implements EntryPoint,
 	private boolean isTabCALoaded;
 	private boolean isTabAdminLoaded;
 
-	private Main() {
+	private ClientMain() {
 		super();
 	}
 
@@ -129,13 +129,14 @@ public final class Main implements EntryPoint,
 			instance = this;
 		}
 
-		//init I18N
-		I18N.get();
+		//init
 		AdministratorWidget.get();
 		Login.get().addListener(this);
 
 		mainPanel = new AbsolutePanel();
 		mainPanel.setWidth(WIDTH_PX+"px");
+
+		// TODO add a provider for the drag controller
 		dragControll = new PickupDragController(RootPanel.get(), false);
 		dragControll.setBehaviorDragProxy(true);
 
@@ -152,7 +153,7 @@ public final class Main implements EntryPoint,
 		tabs.add(HomeWidget.get(), I18N.constants().homeTab());
 		tabs.add(tabSA, I18N.constants().solveTab());
 		tabs.add(tabCA, I18N.constants().createTab());
-		tabs.add(LicenceWidget.get(), I18N.constants().licenseTab());
+		tabs.add(ClientInjector.INSTANCE.getLicenceWidget(), I18N.constants().licenseTab());
 		tabs.addSelectionHandler(this);
 
 		tabs.setWidth("100%");
@@ -204,7 +205,7 @@ public final class Main implements EntryPoint,
 	}
 
 	public void onLoginSuccess() {
-		if (UserData.get().isAdmin()) {
+		if (ClientInjector.INSTANCE.getUserModel().isAdmin()) {
 			tabs.insert(AdministratorWidget.get(), "Administrators", 3);
 			isTabAdminLoaded = true;
 		}

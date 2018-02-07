@@ -1,4 +1,4 @@
-package se.umu.cs.ldbn.client.io;
+package se.umu.cs.ldbn.client.utils;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.xml.client.*;
@@ -12,13 +12,13 @@ import se.umu.cs.ldbn.shared.dto.AssignmentDto;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class AssignmentXmlParser {
+public final class AssignmentXml {
 
-	private static AssignmentXmlParser inst = null;
+	private static AssignmentXml inst = null;
 
-	public static AssignmentXmlParser get() {
+	private static AssignmentXml get() {
 		if(inst == null) {
-			inst = new AssignmentXmlParser();
+			inst = new AssignmentXml();
 		}
 		return inst;
 	}
@@ -27,29 +27,31 @@ public final class AssignmentXmlParser {
 	private DomainTable currentDomain;
 	private List<FD> currentFDs;
 	private boolean isLHS;
-	private String assignmentName;
+	private String name;
+	private Integer id;
 
-	public Assignment parse(AssignmentDto dto) {
+	public static Assignment parse(final AssignmentDto dto) {
 		if (dto == null) {
 			return null;
 		}
+		get().clear();
+		get().name = dto.getName();
+		get().id = dto.getId();
 
-		Assignment assignment = parse(dto.getXml());
+
+		Assignment assignment = get().parse(dto.getXml());
 		if (assignment == null) {
 			Log.error("Cannot parse assignment XML. AssignmentDto does not contain any XML data.");
 			return null;
 		}
-		assignment.setName(dto.getName());
-		assignment.setID(dto.getId());
 
 		return assignment;
 	}
 
-	public Assignment parse(String xml) {
+	private Assignment parse(final String xml) {
 		if (xml == null) {
 			return null;
 		}
-		clear();
 		Document doc;
 		try {
 			doc = XMLParser.parse(xml);
@@ -71,27 +73,23 @@ public final class AssignmentXmlParser {
 		}
 
 		Assignment assignment = parseAssignmentXML(ldbn);
+		clear();
 		return assignment;
 	}
 
 	private void clear() {
 		currentDomain = null;
 		currentFDs = null;
-		assignmentName = null;
 		isLHS = false;
+		name = null;
+		id = null;
 	}
 
-
-	private Assignment parseAssignmentXML(Node ldbn) {
+	private Assignment parseAssignmentXML(final Node ldbn) {
 		currentDomain = new DomainTable();
 		currentFDs = new ArrayList<>();
 		visitElementNodes(ldbn);
-		Assignment a = new Assignment(currentDomain, currentFDs);
-		a.setName(assignmentName);
-		currentDomain = null;
-		currentFDs = null;
-		isLHS = false;
-
+		Assignment a = new Assignment(currentDomain, currentFDs, id, name);
 		return a;
 	}
 
@@ -129,5 +127,51 @@ public final class AssignmentXmlParser {
 			}
 			visitElementNodes(child);
 		}
+	}
+
+	public static String toXML(final Assignment a) {
+		if (a ==  null) {
+			Log.error("Cannot create an XML for an empty assignment.");
+			return null;
+		}
+		Document doc = XMLParser.createDocument();
+		Element ldbn = doc.createElement("ldbn");
+		ldbn.setAttribute("type", "assignment");
+		doc.appendChild(ldbn);
+		DomainTable domain = a.getDomain();
+		String[] atts = domain.getAttNames();
+		for (String name : atts) {
+			Element att = doc.createElement("att");
+			ldbn.appendChild(att);
+			Text txt = doc.createTextNode(name);
+			att.appendChild(txt);
+		}
+		List<FD> fds = a.getFDs();
+		for (FD fd : fds) {
+			Element fdEl = doc.createElement("fd");
+			ldbn.appendChild(fdEl);
+			Element lhsEl = doc.createElement("lhs");
+			fdEl.appendChild(lhsEl);
+			AttributeSet lhsAS = fd.getLHS();
+			List<String> lhsAttNames = lhsAS.getAttributeNames();
+			for (String str : lhsAttNames) {
+				Element fdatt = doc.createElement("fdatt");
+				Text txt = doc.createTextNode(str);
+				lhsEl.appendChild(fdatt);
+				fdatt.appendChild(txt);
+			}
+			Element rhsEl = doc.createElement("rhs");
+			fdEl.appendChild(rhsEl);
+			AttributeSet rhsAS = fd.getRHS();
+			List<String> rhsAttNames = rhsAS.getAttributeNames();
+			for (String str : rhsAttNames) {
+				Element fdatt = doc.createElement("fdatt");
+				Text txt = doc.createTextNode(str);
+				rhsEl.appendChild(fdatt);
+				fdatt.appendChild(txt);
+			}
+
+		}
+		return doc.toString();
 	}
 }

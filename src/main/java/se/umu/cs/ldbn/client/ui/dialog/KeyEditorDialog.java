@@ -2,7 +2,7 @@ package se.umu.cs.ldbn.client.ui.dialog;
 
 import java.util.List;
 
-import se.umu.cs.ldbn.client.Main;
+import se.umu.cs.ldbn.client.ClientMain;
 import se.umu.cs.ldbn.client.ui.AttributeTextArea;
 import se.umu.cs.ldbn.client.ui.FDWidget;
 import se.umu.cs.ldbn.client.ui.SingleAttributeWidget;
@@ -15,13 +15,13 @@ import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.google.gwt.user.client.ui.Widget;
 
 public class KeyEditorDialog  extends BaseAttributeEditorDialog  {
-	
+
 	protected final class MyTextArea extends AttributeTextArea {
 
 		public void onDrop(DragContext context) {
 			Widget w = context.draggable;
 			if(w == null) return;
-			
+
 			if(w instanceof SingleAttributeWidget) {
 				this.appendAttributes(((SingleAttributeWidget)w).getText());
 			} else if (w instanceof FDWidget) {
@@ -42,7 +42,7 @@ public class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 				}
 			}
 		}
-		
+
 		public void setAttributeSet(AttributeSet att) {
 			AttributeSetIterator asi = att.iterator();
 			for (; asi.hasNext();) {
@@ -52,7 +52,7 @@ public class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 		}
 	}
 	private static KeyEditorDialog inst = null;
-	
+
 	public static KeyEditorDialog get() {
 		if (inst == null) {
 			inst = new KeyEditorDialog();
@@ -61,42 +61,42 @@ public class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 	}
 
 	protected RelationAttributesWidget raw;
-	
+
 	protected MyTextArea kta;
-	
+
 	private KeyEditorDialog() {
 		super("Key Editor");
 		infoButton.setFileBase("keyeditor");
 	}
-	
+
 	protected KeyEditorDialog(String title) {
 		super(title);
 	}
-	
+
 	@Override
 	public void hide() {
 		super.hide();
-		Main.get().getDragController().unregisterDropController(getAttributeTextArea());
+		ClientMain.get().getDragController().unregisterDropController(getAttributeTextArea());
 	}
-	
+
 	public void setCurrentRelationAttributesWidget(RelationAttributesWidget raw) {
 		this.raw = raw;
 		kta.setText("");
 		kta.setAttributeSet(raw.getKey());
 	}
-	
+
 	@Override
 	public void show() {
 		super.show();
-		Main.get().getDragController().registerDropController(getAttributeTextArea());
+		ClientMain.get().getDragController().registerDropController(getAttributeTextArea());
 	}
-	
+
 	protected AttributeTextArea getAttributeTextArea() {
 		if(kta == null)
 			kta = new MyTextArea();
 		return kta;
 	}
-	
+
 	protected void onAddButClicked() {
 		if(raw == null) {
 			kta.setText("");
@@ -115,11 +115,11 @@ public class KeyEditorDialog  extends BaseAttributeEditorDialog  {
 		kta.setText("");
 		hide();
 	}
-	
+
 	protected void handleAttributeSet(AttributeSet as) {
 		raw.setKey(as);
 	}
-	
+
 	@Override
 	protected String getHelpMessage() {
 		return "Give a valid candidate key for the relation.<BR>" +

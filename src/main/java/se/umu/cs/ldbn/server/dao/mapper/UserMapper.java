@@ -16,7 +16,7 @@ public interface UserMapper {
             @Result(column = "is_su", property = "su"),
             @Result(column = "is_active", property = "active")
     })
-    @Select("SELECT * FROM user WHERE user_id = #{userId}")
+    @Select("SELECT * FROM model WHERE user_id = #{userId}")
     UserDto selectUserById(@Param("userId") int userId);
 
     @Results(value = {
@@ -25,7 +25,7 @@ public interface UserMapper {
             @Result(column = "is_su", property = "su"),
             @Result(column = "is_active", property = "active")
     })
-    @Select("SELECT * FROM user")
+    @Select("SELECT * FROM model")
     List<UserDto> selecAllUsers();
 
     @Results(value = {
@@ -34,6 +34,6 @@ public interface UserMapper {
             @Result(column = "is_su", property = "su"),
             @Result(column = "is_active", property = "active")
     })
-    @Select("SELECT * FROM user WHERE is_active = 1")
+    @Select("SELECT * FROM model WHERE is_active = 1")
     List<UserDto> selecAllActiveUsers();
 }

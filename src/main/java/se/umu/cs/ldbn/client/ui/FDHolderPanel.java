@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import se.umu.cs.ldbn.client.Main;
+import se.umu.cs.ldbn.client.ClientMain;
 import se.umu.cs.ldbn.client.ui.dialog.FDEditorDialog;
 import se.umu.cs.ldbn.client.utils.Common;
 import se.umu.cs.ldbn.shared.core.DomainTableListener;
@@ -150,7 +150,7 @@ public final class FDHolderPanel extends VerticalPanel
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.google.gwt.user.client.ui.ClickListener#onClick(com.google.gwt.user.client.ui.Widget)
+	 * @see com.google.gwt.model.client.ui.ClickListener#onClick(com.google.gwt.model.client.ui.Widget)
 	 */
 	@Override
 	public void onClick(ClickEvent event) {
@@ -273,7 +273,7 @@ public final class FDHolderPanel extends VerticalPanel
 	 * @return a panel containing the widget and a check box.
 	 */
 	private Panel getCheckBoxPanel(FDWidget w) {
-		PickupDragController dc = Main.get().getDragController();
+		PickupDragController dc = ClientMain.get().getDragController();
 		dc.makeDraggable(w);
 		CheckBox chBox = new CheckBox();
 		Common.setCursorPointer(chBox);

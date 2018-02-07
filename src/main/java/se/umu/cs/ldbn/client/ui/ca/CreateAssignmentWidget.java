@@ -3,9 +3,13 @@ package se.umu.cs.ldbn.client.ui.ca;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.gwt.event.shared.EventBus;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
-import se.umu.cs.ldbn.client.Main;
+import se.umu.cs.ldbn.client.ClientInjector;
+import se.umu.cs.ldbn.client.ClientMain;
+import se.umu.cs.ldbn.client.events.AssignmentLoadedEvent;
+import se.umu.cs.ldbn.client.events.AssignmentLoadedEventHandler;
 import se.umu.cs.ldbn.client.i18n.I18N;
 import se.umu.cs.ldbn.client.io.*;
 import se.umu.cs.ldbn.client.rest.AssignmentsRestClient;
@@ -23,8 +27,9 @@ import se.umu.cs.ldbn.client.ui.dialog.RenameDialog;
 import se.umu.cs.ldbn.client.ui.dialog.RenameDialogCallback;
 import se.umu.cs.ldbn.client.ui.dialog.UploadDialog;
 import se.umu.cs.ldbn.client.ui.sa.SolveAssignmentWidget;
-import se.umu.cs.ldbn.client.ui.user.UserData;
+import se.umu.cs.ldbn.client.model.UserModel;
 import se.umu.cs.ldbn.client.ui.visualization.VisualizationWindow;
+import se.umu.cs.ldbn.client.utils.AssignmentXml;
 import se.umu.cs.ldbn.client.utils.Common;
 import se.umu.cs.ldbn.shared.core.Assignment;
 import se.umu.cs.ldbn.shared.core.DomainTable;
@@ -47,19 +52,19 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import se.umu.cs.ldbn.shared.dto.AssignmentDto;
 
-public final class CreateAssignmentWidget extends Composite 
+public final class CreateAssignmentWidget extends Composite
 	implements ClickHandler, RenameDialogCallback, LoadAssignmentDialogCallback,
-	LoadAssignmentDialogFilter, AssignmentLoaderCallback, LoginListener, MethodCallback<AssignmentDto> {
-	
-	//assignment variables  
+	LoadAssignmentDialogFilter, AssignmentLoadedEventHandler, LoginListener, MethodCallback<AssignmentDto> {
+
+	//assignment variables
 	private Assignment currentAssignment;
 	private String loadedName;
 	private Integer loadedId;
-	
+
 	private AbsolutePanel mainPanel;
 	private EditableGivenAttributesWidget egas;
 	private Button addAtts;
-	
+
 	private static CreateAssignmentWidget inst;
 	private FDHolderPanel givenFDs;
 	private Button addFDs;
@@ -76,11 +81,20 @@ public final class CreateAssignmentWidget extends Composite
 	private FormPanel downloadForm;
 	private Hidden hidenXML;
 	private Hidden hidenXMLFilename;
-	
+
+	private final EventBus eventBus;
+
+	private final AssignmentsRestClient assignmentsRestClient;
+
 	private CreateAssignmentWidget() {
+		super();
+		eventBus = ClientInjector.INSTANCE.getEventBus();
+		eventBus.addHandler(AssignmentLoadedEvent.TYPE, this);
+		assignmentsRestClient = ClientInjector.INSTANCE.getAssignmentsRestClient();
+
 		mainPanel = new AbsolutePanel();
 		mainPanel.setWidth("100%");
-		
+
 		HeaderWidget hw = new HeaderWidget();
 		loadInSATabButton = new Button(I18N.constants().loadInSABut());
 		loadInSATabButton.addClickHandler(this);
@@ -94,7 +108,7 @@ public final class CreateAssignmentWidget extends Composite
 		exportButton.addClickHandler(this);
 		importButton = new Button(I18N.constants().importBut());
 		importButton.addClickHandler(this);
-		
+
 		newButton.setStyleName("att-but");
 		Common.setCursorPointer(newButton);
 		saveButton.setStyleName("att-but");
@@ -107,10 +121,10 @@ public final class CreateAssignmentWidget extends Composite
 		Common.setCursorPointer(exportButton);
 		loadInSATabButton.setStyleName("att-but");
 		Common.setCursorPointer(loadInSATabButton);
-		
+
 		InfoButton info = new InfoButton("ca-tab");
 		info.setStyleName("att-img");
-		
+
 		hw.add(loadInSATabButton);
 		Image trenner = new Image(Common.getResourceUrl("img/trenner.jpg"));
 		trenner.setStyleName("att-but");
@@ -145,7 +159,7 @@ public final class CreateAssignmentWidget extends Composite
 		vp.add(hp);
 		egas = new EditableGivenAttributesWidget();
 		vp.add(egas);
-		
+
 		dwGivenAttributes = new DisclosureWidget(I18N.constants().givenAtt(), vp);
 		mainPanel.add(dwGivenAttributes);
 		//Given FDs
@@ -160,7 +174,7 @@ public final class CreateAssignmentWidget extends Composite
 		hp.add(addFDs);
 		hp.add(new InfoButton("givenfds-ca"));
 		givenFDs.add(hp);
-		
+
 		/* additional controls */
 		Image visual = new Image(Common.getResourceUrl("img/eye.png"));
 		visual.setTitle("FD Visualization");
@@ -171,9 +185,9 @@ public final class CreateAssignmentWidget extends Composite
 					givenFDs.getFDs());
 			vw.center();
 		});
-		
+
 		Widget[] superAdditionalControl = givenFDs.getAdditionalControlls();
-		Widget[] additionalContorll = 
+		Widget[] additionalContorll =
 			new Widget[superAdditionalControl.length+1];
 		additionalContorll[0] = visual;
 		for (int i = 0; i < superAdditionalControl.length; i++) {
@@ -183,16 +197,16 @@ public final class CreateAssignmentWidget extends Composite
 		/* END additional controls */
 		dwGivenFDs = new DisclosureWidget(I18N.constants().givenFDs(), givenFDs, additionalContorll);
 		mainPanel.add(dwGivenFDs);
-		
+
 		initWidget(mainPanel);
 		Login.get().addListener(this);
-		if(UserData.get().isLoggedIn()) {
+		if(ClientInjector.INSTANCE.getUserModel().isLoggedIn()) {
 			onLoginSuccess();
 		} else {
 			onSessionKilled();
 		}
 	}
-	
+
 	private void setDownloadForm() {
 		//upload
 		downloadForm = new FormPanel();
@@ -210,14 +224,14 @@ public final class CreateAssignmentWidget extends Composite
 		downloadForm.add(hidenXMLFilename);
 		mainPanel.add(downloadForm);
 	}
-	
+
 	public static CreateAssignmentWidget get() {
 		if (inst == null) {
 			inst = new CreateAssignmentWidget();
 		}
 		return inst;
 	}
-	
+
 	public DomainTable getDomain() {
 		return egas.getDomain();
 	}
@@ -228,7 +242,7 @@ public final class CreateAssignmentWidget extends Composite
 		currentAssignment = null;
 		editMode.setVisible(false);
 	}
-	
+
 	@Override
 	public void onClick(ClickEvent event) {
 		Object sender = event.getSource();
@@ -257,7 +271,7 @@ public final class CreateAssignmentWidget extends Composite
 			if (tmp == null) return;
 			if (downloadForm == null) setDownloadForm();
 			currentAssignment = tmp;
-			String data = AssignmentSaver.buildXML(currentAssignment);
+			String data = AssignmentXml.toXML(currentAssignment);
 			hidenXML.setValue(data);
 			hidenXMLFilename.setValue("");
 			if (currentAssignment.getName() != null && !currentAssignment.getName().trim().isEmpty()) {
@@ -270,12 +284,12 @@ public final class CreateAssignmentWidget extends Composite
 			Assignment tmp = getAssignemntFromUserInput();
 			if (tmp == null) return;
 			currentAssignment = tmp;
-			Main.get().loadSATab();
+			ClientMain.get().loadSATab();
 			SolveAssignmentWidget.get().loadAssignment(tmp);
 		}
-		
+
 	}
-	
+
 	private Assignment getAssignemntFromUserInput() {
 		DomainTable domain = egas.getDomain();
 		if(domain.size() < 1) {
@@ -286,9 +300,9 @@ public final class CreateAssignmentWidget extends Composite
 		if(fds.size() < 1) {
 			Window.alert(I18N.constants().noFDsWarn());
 			return null;
-			
+
 		}
-		return new Assignment(domain, fds);
+		return new Assignment(domain, fds, null, null);
 	}
 
 	public String getOldName() {
@@ -297,37 +311,30 @@ public final class CreateAssignmentWidget extends Composite
 		}
 		return "";
 	}
-	
-	
+
+
 	@SuppressWarnings("rawtypes")
 	public Collection getTakenNames() {
 		//TODO
 		return null;
 	}
-	
+
 	public void setNewName(String s) {
 		saveAssignemnt(s);
-		
+
 	}
 
 	public void onRenameCanceled() {
 		currentAssignment = null;
 	}
-	
+
 	public void onLoaded(AssignmentDto entry) {
 		loadedId = entry.getId();
 		loadedName = entry.getName();
-		AssignmentsRestClient.INSTANCE.getAssignment(entry.getId(), this);
-	}
-	
-	public void onLoadCanceled() {}
-	
-	public void onAssignmentLoadError() {
-		editMode.setVisible(false);
-		loadedId = null;
-		loadedName = null;
+		assignmentsRestClient.getAssignment(entry.getId(), this);
 	}
 
+	@Override
 	public void onAssignmentLoaded(Assignment a) {
 		clearData();
 		restoreDefaultSize();
@@ -337,22 +344,22 @@ public final class CreateAssignmentWidget extends Composite
 		}
 		editMode.setVisible(true);
 	}
-	
+
 	private void saveAssignemnt(String name) {
 		if(currentAssignment != null) {
-			String xml = AssignmentSaver.buildXML(currentAssignment);
-			AssignmentSaver.get().sendToSaveScript(xml, name, 
+			String xml = AssignmentXml.toXML(currentAssignment);
+			AssignmentSaver.get().sendToSaveScript(xml, name,
 					loadedId == null ? 0 : loadedId);
 			currentAssignment  = null;
 			editMode.setVisible(false);
 			loadedId = null;
 			loadedName = null;
-			//TODO Use callbacks and on success set values to null 
+			//TODO Use callbacks and on success set values to null
 		} else {
 			Log.warn("CurrentAsigment = null. Could not save assignment.");
 		}
 	}
-	
+
 	private void restoreDefaultSize() {
 		dwGivenAttributes.resetHeightToDefault();
 		dwGivenFDs.resetHeightToDefault();
@@ -366,7 +373,7 @@ public final class CreateAssignmentWidget extends Composite
 		exportButton.setEnabled(false);
 		importButton.setEnabled(false);
 		editMode.setVisible(false);
-		
+
 		loadedId = null;
 		loadedName = null;
 	}
@@ -382,12 +389,13 @@ public final class CreateAssignmentWidget extends Composite
 
 	public boolean filter(AssignmentDto dto) {
 		//Administrators can edit all assignments
-		boolean isAdmin = UserData.get().isAdmin();
+		UserModel userModel = ClientInjector.INSTANCE.getUserModel();
+		boolean isAdmin = userModel.isAdmin();
 		if (isAdmin) {
 			return true;
 		}
 
-		Integer userId = UserData.get().getId();
+		Integer userId = userModel.getId();
 		if (userId == null) {
 			return false;
 		}
@@ -410,8 +418,7 @@ public final class CreateAssignmentWidget extends Composite
 
 	@Override
 	public void onSuccess(Method method, AssignmentDto assignmentDto) {
-		AssignmentXmlParser p = AssignmentXmlParser.get();
-		Assignment a = p.parse(assignmentDto);
+		Assignment a = AssignmentXml.parse(assignmentDto);
 		// TODO if a == null, do what?
 		onAssignmentLoaded(a);
 	}

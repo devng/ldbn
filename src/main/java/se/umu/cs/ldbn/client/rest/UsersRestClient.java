@@ -1,6 +1,5 @@
 package se.umu.cs.ldbn.client.rest;
 
-import com.google.gwt.core.client.GWT;
 import org.fusesource.restygwt.client.MethodCallback;
 import org.fusesource.restygwt.client.RestService;
 import se.umu.cs.ldbn.shared.dto.UserDto;
@@ -10,9 +9,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 @Path("/api/v1/users")
-public interface UserRestClient extends RestService {
-
-    UserRestClient INSTANCE = GWT.create(UserRestClient.class);
+public interface UsersRestClient extends RestService {
 
     @GET
     @Path("/")

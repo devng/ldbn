@@ -2,7 +2,7 @@ package se.umu.cs.ldbn.client.ui;
 
 import java.util.List;
 
-import se.umu.cs.ldbn.client.Main;
+import se.umu.cs.ldbn.client.ClientMain;
 import se.umu.cs.ldbn.shared.core.FD;
 
 import com.google.gwt.user.client.ui.HTML;
@@ -17,7 +17,7 @@ public final class FDWidget extends HTML {
 		this.fd = fd;
 		rebuildHTML();
 		setStyleName("fdw");
-		Main.get().getDragController().makeDraggable(this);
+		ClientMain.get().getDragController().makeDraggable(this);
 	}
 
 	public FD getFD() {

@@ -3,7 +3,7 @@ package se.umu.cs.ldbn.client.io;
 import java.util.ArrayList;
 import java.util.List;
 
-import se.umu.cs.ldbn.client.ui.user.UserData;
+import se.umu.cs.ldbn.client.model.UserModel;
 
 public final class Login extends AbstractRequestSender {
 
@@ -73,7 +73,7 @@ public final class Login extends AbstractRequestSender {
 	private boolean handleLoginResponce() {
 		LdbnParser p = LdbnParser.get();
 		if (p.getLastLdbnType() == LdbnParser.LDBN_TYPE.session) {
-			UserData ud = UserData.get();
+			UserModel ud = UserModel.get();
 			ud.setId(p.getUserId());
 			ud.setSession(p.getSessionId());
 			ud.setEmail(p.getEmail());
@@ -92,7 +92,7 @@ public final class Login extends AbstractRequestSender {
 		LdbnParser p = LdbnParser.get();
 		if (p.getLastLdbnType() == LdbnParser.LDBN_TYPE.msg) {
 			if(p.getMsgType() == LdbnParser.MSG_TYPE.ok) {
-				UserData.get().clear();
+				UserModel.get().clear();
 				for (LoginListener l : listeners) {
 					l.onSessionKilled();
 				}

@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.Widget;
  * The classes which inherit this class must implement the onDrop() method, to
  * provide meaningful behaviour for the widget.
  * The text area should only be used to manipulate relational attributes, so
- * there a methods for retrieving, adding and validating user input.
+ * there a methods for retrieving, adding and validating model input.
  */
 public abstract class AttributeTextArea extends TextArea
 	implements DropController {

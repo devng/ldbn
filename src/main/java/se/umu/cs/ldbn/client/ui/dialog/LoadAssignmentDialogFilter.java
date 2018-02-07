@@ -6,9 +6,9 @@ public interface LoadAssignmentDialogFilter {
 	/**
 	 * This interface should be implemented together with LoadAssignmentDialogCaller
 	 * if a class wishes to filter some entries in the list. This is useful for
-	 * the editing an assignment, so that a user can edit only assignments created 
-	 * by the same user. 
-	 * @param entry a entry in the list of assignments. 
+	 * the editing an assignment, so that a model can edit only assignments created
+	 * by the same model.
+	 * @param entry a entry in the list of assignments.
 	 * @return returns true if the entry should be included in the dialog list,
 	 * otherwise returns false.
 	 */

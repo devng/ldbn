@@ -1,6 +1,6 @@
 package se.umu.cs.ldbn.client.ui;
 
-import se.umu.cs.ldbn.client.Main;
+import se.umu.cs.ldbn.client.ClientMain;
 import se.umu.cs.ldbn.client.utils.Common;
 
 import com.google.gwt.user.client.DOM;
@@ -12,8 +12,8 @@ import com.google.gwt.user.client.ui.Image;
 
 /**
 * This panel is positioned absolutely and covers the main panel area.
-* 
-* @see se.umu.cs.ldbn.client.Main  
+*
+* @see ClientMain
 */
 public class GlassPanel extends Composite {
 
@@ -28,11 +28,11 @@ public class GlassPanel extends Composite {
 	   loading = new Image(Common.getResourceUrl("img/loading.gif"));
 	   panel.add(loading);
        initWidget(panel);
-       panel.setSize(Main.WIDTH_PX+"px", "10000px");
+       panel.setSize(ClientMain.WIDTH_PX+"px", "10000px");
        this.parent = parent;
        panel.setStylePrimaryName("glassPanel");
    }
-   
+
    public void setLoadingAnimationNextTime(boolean useAnimation) {
 	   loading.setVisible(useAnimation);
    }
@@ -51,4 +51,4 @@ public class GlassPanel extends Composite {
 	   loading.setVisible(false);
        parent.remove(this);
    }
-} 
+}

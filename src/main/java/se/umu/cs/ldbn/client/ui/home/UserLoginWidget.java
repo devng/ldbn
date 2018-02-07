@@ -2,7 +2,7 @@ package se.umu.cs.ldbn.client.ui.home;
 
 import se.umu.cs.ldbn.client.io.Login;
 import se.umu.cs.ldbn.client.ui.InfoButton;
-import se.umu.cs.ldbn.client.ui.user.UserData;
+import se.umu.cs.ldbn.client.model.UserModel;
 import se.umu.cs.ldbn.client.utils.Common;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -22,7 +22,7 @@ public final class UserLoginWidget extends Composite implements ClickHandler,
 	KeyPressHandler {
 
 	private HorizontalPanel mainPanel;
-	//user
+	//model
 	private TextBox userTB;
 	private Label userLabel;
 	//pass
@@ -41,7 +41,7 @@ public final class UserLoginWidget extends Composite implements ClickHandler,
 		mainPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		mainPanel.setSpacing(5);
 
-		//user
+		//model
 		userTB = new TextBox();
 		userTB.addKeyPressHandler(this);
 		userLabel = new Label("User: ");
@@ -87,8 +87,8 @@ public final class UserLoginWidget extends Composite implements ClickHandler,
 	private void doLogin() {
 		String username = userTB.getText().trim();
 		String pass = Common.base64encode(passTB.getText().trim());
-		UserData.get().setName(username);
-		UserData.get().setPass(pass);
+		UserModel.get().setName(username);
+		UserModel.get().setPass(pass);
 		Login.get().sendLogin(username, pass);
 	}
 

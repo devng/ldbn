@@ -1,17 +1,18 @@
-package se.umu.cs.ldbn.client.ui.dialog;
+package se.umu.cs.ldbn.client.ui.comment;
 
 import se.umu.cs.ldbn.client.io.CommentEdit;
 import se.umu.cs.ldbn.client.io.CommentEditCallback;
 import se.umu.cs.ldbn.client.io.CommentListEntry;
+import se.umu.cs.ldbn.client.ui.dialog.OkCancelDialog;
 import se.umu.cs.ldbn.client.utils.Common;
 
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 
 public class CommentEditDialog extends OkCancelDialog {
-	
+
     private static CommentEditDialog inst;
-	
+
 	public static CommentEditDialog get(CommentListEntry cle, CommentEditCallback callback) {
 		if(inst == null) {
 			inst =  new CommentEditDialog();
@@ -20,17 +21,17 @@ public class CommentEditDialog extends OkCancelDialog {
 		inst.currentCallback = callback;
 		return inst;
 	}
-	
+
 	private CommentListEntry currentListEntry;
 	private CommentEditCallback currentCallback;
-	
+
 	private TextArea textBox;
-	
-	
+
+
 	private CommentEditDialog() {
 		super("Edit the comment below", true);
 	}
-	
+
 	protected void onOkClick() {
 		String s = textBox.getText();
 		if(s.length()<1) {
@@ -45,9 +46,9 @@ public class CommentEditDialog extends OkCancelDialog {
 		}
 		//Comment.get().send(this);
 		hide();
-		
+
 	}
-	
+
 	@Override
 	public void center() {
 		super.center();

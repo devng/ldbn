@@ -2,7 +2,8 @@ package se.umu.cs.ldbn.client.io;
 
 import java.util.List;
 
-import se.umu.cs.ldbn.client.ui.user.UserData;
+import se.umu.cs.ldbn.client.events.CommentsReceivedEventHandler;
+import se.umu.cs.ldbn.client.model.UserModel;
 import se.umu.cs.ldbn.client.utils.Common;
 
 public class Comment extends AbstractRequestSender {
@@ -16,21 +17,21 @@ public class Comment extends AbstractRequestSender {
 		return inst;
 	}
 
-	private CommentCallback callback;
+	private CommentsReceivedEventHandler callback;
 
 	protected String getData() {
 		String data = "aid="+callback.getAssignmentID();
 		String c = callback.getComment();
 		if(c != null && !c.equals("")) {
 			data += "&comment="+Common.base64encode(c);
-			data += "&id_user="+UserData.get().getId();
-			data += "&id_session="+UserData.get().getSession();
+			data += "&id_user="+ UserModel.get().getId();
+			data += "&id_session="+ UserModel.get().getSession();
 		}
 
 		return data;
 	}
 
-	public void send(CommentCallback callback) {
+	public void send(CommentsReceivedEventHandler callback) {
 		this.callback = callback;
 		//send();
 	}

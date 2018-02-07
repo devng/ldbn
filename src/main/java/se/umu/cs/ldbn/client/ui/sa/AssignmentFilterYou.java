@@ -1,11 +1,10 @@
 package se.umu.cs.ldbn.client.ui.sa;
 
-import se.umu.cs.ldbn.client.ui.user.UserData;
+import se.umu.cs.ldbn.client.model.UserModel;
 import se.umu.cs.ldbn.shared.dto.AssignmentDto;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class AssignmentFilterYou implements AssignmentFilter {
 
@@ -19,7 +18,7 @@ public class AssignmentFilterYou implements AssignmentFilter {
 		if (data == null) {
 			return null;
 		}
-		UserData ud = UserData.get();
+		UserModel ud = UserModel.get();
 		if (!ud.isLoggedIn()) {
 			throw new IllegalStateException("You have to login first.");
 		}
