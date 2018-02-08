@@ -1,4 +1,4 @@
-<!-- Examples for the different LDBN XML types -->
+ <!-- Examples for the different LDBN XML types -->
 
 <ldbn type="msg">
 	<msg type="error">Unknown database 'ldbn2'.</msg>

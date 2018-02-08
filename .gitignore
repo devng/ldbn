@@ -3,6 +3,7 @@
 build/
 bin/
 war/
+vendor/
 gwt-unitCache/
 *.class
 *.war
@@ -13,6 +14,7 @@ gwt-unitCache/
 .classpath
 .project
 .gradle/
+.gogradle/
 .settings/
 *.ipr
 *.iws
