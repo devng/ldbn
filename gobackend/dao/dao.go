@@ -2,17 +2,21 @@ package dao
 
 import (
 	"database/sql"
-	"github.com/devng/ldbn/types"
-	_ "github.com/mattn/go-sqlite3"
-	"log"
 	"errors"
+	"log"
+
+	"github.com/devng/ldbn/types"
 )
 
 var db *sql.DB
 
+// ErrInvalidInput is used when the the input of a dao method is invalid
 var ErrInvalidInput = errors.New("dao: invalid input")
+
+// ErrNoUpdate is used when there was not update/delete performed
 var ErrNoUpdate = errors.New("dao: SQL table was not updated")
 
+// InitDB initializes the DB by loading the file from the provided file path
 func InitDB(filePath string) {
 	log.Println("Sqlite3 file used: " + filePath)
 	var err error
@@ -26,11 +30,13 @@ func InitDB(filePath string) {
 	}
 }
 
+// SelectAllUsers select all users from the DB and return them in a slice
 func SelectAllUsers() ([]*types.User, error) {
 	checkDbNotNilOrPanic()
 	return handleSelectUserQuery("SELECT user_id, name, email, is_active, is_admin, is_su FROM user")
 }
 
+// SelectActiveUsers select only active users from the DB and return them in a slice
 func SelectActiveUsers() ([]*types.User, error) {
 	checkDbNotNilOrPanic()
 	return handleSelectUserQuery("SELECT user_id, name, email, is_active, is_admin, is_su FROM user WHERE is_active = 1")
@@ -58,7 +64,8 @@ func handleSelectUserQuery(query string) ([]*types.User, error) {
 	return users, nil
 }
 
-func SelectUserById(id int) (*types.User, error) {
+// SelectUserByID selects a single person from the ID based on their language level
+func SelectUserByID(id int) (*types.User, error) {
 	checkDbNotNilOrPanic()
 	stmt, err := db.Prepare("SELECT user_id, name, email, is_active, is_admin, is_su FROM user WHERE user_id = ?")
 	if err != nil {
@@ -78,11 +85,12 @@ func SelectUserById(id int) (*types.User, error) {
 	return user, nil
 }
 
-func SelectAllssignments(includeXml bool) ([]*types.Assignment, error) {
+// SelectAllAssignments select all users from the DB and return them in a slice
+func SelectAllAssignments(includeXML bool) ([]*types.Assignment, error) {
 	checkDbNotNilOrPanic()
 	query := "SELECT a.id, a.name, a.modified_on, u.user_id, u.name, u.email, u.is_active, u.is_admin, u.is_su"
-	if includeXml {
-		query +=  ", a.xml"
+	if includeXML {
+		query += ", a.xml"
 	}
 	query += " FROM assignment a JOIN user u ON u.user_id = a.user_id"
 
@@ -98,7 +106,7 @@ func SelectAllssignments(includeXml bool) ([]*types.Assignment, error) {
 		u := new(types.User)
 
 		var err error
-		if includeXml {
+		if includeXML {
 			err = rows.Scan(&a.ID, &a.Name, &a.ModifiedOn, &u.ID, &u.Name, &u.Email, &u.Active, &u.Admin, &u.SU, &a.XML)
 		} else {
 			err = rows.Scan(&a.ID, &a.Name, &a.ModifiedOn, &u.ID, &u.Name, &u.Email, &u.Active, &u.Admin, &u.SU)
@@ -116,7 +124,8 @@ func SelectAllssignments(includeXml bool) ([]*types.Assignment, error) {
 	return assignments, nil
 }
 
-func SelectAssignmentById(id int) (*types.Assignment, error) {
+// SelectAssignmentByID finds an assignment in the DB by a given id, if nothing is found nil is returned
+func SelectAssignmentByID(id int) (*types.Assignment, error) {
 	checkDbNotNilOrPanic()
 	stmt, err := db.Prepare(
 		"SELECT a.id, a.name, a.modified_on, u.user_id, u.name, u.email, u.is_active, u.is_admin, u.is_su, a.xml " +
@@ -141,6 +150,7 @@ func SelectAssignmentById(id int) (*types.Assignment, error) {
 	return a, nil
 }
 
+// InsertAssignment creates an assignment in the DB, it returns the assignment with an updated id
 func InsertAssignment(a *types.Assignment) (*types.Assignment, error) {
 	checkDbNotNilOrPanic()
 	if a == nil || a.Name == "" || a.XML == "" || a.Author == nil || a.Author.ID <= 0 {
@@ -166,6 +176,7 @@ func InsertAssignment(a *types.Assignment) (*types.Assignment, error) {
 	return a, nil
 }
 
+// UpdateAssignment updates an assignment in the DB, if no assignment was updated an error is returned
 func UpdateAssignment(a *types.Assignment) error {
 	checkDbNotNilOrPanic()
 	if a == nil || a.ID <= 0 || a.Name == "" || a.XML == "" || a.Author == nil || a.Author.ID <= 0 {
@@ -194,6 +205,7 @@ func UpdateAssignment(a *types.Assignment) error {
 	return nil
 }
 
+// DeleteAssignment deletes an assignment by a given id
 func DeleteAssignment(id int) error {
 	checkDbNotNilOrPanic()
 
@@ -207,7 +219,8 @@ func DeleteAssignment(id int) error {
 	return err
 }
 
-func SelectAssignmentComments(assignmentId int) ([]*types.Comment, error) {
+// SelectAssignmentComments returns all comments for an assignment or an empty slice
+func SelectAssignmentComments(assignmentID int) ([]*types.Comment, error) {
 	checkDbNotNilOrPanic()
 	stmt, err := db.Prepare(
 		"SELECT c.id, c.assignment_id, c.comment_val, c.modified_on, u.user_id, u.name, u.email, u.is_active, u.is_admin, u.is_su " +
@@ -217,7 +230,7 @@ func SelectAssignmentComments(assignmentId int) ([]*types.Comment, error) {
 	}
 	defer stmt.Close()
 
-	rows, err := stmt.Query(assignmentId)
+	rows, err := stmt.Query(assignmentID)
 	if err != nil {
 		return nil, err
 	}

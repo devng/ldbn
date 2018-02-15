@@ -187,7 +187,7 @@ project("gwt") {
 	check.dependsOn restIntegrationTest
 
 
-// put GWT SDK and GWT client libraries on class path using provided scope
+	// put GWT SDK and GWT client libraries on class path using provided scope
 	idea {
 		module {
 			scopes.PROVIDED.plus += [configurations.gwtSdk, configurations.gwt]

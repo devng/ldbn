@@ -1,14 +1,16 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"time"
-	"log"
 
-	"github.com/devng/ldbn/rest"
-	"github.com/devng/ldbn/dao"
-	"github.com/gorilla/mux"
 	"os"
+
+	"github.com/devng/ldbn/dao"
+	"github.com/devng/ldbn/rest"
+	"github.com/gorilla/mux"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
@@ -21,8 +23,8 @@ func main() {
 	rest.InitRestRouter(router)
 
 	srv := &http.Server{
-		Addr: ":8000",
-		Handler: router,
+		Addr:         ":8000",
+		Handler:      router,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}

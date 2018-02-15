@@ -2,6 +2,7 @@ package types
 
 import "time"
 
+// User represents a JSON user in LDBN
 type User struct {
 	ID     int    `json:"id,omitempty"`
 	Name   string `json:"name,omitempty"`
@@ -11,6 +12,7 @@ type User struct {
 	SU     bool   `json:"su,omitempty"`
 }
 
+// Comment represents a JSON comment in LDBN
 type Comment struct {
 	ID           int       `json:"id,omitempty"`
 	AssignmentID int       `json:"assignmentId,omitempty"`
@@ -19,6 +21,7 @@ type Comment struct {
 	Author       *User     `json:"author,omitempty"`
 }
 
+// Assignment represents a JSON assignment in LDBN
 type Assignment struct {
 	ID         int       `json:"id,omitempty"`
 	Name       string    `json:"name,omitempty"`
