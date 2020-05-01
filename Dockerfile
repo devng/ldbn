@@ -1,15 +1,14 @@
 # Docker file for running the LDBN application using NginX
 
-FROM ubuntu:trusty
-
-# Let the conatiner know that there is no tty
-ENV DEBIAN_FRONTEND noninteractive
+FROM nginx:1.17
 
 # Update base image
-RUN apt-get update && apt-get -y dist-upgrade
+RUN apt-get update
 
 # Install software requirements
-RUN apt-get -y install nginx sqlite3 php5-fpm php5-sqlite
+RUN apt-get install -y php7.3-fpm php7.3-sqlite3
+
+RUN apt-get autoremove && apt-get clean
 
 # Add nginx site conf, start script and ldbn www data
 ADD docker/nginx.conf /etc/nginx/
